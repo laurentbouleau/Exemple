@@ -319,7 +319,7 @@ const std::wstring lire_fichierTxt(std::wstring const& nomFichier)
 }*/
 bool checkyear(int y)
 {
-    return 1582 >= y;
+    return 1582 <= y;
 }
 /*bool checkmonth(int m)
 {
@@ -618,7 +618,7 @@ struct DateRecord
     return EXIT_SUCCESS;
 }*/
 
-std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier(const std::wstring& nomFichier)
+/*std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier(const std::wstring& nomFichier)
 {
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     
@@ -640,10 +640,12 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
     int i = 0;
     do
     {
+        std::wcout << L"strRestant=" << strRestant << std::endl;
         if (strRestant[0] == sp)
             break;
 
-        //int y = std::stoi(wstr.substr(0, 4));
+        //y = std::stoi(strRestant.substr(0, 4));
+        std::wcout << L"y=" << y << std::endl;
         //int m = std::stoi(wstr.substr(5, 2));
         //int d = std::stoi(wstr.substr(8, 2));
  
@@ -658,7 +660,7 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
             && strRestant[4] == tiret
             && (m = std::stoi(strRestant.substr(5, 2))) && checkmonth(m)
             && strRestant[7] == tiret
-            && (d = std::stoi(strRestant.substr(8, 2))) && checkday(m, d, y)
+            && ((d = std::stoi(strRestant.substr(8, 2))) && checkday(m, d, y))
             && firstYear < y)
         {
             std::wcout << L"y ?" << std::endl;
@@ -676,8 +678,9 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
                 i++;
                 strRestant = strRestant.substr(1);
                 firstYear = y;
-                m = d = 0;
-                continue;
+                std::wcout << L"firstYear=" << firstYear << std::endl;
+                y = m = d = 0;
+                //continue;
             }
             else
             {
@@ -693,7 +696,8 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
         else
         {
             std::wcout << L"year pas ok !" << std::endl;
-            assert(firstYear < y && L"aaa");
+            assert(firstYear > y && L"aaa");
+            break;
         }
         // mon + mday
         std::wcout << L"mon + mday" << std::endl;
@@ -720,7 +724,7 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
                 strRestant = strRestant.substr(1);
                 firstMon = m;
                 m = d = 0;
-                continue;
+                //continue;
             }
             else
             {
@@ -736,7 +740,8 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
         else
         {
             std::wcout << L"mon pas ok !" << std::endl;
-            assert(firstMon < m && L"aaa");
+            assert(firstMon > m && L"aaa");
+           break;
         }
         // mday
         std::wcout << L"mday" << std::endl;
@@ -776,23 +781,204 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
         else
         {
             std::wcout << L"day pas ok !" << std::endl;
-            assert(firstDay < d && L"aaa");
+            assert(firstDay > d && L"aaa");
+           break;
         }
         //if (!yearFlag)
         //    yearFlag;
         //if (!monFlag)
         //    monFlag;
         //if (!dayFlag)
-            dayFlag;
-
-    } while (strRestant.length() > 0);
+        //    dayFlag;
+        std::wcout << L"firstYear=" << firstYear << std::endl;
+        system("PAUSE");
+        //exit(EXIT_FAILURE);
+    } while (strRestant.length() > 0 || strRestant[0] == sp);
     std::wstring streaming = L"";
     if (strRestant[0] == sp)
+    {
         strRestant = strRestant.substr(1);
-    streaming = strRestant;
+        if(strRestant[0] == sp)
+            assert(L"L'espace (2) invalide !");
+        if (streaming[0] != wstring::npos)
+            streaming = strRestant;
+    }
+    return std::pair<std::vector<DateRecord>, std::wstring>(dates, streaming);
+}*/
+
+std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier(const std::wstring& nomFichier)
+{
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+
+    std::size_t pos;
+    pos = nomFichier.length();
+    std::wstring strRestant = nomFichier.substr(0, pos - 4);
+    assert(strRestant.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
+
+    std::vector<DateRecord> dates{};
+    //std::vector<DateRecord>::iterator iter;
+    DateRecord date{ 0 };
+
+    wchar_t sp = L' ', tiret = L'-', tiret_bas = L'_';
+    int y, m, d;
+    y = m = d = 0;
+    int firstYear = 0, firstMon = 0, firstDay = 0;
+    bool yearFlag, monFlag, dayFlag;
+    yearFlag = monFlag = dayFlag = false;
+    std::size_t taille{};
+    int i = 0;
+    do
+    {
+        std::wcout << L"strRestant=" << strRestant << std::endl;
+        if (strRestant[0] == sp)
+            break;
+
+        //y = std::stoi(strRestant.substr(0, 4));
+        //std::wcout << L"y=" << y << std::endl;
+        //int m = std::stoi(wstr.substr(5, 2));
+        //int d = std::stoi(wstr.substr(8, 2));
+
+        //checkyear(y);
+        //checkmonth(m);
+        ///checkday(m, d, y);
+
+        // year + mon + mday
+        std::wcout << L"year + mon + mday" << std::endl;
+        if (strRestant[0] != tiret_bas &&
+            !yearFlag && !monFlag && !dayFlag &&
+            (y = stoi(strRestant.substr(0, 4))) && checkyear(y) &&
+            strRestant[4] == tiret &&
+            (m = std::stoi(strRestant.substr(5, 2))) && checkmonth(m) &&
+            strRestant[7] == tiret &&
+            ((d = std::stoi(strRestant.substr(8, 2))) && checkday(m, d, y)))
+        {
+            assert(firstYear < y && L"L'année aaaaa");
+            firstYear = y;
+            std::wcout << L"y ?" << std::endl;
+            date.date.tm_year = y - 1900;
+            date.date.tm_mon = m - 1;
+            date.date.tm_mday = d;
+            strRestant = strRestant.substr(10);
+            date.someFlag = false;
+            std::wcout << L"taille=" << taille << std::endl;
+            taille = std::size(dates);
+            dates.push_back(date);
+            std::wcout << L"  dates[" << i << L"].date=" << dates[i].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
+            std::wcout << L"  dates[" << i << L"].someFlag=" << dates[i].someFlag << std::endl;
+            taille = std::size(dates);
+            std::wcout << L"taille=" << taille << std::endl;
+            std::wcout << L"i=" << i << std::endl;
+            //taille++;
+            i++;
+            std::wcout << L"i=" << i << std::endl;
+            if (strRestant[0] == sp /* || strRestant[0] != iswdigit(strRestant[0])*/)
+                break;
+            std::wcout << L"year qqq" << std::endl;
+            //continue;
+        }
+        /*else
+        {
+            std::wcout << L"year pas ok !" << std::endl;
+            assert(firstYear > y && L"aaa");
+            break;
+        }*/
+        // mon + mday
+        std::wcout << L"mon + mday" << std::endl;
+        if (strRestant[0] == tiret_bas &&
+            firstYear != 0 &&
+            (m = std::stoi(strRestant.substr(1, 2))) && checkmonth(m) &&
+            strRestant[3] == tiret &&
+            (d = std::stoi(strRestant.substr(4, 2))) && checkday(m, d, y))
+        {
+            assert(firstMon < m && L"Le mois aaaaa");
+            std::wcout << L"m ?" << std::endl;
+            date.date.tm_year = y - 1900;
+            date.date.tm_mon = m - 1;
+            date.date.tm_mday = d;
+            strRestant = strRestant.substr(5);
+            date.someFlag = false;
+            dates.push_back(date);
+            std::wcout << L"taille=" << taille << std::endl;
+            std::wcout << L"  dates[" << taille << L"].date=" << dates[taille].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
+            std::wcout << L"  dates[" << taille << L"].someFlag=" << dates[taille].someFlag << std::endl;
+            taille++;
+            i++;
+            if ((pos = strRestant.length()) == 0 || strRestant[0] == sp || strRestant[0] != iswdigit(strRestant[0]))
+                break;
+            //continue;
+        }
+        /*else
+        {
+            std::wcout << L"mon pas ok !" << std::endl;
+            assert(firstMon > m && L"aaa");
+            break;
+        }*/
+        // mday
+        std::wcout << L"mday" << std::endl;
+        if (firstYear != 0 &&
+            strRestant[0] == tiret_bas &&
+            (d = std::stoi(strRestant.substr(1, 2))) && checkday(m, d, y))
+        {
+            assert(firstDay <= d && L"Le jours aaaaa");
+            std::wcout << L"d ?" << std::endl;
+            date.date.tm_year = y - 1900;
+            date.date.tm_mon = m - 1;
+            date.date.tm_mday = d;
+            strRestant = strRestant.substr(2);
+            date.someFlag = false;
+            dates.push_back(date);
+            std::wcout << L"taille=" << taille << std::endl;
+            std::wcout << L"  dates[" << taille << L"].date=" << dates[taille].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
+            std::wcout << L"  dates[" << taille << L"].someFlag=" << dates[taille].someFlag << std::endl;
+            taille++;
+            i++;
+            if ((pos = strRestant.length()) == 0 || strRestant[0] == sp || strRestant[0] != iswdigit(strRestant[0]))
+                break;
+            //continue;
+        }
+        /*else
+        {
+            std::wcout << L"day pas ok !" << std::endl;
+            assert(firstDay > d && L"aaa");
+            break;
+        }*/
+        //exit(EXIT_FAILURE);
+        // _
+        std::wcout << L"_" << std::endl;
+        if (
+            strRestant[0] == tiret_bas &&
+            strRestant[1] != wstring::npos
+            )
+        {
+            taille = std::size(dates);
+            std::wcout << L"taille=" << taille << std::endl;
+            std::wcout << L"_" << std::endl;
+            //std::wcout << L"  dates[" << i - 1 << L"].someFlag=" << dates[i].someFlag << std::endl;
+            dates[i - 1].someFlag = true;
+            //std::wcout << L"  dates[" << taille - 1 << L"].someFlag=" << dates[i].someFlag << std::endl;
+            //dates.at(0) = 
+            strRestant = strRestant.substr(1);
+            continue;
+        }
+        else
+        {
+            std::wcout << L"pla pla pla" << std::endl;
+            std::wcout << L"  dates[" << taille - 1 << L"].date=" << dates[i].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
+
+            break;
+        }
+    } while (strRestant.length() > 0 || strRestant[0] == sp);
+    std::wstring streaming = L"";
+    if (strRestant[0] == sp)
+    {
+        strRestant = strRestant.substr(1);
+        if (strRestant[0] == sp)
+            assert(L"L'espace (2) invalide !");
+        if (streaming[0] != wstring::npos)
+            streaming = strRestant;
+    }
     return std::pair<std::vector<DateRecord>, std::wstring>(dates, streaming);
 }
-
 
 int wmain(int argc, wchar_t* argv[])
 {
@@ -824,9 +1010,10 @@ int wmain(int argc, wchar_t* argv[])
     std::wstring wstr;
     std::wcout << L"Ok :" << std::endl;
     pos = wstr.length();
-    //wstr = L"2022-08-31_ Netflix.txt";
-    //wstr = L"2022-08-30.txt";
-    wstr = L"2022-08-30_31.txt";
+    //wstr = L"2022-08-31 Netflix.txt";
+    wstr = L"2022-08-31_ Netflix.txt";
+    //wstr = L"2022-08-30 Net.txt";
+    //wstr = L"2022-08-30_31.txt";
     //wstr = L"2022-08-30_31_2023-01-13 Netflix.txt";
     //wstr = L"2023-08-30_09-01 Netflix.txt";
     std::wcout << L"pos=" << pos << std::endl;
