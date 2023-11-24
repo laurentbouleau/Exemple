@@ -185,7 +185,7 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
             assert(firstMon < m && L"Le mois aaaaa");
             std::wcout << L"m ?" << std::endl;
             dates.push_back(DateRecord{ 0 });
-            dates[i].date.tm_year = firstYear - 1900;
+            dates[i].date.tm_year = y - 1900;
             dates[i].date.tm_mon = m - 1;
             dates[i].date.tm_mday = d;
             firstMon = m;
@@ -264,14 +264,15 @@ int wmain(int argc, wchar_t* argv[])
     GetConsoleScreenBufferInfo(hOut, &csbiInfo);
 
     //const std::wstring nomFichier = L"2022-08-31.txt";
-    //const std::wstring nomFichierr = L"2022-08-31 .txt";
+    //const std::wstring nomFichier = L"2022-08-31 .txt";
     //const std::wstring nomFichier = L"2022-08-31 Netflix.txt";
     //const std::wstring nomFichier = L"2022-08-31_ Netflix.txt";
     //const std::wstring nomFichier = L"2022-08-30_31.txt";
+    const std::wstring nomFichier = L"2022-08-30_31 Netflix.txt";
     //const std::wstring nomFichier = L"2022-08-30_31_2023-01-13 Netflix.txt";
     //const std::wstring nomFichier = L"2023-08-30_09-01 Netflix.txt";
     //const std::wstring nomFichier = L"2023-08-30_31_09-01_02 Netflix.txt";
-    const std::wstring nomFichier = L"2023-08-30_01-12_12 Netflix.txt";
+    //const std::wstring nomFichier = L"2023-08-30_09-12_12 Netflix.txt";
     std::pair<std::vector<DateRecord>, std::wstring>dates;
     dates = ExtraireInfosDepuisNomDeFichier(nomFichier);
     i = 0;
