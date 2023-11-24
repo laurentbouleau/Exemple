@@ -90,6 +90,7 @@ bool checkday(int m, int d, int y)
 
     return retVal;
 }
+
 struct DateRecord
 {
     std::tm date{ 0 };
@@ -106,15 +107,11 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
     assert(strRestant.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
 
     std::vector<DateRecord> dates{};
-    //std::vector<DateRecord>::iterator iter;
-    DateRecord date{ 0 };
 
     wchar_t sp = L' ', tiret = L'-', tiret_bas = L'_';
     int y, m, d;
     y = m = d = 0;
     int firstYear = 0, firstMon = 0, firstDay = 0;
-    bool yearFlag, monFlag, dayFlag;
-    yearFlag = monFlag = dayFlag = false;
     std::size_t taille{};
     int i = 0;
     do
@@ -135,66 +132,66 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
             return std::pair<std::vector<DateRecord>, std::wstring>(dates, streaming);
         }
         // year + mon + mday
-        else if (/*strRestant[0] != tiret_bas &&*/
-            /*!yearFlag && !monFlag && !dayFlag &&*/
+        else if (
             (y = stoi(strRestant.substr(0, 4))) && checkyear(y) &&
             strRestant[4] == tiret &&
             (m = std::stoi(strRestant.substr(5, 2))) && checkmonth(m) &&
             strRestant[7] == tiret &&
-            ((d = std::stoi(strRestant.substr(8, 2))) && checkday(m, d, y)))
+            ((d = std::stoi(strRestant.substr(8, 2))) && checkday(m, d, y))
+            )
         {
             std::wcout << L"year + mon + mday" << std::endl;
             assert(firstYear < y && L"L'année aaaaa");
-            firstYear = y;
-            firstMon = m;
-            firstDay = d;
             std::wcout << L"y ?" << std::endl;
-            date.date.tm_year = y - 1900;
-            date.date.tm_mon = m - 1;
-            date.date.tm_mday = d;
-            strRestant = strRestant.substr(10);
-            date.someFlag = false;
-            std::wcout << L"taille=" << taille << std::endl;
             taille = std::size(dates);
-            dates.push_back(date);
-            std::wcout << L"  dates[" << i << L"].date=" << dates[i].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
-            std::wcout << L"  dates[" << i << L"].someFlag=" << dates[i].someFlag << std::endl;
+            std::wcout << L"taille=" << taille << std::endl;
+            dates.push_back(DateRecord{ 0 });
+            dates[i].date.tm_year = y - 1900;
+            dates[i].date.tm_mon = m - 1;
+            dates[i].date.tm_mday = d;
             taille = std::size(dates);
             std::wcout << L"taille=" << taille << std::endl;
             std::wcout << L"i=" << i << std::endl;
+            firstYear = y;
+            firstMon = m;
+            firstDay = d;
+            strRestant = strRestant.substr(10);
+            std::wcout << L"  dates[" << i << L"].date=" << dates[i].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
+            std::wcout << L"  dates[" << i << L"].someFlag=" << dates[i].someFlag << std::endl;
             if (strRestant[0] == tiret_bas)
             {
                 dates[i].someFlag = true;
                 strRestant = strRestant.substr(1);
-                i++;
             }
-            continue;            //else if (strRestant[0] == sp)
+            i++;
+            continue;
         }
         // mon + mday
         else if (
             /*firstYear != 0 &&*/
             (m = std::stoi(strRestant.substr(0, 2))) && checkmonth(m) &&
             strRestant[2] == tiret &&
-            (d = std::stoi(strRestant.substr(3, 2))) && checkday(m, d, firstYear))
+            (d = std::stoi(strRestant.substr(3, 2))) && checkday(m, d, firstYear) &&
+            firstMon < m
+            )
         {
             std::wcout << L"mon + mday" << std::endl;
             assert(firstMon < m && L"Le mois aaaaa");
             std::wcout << L"m ?" << std::endl;
-            date.date.tm_year = firstYear - 1900;
-            date.date.tm_mon = m - 1;
-            date.date.tm_mday = d;
+            dates.push_back(DateRecord{ 0 });
+            dates[i].date.tm_year = firstYear - 1900;
+            dates[i].date.tm_mon = m - 1;
+            dates[i].date.tm_mday = d;
             strRestant = strRestant.substr(5);
-            date.someFlag = false;
-            dates.push_back(date);
             std::wcout << L"taille=" << taille << std::endl;
-            std::wcout << L"  dates[" << taille << L"].date=" << dates[taille].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
-            std::wcout << L"  dates[" << taille << L"].someFlag=" << dates[taille].someFlag << std::endl;
+            std::wcout << L"  dates[" << i << L"].date=" << dates[i].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
+            std::wcout << L"  dates[" <<i << L"].someFlag=" << dates[i].someFlag << std::endl;
             if (strRestant[0] == tiret_bas)
             {
                 dates[i].someFlag = true;
                 strRestant = strRestant.substr(1);
-                i++;
             }
+            i++;
             continue;            //else if (strRestant[0] == sp)
         }
         // mday
@@ -205,25 +202,26 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
             std::wcout << L"mday" << std::endl;
             assert(firstDay <= d && L"Le jours aaaaa");
             std::wcout << L"d ?" << std::endl;
-            date.date.tm_year = firstYear - 1900;
-            date.date.tm_mon = firstMon - 1;
-            date.date.tm_mday = d;
+            dates.push_back(DateRecord{ 0 });
+            dates[i].date.tm_year = firstYear - 1900;
+            dates[i].date.tm_mon = firstMon - 1;
+            dates[i].date.tm_mday = d;
             strRestant = strRestant.substr(2);
-            date.someFlag = false;
-            dates.push_back(date);
+            //date.someFlag = false;
             std::wcout << L"taille=" << taille << std::endl;
-            std::wcout << L"  dates[" << taille << L"].date=" << dates[taille].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
-            std::wcout << L"  dates[" << taille << L"].someFlag=" << dates[taille].someFlag << std::endl;
+            std::wcout << L"  dates[" << i << L"].date=" << dates[i].date.tm_year + 1900 << L'/' << dates[i].date.tm_mon + 1 << L'/' << dates[i].date.tm_mday << std::endl;
+            std::wcout << L"  dates[" << i << L"].someFlag=" << dates[i].someFlag << std::endl;
             if (strRestant[0] == tiret_bas)
             {
                 dates[i].someFlag = true;
                 strRestant = strRestant.substr(1);
-                i++;
             }
-            continue;            //else if (strRestant[0] == sp)
+            i++;
+            continue;
         }
         else
         {
+            std::wcout << L"strRestant=[" << strRestant << L"]" << std::endl;
             std::wcout << L"rrrr !!!" << std::endl;
             break;
         }
@@ -267,7 +265,7 @@ int wmain(int argc, wchar_t* argv[])
     std::pair<std::vector<DateRecord>, std::wstring>dates;
     dates = ExtraireInfosDepuisNomDeFichier(nomFichier);
     i = 0;
-    std::wcout << L"Date :" << std::endl << std::endl;
+    std::wcout << std::endl << L"Date :" <<  std::endl;
     std::vector<DateRecord>::iterator iter;
     for (iter = dates.first.begin(); iter != dates.first.end(); iter++, i++)
     {
