@@ -40,57 +40,6 @@ void init()
     //
 }
 
-static inline void rtrim(std::wstring& s)
-{
-    s.erase(find_if(s.rbegin(), s.rend(), [](int ch)
-        {
-            return !isspace(ch);
-        }).base(), s.end());
-}
-
-inline std::wstring space(int i, wchar_t espace)
-{
-    std::wstring wstr = L"";
-    //for (auto ===> Pas trouvé !!!)
-    for (int j = 0; j < i; j++)
-        wstr += espace;
-    return wstr;
-}
-
-
-
-//std::string wstr_to_u8(std::wstring uneWString)
-//{
-//    return std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(uneWString);
-//}
-
-const std::wstring lire_fichierTxt(std::wstring const& nomFichier)
-{
-    std::string contenuFichier{ u8"" };
-    std::string ligneCourante{ u8"" };
-    ifstream fichier{ nomFichier };
-    if (!fichier)
-    {
-        throw std::runtime_error("Fichier impossible à ouvrir.");
-    }
-
-    while (getline(fichier, ligneCourante, u8'\n'))
-    {
-        contenuFichier += ligneCourante + u8'\n';
-    }
-
-    if (contenuFichier == u8"")
-    {
-        return L"";
-        //throw std::runtime_error("Le fichier '" + wstr_to_u8(nomFichier) + "' est vide.");
-    }
-    //wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> convertiseur;
-    wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convertiseur;
-    std::wstring converti = convertiseur.from_bytes(contenuFichier);
-    rtrim(converti);
-    return converti;
-}
-
 bool checkyear(int y)
 {
     return 1582 <= y;
@@ -278,7 +227,7 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
             std::wcout << L"rrrr !!!" << std::endl;
             break;
         }
-    } while (strRestant.length() > 0 /* || strRestant[0] == sp*/);
+    } while (strRestant.length() > 0);
     return std::pair<std::vector<DateRecord>, std::wstring>(dates, L"");
 }
 
@@ -307,23 +256,14 @@ int wmain(int argc, wchar_t* argv[])
     //    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
     GetConsoleScreenBufferInfo(hOut, &csbiInfo);
 
-    //SetConsoleTitle(u8"You");	// Réglage du titre
-    std::size_t pos;
-    std::wstring wstr;
-    std::wcout << L"Ok :" << std::endl;
-    pos = wstr.length();
-    //wstr = L"2022-08-31.txt";
-    //wstr = L"2022-08-31 .txt";
-    //wstr = L"2022-08-31 Netflix.txt";
-    //wstr = L"2022-08-31_ Netflix.txt";
-    //wstr = L"2022-08-30_31.txt";
-    //wstr = L"2022-08-30_31_2023-01-13 Netflix.txt";
-    //wstr = L"2023-08-30_09-01 Netflix.txt";
-    wstr = L"2023-08-30_31_09-01_02 Netflix.txt";
-    std::wcout << L"pos=" << pos << std::endl;
-    std::wcout << L"wstr=" << wstr << std::endl;
-    const std::wstring nomFichier = wstr;
-    //afficher_Date_1(wstr, date, streaming);
+    //const std::wstring nomFichier = L"2022-08-31.txt";
+    //const std::wstring nomFichierr = L"2022-08-31 .txt";
+    //const std::wstring nomFichier = L"2022-08-31 Netflix.txt";
+    //const std::wstring nomFichier = L"2022-08-31_ Netflix.txt";
+    //const std::wstring nomFichier = L"2022-08-30_31.txt";
+    //const std::wstring nomFichier = L"2022-08-30_31_2023-01-13 Netflix.txt";
+    //const std::wstring nomFichier = L"2023-08-30_09-01 Netflix.txt";
+    const std::wstring nomFichier = L"2023-08-30_31_09-01_02 Netflix.txt";
     std::pair<std::vector<DateRecord>, std::wstring>dates;
     dates = ExtraireInfosDepuisNomDeFichier(nomFichier);
     i = 0;
