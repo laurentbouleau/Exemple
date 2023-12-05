@@ -285,13 +285,13 @@ int wmain(int argc, wchar_t* argv[])
     //    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
     GetConsoleScreenBufferInfo(hOut, &csbiInfo);
 
-    //const std::wstring nomFichier = L"1024-08-31.txt";
-    //const std::wstring nomFichier = L"1624/08-31.txt";
+    //const std::wstring nomFichier = L"1024-08-31.txt"; // Erreur
+    //const std::wstring nomFichier = L"1624/08-31.txt"; // Erreur
 
     //const std::wstring nomFichier = L"2022-08-31.txt";
 
-    //const std::wstring nomFichier = L"2022-08-31 .txt";
-    //const std::wstring nomFichier = L"2022-08-31Net.txt";
+    //const std::wstring nomFichier = L"2022-08-31 .txt"; // Erreur
+    //const std::wstring nomFichier = L"2022-08-31Net.txt"; // Erreur
 
     //const std::wstring nomFichier = L"2022-08-31_ Netflix.txt";
     //const std::wstring nomFichier = L"2023-11-28_29_30_12-30 abc.txt";
