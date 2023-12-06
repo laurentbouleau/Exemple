@@ -146,15 +146,14 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
         {
             if (strRestant[1] == std::wstring::npos || strRestant[1] == sp)
             {
-                // Erreur !!!
+                // try cath !!!
                 // Explique-moi ??? 
                 exit(1);
             }
             strRestant = strRestant.substr(1);
-            // date_sp
-            // Erreur !!!
+            // try cath !!!
             // Explique-moi ??? 
-            try
+            try // Erreur !!!
             {
                 test_sp_et_npos_ou_pas_isblank(strRestant[0], isblank(strRestant[1]));
             }
@@ -162,7 +161,7 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
             {
                 exit(1);
             }
-            if (strRestant[0] != std::wstring::npos)
+            if (strRestant.length() > 0)
             {
                 streaming = strRestant;
             }
@@ -171,7 +170,7 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
         }
         if (!isdigit(strRestant[0]))
         {
-            // Erreur !!!
+            // try cath !!!
             // Explique-moi ??? 
             exit(1);
         }
@@ -253,7 +252,7 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
             i++;
             continue;
         }
-        // Erreur !!!
+        // try cath !!!
         // Explique-moi ??? 
         exit(1);
     } while (strRestant.length() > 0);
@@ -293,7 +292,7 @@ int wmain(int argc, wchar_t* argv[])
     //const std::wstring nomFichier = L"2022-08-31 .txt"; // Erreur
     //const std::wstring nomFichier = L"2022-08-31Net.txt"; // Erreur
 
-    //const std::wstring nomFichier = L"2022-08-31_ Netflix.txt";
+    //const std::wstring nomFichier = L"2022-08-31_ Netflix.txt"; /// 
     //const std::wstring nomFichier = L"2023-11-28_29_30_12-30 abc.txt";
     //const std::wstring nomFichier = L"2022-08-30_31.txt";
     //const std::wstring nomFichier = L"2022-08-30_31 Netflix.txt";
