@@ -340,7 +340,6 @@ int wmain(int argc, wchar_t* argv[])
             std::wcout << L"______someFlag=" << dates_pla_pla_pla[i].first[j].someFlag << std::endl;
         }
         std::wcout << L"_____streaming=[" << dates_pla_pla_pla[i].second << L"]" << std::endl;
-        //for(int j = 0, )
     }
     return EXIT_SUCCESS;
 }
