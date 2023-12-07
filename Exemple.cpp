@@ -284,30 +284,30 @@ int wmain(int argc, wchar_t* argv[])
     //    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
     GetConsoleScreenBufferInfo(hOut, &csbiInfo);
 
-    //const std::wstring nomFichier = L"1024-08-31.txt"; // Erreur
-    //const std::wstring nomFichier = L"1624/08-31.txt"; // Erreur
+    const std::wstring nomFichier1 = L"1024-08-31.txt"; // Erreur
+    const std::wstring nomFichier2 = L"1624/08-31.txt"; // Erreur
 
-    //const std::wstring nomFichier = L"2022-08-31.txt";
+    const std::wstring nomFichier3 = L"2022-08-31.txt";
 
-    //const std::wstring nomFichier = L"2022-08-31 .txt"; // Erreur
-    //const std::wstring nomFichier = L"2022-08-31Net.txt"; // Erreur
+    const std::wstring nomFichier4 = L"2022-08-31 .txt"; // Erreur
+    const std::wstring nomFichier5 = L"2022-08-31Net.txt"; // Erreur
 
-    //const std::wstring nomFichier = L"2022-08-31_ Netflix.txt"; /// 
-    //const std::wstring nomFichier = L"2023-11-28_29_30_12-30 abc.txt";
-    //const std::wstring nomFichier = L"2022-08-30_31.txt";
-    //const std::wstring nomFichier = L"2022-08-30_31 Netflix.txt";
+    const std::wstring nomFichier6 = L"2022-08-31_ Netflix.txt"; /// 
+    const std::wstring nomFichier7 = L"2023-11-28_29_30_12-30 abc.txt";
+    const std::wstring nomFichier8 = L"2022-08-30_31.txt";
+    const std::wstring nomFichier9 = L"2022-08-30_31 Netflix.txt";
     
-    //const std::wstring nomFichier = L"2022-08-30_31_2023-01-13 Netflix.txt";
-    //const std::wstring nomFichier = L"2022-08-31_30_2023-01-13 Netflix.txt"; // Pas ok !!!
-    //const std::wstring nomFichier = L"2023-08-30_31_2022-01-13 Netflix.txt"; // Pas ok !!!
+    const std::wstring nomFichier10 = L"2022-08-30_31_2023-01-13 Netflix.txt";
+    const std::wstring nomFichier11 = L"2022-08-31_30_2023-01-13 Netflix.txt"; // Pas ok !!!
+    const std::wstring nomFichier12 = L"2023-08-30_31_2022-01-13 Netflix.txt"; // Pas ok !!!
 
-    //const std::wstring nomFichier = L"2023-08-30_09-01 Netflix.txt";
+    const std::wstring nomFichier13 = L"2023-08-30_09-01 Netflix.txt";
 
-    //const std::wstring nomFichier = L"2023-08-30_31_09-01_02 Netflix.txt";
-    const std::wstring nomFichier = L"2023-08-30_09-12_12 Netflix.txt";
+    const std::wstring nomFichier14 = L"2023-08-30_31_09-01_02 Netflix.txt";
+    const std::wstring nomFichier15 = L"2023-08-30_09-12_12 Netflix.txt";
  
     std::pair<std::vector<DateRecord>, std::wstring>dates;
-    dates = ExtraireInfosDepuisNomDeFichier(nomFichier);
+    dates = ExtraireInfosDepuisNomDeFichier(nomFichier14);
     std::wcout << L"Date :" <<  std::endl;
     std::vector<DateRecord>::iterator iter;
     for (iter = dates.first.begin(); iter != dates.first.end(); iter++, i++)
@@ -316,6 +316,31 @@ int wmain(int argc, wchar_t* argv[])
         std::wcout << L"____date=[" << (*iter).date.tm_year + 1900 << L'/' << (*iter).date.tm_mon + 1 << L'/' << (*iter).date.tm_mday << L']' << std::endl;
         std::wcout << L"____someFlag=" << (*iter).someFlag << std::endl;
     }
-    std::wcout << L"streaming=[" << dates.second << L"]" << std::endl;
+    std::wcout << L"___streaming=[" << dates.second << L"]" << std::endl;
+    std::vector<std::pair<std::vector<DateRecord>, std::wstring>>dates_pla_pla_pla;
+    std::wcout << L"aaa" << std::endl;
+    dates_pla_pla_pla.push_back(dates);
+    dates = ExtraireInfosDepuisNomDeFichier(nomFichier3);
+    dates_pla_pla_pla.push_back(dates);
+    std::vector<std::pair<std::vector<DateRecord>, std::wstring>>::iterator iter2;
+    //i = 0;
+    
+    std::size_t taille, taille2;
+    taille = std::size(dates_pla_pla_pla);
+    std::wcout << std::endl;
+    std::wcout << L"dates_pla_pla_pla :" << std::endl;
+    for (i = 0; i < taille; i++)
+    {
+        std::wcout << L"__" << i << std::endl;
+        taille2 = std::size(dates_pla_pla_pla[i].first);
+        for (int j = 0; j < taille2; j++)
+        {
+            std::wcout << L"____" << j << std::endl;
+            std::wcout << L"______date=[" << dates_pla_pla_pla[i].first[j].date.tm_year + 1900 << L'/' << (*iter).date.tm_mon + 1 << L'/' << (*iter).date.tm_mday << L']' << std::endl;
+            std::wcout << L"______someFlag=" << dates_pla_pla_pla[i].first[j].someFlag << std::endl;
+        }
+        std::wcout << L"_____streaming=[" << dates_pla_pla_pla[i].second << L"]" << std::endl;
+        //for(int j = 0, )
+    }
     return EXIT_SUCCESS;
 }
