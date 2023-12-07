@@ -307,24 +307,13 @@ int wmain(int argc, wchar_t* argv[])
     const std::wstring nomFichier15 = L"2023-08-30_09-12_12 Netflix.txt";
  
     std::pair<std::vector<DateRecord>, std::wstring>dates;
-    dates = ExtraireInfosDepuisNomDeFichier(nomFichier14);
-    std::wcout << L"Date :" <<  std::endl;
-    std::vector<DateRecord>::iterator iter;
-    for (iter = dates.first.begin(); iter != dates.first.end(); iter++, i++)
-    {
-        std::wcout << L"__" << i << std::endl;
-        std::wcout << L"____date=[" << (*iter).date.tm_year + 1900 << L'/' << (*iter).date.tm_mon + 1 << L'/' << (*iter).date.tm_mday << L']' << std::endl;
-        std::wcout << L"____someFlag=" << (*iter).someFlag << std::endl;
-    }
-    std::wcout << L"___streaming=[" << dates.second << L"]" << std::endl;
     std::vector<std::pair<std::vector<DateRecord>, std::wstring>>dates_pla_pla_pla;
-    std::wcout << L"aaa" << std::endl;
+    dates = ExtraireInfosDepuisNomDeFichier(nomFichier14);
     dates_pla_pla_pla.push_back(dates);
     dates = ExtraireInfosDepuisNomDeFichier(nomFichier3);
     dates_pla_pla_pla.push_back(dates);
-    std::vector<std::pair<std::vector<DateRecord>, std::wstring>>::iterator iter2;
-    //i = 0;
-    
+    dates = ExtraireInfosDepuisNomDeFichier(nomFichier7);
+    dates_pla_pla_pla.push_back(dates);
     std::size_t taille, taille2;
     taille = std::size(dates_pla_pla_pla);
     std::wcout << std::endl;
@@ -336,7 +325,7 @@ int wmain(int argc, wchar_t* argv[])
         for (int j = 0; j < taille2; j++)
         {
             std::wcout << L"____" << j << std::endl;
-            std::wcout << L"______date=[" << dates_pla_pla_pla[i].first[j].date.tm_year + 1900 << L'/' << (*iter).date.tm_mon + 1 << L'/' << (*iter).date.tm_mday << L']' << std::endl;
+            std::wcout << L"______date=[" << dates_pla_pla_pla[i].first[j].date.tm_year + 1900 << L'/' << dates_pla_pla_pla[i].first[j].date.tm_mon + 1 << L'/' << dates_pla_pla_pla[i].first[j].date.tm_mday << L']' << std::endl;
             std::wcout << L"______someFlag=" << dates_pla_pla_pla[i].first[j].someFlag << std::endl;
         }
         std::wcout << L"_____streaming=[" << dates_pla_pla_pla[i].second << L"]" << std::endl;
