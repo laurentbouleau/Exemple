@@ -307,28 +307,28 @@ int wmain(int argc, wchar_t* argv[])
     const std::wstring nomFichier15 = L"2023-08-30_09-12_12 Netflix.txt";
  
     std::pair<std::vector<DateRecord>, std::wstring>dates;
-    std::vector<std::pair<std::vector<DateRecord>, std::wstring>>dates_pla_pla_pla;
+    std::vector<std::pair<std::vector<DateRecord>, std::wstring>>vdates;
     dates = ExtraireInfosDepuisNomDeFichier(nomFichier14);
-    dates_pla_pla_pla.push_back(dates);
+    vdates.push_back(dates);
     dates = ExtraireInfosDepuisNomDeFichier(nomFichier3);
-    dates_pla_pla_pla.push_back(dates);
+    vdates.push_back(dates);
     dates = ExtraireInfosDepuisNomDeFichier(nomFichier7);
-    dates_pla_pla_pla.push_back(dates);
+    vdates.push_back(dates);
     std::size_t taille, taille2;
-    taille = std::size(dates_pla_pla_pla);
+    taille = std::size(vdates);
     std::wcout << std::endl;
-    std::wcout << L"dates_pla_pla_pla :" << std::endl;
+    std::wcout << L"vdates :" << std::endl;
     for (i = 0; i < taille; i++)
     {
         std::wcout << L"__" << i << std::endl;
-        taille2 = std::size(dates_pla_pla_pla[i].first);
+        taille2 = std::size(vdates[i].first);
         for (int j = 0; j < taille2; j++)
         {
             std::wcout << L"____" << j << std::endl;
-            std::wcout << L"______date=[" << dates_pla_pla_pla[i].first[j].date.tm_year + 1900 << L'/' << dates_pla_pla_pla[i].first[j].date.tm_mon + 1 << L'/' << dates_pla_pla_pla[i].first[j].date.tm_mday << L']' << std::endl;
-            std::wcout << L"______someFlag=" << dates_pla_pla_pla[i].first[j].someFlag << std::endl;
+            std::wcout << L"______date=[" << vdates[i].first[j].date.tm_year + 1900 << L'/' << vdates[i].first[j].date.tm_mon + 1 << L'/' << vdates[i].first[j].date.tm_mday << L']' << std::endl;
+            std::wcout << L"______someFlag=" << vdates[i].first[j].someFlag << std::endl;
         }
-        std::wcout << L"_____streaming=[" << dates_pla_pla_pla[i].second << L"]" << std::endl;
+        std::wcout << L"_____streaming=[" << vdates[i].second << L"]" << std::endl;
     }
     return EXIT_SUCCESS;
 }
