@@ -114,7 +114,7 @@ struct DateRecord
     bool someFlag{ false };
 };
 
-std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier(const std::wstring& nomFichier)
+void afficher_Date_ou_Dates(std::wstring const& nomFichier, std::vector<std::pair<std::vector<DateRecord>, std::wstring>>&dates)
 {
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
 
@@ -125,15 +125,6 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
 
     std::vector<DateRecord> dr;
     std::wstring streaming = L"";
-
-    //DateRecord dr;
-    //std::tm date tm;
-    //tm.tm_year = y - 1900;
-    //tm.tm_mon = m - 1;
-    //tm.tm_mday = d;
-    //dr.date = tm;
-    //dr.someFlag = false;
-    //dates.push_back(dr);
 
     wchar_t sp = L' ', tiret = L'-', tiret_bas = L'_';
     int y, m, d;
@@ -148,11 +139,13 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
             {
                 // try cath !!!
                 // Explique-moi ??? 
+                // ou : 
                 exit(1);
             }
             strRestant = strRestant.substr(1);
             // try cath !!!
             // Explique-moi ??? 
+            // ou : 
             try // Erreur !!!
             {
                 test_sp_et_npos_ou_pas_isblank(strRestant[0], isblank(strRestant[1]));
@@ -172,6 +165,7 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
         {
             // try cath !!!
             // Explique-moi ??? 
+            // ou : 
             exit(1);
         }
         // year + mon + mday
@@ -253,10 +247,11 @@ std::pair<std::vector<DateRecord>, std::wstring> ExtraireInfosDepuisNomDeFichier
             continue;
         }
         // try cath !!!
-        // Explique-moi ??? 
+        // Explique-moi ???
+        // ou : 
         exit(1);
     } while (strRestant.length() > 0);
-    return std::pair<std::vector<DateRecord>, std::wstring>(dr, streaming);
+    dates.push_back(make_pair(dr, streaming));
 }
 
 int wmain(int argc, wchar_t* argv[])
@@ -306,29 +301,27 @@ int wmain(int argc, wchar_t* argv[])
     const std::wstring nomFichier14 = L"2023-08-30_31_09-01_02 Netflix.txt";
     const std::wstring nomFichier15 = L"2023-08-30_09-12_12 Netflix.txt";
  
-    std::pair<std::vector<DateRecord>, std::wstring>dates;
-    std::vector<std::pair<std::vector<DateRecord>, std::wstring>>vdates;
-    dates = ExtraireInfosDepuisNomDeFichier(nomFichier14);
-    vdates.push_back(dates);
-    dates = ExtraireInfosDepuisNomDeFichier(nomFichier3);
-    vdates.push_back(dates);
-    dates = ExtraireInfosDepuisNomDeFichier(nomFichier7);
-    vdates.push_back(dates);
+    std::vector<std::pair<std::vector<DateRecord>, std::wstring>>dates;
+
+    afficher_Date_ou_Dates(nomFichier14, dates);
+    afficher_Date_ou_Dates(nomFichier3, dates);
+    afficher_Date_ou_Dates(nomFichier7, dates);
+
     std::size_t taille, taille2;
-    taille = std::size(vdates);
-    std::wcout << std::endl;
-    std::wcout << L"vdates :" << std::endl;
+    taille = std::size(dates);
+    //std::wcout << std::endl;
+    std::wcout << L"Date(s) :" << std::endl;
     for (i = 0; i < taille; i++)
     {
         std::wcout << L"__" << i << std::endl;
-        taille2 = std::size(vdates[i].first);
+        taille2 = std::size(dates[i].first);
         for (int j = 0; j < taille2; j++)
         {
             std::wcout << L"____" << j << std::endl;
-            std::wcout << L"______date=[" << vdates[i].first[j].date.tm_year + 1900 << L'/' << vdates[i].first[j].date.tm_mon + 1 << L'/' << vdates[i].first[j].date.tm_mday << L']' << std::endl;
-            std::wcout << L"______someFlag=" << vdates[i].first[j].someFlag << std::endl;
+            std::wcout << L"______date=[" << dates[i].first[j].date.tm_year + 1900 << L'/' << dates[i].first[j].date.tm_mon + 1 << L'/' << dates[i].first[j].date.tm_mday << L']' << std::endl;
+            std::wcout << L"______someFlag=" << dates[i].first[j].someFlag << std::endl;
         }
-        std::wcout << L"_____streaming=[" << vdates[i].second << L"]" << std::endl;
+        std::wcout << L"_____streaming=[" << dates[i].second << L"]" << std::endl;
     }
     return EXIT_SUCCESS;
 }
