@@ -278,20 +278,9 @@ const void PrintDate_ou_Dates(const std::vector<std::pair<std::vector<DateRecord
         wchar_t date_string[15];
         taille = std::size(dates);
         std::wstring wstr;
-        //std::wcout << std::endl;
-        std::wcout << L"Date(s) :" << std::endl;
         for (int i = 0; i < taille; i++)
         {
-            //std::wcout << L"__" << i << std::endl;
             taille2 = std::size(dates[i].first);
-            //for (int j = 0; j < taille2; j++)
-            //{
-            //    std::wcout << L"____" << j << std::endl;
-            //    std::wcout << L"______date=[" << dates[i].first[j].date.tm_year + 1900 << L'/' << dates[i].first[j].date.tm_mon + 1 << L'/' << dates[i].first[j].date.tm_mday << L']' << std::endl;
-            //    std::wcout << L"______someFlag=" << dates[i].first[j].someFlag << std::endl;
-            //}
-            //std::wcout << L"_____streaming=[" << dates[i].second << L"]" << std::endl;
-
             if (taille2 == 1)
             {
                 wcsftime(date_string, 15, L"%d/%m/%Y", &dates[i].first[0].date);
@@ -300,7 +289,7 @@ const void PrintDate_ou_Dates(const std::vector<std::pair<std::vector<DateRecord
                 if(dates[i].second != L"")
                     wstr += keyColor[1] + L" : " + valuesColor + dates[i].second;
                 if (dates[i].first[0].someFlag)
-                    wstr += keyColor[1] + L" (" + valuesColor + L"préquel" + keyColor[1] + L')' + valuesColor;
+                    wstr += keyColor[1] + L" (" + valuesColor + L"préquel ou pas !" + keyColor[1] + L')' + valuesColor;
                 std::wcout << wstr << std::endl;
             }
             else
@@ -309,25 +298,24 @@ const void PrintDate_ou_Dates(const std::vector<std::pair<std::vector<DateRecord
                 wstr = L"";
                 std::wstring wstr2;
                 std::size_t pos = 0;
-                std::vector<wstring>m(taille2);
-                std::vector<wstring>M(taille2);
+                std::vector<wstring>k(taille2);
                 std::tm temp{ 0 };
                 int temp2 = 1;
                 for (j = 0; j < taille2; j++)
                 {
                     if (dates[i].first[j].date.tm_year == temp.tm_year && dates[i].first[j].date.tm_mon == temp.tm_mon && dates[i].first[j].date.tm_mday == temp.tm_mday)
-                        // dates[i].first[j].date == temp ! Marchepas !!!
+                        // dates[i].first[j].date == temp : Marche pas !!!
                     {
-                        m[j] = keyColor[1] + L'(' + valuesColor + std::to_wstring(temp2 + 1) + keyColor[1] + L')' + valuesColor;
+                        k[j] = keyColor[1] + L'(' + valuesColor + std::to_wstring(temp2 + 1) + keyColor[1] + L')' + valuesColor;
                         if (temp2 == 1)
-                            m[j - 1] += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(temp2) + keyColor[1] + L')' + valuesColor;
+                            k[j - 1] += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(temp2) + keyColor[1] + L')' + valuesColor;
                         temp2++;
                     }
                     else
                     {
                         wcsftime(date_string, 15, L"%d/%m/%Y", &dates[i].first[j].date);
                         wstr2 = date_string;
-                        m[j] = wstr2.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr2.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr2.substr(6, 4);
+                        k[j] = wstr2.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr2.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr2.substr(6, 4);
                         temp.tm_year = dates[i].first[j].date.tm_year;
                         temp.tm_mon = dates[i].first[j].date.tm_mon;
                         temp.tm_mday = dates[i].first[j].date.tm_mday;
@@ -335,33 +323,26 @@ const void PrintDate_ou_Dates(const std::vector<std::pair<std::vector<DateRecord
                     }
 
                 }
-                //
                 wstr2 = L"";
                 for (j = 1; j < taille2 - 1; j++)
                 {
-                    // XX/XX/XXXX
-                    pos = m[j].find(L"/");
+                    pos = k[j].find(L"/");
                     if (pos != string::npos)
-                        m[j] = keyColor[1] + L", " + valuesColor + m[j];
+                        k[j] = keyColor[1] + L", " + valuesColor + k[j];
                 }
-                m.back() = L" et " + m.back();
-
+                k.back() = L" et " + k.back();
                 for (j = 0; j < taille2; j++)
-                    wstr2 += m[j];
+                    wstr2 += k[j];
                 wstr += wstr2;
-
                 wstr += L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
-
                 if (dates[i].first.back().someFlag == true)
                     wstr += keyColor[1] + L" (" + valuesColor + L"préquel" + keyColor[1] + L')' + valuesColor;
                 std::wcout << wstr << std::endl;
-                //for (j = 0; j < taille2; j++)
-                //    std::wcout << j << L' ' << m[j] << std::endl;
             }
         }
-
     }
 }
+
 int wmain(int argc, wchar_t* argv[])
 {
 
