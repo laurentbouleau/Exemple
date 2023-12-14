@@ -30,6 +30,18 @@ DWORD dwMode = 0;
 CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 int X;
 
+std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace)
+{
+    std::size_t pos = 0;
+    // function find return string::npos if not found.
+    while ((pos = subject.find(search, pos)) != wstring::npos)
+    {
+        subject.replace(pos, search.length(), replace);
+        pos += replace.length();
+    }
+    return subject;
+}
+
 void init()
 {
     dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
@@ -254,6 +266,102 @@ void afficher_Date_ou_Dates(std::wstring const& nomFichier, std::vector<std::pai
     dates.push_back(make_pair(dr, streaming));
 }
 
+
+const void PrintDate_ou_Dates(const std::vector<std::pair<std::vector<DateRecord>, std::wstring>>&dates)
+{
+    bool affichage_Date_ou_Dates = true;
+    if (affichage_Date_ou_Dates && dates.size() > 0)
+    {
+        std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+        std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+        std::size_t taille, taille2;
+        wchar_t date_string[15];
+        taille = std::size(dates);
+        std::wstring wstr;
+        //std::wcout << std::endl;
+        std::wcout << L"Date(s) :" << std::endl;
+        for (int i = 0; i < taille; i++)
+        {
+            //std::wcout << L"__" << i << std::endl;
+            taille2 = std::size(dates[i].first);
+            //for (int j = 0; j < taille2; j++)
+            //{
+            //    std::wcout << L"____" << j << std::endl;
+            //    std::wcout << L"______date=[" << dates[i].first[j].date.tm_year + 1900 << L'/' << dates[i].first[j].date.tm_mon + 1 << L'/' << dates[i].first[j].date.tm_mday << L']' << std::endl;
+            //    std::wcout << L"______someFlag=" << dates[i].first[j].someFlag << std::endl;
+            //}
+            //std::wcout << L"_____streaming=[" << dates[i].second << L"]" << std::endl;
+
+            if (taille2 == 1)
+            {
+                wcsftime(date_string, 15, L"%d/%m/%Y", &dates[i].first[0].date);
+                wstr = date_string;
+                wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+                if(dates[i].second != L"")
+                    wstr += keyColor[1] + L" : " + valuesColor + dates[i].second;
+                if (dates[i].first[0].someFlag)
+                    wstr += keyColor[1] + L" (" + valuesColor + L"préquel" + keyColor[1] + L')' + valuesColor;
+                std::wcout << wstr << std::endl;
+            }
+            else
+            {
+                int j;
+                wstr = L"";
+                std::wstring wstr2;
+                std::size_t pos = 0;
+                std::vector<wstring>m(taille2);
+                std::vector<wstring>M(taille2);
+                std::tm temp{ 0 };
+                int temp2 = 1;
+                for (j = 0; j < taille2; j++)
+                {
+                    if (dates[i].first[j].date.tm_year == temp.tm_year && dates[i].first[j].date.tm_mon == temp.tm_mon && dates[i].first[j].date.tm_mday == temp.tm_mday)
+                        // dates[i].first[j].date == temp ! Marchepas !!!
+                    {
+                        m[j] = keyColor[1] + L'(' + valuesColor + std::to_wstring(temp2 + 1) + keyColor[1] + L')' + valuesColor;
+                        if (temp2 == 1)
+                            m[j - 1] += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(temp2) + keyColor[1] + L')' + valuesColor;
+                        temp2++;
+                    }
+                    else
+                    {
+                        wcsftime(date_string, 15, L"%d/%m/%Y", &dates[i].first[j].date);
+                        wstr2 = date_string;
+                        m[j] = wstr2.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr2.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr2.substr(6, 4);
+                        temp.tm_year = dates[i].first[j].date.tm_year;
+                        temp.tm_mon = dates[i].first[j].date.tm_mon;
+                        temp.tm_mday = dates[i].first[j].date.tm_mday;
+                        temp2 = 1;
+                    }
+
+                }
+                //
+                wstr2 = L"";
+                for (j = 1; j < taille2 - 1; j++)
+                {
+                    // XX/XX/XXXX
+                    pos = m[j].find(L"/");
+                    if (pos != string::npos)
+                        m[j] = keyColor[1] + L", " + valuesColor + m[j];
+                }
+                m.back() = L" et " + m.back();
+
+                for (j = 0; j < taille2; j++)
+                    wstr2 += m[j];
+                wstr += wstr2;
+
+                wstr += L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
+
+                if (dates[i].first.back().someFlag == true)
+                    wstr += keyColor[1] + L" (" + valuesColor + L"préquel" + keyColor[1] + L')' + valuesColor;
+                std::wcout << wstr << std::endl;
+                //for (j = 0; j < taille2; j++)
+                //    std::wcout << j << L' ' << m[j] << std::endl;
+            }
+        }
+
+    }
+}
 int wmain(int argc, wchar_t* argv[])
 {
 
@@ -288,7 +396,7 @@ int wmain(int argc, wchar_t* argv[])
     const std::wstring nomFichier5 = L"2022-08-31Net.txt"; // Erreur
 
     const std::wstring nomFichier6 = L"2022-08-31_ Netflix.txt"; /// 
-    const std::wstring nomFichier7 = L"2023-11-28_29_30_12-30 abc.txt";
+    const std::wstring nomFichier7 = L"2023-11-28_29_30_12-30_ abc.txt";
     const std::wstring nomFichier8 = L"2022-08-30_31.txt";
     const std::wstring nomFichier9 = L"2022-08-30_31 Netflix.txt";
     
@@ -300,12 +408,18 @@ int wmain(int argc, wchar_t* argv[])
 
     const std::wstring nomFichier14 = L"2023-08-30_31_09-01_02 Netflix.txt";
     const std::wstring nomFichier15 = L"2023-08-30_09-12_12 Netflix.txt";
- 
+    const std::wstring nomFichier16 = L"2023-08-30_30_30_30_30_30_30_30_30_30_30_31_09-01_01_01_01_ Netflix.txt";
+    
     std::vector<std::pair<std::vector<DateRecord>, std::wstring>>dates;
 
-    afficher_Date_ou_Dates(nomFichier14, dates);
     afficher_Date_ou_Dates(nomFichier3, dates);
+    afficher_Date_ou_Dates(nomFichier6, dates);
     afficher_Date_ou_Dates(nomFichier7, dates);
+    afficher_Date_ou_Dates(nomFichier10, dates);
+    afficher_Date_ou_Dates(nomFichier13, dates);
+    afficher_Date_ou_Dates(nomFichier14, dates);
+    afficher_Date_ou_Dates(nomFichier15, dates);
+    afficher_Date_ou_Dates(nomFichier16, dates);
 
     std::size_t taille, taille2;
     taille = std::size(dates);
@@ -323,5 +437,7 @@ int wmain(int argc, wchar_t* argv[])
         }
         std::wcout << L"_____streaming=[" << dates[i].second << L"]" << std::endl;
     }
+    std::wcout << std::endl;
+    PrintDate_ou_Dates(dates);
     return EXIT_SUCCESS;
 }
