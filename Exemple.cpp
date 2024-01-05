@@ -1,5 +1,6 @@
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #include "pch.h"
-
+#include "Exemple.h"
 // C :
 #include <io.h>
 #include <fcntl.h>
@@ -16,19 +17,21 @@
 //#include <locale>
 #include <algorithm>
 #include <codecvt>
-
+#include <tuple>
 
 #include <filesystem> // C++17 standard header file name
 //#include <experimental/filesystem> // Header file for pre-standard implementation
 //namespace fs = std::filesystem;
-
 using namespace std;
+
+
 //using namespace std::experimental::filesystem::v1;
 
 HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 DWORD dwMode = 0;
 CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
 int X;
+
 
 std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace)
 {
@@ -52,13 +55,109 @@ void init()
     //
 }
 
-class exception_test_sp_et_npos_ou_pas_isblank
+static inline void rtrim(std::wstring& s)
 {
-    std::wstring message;
-public:
-    exception_test_sp_et_npos_ou_pas_isblank() : message(L"Espace invalide !!!") {}
-    std::wstring get_message() const { return message; }
-};
+    s.erase(find_if(s.rbegin(), s.rend(), [](int ch)
+        {
+            return !isspace(ch);
+        }).base(), s.end());
+}
+
+std::string wstr_to_u8(std::wstring uneWString)
+{
+    return std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(uneWString);
+}
+
+const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs)
+{
+    std::string contenuFichier{ u8"" };
+    std::string ligneCourante{ u8"" };
+    std::vector<std::wstring> retVal{};
+
+    ifstream fichier{ nomFichier };
+    if (!fichier)
+    {
+        throw std::runtime_error("Fichier impossible à ouvrir.");
+    }
+
+    while (getline(fichier, ligneCourante, u8'\n'))
+    {
+        contenuFichier += ligneCourante + u8'\n';
+    }
+
+    if (contenuFichier == u8"")
+    {
+        throw std::runtime_error("Le fichier '" + wstr_to_u8(nomFichier) + "' est vide.");
+    }
+    //wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> convertiseur;
+
+    wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convertiseur;
+    std::wstring converti = convertiseur.from_bytes(contenuFichier);
+    rtrim(converti);
+
+    bool found = false;
+
+    do
+    {
+        found = false;
+        size_t pos_found = std::string::npos;
+        std::wstring sep_found = L"";
+
+        for (auto&& sep : separeteurs)
+        {
+            std::size_t pos = converti.find(sep);
+            if (pos != std::wstring::npos && (!found || pos_found > pos))
+            {
+                pos_found = pos;
+                found = true;
+                sep_found = sep;
+            }
+        }
+
+        if (found)
+        {
+            retVal.push_back(converti.substr(0, pos_found));
+            converti = converti.substr(pos_found + sep_found.length());
+        }
+    } while (found);
+
+    if (converti.length() > 0)
+    {
+        retVal.push_back(converti);
+    }
+
+    //std::vector<std::wstring>::iterator iter;
+    //for (iter = retVal.begin(); iter != retVal.end(); iter++)
+    //    std::wcout << L"iter={" << *iter << L'}' << std::endl;
+    return retVal;
+}
+
+const std::wstring lire_fichierTxt(std::wstring const& nomFichier)
+{
+    std::string contenuFichier{ u8"" };
+    std::string ligneCourante{ u8"" };
+    ifstream fichier{ nomFichier };
+    if (!fichier)
+    {
+        throw std::runtime_error("Fichier impossible à ouvrir.");
+    }
+
+    while (getline(fichier, ligneCourante, u8'\n'))
+    {
+        contenuFichier += ligneCourante + u8'\n';
+    }
+
+    if (contenuFichier == u8"")
+    {
+        return L"";
+        //throw std::runtime_error("Le fichier '" + wstr_to_u8(nomFichier) + "' est vide.");
+    }
+    //wstring_convert<codecvt_utf8_utf16<wchar_t>, wchar_t> convertiseur;
+    wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convertiseur;
+    std::wstring converti = convertiseur.from_bytes(contenuFichier);
+    rtrim(converti);
+    return converti;
+}
 
 void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t)
 {
@@ -68,7 +167,6 @@ void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t)
     }
     return;
 }
-
 
 bool checkyear(int y)
 {
@@ -120,13 +218,22 @@ bool checkday(int m, int d, int y)
     return retVal;
 }
 
-struct DateRecord
-{
-    std::tm date{ 0 };
-    bool someFlag{ false };
-};
 
-void afficher_Date_ou_Dates(std::wstring const& nomFichier, std::vector<std::pair<std::vector<DateRecord>, std::wstring>>&dates)
+//using namespace std::literals;
+
+
+
+
+Saison::Saison() 
+{
+    saison = 0;
+}
+Saison::~Saison()
+{}
+
+
+
+/*void afficher_Date_ou_Dates(std::wstring const& nomFichier, std::vector<std::pair<std::vector<DateRecord>, std::wstring>>& dates)
 {
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
 
@@ -264,10 +371,10 @@ void afficher_Date_ou_Dates(std::wstring const& nomFichier, std::vector<std::pai
         exit(1);
     } while (strRestant.length() > 0);
     dates.push_back(make_pair(dr, streaming));
-}
+}*/
 
 
-const void PrintDate_ou_Dates(const std::vector<std::pair<std::vector<DateRecord>, std::wstring>>&dates)
+/*const void PrintDate_ou_Dates(const std::vector<std::pair<std::vector<DateRecord>, std::wstring>>& dates)
 {
     bool affichage_Date_ou_Dates = true;
     if (affichage_Date_ou_Dates && dates.size() > 0)
@@ -341,9 +448,387 @@ const void PrintDate_ou_Dates(const std::vector<std::pair<std::vector<DateRecord
             }
         }
     }
+}*/
+void Saison::afficher_Episodes(std::wstring const& nomFichier)
+{
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+
+    std::wcout << L"zzz" << std::endl;
+
+    std::size_t pos;
+    pos = nomFichier.find_last_of(L"\\");
+    pos++;
+    std::wstring wstr = nomFichier.substr(pos);
+
+    episodes.first = std::stoi(wstr, &pos);
+    std::wcout << L"episodes.first=[" << episodes.first << L']' << std::endl;
+    wstr = L"";
+    try
+    {
+        wstr = lire_fichierTxt(nomFichier);
+    }
+    catch (runtime_error const& exception)
+    {
+        std::wcout << L"Erreur : " << exception.what() << std::endl;
+    }
+
+    //assert((e_filename == createdBy_filename) && L"Erreur !!! Episodes... !");
+    episodes.second = wstr;
+    assert((episodes.second.size() != 0));
+    std::wcout << L"episodes.first=[" << episodes.first << L"], episodes.second=[" << episodes.second << L']' << std::endl;
+}
+
+void Saison::afficher_Titres(std::wstring const& nomFichier)
+{
+    if (nomFichier.length() == 0)
+        return;
+
+    std::wcout << L"zzz" << std::endl;
+
+    std::vector<std::wstring> t = lire_fichierTxt(nomFichier, { L"\n" });
+    std::vector<std::wstring>::iterator iter;
+    int i;
+    for (iter = t.begin(), i = 0; iter != t.end(); iter++, i++)
+    {
+        std::wcout << L"t[" << i << L"]=[" << *iter << L']' << std::endl;
+    }
+    std::size_t pos;
+    //pos = nomFichier.find_last_of(L"\\");
+    //pos++;
+    pos = t[0].find(L". ");
+    //std::isdigit(d[2])
+    unsigned int x;
+    if (std::isdigit(t[0][0]) && pos == std::wstring::npos)
+    {
+        x = 0;
+        std::wcout << L"t[" << 0 << L"]=[" << t[0] << L']' << std::endl;
+        //titres.push_back(make_pair(0, t));
+    }
+    else
+    {
+        x = std::stoi(t[0], &pos);
+        t[0] = t[0].substr(pos + 2);
+        std::wcout << L"t[" << 0 << L"]=[" << t[0] << L']' << std::endl;
+        //titres.push_back(make_pair(x, t));
+    }
+    // t
+    bool found = false;
+    std::wstring t1, t2, t3;
+    pos = t[0].find(L" - ");
+    if (pos != std::wstring::npos && !found)
+    {
+        t1 = t[0].substr(0, pos);
+        t2 = L" : ";
+        t3 = t[0].substr(pos + 3);
+        found = true;
+    }
+    pos = t[0].find(L" : ");
+    if (pos != std::wstring::npos && !found)
+    {
+        t1 = t[0].substr(0, pos);
+        t2 = L" : ";
+        t3 = t[0].substr(pos + 3);
+        found = true;
+    }
+    pos = t[0].find(L": ");
+    if (pos != std::wstring::npos && !found)
+    {
+        t1 = t[0].substr(0, pos);
+        t2 = L": ";
+        t3 = t[0].substr(pos + 2);
+        found = true;
+    }
+    pos = t[0].find(L'/');
+    if (pos != std::wstring::npos && !found)
+    {
+        t1 = t[0].substr(0, pos);
+        t2 = L"/";
+        t3 = t[0].substr(pos + 1);
+        found = true;
+    }
+    if (pos == std::wstring::npos && !found)
+    {
+        //wcout << L"t={" << t << L'}' << endl;
+        t1 = t[0];
+        t2 = L"";
+        t3 = L"";
+        found = true;
+    }
+    std::wcout << L"x=[" << x << L"]" << std::endl;
+    std::wcout << L"t1=[" << t1 << L"]" << std::endl;
+    std::wcout << L"t2=[" << t2 << L"]" << std::endl;
+    std::wcout << L"t3=[" << t3 << L"]" << std::endl;
+    std::wcout << L"found=[" << found << L"]" << std::endl;
+
+    //                               x           t1             t2           t3       temps      p             s
+    //std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring, std::wstring>> titres;
+    std::wcout << L"xxx" << std::endl;
+    //titres.push_back(make_tuple(
+
+        //x, 
+        //t1, 
+        //t2, 
+        //t3,
+        //std::tm{0},
+        //t[2]));// , L"2"));
+
+    std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::wstring> tup;
+    tup = make_tuple(x, t1, t2, t3, t[2]);
+
+    std::wcout << L"x=[" << get<0>(tup) << L"]" << std::endl;
+    std::wcout << L"t1=[" << get<1>(tup) << L"]" << std::endl;
+    std::wcout << L"t2=[" << get<2>(tup) << L"]" << std::endl;
+    std::wcout << L"t3=[" << get<3>(tup) << L"]" << std::endl;
+    std::wcout << L"t[2]=[" << get<4>(tup) << L"]" << std::endl;
+    std::wcout << L"yyy" << std::endl;
+    titres.push_back(make_tuple(x, t1, t2, t3, t[2]));
+    //titres.push_back({ tup });
+    //titre[0]
+    std::wcout << L"xxx" << std::endl;
+}
+
+
+void Saison::afficher_Date_ou_Dates(std::wstring const& nomFichier)//, std::vector<std::tuple<unsigned int, std::vector<DateRecord>, std::wstring>>& date_ou_dates)
+{
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+
+    std::size_t pos;
+    pos = nomFichier.find_last_of(L"\\");
+    pos++;
+    std::wstring strRestant = nomFichier.substr(pos);
+    pos = strRestant.length();
+    strRestant = strRestant.substr(0, pos - 4);
+    pos = strRestant.length();
+    assert((strRestant.length() > (9 + episodes.first + 1)) && L"Nom de fichier trop court pour avoir au moins une date");
+
+    std::wcout << L"aaa" << std::endl;
+    pos = 0;
+    int x = std::stoi(strRestant, &pos);
+    if (saison == x && x >= 1000)
+    {
+        std::wcout << L"x <= 1000 !!!" << std::endl;
+        exit(1);
+    }
+    std::wcout << L"x=" << x << std::endl;
+    pos = strRestant.find(L"x", 0);
+    if (pos == std::wstring::npos)
+    {
+        std::wcout << L"aaa" << std::endl;
+        exit(1);
+    }
+    strRestant = strRestant.substr(pos + 1);
+    if (x >= episodes.first)
+    {
+        std::wcout << L"episodes.first != x" << std::endl;
+        exit(1);
+    }
+    pos = strRestant.find(L'.');
+    pos++;
+    strRestant = strRestant.substr(pos);
+    std::wcout << L"strRestant=[" << strRestant << L']' << std::endl;
+    std::wcout << L"rrr" << std::endl;
+
+
+    std::vector<DateRecord> dr;
+    std::wstring streaming = L"";
+
+    wchar_t sp = L' ', tiret = L'-', tiret_bas = L'_';
+    int y, m, d;
+
+    int firstYear = 0, firstMon = 0, firstDay = 0;
+    int i = 0;
+    do
+    {
+        std::wcout << L"strRestant=[" << strRestant << L']' << std::endl;
+        if (strRestant[0] == sp)
+        {
+            if (strRestant[1] == std::wstring::npos || strRestant[1] == sp)
+            {
+                // try cath !!!
+                // Explique-moi ??? 
+                // ou : 
+                exit(1);
+            }
+            strRestant = strRestant.substr(1);
+            // try cath !!!
+            // Explique-moi ??? 
+            // ou : 
+            try // Erreur !!!
+            {
+                test_sp_et_npos_ou_pas_isblank(strRestant[0], isblank(strRestant[1]));
+            }
+            catch (exception_test_sp_et_npos_ou_pas_isblank e)
+            {
+                exit(1);
+            }
+            if (strRestant.length() > 0)
+            {
+                streaming = strRestant;
+            }
+            strRestant = L"";
+            break;
+        }
+        if (!isdigit(strRestant[0]))
+        {
+            // try cath !!!
+            // Explique-moi ??? 
+            // ou : 
+            exit(1);
+        }
+        // year + mon + mday
+        if ((y = stoi(strRestant.substr(0, 4))) && checkyear(y)
+            &&
+            strRestant[4] == tiret
+            &&
+            (m = std::stoi(strRestant.substr(5, 2))) && checkmonth(m)
+            &&
+            strRestant[7] == tiret
+            &&
+            (d = std::stoi(strRestant.substr(8, 2))) && checkday(m, d, y)
+            &&
+            firstYear < y)
+        {
+            assert(firstYear < y && L"L'année aaaaa");
+            firstYear = y;
+            assert(firstMon < m && L"Le mois aaaaa");
+            firstMon = m;
+            assert(firstDay <= d && L"Le jours aaaaa");
+            firstDay = d;
+            dr.push_back(DateRecord{ 0 });
+            dr[i].date.tm_year = y - 1900;
+            dr[i].date.tm_mon = m - 1;
+            dr[i].date.tm_mday = d;
+            strRestant = strRestant.substr(10);
+            if (strRestant[0] == tiret_bas)
+            {
+                dr[i].someFlag = true;
+                strRestant = strRestant.substr(1);
+            }
+            i++;
+            continue;
+        }
+        // mon + mday
+        if ((m = std::stoi(strRestant.substr(0, 2))) && checkmonth(m)
+            &&
+            strRestant[2] == tiret
+            &&
+            (d = std::stoi(strRestant.substr(3, 2))) && checkday(m, d, firstYear)
+            &&
+            firstMon < m)
+        {
+            assert(firstMon < m && L"Le mois aaaaa");
+            firstMon = m;
+            dr.push_back(DateRecord{ 0 });
+            dr[i].date.tm_year = firstYear - 1900;
+            dr[i].date.tm_mon = m - 1;
+            dr[i].date.tm_mday = d;
+            assert(firstDay <= d && L"Le jours aaaaa");
+            firstDay = d;
+            strRestant = strRestant.substr(5);
+            if (strRestant[0] == tiret_bas)
+            {
+                dr[i].someFlag = true;
+                strRestant = strRestant.substr(1);
+            }
+            i++;
+            continue;
+        }
+        // mday
+        if ((d = std::stoi(strRestant.substr(0, 2))) && checkday(firstMon, d, firstYear)
+            &&
+            firstDay <= d)
+        {
+            firstDay = d;
+            assert(firstDay <= d && L"Le jours aaaaa");
+            dr.push_back(DateRecord{ 0 });
+            dr[i].date.tm_year = firstYear - 1900;
+            dr[i].date.tm_mon = firstMon - 1;
+            dr[i].date.tm_mday = d;
+            strRestant = strRestant.substr(2);
+            if (strRestant[0] == tiret_bas)
+            {
+                dr[i].someFlag = true;
+                strRestant = strRestant.substr(1);
+            }
+            i++;
+            continue;
+        }
+        // try cath !!!
+        // Explique-moi ???
+        // ou : 
+        exit(1);
+    } while (strRestant.length() > 0);
+    std::wcout << L"strRestant=[" << strRestant << L']' << std::endl;
+    date_ou_dates.push_back(make_tuple(x, dr, streaming));
+    afficher_Titres(nomFichier); 
+}
+
+void Saison::ok(std::wstring const& nomFichier)
+{
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+
+    std::size_t pos;
+    pos = nomFichier.length();
+    std::wstring strRestant = nomFichier.substr(0, pos - 4);
+    assert(strRestant.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
+
+    pos = 0;
+    saison = std::stoi(strRestant, &pos);
+    if (saison >= 1000)
+    {
+        std::wcout << L"saison <= 1000 !!!" << std::endl;
+        exit(1);
+    }
+    std::wcout << L"saison=" << saison << std::endl;
 }
 
 int wmain(int argc, wchar_t* argv[])
+{
+
+    int i = 0;
+    //
+    init();
+    //hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hOut == INVALID_HANDLE_VALUE)
+    {
+        return GetLastError();
+    }
+    //    DWORD dwMode = 0;
+    if (!GetConsoleMode(hOut, &dwMode))
+    {
+        return GetLastError();
+    }
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    if (!SetConsoleMode(hOut, dwMode))
+    {
+        return GetLastError();
+    }
+
+    //    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
+    GetConsoleScreenBufferInfo(hOut, &csbiInfo);
+    const std::wstring nomFichier = L"e:\\Séries.[]\\Yu Yu Hakusho.[2023 Netflix].Mini-série\\2023-12-14\\5.txt";
+    const std::wstring nomFichier3 = L"e:\\Séries.[]\\Yu Yu Hakusho.[2023 Netflix].Mini-série\\2023-12-14\\1x1.2024-01-01.txt";
+    const std::wstring nomFichier6 = L"1x1.2022-08-31_ Netflix.txt"; /// 
+    const std::wstring nomFichier7 = L"1x2.2023-11-28_29_30_12-30_ abc.txt";
+    const std::wstring nomFichier8 = L"1x3.2022-08-30_31.txt";
+    const std::wstring nomFichier9 = L"1x4.2022-08-30_31 Netflix.txt";
+    //std::vector<std::tuple<unsigned int, std::vector<DateRecord>, std::wstring>>date_ou_dates;
+    //std::size_t pos;
+    Saison saison;
+    std::wcout << L"ttt" << std::endl;
+    saison.afficher_Episodes(nomFichier);
+    std::wcout << L"ttt" << std::endl;
+    //pos = nomFichier3.find_last_of(L"\\");
+    //pos++;
+    //wstr = nomFichier3.substr(pos);
+    //saison.ok(nomFichier3);
+    saison.afficher_Date_ou_Dates(nomFichier3);
+
+
+    return EXIT_SUCCESS;
+}
+
+/*int wmain(int argc, wchar_t* argv[])
 {
 
     int i = 0;
@@ -421,4 +906,5 @@ int wmain(int argc, wchar_t* argv[])
     std::wcout << std::endl;
     PrintDate_ou_Dates(dates);
     return EXIT_SUCCESS;
-}
+}*/
+
