@@ -42,6 +42,8 @@ public:
     void afficher_Titres(std::wstring const& nomFichier);
     void afficher_Episodes(std::wstring const& nomFichier);
     void ok(std::wstring const& nomFichier);
+    //                               x          t1            t2           t3           temps      p
+    std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>> titres;
 
 private:
     std::pair<unsigned short int, std::wstring>episodes;
@@ -50,8 +52,6 @@ private:
     //std::vector<std::pair<std::vector<DateRecord>, std::wstring>>date_ou_dates;
     std::vector<std::tuple<unsigned int, std::vector<DateRecord>, std::wstring>>date_ou_dates;
     //std::vector<std::pair<unsigned int, std::vector<std::wstring>>>titres;
-    //                               x           t1             t2           t3       temps      p
-    std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, /*std::tm,*/ std::wstring>> titres;
     std::vector<std::wstring> image;
 };
 

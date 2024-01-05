@@ -218,7 +218,174 @@ bool checkday(int m, int d, int y)
     return retVal;
 }
 
+const bool afficher_Min(std::wstring& t)
+{
+    if (
+        (t[0] == L'M' && t[1] == L'I' && t[2] == L'N' /* && t[3] == wstring::npos*/)
+        ||
+        (t[0] == L'M' && t[1] == L'i' && t[2] == L'n' /* && t[3] == wstring::npos*/)
+        ||
+        (t[0] == L'm' && t[1] == L'i' && t[2] == L'n' /* && t[3] == wstring::npos*/)
+        )
+    {
+    }
+    else
+    {
+        return false;
+    }
+    return true;
+}
 
+const bool afficher_Temps(std::wstring ttt)
+// "_h__min" ou "_h __min" ou "_ h __ min" ou "__min" ou "___min" ou "__ min" ou "___ min"
+{
+    static const basic_string <char>::size_type npos = -1;
+    std::wstring t = ttt;
+    std::size_t length = t.length();
+    bool h = false;
+    bool ok = false;
+    bool w1 = false;
+    // 1
+    if (t[0] == npos)
+        return false;
+    if (std::isdigit(t[0]))
+        w1 = true; // oui w1
+    else
+        return false;
+    // 2
+    t = t.substr(1);
+    if (t[0] == std::wstring::npos)
+        return false;
+    bool w2 = false;
+    bool espace1 = false;
+    if (!ok)
+    {
+        if (w1 && afficher_Min(t))
+            return true; // "_min"
+        if (w1 && !espace1 && t[0] == L' ')
+            espace1 = true;
+        if (w1 && !w2 && std::isdigit(t[0]))
+            w2 = true; // Oui w2
+        if (w1 && !h && (t[0] == L'h' || t[0] == L'H'))
+            h = true;
+        if (w1 && (!espace1 && t[0] == L' '))
+            espace1 = true;
+    }
+    // 3
+    t = t.substr(1);
+    if (t[0] == std::wstring::npos)
+        return false;
+    bool w3 = false;
+    if (!ok)
+    {
+        if (w1 && espace1 && !w2 && afficher_Min(t))
+            return true;
+        if (w1 == true && w2 == true && afficher_Min(t))
+            return true;
+        if (w1 && w2 && (!espace1 && t[0] == L' '))
+            espace1 = true;
+        if (w1 && w2 && !w3 && std::isdigit(t[0]))
+            w3 = true;
+        if (w1 && h && std::isdigit(t[0]))
+            w3 = true;
+        if (w1 && h && (!espace1 && t[0] == L' '))
+            espace1 = true;
+        if (w1 && espace1 && !h && (t[0] == L'h' || t[0] == L'H'))
+            h = true;
+    }
+    // 4
+    t = t.substr(1);
+    if (t[0] == std::wstring::npos)
+        return false;
+    bool w4 = false;
+    bool espace2 = false;
+    if (!ok)
+    {
+        if (w1 && w2 && espace1 && !w3 && afficher_Min(t))
+            return true;
+        if (w1 && w2 && w3 && afficher_Min(t))
+        {
+            if (ttt[0] == L'1')
+                return true;
+            else
+                return false;
+        }
+        if (w1 && w2 && w3 && (!espace1 && t[0] == L' '))
+            espace1 = true;
+        if (w1 && h && w3 && std::isdigit(t[0]))
+            w4 = true;
+        if (w1 && h && espace1 && !w4 && std::isdigit(t[0]))
+            w4 = true;
+        if (w1 && espace1 && h && (!espace2 && t[0] == L' '))
+            espace2 = true;
+    }
+    // 5
+    t = t.substr(1);
+    if (t[0] == std::wstring::npos)
+        return false;
+    bool w5 = false;
+    if (!ok)
+    {
+        if (w1 && w2 && w3 && espace1 && afficher_Min(t))
+        {
+            if (ttt[0] == L'1')
+                return true;
+            else
+                return false;
+        }
+        if (w1 == true && h == true && w3 == true && w4 == true && afficher_Min(t))
+        {
+            if (ttt[2] == L'6' || ttt[2] == L'7' || ttt[2] == L'8' || ttt[2] == L'9')
+                return false;
+            else
+                return true;
+        }
+        if (w1 == true && h == true && espace1 == true && w4 == true && w5 == false && std::isdigit(t[0]))
+            w5 = true;
+        if (w1 == true && espace1 == true && h == true && espace2 == true && w5 == false && std::isdigit(t[0]))
+            w5 = true;
+    }
+    // 6
+    t = t.substr(1);
+    if (t[0] == std::wstring::npos)
+        return false;
+    bool w6 = false;
+    if (!ok)
+    {
+        if (w1 && h && espace1 && w4 && w5 && afficher_Min(t))
+        {
+            if (ttt[3] == L'6' || ttt[3] == L'7' || ttt[3] == L'8' || ttt[3] == L'9')
+                return false;
+            else
+                return true;
+        }
+        if (w1 && espace1 && h && espace2 && w5 && !w6 && std::isdigit(t[0]))
+            w6 = true;
+    }
+    // 7
+    t = t.substr(1);
+    if (t[0] == std::wstring::npos)
+        return false;
+    bool espace3 = false;
+    if (!ok)
+    {
+        if (w1 && espace1 && h && espace2 && w5 && w6 && (!espace3 && t[0] == L' '))
+            espace3 = true;
+    }
+    // 8
+    t = t.substr(1);
+    if (!ok)
+    {
+        if (w1 && espace1 && h && espace2 && w5 && w6 && espace3 && afficher_Min(t))
+        {
+            if (ttt[4] == L'6' || ttt[4] == L'7' || ttt[4] == L'8' || ttt[4] == L'9')
+                return false;
+            else
+                return true;
+        }
+    }
+    return false;
+}
 //using namespace std::literals;
 
 
@@ -513,7 +680,7 @@ void Saison::afficher_Titres(std::wstring const& nomFichier)
     }
     // t
     bool found = false;
-    std::wstring t1, t2, t3;
+    std::wstring t1, t2, t3, temps;
     pos = t[0].find(L" - ");
     if (pos != std::wstring::npos && !found)
     {
@@ -559,7 +726,6 @@ void Saison::afficher_Titres(std::wstring const& nomFichier)
     std::wcout << L"t2=[" << t2 << L"]" << std::endl;
     std::wcout << L"t3=[" << t3 << L"]" << std::endl;
     std::wcout << L"found=[" << found << L"]" << std::endl;
-
     //                               x           t1             t2           t3       temps      p             s
     //std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring, std::wstring>> titres;
     std::wcout << L"xxx" << std::endl;
@@ -572,16 +738,20 @@ void Saison::afficher_Titres(std::wstring const& nomFichier)
         //std::tm{0},
         //t[2]));// , L"2"));
 
-    std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::wstring> tup;
-    tup = make_tuple(x, t1, t2, t3, t[2]);
+    //std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::wstring> tup;
+    //tup = make_tuple(x, t1, t2, t3, t[2]);
 
-    std::wcout << L"x=[" << get<0>(tup) << L"]" << std::endl;
-    std::wcout << L"t1=[" << get<1>(tup) << L"]" << std::endl;
-    std::wcout << L"t2=[" << get<2>(tup) << L"]" << std::endl;
-    std::wcout << L"t3=[" << get<3>(tup) << L"]" << std::endl;
-    std::wcout << L"t[2]=[" << get<4>(tup) << L"]" << std::endl;
-    std::wcout << L"yyy" << std::endl;
-    titres.push_back(make_tuple(x, t1, t2, t3, t[2]));
+    //std::wcout << L"x=[" << get<0>(tup) << L"]" << std::endl;
+    //std::wcout << L"t1=[" << get<1>(tup) << L"]" << std::endl;
+    //std::wcout << L"t2=[" << get<2>(tup) << L"]" << std::endl;
+    //std::wcout << L"t3=[" << get<3>(tup) << L"]" << std::endl;
+    //std::wcout << L"t[2]=[" << get<4>(tup) << L"]" << std::endl;
+    //std::wcout << L"yyy" << std::endl;
+    bool temps_ = afficher_Temps(t[1]);
+    std::tm tm_temps{ 0 };
+    pos = 0;
+    tm_temps.tm_min = std::stoi(t[1], &pos);
+    titres.push_back(make_tuple(x, t1, t2, t3, tm_temps, t[2]));
     //titres.push_back({ tup });
     //titre[0]
     std::wcout << L"xxx" << std::endl;
@@ -806,8 +976,8 @@ int wmain(int argc, wchar_t* argv[])
 
     //    CONSOLE_SCREEN_BUFFER_INFO csbiInfo;
     GetConsoleScreenBufferInfo(hOut, &csbiInfo);
-    const std::wstring nomFichier = L"e:\\Séries.[]\\Yu Yu Hakusho.[2023 Netflix].Mini-série\\2023-12-14\\5.txt";
-    const std::wstring nomFichier3 = L"e:\\Séries.[]\\Yu Yu Hakusho.[2023 Netflix].Mini-série\\2023-12-14\\1x1.2024-01-01.txt";
+    const std::wstring nomFichier = L"e:\\Séries.[]\\Gate.[2015 Netflix].Manga\\2015-07-03\\24.txt";
+    const std::wstring nomFichier3 = L"e:\\Séries.[]\\Gate.[2015 Netflix].Manga\\2015-07-03\\1x01.2023-12-05.txt";
     const std::wstring nomFichier6 = L"1x1.2022-08-31_ Netflix.txt"; /// 
     const std::wstring nomFichier7 = L"1x2.2023-11-28_29_30_12-30_ abc.txt";
     const std::wstring nomFichier8 = L"1x3.2022-08-30_31.txt";
@@ -824,7 +994,17 @@ int wmain(int argc, wchar_t* argv[])
     //saison.ok(nomFichier3);
     saison.afficher_Date_ou_Dates(nomFichier3);
 
-
+    std::size_t s = saison.titres.size(); //to get the size of the vector
+    for (int i = 0; i < s; i++)
+    { //to print the elements stored in vector of tuples, vec
+        std::wcout << i << std::endl;
+        std::wcout << L"__x    =" << get<0>(saison.titres[i]) << std::endl;
+        std::wcout << L"__t1   =[" << get<1>(saison.titres[i]) << L"]" << std::endl;
+        std::wcout << L"__t2   =[" << get<2>(saison.titres[i]) << L"]" << std::endl;
+        std::wcout << L"__t3   =[" << get<3>(saison.titres[i]) << L"]" << std::endl;
+        std::wcout << L"__temps=[" << get<4>(saison.titres[i].tm_min) << L"]" << std::endl;
+        std::wcout << L"__p    =[" << get<5>(saison.titres[i]) << L"]" << std::endl;
+    }
     return EXIT_SUCCESS;
 }
 
