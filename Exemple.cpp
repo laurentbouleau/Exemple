@@ -978,6 +978,7 @@ int wmain(int argc, wchar_t* argv[])
     GetConsoleScreenBufferInfo(hOut, &csbiInfo);
     const std::wstring nomFichier = L"e:\\Séries.[]\\Gate.[2015 Netflix].Manga\\2015-07-03\\24.txt";
     const std::wstring nomFichier3 = L"e:\\Séries.[]\\Gate.[2015 Netflix].Manga\\2015-07-03\\1x01.2023-12-05.txt";
+    //const std::wstring nomFichier3 = L"e:\\Séries.[]\\La Créature de Kyongsong.[2023 Netflix]\\2023-12-22\\1x01.2023-12-28.txt";
     const std::wstring nomFichier6 = L"1x1.2022-08-31_ Netflix.txt"; /// 
     const std::wstring nomFichier7 = L"1x2.2023-11-28_29_30_12-30_ abc.txt";
     const std::wstring nomFichier8 = L"1x3.2022-08-30_31.txt";
@@ -995,6 +996,7 @@ int wmain(int argc, wchar_t* argv[])
     saison.afficher_Date_ou_Dates(nomFichier3);
 
     std::size_t s = saison.titres.size(); //to get the size of the vector
+    std::tm j;
     for (int i = 0; i < s; i++)
     { //to print the elements stored in vector of tuples, vec
         std::wcout << i << std::endl;
@@ -1002,7 +1004,8 @@ int wmain(int argc, wchar_t* argv[])
         std::wcout << L"__t1   =[" << get<1>(saison.titres[i]) << L"]" << std::endl;
         std::wcout << L"__t2   =[" << get<2>(saison.titres[i]) << L"]" << std::endl;
         std::wcout << L"__t3   =[" << get<3>(saison.titres[i]) << L"]" << std::endl;
-        std::wcout << L"__temps=[" << get<4>(saison.titres[i].tm_min) << L"]" << std::endl;
+        j = get<4>(saison.titres[i]);
+        std::wcout << L"__temps=[" << j.tm_hour*1 + j.tm_min << L"]" << std::endl;
         std::wcout << L"__p    =[" << get<5>(saison.titres[i]) << L"]" << std::endl;
     }
     return EXIT_SUCCESS;
