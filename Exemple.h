@@ -58,4 +58,10 @@ private:
 class Serie
 {
 public:
+    Serie(void);
+    ~Serie();
+    void afficher();
+protected:
+    std::vector<Saison>saisons;
+private:
 };

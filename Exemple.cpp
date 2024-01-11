@@ -398,7 +398,10 @@ Saison::Saison()
 Saison::~Saison()
 {}
 
-
+Serie::Serie()
+{}
+Serie::~Serie()
+{}
 
 /*void afficher_Date_ou_Dates(std::wstring const& nomFichier, std::vector<std::pair<std::vector<DateRecord>, std::wstring>>& dates)
 {
@@ -952,6 +955,11 @@ void Saison::ok(std::wstring const& nomFichier)
     std::wcout << L"saison=" << saison << std::endl;
 }
 
+void afficher()
+{
+
+}
+
 int wmain(int argc, wchar_t* argv[])
 {
 
@@ -985,9 +993,30 @@ int wmain(int argc, wchar_t* argv[])
     const std::wstring nomFichier9 = L"1x4.2022-08-30_31 Netflix.txt";
     //std::vector<std::tuple<unsigned int, std::vector<DateRecord>, std::wstring>>date_ou_dates;
     //std::size_t pos;
+
+    const wchar_t* p{ L"../" };
+    path filePath(p);
+
+    filePath /= L"Exemple.txt";
+    std::wstring t;
+    try
+    {
+        // Dans le try, on est assuré que toute exception levée
+        // pourra être traitée dans le bloc catch situé après.
+        t = lire_fichierTxt(L"you.txt");
+    }
+    // Notez qu'une exception s'attrape par référence constante.
+    catch (runtime_error const& exception)
+    {
+        // On affiche la cause de l'exception.
+        std::wcout << L"Erreur : " << exception.what() << std::endl;
+    }
+
+    Serie serie;
     Saison saison;
     std::wcout << L"ttt" << std::endl;
-    saison.afficher_Episodes(nomFichier);
+    serie.afficher();
+    serie.saison[0].afficher_Episodes(nomFichier);
     std::wcout << L"ttt" << std::endl;
     //pos = nomFichier3.find_last_of(L"\\");
     //pos++;
