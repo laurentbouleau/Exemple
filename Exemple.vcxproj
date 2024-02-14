@@ -132,11 +132,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Exemple.cpp" />
+    <ClCompile Include="film_serie.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="serie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exemple.h" />
+    <ClInclude Include="film_serie.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="serie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
