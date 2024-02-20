@@ -33,36 +33,50 @@ extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void afficher_Avec(fs::path const& nomFichier)                                                                                               #
+// # const void afficher_Avec(fs::path const& cheminFichier)                                                                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void afficher_Avec(fs::path const& nomFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec)
+const void afficher_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec)
 {
     //assert((a_filename == createdBy_filename) && L"Erreur !!! Avec... !");
-    auto nf = fs::path(nomFichier).wstring();
-    std::wcout << L"---> Avec nf=" << nf << std::endl;
-    assert(nf.length() > 0 && L"Nom de fichier vide");
-    avec = lire_paireCleValeur_depuisFichierTxt(nf, L" : ");
+    auto nomFichier = cheminFichier.filename().wstring();
+    std::wcout << L"---> Avec nomFichier=" << nomFichier << std::endl;
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    avec = lire_paireCleValeur_depuisFichierTxt(cheminFichier.wstring(), L" : ");
     assert((avec.size() != 0));
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void afficher_Image(fs::path const& nomFichier, std::vector<std::wstring>& images)                                                           #
+// # const void afficher_Chaine(fs::path const& cheminFichier)                                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void afficher_Image(fs::path const& nomFichier, std::vector<std::wstring>& images)
-{
-    auto nf = fs::path(nomFichier).wstring();
-    assert(nf.length() > 0 && L"Nom de fichier vide");
+const void afficher_Chaine(fs::path const& cheminFichier, std::wstring& chaine)
+{ // Chaîne
+    auto nomFichier = cheminFichier.filename().wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    chaine = lire_fichierTxt(cheminFichier.wstring());
+    assert((chaine.size() != 0));
+}
 
-    std::wcout << L"nf Image=" << nf << std::endl;
-    std::size_t pos_txt = nf.find_last_of(L"\\");
-    assert((pos_txt != std::wstring::npos) && L"Erreur Image(s) !!!");
-    pos_txt++;
-    images.push_back(nf.substr(pos_txt));
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void afficher_Image(fs::path const& cheminFichier, std::vector<std::wstring>& images)                                                        #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void afficher_Image(fs::path const& cheminFichier, std::vector<std::wstring>& images)
+{
+    auto nomFichier = cheminFichier.filename().wstring();
+    std::wcout << L"nomFichier=[" << nomFichier << L']' << std::endl;
+
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    //std::size_t pos_txt = nf.find_last_of(L"\\");
+    //assert((pos_txt != std::wstring::npos) && L"Erreur Image(s) !!!");
+    //pos_txt++;
+    images.push_back(nomFichier);
 }
 
 // ######################################################################################################################################################
