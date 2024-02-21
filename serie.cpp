@@ -136,7 +136,6 @@ Serie::~Serie()
 void Saison::afficher_Dossier(fs::path const& cheminDossier)
 {
     auto nomDossier = cheminDossier.filename().wstring();
-    std::wcout << L"nomDossier=[" << nomDossier << L']' << std::endl;
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
     assert(nomDossier.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
     std::size_t pos = 0;
@@ -181,13 +180,9 @@ void Saison::afficher_Dossier(fs::path const& cheminDossier)
     tm.tm_year = y - 1900;
     tm.tm_mon = m - 1;
     tm.tm_mday = d;
-    dos = tm.tm_year;
     wstr = wstr.substr(2);
     dossier.first = tm;
     dossier.second = wstr;
-    std::wcout << L"dossier.first ok !!!" << std::endl;
-    std::wcout << L"dossier.second=[" << dossier.second << L']' << L" ok !!!" << std::endl;
-    std::wcout << L"Dossier(1)=[" << wstr << L']' << std::endl;
 }
 
 // ######################################################################################################################################################
@@ -198,25 +193,14 @@ void Saison::afficher_Dossier(fs::path const& cheminDossier)
 
 void Saison::afficher_Fichier(fs::path const& cheminFichier)
 {
-    std::wcout << L"afficher_Fichier cheminFichier=[" << cheminFichier << L']' << std::endl;
     auto nomFichier = cheminFichier.filename().wstring();
-    std::wcout << L"nomFichier=[" << nomFichier << L']' << std::endl;
-
-    std::wcout << std::endl;
-    std::wcout << std::endl;
-    std::wcout << L"===== [" << nomFichier << L"] =====" << std::endl;
-    std::wcout << std::endl;
-    std::wcout << std::endl;
+    //std::wcout << L"===== [" << nomFichier << L"] =====" << std::endl;
  
-    //auto nomImage = wstring(fs::path(nomFichier).extension());
     auto nomImage = cheminFichier.extension().wstring();
-    std::wcout << L"nomImage[" << nomImage << L']' << std::endl;
-
     if (nomImage == L".txt")
     {
         if (nomFichier == L"_you_.txt")
         {
-            std::wcout << L"_you_.txt ok !!!" << std::endl;
             return;
         }
         if (!(std::isdigit(nomFichier[0])))
@@ -224,7 +208,6 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
             // Avec
             if (nomFichier == L"Avec.txt")
             {
-                std::wcout << L"----> Avec.txt" << std::endl;
                 afficher_Avec(cheminFichier);
                 return;
             }
@@ -250,7 +233,7 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
             if (nomFichier == L"Titre.txt")
             {
                 afficher_Titre(cheminFichier);
-                 return;
+                return;
             }
         }
         //
@@ -268,16 +251,15 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
             && nomFichier[2] == L'x'
             )
         {
-            std::wcout << L"Episode !!! :" << std::endl;
             afficher_Episode(cheminFichier);
             return;
         }
-        if (int j = std::stoi(nomFichier/*, 0*/))
+        if (int j = std::stoi(nomFichier))
         {
             auto t2 = std::to_wstring(j);
-            std::wcout << L"Saison :" << std::endl;
-            afficher_Saison(cheminFichier);
-            std::wcout << L"Saison !!! ok !!!" << std::endl;
+            //std::wcout << L"Saison :" << std::endl;
+            afficher(cheminFichier);
+            //std::wcout << L"Saison !!! ok !!!" << std::endl;
             return;
         }
         // Erreur !
@@ -290,7 +272,6 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
     else if(nomImage == L".jgp" || nomImage == L".png" || nomImage == L".webp")
         // Image
     {
-        std::wcout << L"Image :" << std::endl;
         afficher_Image(cheminFichier, image);
         return;
     }
@@ -305,6 +286,29 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # void Saison::afficher(fs::path const& cheminFichier)                                                                                               #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+ void Saison::afficher(fs::path const& cheminFichier)
+ {
+     auto nomFichier = cheminFichier.filename().wstring();
+     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+     std::size_t pos;
+     saison.first = std::stoi(nomFichier, &pos);
+     try
+     {
+         saison.second = lire_fichierTxt(cheminFichier.wstring());
+     }
+     catch (runtime_error const& exception)
+     {
+         std::wcout << L"Erreur : " << exception.what() << std::endl;
+     }
+     assert((saison.second.size() != 0));
+ }
+
+ // ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # void afficher_Avec(fs::path const& cheminFichier)                                                                                                  #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -312,7 +316,6 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
  void Saison::afficher_Avec(fs::path const& cheminFichier)
  {
      auto nomFichier = cheminFichier.filename().wstring();
-     std::wcout << L"---> Avec nomFichier=" << nomFichier << std::endl;
      assert(nomFichier.length() > 0 && L"Nom de fichier vide");
      auto avec = lire_paireCleValeur_depuisFichierTxt(cheminFichier.wstring(), L" : ");
      assert((avec.size() != 0));
@@ -327,35 +330,27 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
 
 void Saison::afficher_Episode(fs::path const& cheminFichier)
 {
-    std::wcout << L"cheminFichier=[" << cheminFichier << L']' << std::endl;
     auto nomFichier = cheminFichier.filename().wstring();
-    std::wcout << L"nomFichier=[" << nomFichier << L']' << std::endl;
 
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     std::size_t pos = 0;
-//    pos = nomFichier.find_last_of(L"\\");
-//    pos++;
     std::wstring strRestant = nomFichier.substr(pos);
     pos = strRestant.length();
-    std::wcout << L"strRestant=[" << strRestant << L']' << std::endl;
     strRestant = strRestant.substr(0, pos - 4);
     pos = strRestant.length();
     assert((strRestant.length() < (9 + saison.first + 1)) && L"Nom de fichier trop court pour avoir au moins une date");
 
-    //std::wcout << L"aaa" << std::endl;
     pos = 0;
     int x = std::stoi(strRestant, &pos);
-    //if (saison_x == x && x >= 1000)
     if (saison.first == x && x >= 1000)
     {
         std::wcout << L"x <= 1000 !!!" << std::endl;
         exit(1);
     }
-    std::wcout << L"x=" << x << std::endl;
     pos = strRestant.find(L"x", 0);
     if (pos == std::wstring::npos)
     {
-        std::wcout << L"aaa" << std::endl;
+        std::wcout << L"Saison::afficher_Episode() :  x !!!" << std::endl;
         exit(1);
     }
     strRestant = strRestant.substr(pos + 1);
@@ -367,7 +362,6 @@ void Saison::afficher_Episode(fs::path const& cheminFichier)
     pos = strRestant.find(L'.');
     pos++;
     strRestant = strRestant.substr(pos);
-    std::wcout << L"strRestant=[" << strRestant << L']' << std::endl;
     std::vector<DateRecord> dr;
     std::wstring streaming = L"";
 
@@ -378,7 +372,6 @@ void Saison::afficher_Episode(fs::path const& cheminFichier)
     int i = 0;
     do
     {
-        std::wcout << L"strRestant=[" << strRestant << L']' << std::endl;
         if (strRestant[0] == sp)
         {
             if (strRestant[1] == std::wstring::npos || strRestant[1] == sp)
@@ -483,11 +476,6 @@ void Saison::afficher_Episode(fs::path const& cheminFichier)
             dr[i].date.tm_year = firstYear - 1900;
             dr[i].date.tm_mon = firstMon - 1;
             dr[i].date.tm_mday = d;
-
-            std::wcout << L"dr[] ok !!! ----------------" << std::endl;
-            std::wcout << L"dr[] ok !!! ----------------" << std::endl;
-            std::wcout << L"dr[] ok !!! ----------------" << std::endl;
-
             strRestant = strRestant.substr(2);
             if (strRestant[0] == tiret_bas)
             {
@@ -502,9 +490,8 @@ void Saison::afficher_Episode(fs::path const& cheminFichier)
         // ou : 
         exit(1);
     } while (strRestant.length() > 0);
-    std::wcout << L"strRestant=[" << strRestant << L']' << std::endl;
     episode.push_back(make_tuple(x, dr, streaming));
-    afficher_Episode_Titres(cheminFichier);
+    afficher_Episode_Titre(cheminFichier);
 }
 
 // ######################################################################################################################################################
@@ -513,37 +500,29 @@ void Saison::afficher_Episode(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Saison::afficher_Episode_Titres(fs::path const& cheminFichier)
+void Saison::afficher_Episode_Titre(fs::path const& cheminFichier)
 {
-    std::wcout << L"cheminFichier=[" << cheminFichier << L']' << std::endl;
-    auto nomFichier = cheminFichier.filename();
-    std::wcout << L"nomFichier=[" << nomFichier << L']' << std::endl;
-    
-    std::wcout << L"===> afficher_Date_ou_Dates_Titre() = nomFichier=[" << nomFichier << L']' << std::endl;
-    //system("PAUSE");
-    auto nf = fs::path(nomFichier).wstring();
-    if (nf.length() == 0)
+    auto nomFichier = cheminFichier.filename().wstring();
+    if (nomFichier.length() == 0)
         return;
 
     std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     std::vector<std::wstring>::iterator iter;
-    int i;
+    /*int i;
     for (iter = t.begin(), i = 0; iter != t.end(); iter++, i++)
     {
         std::wcout << L"t[" << i << L"]=[" << *iter << L']' << std::endl;
-    }
+    }*/
     auto pos = t[0].find(L". ");
     unsigned int x;
     if (std::isdigit(t[0][0]) && pos == std::wstring::npos)
     {
         x = 0;
-        std::wcout << L"t[" << 0 << L"]=[" << t[0] << L']' << std::endl;
     }
     else
     {
         x = std::stoi(t[0], &pos);
         t[0] = t[0].substr(pos + 2);
-        std::wcout << L"t[" << 0 << L"]=[" << t[0] << L']' << std::endl;
     }
     // t
     bool found = false;
@@ -587,17 +566,11 @@ void Saison::afficher_Episode_Titres(fs::path const& cheminFichier)
         t3 = L"";
         found = true;
     }
-    std::wcout << L"x=[" << x << L"]" << std::endl;
-    std::wcout << L"t1=[" << t1 << L"]" << std::endl;
-    std::wcout << L"t2=[" << t2 << L"]" << std::endl;
-    std::wcout << L"t3=[" << t3 << L"]" << std::endl;
-    std::wcout << L"found=[" << found << L"]" << std::endl;
-
     bool temps_ = afficher_Temps(t[1]);
     std::tm tm_temps{ 0 };
     pos = 0;
     tm_temps.tm_min = std::stoi(t[1], &pos);
-    episode_titres.push_back(make_tuple(x, t1, t2, t3, tm_temps, t[2]));
+    episode_titre.push_back(make_tuple(x, t1, t2, t3, tm_temps, t[2]));
 }
 
 // ######################################################################################################################################################
@@ -608,11 +581,7 @@ void Saison::afficher_Episode_Titres(fs::path const& cheminFichier)
 
 void Saison::afficher_Note(fs::path const& cheminFichier)
 { // 0...5 ou -1
-    std::wcout << L"---> Note" << std::endl;
-    std::wcout << L"cheminFichier=[" << cheminFichier << L']' << std::endl;
     auto nomFichier = cheminFichier.filename().wstring();
-    std::wcout << L"nomFichier=[" << nomFichier << L']' << std::endl;
-
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
 
     //assert((n_filename == createdBy_filename) && L"Erreur !!! Note... !");
@@ -657,42 +626,9 @@ void Saison::afficher_Note(fs::path const& cheminFichier)
             //E.afficher_X(-1, n, L"Pas de…");
         }
     }
-    std::wcout << L"---> Note=" << note << std::endl;
     return;
 }
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Saison::afficher_Saison(fs::path const& cheminFichier)                                                                                        #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void Saison::afficher_Saison(fs::path const& cheminFichier)
-{
-    std::wcout << L"cheminFichier=[" << cheminFichier << L']' << std::endl;
-    auto nomFichier = cheminFichier.filename().wstring();
-    std::wcout << L"nomFichier=[" << nomFichier << L']' << std::endl;
-
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::size_t pos = 0;// = nomFichier.find_last_of(L"\\");
-    //    auto wstr = nf.substr(pos);
-    std::wstring wstr;
-    //episodes.first = std::stoi(wstr, &pos);
-    saison.first = std::stoi(nomFichier, &pos);
-    try
-    {
-        //wstr = lire_fichierTxt(nomFichier);
-        wstr = lire_fichierTxt(cheminFichier.wstring());
-    }
-    catch (runtime_error const& exception)
-    {
-        std::wcout << L"Erreur : " << exception.what() << std::endl;
-    }
-
-    saison.second = wstr;
-    assert((saison.second.size() != 0));
-    std::wcout << L"saison.first=[" << saison.first << L"], saison.second=[" << saison.second << L']' << std::endl;
-}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -703,9 +639,8 @@ void Saison::afficher_Saison(fs::path const& cheminFichier)
 void Saison::afficher_Titre(std::filesystem::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.filename().wstring();
-    std::wcout << L"---> Titre nomFichier=" << nomFichier << std::endl;
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    auto titre = lire_paireCleValeur_depuisFichierTxt(cheminFichier.wstring(), L" : ");
+    titre = lire_fichierTxt(cheminFichier.wstring());
     assert((titre.size() != 0));
 }
 
@@ -723,8 +658,6 @@ void Serie::Print()
     //std::size_t pos;
     //pos = std::size(saisons);
     PrintSaisons();
-    std::wcout << L"serie !!!" << std::endl;
-
 }
 
 // ######################################################################################################################################################
@@ -744,6 +677,7 @@ void Serie::PrintEpisode()
         std::wstring wstr;
         for (int i = 0; i < taille; i++)
         {
+
         }
     }
 }
@@ -760,21 +694,23 @@ void Serie::PrintSaisons()
     {
         std::size_t taille;// , taille2;
         wchar_t date_string[15];
-        //taille = std::size(date_ou_dates);
         taille = std::size(saisons);
         std::wstring saison_str;
         std::wstring wstr;
         for (int i = 0; i < taille; i++)
         {
-            //std::pair<std::tm, std::wstring>dossier;
-            //wcsftime(date_string, 15, L"%d/%m/%Y", &saisons[i].dossier.first);
-            //wcsftime(date_string, 15, L"%d/%m/%Y", &saisons[i].dossier.first);
-            //std::wcout << L"saisons[i].dossier.first=" << saisons[i].dossier.first.tm_year << std::endl;
-            std::wcout << saisons[i].saison.dos << std::end;
-            //wstr = date_string;
-            std::wcout << L"saison x" << std::endl;
+            wcsftime(date_string, 15, L"%d/%m/%Y", &saisons[i].dossier.first);
+            wstr = date_string;
+            wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+            if (saisons[i].dossier.second != L"")
+                wstr += keyColor[0] + saisons[i].dossier.second + valuesColor + L' ';
+            if(saisons[i].titre != L"")
+                wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + saisons[i].titre + valuesColor;
+            wstr += keyColor[1] + L" : " + valuesColor;
+            wstr += saisons[i].saison.second;
+            wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saisons[i].saison.first) + keyColor[1] + L')' + valuesColor;
+            std::wcout << wstr << std::endl;
 
         }
-        //wstr = L"saison x";
     }
 }

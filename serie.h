@@ -36,41 +36,30 @@ extern const std::vector<std::wstring> Nationalite;
 
 struct DateRecord;
 
-class Saison
+struct Saison
 {
 public:
     Saison(void);
     ~Saison();
-    //void afficher_Avec(std::filesystem::path const& nomFichier);
-    //void afficher_Dossier(std::filesystem::path const& nomDossier);
-    //void afficher_Fichier(std::filesystem::path const& nomFichier);
-    //void afficher_Date_ou_Dates(std::filesystem::path const& nomFichier);
-    //void afficher_Date_ou_Dates_Titres(std::filesystem::path const& nomFichier);
-    //void afficher_Episodes(std::filesystem::path const& nomFichier);
-    //void afficher_Note(std::filesystem::path const& nomFichier);
+    void afficher(std::filesystem::path const& cheminFichier);
     void afficher_Avec(std::filesystem::path const& cheminFichier);
     void afficher_Dossier(std::filesystem::path const& cheminDossier);
     void afficher_Fichier(std::filesystem::path const& cheminFichier);
     void afficher_Episode(std::filesystem::path const& cheminFichier);
-    void afficher_Episode_Titres(std::filesystem::path const& cheminFichier);
+    void afficher_Episode_Titre(std::filesystem::path const& cheminFichier);
     void afficher_Note(std::filesystem::path const& cheminFichier);
-    void afficher_Saison(std::filesystem::path const& cheminFichier);
     void afficher_Titre(std::filesystem::path const& cheminFichier);
+
     //unsigned short int episode{ 0 };
-
-private:
-
-    //                               x          t1            t2           t3           temps      p
-    std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>> episode_titres;
-
-//protected:
     std::vector<std::pair<std::wstring, std::wstring>> avec;
     std::pair<std::tm, std::wstring>dossier;
-    std::wstring dos = L"";
     std::vector<std::tuple<unsigned int, std::vector<DateRecord>, std::wstring>>episode;
-    std::pair<unsigned short int, std::wstring>saison;
+    //                               x          t1            t2           t3           temps      p
+    std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>> episode_titre;
     std::vector<std::wstring> image;
     double note = -1.0;
+    std::pair<unsigned short int, std::wstring>saison;
+    std::wstring titre;
 };
 
 class Serie

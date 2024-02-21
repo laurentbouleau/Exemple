@@ -39,9 +39,7 @@ extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 const void afficher_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec)
 {
-    //assert((a_filename == createdBy_filename) && L"Erreur !!! Avec... !");
     auto nomFichier = cheminFichier.filename().wstring();
-    std::wcout << L"---> Avec nomFichier=" << nomFichier << std::endl;
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     avec = lire_paireCleValeur_depuisFichierTxt(cheminFichier.wstring(), L" : ");
     assert((avec.size() != 0));
@@ -70,8 +68,6 @@ const void afficher_Chaine(fs::path const& cheminFichier, std::wstring& chaine)
 const void afficher_Image(fs::path const& cheminFichier, std::vector<std::wstring>& images)
 {
     auto nomFichier = cheminFichier.filename().wstring();
-    std::wcout << L"nomFichier=[" << nomFichier << L']' << std::endl;
-
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     //std::size_t pos_txt = nf.find_last_of(L"\\");
     //assert((pos_txt != std::wstring::npos) && L"Erreur Image(s) !!!");
