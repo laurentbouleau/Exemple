@@ -53,8 +53,9 @@ public:
     //unsigned short int episode{ 0 };
     std::vector<std::pair<std::wstring, std::wstring>> avec;
     std::pair<std::tm, std::wstring>dossier;
-    //                               x              e          t1            t2           t3           temps      p
+    //                               x             e          dr                 streaming
     std::vector<std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring>>episode;
+    //                               x           t1            t2           t3           temps      p
     std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>> episode_titre;
     std::vector<std::wstring> image;
     double note = -1.0;
