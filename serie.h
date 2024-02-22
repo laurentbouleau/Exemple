@@ -53,8 +53,8 @@ public:
     //unsigned short int episode{ 0 };
     std::vector<std::pair<std::wstring, std::wstring>> avec;
     std::pair<std::tm, std::wstring>dossier;
-    std::vector<std::tuple<unsigned int, std::vector<DateRecord>, std::wstring>>episode;
-    //                               x          t1            t2           t3           temps      p
+    //                               x              e          t1            t2           t3           temps      p
+    std::vector<std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring>>episode;
     std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>> episode_titre;
     std::vector<std::wstring> image;
     double note = -1.0;
@@ -67,14 +67,17 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
     ~Serie();
-    void Print();
+    const void Print();
     std::vector<Saison>saisons{};
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
 private:
     //const bool PrintDate_ou_Dates();
-    void PrintEpisode();
-    void PrintSaisons();
+    //void PrintAvec(const std::vector<std::pair<std::wstring, std::wstring>> avec);
+    const void PrintEpisodes(Saison saison);
+    const void PrintSaison(Saison saison);
+    const void PrintSaison_Date_etc(Saison saison);
+    const void PrintSaisons();
 
     std::filesystem::path racine;
 
@@ -82,7 +85,10 @@ private:
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     //bool affichage;
-    bool affichage_Episode_actif = true;
+    bool afficage_Avec_actif = true;
+    bool affichage_Episodes_actif = true;
+    bool affichage_Saison_actif = true;
+    bool affichage_Saison_Date_etc_actif = true;
     bool affichage_Saisons_actif = true;
 };
 
