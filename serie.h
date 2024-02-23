@@ -76,18 +76,21 @@ private:
     //const bool PrintDate_ou_Dates();
     //void PrintAvec(const std::vector<std::pair<std::wstring, std::wstring>> avec);
     const void PrintEpisodes(Saison saison);
+    const void PrintEpisodes_Titres(Saison saison);
     const void PrintSaison(Saison saison);
     const void PrintSaison_Date_etc(Saison saison);
     const void PrintSaisons();
 
     std::filesystem::path racine;
 
+    std::wstring min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     //bool affichage;
     bool afficage_Avec_actif = true;
     bool affichage_Episodes_actif = true;
+    bool affichage_Episodes_Titre_actif = true;
     bool affichage_Saison_actif = true;
     bool affichage_Saison_Date_etc_actif = true;
     bool affichage_Saisons_actif = true;
