@@ -493,23 +493,28 @@ void Saison::afficher_Episode(fs::path const& cheminFichier)
         // ou : 
         exit(1);
     } while (strRestant.length() > 0);
-    episode.push_back(make_tuple(x, e, dr, streaming));
-    afficher_Episode_Titre(cheminFichier);
+    bool true_ou_false = true;
+    true_ou_false = afficher_Episode_Titre(cheminFichier);
+    episode.push_back(make_tuple(x, e, dr, streaming, true_ou_false));
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::afficher_Episode_Titre(fs::path const& cheminFichier)                                                                                 #
+// # bool Saison::afficher_Episode_Titre(fs::path const& cheminFichier)                                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Saison::afficher_Episode_Titre(fs::path const& cheminFichier)
+bool Saison::afficher_Episode_Titre(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.filename().wstring();
     if (nomFichier.length() == 0)
-        return;
+        return false;
 
     std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    if (t.size() == 0)
+    {
+        return false;
+    }
     //std::vector<std::wstring>::iterator iter;
     /*int i;
     for (iter = t.begin(), i = 0; iter != t.end(); iter++, i++)
@@ -574,6 +579,7 @@ void Saison::afficher_Episode_Titre(fs::path const& cheminFichier)
     pos = 0;
     tm_temps.tm_min = std::stoi(t[1], &pos);
     episode_titre.push_back(make_tuple(x, t1, t2, t3, tm_temps, t[2]));
+    return true;
 }
 
 // ######################################################################################################################################################
@@ -705,37 +711,24 @@ const void Serie::PrintEpisodes(Saison saison)
             //
             std::wcout << wstr << std::endl;
 
-            // saison.episode_titre
-            //std::wcout << get<5>(saison.episode_titre[i]) << std::endl;
-            PrintEpisodes_Titres(saison);
-
+            std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring> &e_t = saison.episode_titre[i];
+            PrintEpisode_Titre(e_t);
         }
     }
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::PrintEpisodes_Titres(Saison saison)                                                                                                    #
+// # void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t)                     #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::PrintEpisodes_Titres(Saison saison)
+const void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t)
 {
-    if (affichage_Episodes_Titre_actif /* && dates.size() > 0*/)
+    if (affichage_Episode_Titre_actif)
     {
-        //wchar_t date_string[15];
-        std::size_t taille;// , taille2;
-        taille = std::size(saison.episode);
-        std::wstring wstr;
-        //std::tm tm;
-        for (int i = 0; i < taille; i++)
-        {
-
-            // saison.episode_titre
-            std::wcout << get<5>(saison.episode_titre[i]) << std::endl;
-
-
-        }
+        std::wstring wstr = get<5>(e_t);
+        std::wcout << wstr << std::endl;
     }
 }
 

@@ -46,15 +46,15 @@ public:
     void afficher_Dossier(std::filesystem::path const& cheminDossier);
     void afficher_Fichier(std::filesystem::path const& cheminFichier);
     void afficher_Episode(std::filesystem::path const& cheminFichier);
-    void afficher_Episode_Titre(std::filesystem::path const& cheminFichier);
+    bool afficher_Episode_Titre(std::filesystem::path const& cheminFichier);
     void afficher_Note(std::filesystem::path const& cheminFichier);
     void afficher_Titre(std::filesystem::path const& cheminFichier);
 
     //unsigned short int episode{ 0 };
     std::vector<std::pair<std::wstring, std::wstring>> avec;
     std::pair<std::tm, std::wstring>dossier;
-    //                               x             e          dr                 streaming
-    std::vector<std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring>>episode;
+    //                               x             e          dr                 streaming     b
+    std::vector<std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring, bool>>episode;
     //                               x           t1            t2           t3           temps      p
     std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>> episode_titre;
     std::vector<std::wstring> image;
@@ -76,7 +76,7 @@ private:
     //const bool PrintDate_ou_Dates();
     //void PrintAvec(const std::vector<std::pair<std::wstring, std::wstring>> avec);
     const void PrintEpisodes(Saison saison);
-    const void PrintEpisodes_Titres(Saison saison);
+    const void PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t);
     const void PrintSaison(Saison saison);
     const void PrintSaison_Date_etc(Saison saison);
     const void PrintSaisons();
@@ -89,8 +89,8 @@ private:
 
     //bool affichage;
     bool afficage_Avec_actif = true;
+    bool affichage_Episode_Titre_actif = true;
     bool affichage_Episodes_actif = true;
-    bool affichage_Episodes_Titre_actif = true;
     bool affichage_Saison_actif = true;
     bool affichage_Saison_Date_etc_actif = true;
     bool affichage_Saisons_actif = true;
