@@ -29,6 +29,7 @@ using namespace std;
 namespace fs = std::filesystem;
 
 extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
+extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
 extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
 extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
@@ -493,9 +494,8 @@ void Saison::afficher_Episode(fs::path const& cheminFichier)
         // ou : 
         exit(1);
     } while (strRestant.length() > 0);
-    bool true_ou_false = true;
-    true_ou_false = afficher_Episode_Titre(cheminFichier);
-    episode.push_back(make_tuple(x, e, dr, streaming, true_ou_false));
+    bool found = afficher_Episode_Titre(cheminFichier);
+    episode.push_back(make_tuple(x, e, dr, streaming, found));
 }
 
 // ######################################################################################################################################################
@@ -510,17 +510,12 @@ bool Saison::afficher_Episode_Titre(fs::path const& cheminFichier)
     if (nomFichier.length() == 0)
         return false;
 
-    std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
-    if (t.size() == 0)
+    std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" }, false);
+    if (t.size() == 0 || t[0] == L"")
     {
+        std::wcout << L"zzz" << std::endl;
         return false;
     }
-    //std::vector<std::wstring>::iterator iter;
-    /*int i;
-    for (iter = t.begin(), i = 0; iter != t.end(); iter++, i++)
-    {
-        std::wcout << L"t[" << i << L"]=[" << *iter << L']' << std::endl;
-    }*/
     auto pos = t[0].find(L". ");
     unsigned int x;
     if (std::isdigit(t[0][0]) && pos == std::wstring::npos)
@@ -687,32 +682,37 @@ const void Serie::PrintEpisodes(Saison saison)
         taille = std::size(saison.episode);
         std::wstring wstr;
         std::tm tm;
+        int j = 0;
         for (int i = 0; i < taille; i++)
         {
+            std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring, bool>& e = saison.episode[i];
+            std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t = saison.episode_titre[j];
             wstr = L"";
-            //std::vector<std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring>>episode;
-            //episode.push_back(make_tuple(x, e, dr, streaming));
-            wstr += std::to_wstring(get<0>(saison.episode[i])) + keyColor[1] + L'x' + valuesColor;
-            wstr += std::to_wstring(get<1>(saison.episode[i]));
+            wstr += std::to_wstring(get<0>(e)) + keyColor[1] + L'x' + valuesColor;
+            wstr += std::to_wstring(get<1>(e));
             //
             wstr += keyColor[1] + L" : " + valuesColor;
-            //                               x           t1            t2           t3           temps      p
-            //std::vector<std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>> episode_titre;
-            std::wstring t2 = get<2>(saison.episode_titre[i]);
-            if (t2 == L"")
-                wstr += keyColor[1] + get<1>(saison.episode_titre[i]) + valuesColor;
-            else
-                wstr += keyColor[1] + get<1>(saison.episode_titre[i]) + valuesColor + get<2>(saison.episode_titre[i]) + keyColor[1] + get<3>(saison.episode_titre[i]) + valuesColor;
-            // Temps
-            tm = get<4>(saison.episode_titre[i]);
-            wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(tm.tm_min) + keyColor[1] + min + L')';
+            if (get<4>(e))
+            {
+                std::wstring t2 = get<2>(e_t);
+                if (t2 == L"")
+                    wstr += keyColor[1] + get<1>(e_t) + valuesColor;
+                else
+                    wstr += keyColor[1] + get<1>(e_t) + valuesColor + get<2>(e_t) + keyColor[1] + get<3>(e_t) + valuesColor;
+                // Temps
+                tm = get<4>(e_t);
+                wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(tm.tm_min) + keyColor[1] + min + L')';
+            }
             // L" : "
             wstr += keyColor[1] + L" : " + valuesColor;
             //
             std::wcout << wstr << std::endl;
-
-            std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring> &e_t = saison.episode_titre[i];
-            PrintEpisode_Titre(e_t);
+            if (get<4>(e))
+            {
+                PrintEpisode_Titre(e_t);
+            }
+            if (get<1>(e) != get<0>(e_t))
+                j++;
         }
     }
 }
