@@ -41,6 +41,17 @@ extern bool checkday(int m, int d, int y);
 
 extern const void afficher_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec);
 
+Episode::Episode(void)
+{
+    //x = 0;
+    //e = 0;
+    //b = false;
+    //tm = { 0 };
+}
+
+Episode::~Episode()
+{}
+
 Saison::Saison()
 {}
 
@@ -130,6 +141,259 @@ Serie::~Serie()
         }
     }
 }*/
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Episode::afficher(fs::path const& cheminFichier, std::pair<unsigned short int, std::wstring>saison)                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Episode::afficher(fs::path const& cheminFichier, std::pair<unsigned short int, std::wstring>saison)
+{
+    //auto nomFichier = cheminFichier.filename().wstring();
+    std::size_t pos = 0;
+    //auto strRestant = nomFichier.substr(pos);
+    std::wstring strRestant;
+    pos = strRestant.length();
+    strRestant = strRestant.substr(0, pos - 4);
+    assert((strRestant[0] != L'0') && L"Pas de zero !!!");
+    try
+    {
+        if (!(
+            (std::isdigit(strRestant[0]) && strRestant[1] == L'x')
+            ||
+            (std::isdigit(strRestant[0]) && std::isdigit(strRestant[1]) && strRestant[2] == L'x')
+            ||
+            (std::isdigit(strRestant[0]) && std::isdigit(strRestant[1]) && std::isdigit(strRestant[2]) && strRestant[3] == L'x')
+            ))
+        {
+        }
+    }
+    catch (std::runtime_error const& exception)
+    {
+        std::cout << "Erreur : " << exception.what() << std::endl;
+    }
+    /*unsigned int */x = std::stoi(strRestant, &pos);
+    pos++;
+    strRestant = strRestant.substr(pos);
+    /*unsigned int */e = stoi(strRestant.substr(0, pos + 1));
+
+    try
+    {
+        if (e <= saison.first)
+        {
+        }
+    }
+    catch (std::runtime_error const& exception)
+    {
+        std::cout << "Erreur : " << exception.what() << std::endl;
+    }
+
+    pos = strRestant.find(L'.');
+    strRestant = strRestant.substr(pos);
+    assert((strRestant[0] == L'.') && L"Pas de . (poing) !!!");
+    strRestant = strRestant.substr(1);
+    assert((strRestant.length() > 9) && L"Nom de fichier trop court pour avoir au moins une date");
+    std::vector<DateRecord> dr;
+    std::wstring streaming = L"";
+
+    wchar_t sp = L' ', tiret = L'-', tiret_bas = L'_';
+    int y, m, d;
+
+    int firstYear = 0, firstMon = 0, firstDay = 0;
+    int i = 0;
+    do
+    {
+        if (strRestant[0] == sp)
+        {
+            if (strRestant[1] == std::wstring::npos || strRestant[1] == sp)
+            {
+                // try cath !!!
+                // Explique-moi ??? 
+                // ou : 
+                exit(1);
+            }
+            strRestant = strRestant.substr(1);
+            // try cath !!!
+            // Explique-moi ??? 
+            // ou : 
+            try // Erreur !!!
+            {
+                test_sp_et_npos_ou_pas_isblank(strRestant[0], isblank(strRestant[1]));
+            }
+            catch (exception_test_sp_et_npos_ou_pas_isblank e)
+            {
+                exit(1);
+            }
+            if (strRestant.length() > 0)
+            {
+                streaming = strRestant;
+            }
+            strRestant = L"";
+            break;
+        }
+        if (!isdigit(strRestant[0]))
+        {
+            // try cath !!!
+            // Explique-moi ??? 
+            // ou : 
+            exit(1);
+        }
+        // year + mon + mday
+        if ((y = stoi(strRestant.substr(0, 4))) && checkyear(y)
+            &&
+            strRestant[4] == tiret
+            &&
+            (m = std::stoi(strRestant.substr(5, 2))) && checkmonth(m)
+            &&
+            strRestant[7] == tiret
+            &&
+            (d = std::stoi(strRestant.substr(8, 2))) && checkday(m, d, y)
+            &&
+            firstYear < y)
+        {
+            assert(firstYear < y && L"L'année aaaaa");
+            firstYear = y;
+            assert(firstMon < m && L"Le mois aaaaa");
+            firstMon = m;
+            assert(firstDay <= d && L"Le jours aaaaa");
+            firstDay = d;
+            dr.push_back(DateRecord{ 0 });
+            dr[i].date.tm_year = y - 1900;
+            dr[i].date.tm_mon = m - 1;
+            dr[i].date.tm_mday = d;
+            strRestant = strRestant.substr(10);
+            if (strRestant[0] == tiret_bas)
+            {
+                dr[i].someFlag = true;
+                strRestant = strRestant.substr(1);
+            }
+            i++;
+            continue;
+        }
+        // mon + mday
+        if ((m = std::stoi(strRestant.substr(0, 2))) && checkmonth(m)
+            &&
+            strRestant[2] == tiret
+            &&
+            (d = std::stoi(strRestant.substr(3, 2))) && checkday(m, d, firstYear)
+            &&
+            firstMon < m)
+        {
+            assert(firstMon < m && L"Le mois aaaaa");
+            firstMon = m;
+            dr.push_back(DateRecord{ 0 });
+            dr[i].date.tm_year = firstYear - 1900;
+            dr[i].date.tm_mon = m - 1;
+            dr[i].date.tm_mday = d;
+            assert(firstDay <= d && L"Le jours aaaaa");
+            firstDay = d;
+            strRestant = strRestant.substr(5);
+            if (strRestant[0] == tiret_bas)
+            {
+                dr[i].someFlag = true;
+                strRestant = strRestant.substr(1);
+            }
+            i++;
+            continue;
+        }
+        // mday
+        if ((d = std::stoi(strRestant.substr(0, 2))) && checkday(firstMon, d, firstYear)
+            &&
+            firstDay <= d)
+        {
+            firstDay = d;
+            assert(firstDay <= d && L"Le jours aaaaa");
+            dr.push_back(DateRecord{ 0 });
+            dr[i].date.tm_year = firstYear - 1900;
+            dr[i].date.tm_mon = firstMon - 1;
+            dr[i].date.tm_mday = d;
+            strRestant = strRestant.substr(2);
+            if (strRestant[0] == tiret_bas)
+            {
+                dr[i].someFlag = true;
+                strRestant = strRestant.substr(1);
+            }
+            i++;
+            continue;
+        }
+        // try cath !!!
+        // Explique-moi ???
+        // ou : 
+        exit(1);
+    } while (strRestant.length() > 0);
+    //    bool found = afficher_Episode_Titre(cheminFichier);
+    bool found;// = false;
+    //    episode.push_back(make_tuple(x, e, dr, streaming, found));
+        //                               x             e          dr                 streaming     b            t1            t2            t3      temps          p  
+        //std::vector<std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring, bool, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>>e_episode;
+    std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" }, false);
+    unsigned int ee;
+    //std::wstring t1, t2, t3, temps;
+    //std::tm tm_temps{ 0 };
+    if (t[0] != L"")
+        found = false;
+    else
+    {
+        //return false;
+        pos = t[0].find(L". ");
+        //unsigned int x;
+        if (std::isdigit(t[0][0]) && pos == std::wstring::npos)
+        {
+            ee = 0;
+        }
+        else
+        {
+            ee = std::stoi(t[0], &pos);
+            t[0] = t[0].substr(pos + 2);
+        }
+        // t
+        bool found2 = false;
+        pos = t[0].find(L" - ");
+        if (pos != std::wstring::npos && !found2)
+        {
+            t1 = t[0].substr(0, pos);
+            t2 = L" : ";
+            t3 = t[0].substr(pos + 3);
+            found2 = true;
+        }
+        pos = t[0].find(L" : ");
+        if (pos != std::wstring::npos && !found2)
+        {
+            t1 = t[0].substr(0, pos);
+            t2 = L" : ";
+            t3 = t[0].substr(pos + 3);
+            found2 = true;
+        }
+        pos = t[0].find(L": ");
+        if (pos != std::wstring::npos && !found2)
+        {
+            t1 = t[0].substr(0, pos);
+            t2 = L": ";
+            t3 = t[0].substr(pos + 2);
+            found2 = true;
+        }
+        pos = t[0].find(L'/');
+        if (pos != std::wstring::npos && !found2)
+        {
+            t1 = t[0].substr(0, pos);
+            t2 = L"/";
+            t3 = t[0].substr(pos + 1);
+            found2 = true;
+        }
+        if (pos == std::wstring::npos && !found2)
+        {
+            t1 = t[0];
+            t2 = L"";
+            t3 = L"";
+            found2 = true;
+        }
+        bool temps_ = afficher_Temps(t[1]);
+        pos = 0;
+        tm_temps.tm_min = std::stoi(t[1], &pos);
+        found = true;
+    }
+
+}
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Saison::afficher_Dossier(fs::path const& cheminFichier)                                                                                       #
@@ -259,17 +523,14 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
         }
         if (int j = std::stoi(nomFichier))
         {
-            auto t2 = std::to_wstring(j);
-            //std::wcout << L"Saison :" << std::endl;
             afficher(cheminFichier);
-            //std::wcout << L"Saison !!! ok !!!" << std::endl;
             return;
         }
         // Erreur !
         if (nomFichier != L"")
         {
             //E.afficher_X(-1, nomFichier, L'{' + t + L".txt} !!!");
-            //return EXIT_FAILURE;
+            return;// EXIT_FAILURE;
         }
     }
     else if(nomImage == L".jgp" || nomImage == L".png" || nomImage == L".webp")
@@ -330,172 +591,24 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
 // # void Saison::afficher_Episode(fs::path const& cheminFichier)                                                                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
+ /*void test_date_year(int& year)
+ {
+     if (year <= 1900 || year >= 3001)
+     {
+         throw exception_date_year();
+     }
+     return;
+ }*/
 
 void Saison::afficher_Episode(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.filename().wstring();
 
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::size_t pos = 0;
-    std::wstring strRestant = nomFichier.substr(pos);
-    pos = strRestant.length();
-    strRestant = strRestant.substr(0, pos - 4);
-    pos = strRestant.length();
-    assert((strRestant.length() < (9 + saison.first + 1)) && L"Nom de fichier trop court pour avoir au moins une date");
+    /*episoode = */afficher(cheminFichier, saison);
+    //m_episode.push_back(make_tuple(x, e, dr, streaming, found, t1, t2, t3, tm_temps, t[2]));
+    episodes.push_back(episoode);
 
-    pos = 0;
-    unsigned int x = std::stoi(strRestant, &pos);
-    if (saison.first == x && x >= 1000)
-    {
-        std::wcout << L"x <= 1000 !!!" << std::endl;
-        exit(1);
-    }
-    pos = strRestant.find(L"x", 0);
-    if (pos == std::wstring::npos)
-    {
-        std::wcout << L"Saison::afficher_Episode() :  x !!!" << std::endl;
-        exit(1);
-    }
-    strRestant = strRestant.substr(pos + 1);
-    if (x >= saison.first)
-    {
-        std::wcout << L"saison.first != x" << std::endl;
-        exit(1);
-    }
-    unsigned int e = stoi(strRestant.substr(0, pos + 1));
-    pos = strRestant.find(L'.');
-    pos++;
-    strRestant = strRestant.substr(pos);
-    std::vector<DateRecord> dr;
-    std::wstring streaming = L"";
-
-    wchar_t sp = L' ', tiret = L'-', tiret_bas = L'_';
-    int y, m, d;
-
-    int firstYear = 0, firstMon = 0, firstDay = 0;
-    int i = 0;
-    do
-    {
-        if (strRestant[0] == sp)
-        {
-            if (strRestant[1] == std::wstring::npos || strRestant[1] == sp)
-            {
-                // try cath !!!
-                // Explique-moi ??? 
-                // ou : 
-                exit(1);
-            }
-            strRestant = strRestant.substr(1);
-            // try cath !!!
-            // Explique-moi ??? 
-            // ou : 
-            try // Erreur !!!
-            {
-                test_sp_et_npos_ou_pas_isblank(strRestant[0], isblank(strRestant[1]));
-            }
-            catch (exception_test_sp_et_npos_ou_pas_isblank e)
-            {
-                exit(1);
-            }
-            if (strRestant.length() > 0)
-            {
-                streaming = strRestant;
-            }
-            strRestant = L"";
-            break;
-        }
-        if (!isdigit(strRestant[0]))
-        {
-            // try cath !!!
-            // Explique-moi ??? 
-            // ou : 
-            exit(1);
-        }
-        // year + mon + mday
-        if ((y = stoi(strRestant.substr(0, 4))) && checkyear(y)
-            &&
-            strRestant[4] == tiret
-            &&
-            (m = std::stoi(strRestant.substr(5, 2))) && checkmonth(m)
-            &&
-            strRestant[7] == tiret
-            &&
-            (d = std::stoi(strRestant.substr(8, 2))) && checkday(m, d, y)
-            &&
-            firstYear < y)
-        {
-            assert(firstYear < y && L"L'année aaaaa");
-            firstYear = y;
-            assert(firstMon < m && L"Le mois aaaaa");
-            firstMon = m;
-            assert(firstDay <= d && L"Le jours aaaaa");
-            firstDay = d;
-            dr.push_back(DateRecord{ 0 });
-            dr[i].date.tm_year = y - 1900;
-            dr[i].date.tm_mon = m - 1;
-            dr[i].date.tm_mday = d;
-            strRestant = strRestant.substr(10);
-            if (strRestant[0] == tiret_bas)
-            {
-                dr[i].someFlag = true;
-                strRestant = strRestant.substr(1);
-            }
-            i++;
-            continue;
-        }
-        // mon + mday
-        if ((m = std::stoi(strRestant.substr(0, 2))) && checkmonth(m)
-            &&
-            strRestant[2] == tiret
-            &&
-            (d = std::stoi(strRestant.substr(3, 2))) && checkday(m, d, firstYear)
-            &&
-            firstMon < m)
-        {
-            assert(firstMon < m && L"Le mois aaaaa");
-            firstMon = m;
-            dr.push_back(DateRecord{ 0 });
-            dr[i].date.tm_year = firstYear - 1900;
-            dr[i].date.tm_mon = m - 1;
-            dr[i].date.tm_mday = d;
-            assert(firstDay <= d && L"Le jours aaaaa");
-            firstDay = d;
-            strRestant = strRestant.substr(5);
-            if (strRestant[0] == tiret_bas)
-            {
-                dr[i].someFlag = true;
-                strRestant = strRestant.substr(1);
-            }
-            i++;
-            continue;
-        }
-        // mday
-        if ((d = std::stoi(strRestant.substr(0, 2))) && checkday(firstMon, d, firstYear)
-            &&
-            firstDay <= d)
-        {
-            firstDay = d;
-            assert(firstDay <= d && L"Le jours aaaaa");
-            dr.push_back(DateRecord{ 0 });
-            dr[i].date.tm_year = firstYear - 1900;
-            dr[i].date.tm_mon = firstMon - 1;
-            dr[i].date.tm_mday = d;
-            strRestant = strRestant.substr(2);
-            if (strRestant[0] == tiret_bas)
-            {
-                dr[i].someFlag = true;
-                strRestant = strRestant.substr(1);
-            }
-            i++;
-            continue;
-        }
-        // try cath !!!
-        // Explique-moi ???
-        // ou : 
-        exit(1);
-    } while (strRestant.length() > 0);
-    bool found = afficher_Episode_Titre(cheminFichier);
-    episode.push_back(make_tuple(x, e, dr, streaming, found));
 }
 
 // ######################################################################################################################################################
@@ -504,16 +617,15 @@ void Saison::afficher_Episode(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-bool Saison::afficher_Episode_Titre(fs::path const& cheminFichier)
+/*bool Saison::afficher_Episode_Titre(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.filename().wstring();
     if (nomFichier.length() == 0)
         return false;
 
     std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" }, false);
-    if (t.size() == 0 || t[0] == L"")
+    if (t[0] == L"")
     {
-        std::wcout << L"zzz" << std::endl;
         return false;
     }
     auto pos = t[0].find(L". ");
@@ -575,7 +687,7 @@ bool Saison::afficher_Episode_Titre(fs::path const& cheminFichier)
     tm_temps.tm_min = std::stoi(t[1], &pos);
     episode_titre.push_back(make_tuple(x, t1, t2, t3, tm_temps, t[2]));
     return true;
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -633,7 +745,6 @@ void Saison::afficher_Note(fs::path const& cheminFichier)
     return;
 }
 
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Saison::afficher_Titre(fs::path const& cheminFichier)                                                                                         #
@@ -666,16 +777,60 @@ const void Serie::Print()
 
 /*void Serie::Print_Avec(const std::vecor<Avec)
 {}*/
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::PrintEpisodes(Saison saison)                                                                                                           #
+// # const void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t)               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::PrintEpisodes(Saison saison)
+const void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t)
 {
-    if (affichage_Episodes_actif /* && dates.size() > 0*/)
+    if (affichage_Episode_Titre_actif)
+    {
+        std::wstring wstr = get<5>(e_t);
+        std::wcout << wstr << std::endl;
+    }
+}
+
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const bool Serie::PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre)                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const bool Serie::PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre)
+{
+    if (!std::isdigit(titre[0]))
+        return false;
+    int i = 0;
+    while (titre[i] != std::wstring::npos)
+    {
+        if (std::isdigit(titre[i]))
+            ;
+        else if (titre[i] == L'.' && i > 0)
+        {
+            if (titre[i + 1] != std::wstring::npos && titre[i + 1] == L' ')
+                break;
+            else return false;
+        }
+        else
+            return false;
+        i++;
+    }
+    titre = titre.substr(i + 2);
+    return true;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Serie::PrintEpisodes(Saison saison)                                                                                                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+/*const void Serie::PrintEpisodes(Saison saison)
+{
+    if (affichage_Episodes_actif )
     {
         wchar_t date_string[15];
         std::size_t taille;// , taille2;
@@ -685,13 +840,19 @@ const void Serie::PrintEpisodes(Saison saison)
         int j = 0;
         for (int i = 0; i < taille; i++)
         {
-            std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring, bool>& e = saison.episode[i];
-            std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t = saison.episode_titre[j];
+            //std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring, bool>& e = saison.episode[i];
+            auto& e = saison.episode[i];
+            //std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t = saison.episode_titre[j];
+            auto& e_t = saison.episode_titre[j];
+            bool chiffre_et_point_ou_pas = PrintEpisode_Titre_chiffre_et_point_ou_pas(get<1>(e_t));
             wstr = L"";
-            wstr += std::to_wstring(get<0>(e)) + keyColor[1] + L'x' + valuesColor;
-            wstr += std::to_wstring(get<1>(e));
-            //
-            wstr += keyColor[1] + L" : " + valuesColor;
+            if (!chiffre_et_point_ou_pas)
+            {
+                wstr += std::to_wstring(get<0>(e)) + keyColor[1] + L'x' + valuesColor;
+                wstr += std::to_wstring(get<1>(e));
+                //
+                wstr += keyColor[1] + L" : " + valuesColor;
+            }
             if (get<4>(e))
             {
                 std::wstring t2 = get<2>(e_t);
@@ -715,73 +876,27 @@ const void Serie::PrintEpisodes(Saison saison)
                 j++;
         }
     }
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t)                     #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-const void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t)
+}*/
+const void Serie::PrintEpisodes(Saison saison)
 {
-    if (affichage_Episode_Titre_actif)
+    for (auto ep : saison.episodes)
     {
-        std::wstring wstr = get<5>(e_t);
-        std::wcout << wstr << std::endl;
+        ep.afficher();
     }
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::PrintSaison(Saison saison)                                                                                                             #
+// # const void Serie::PrintSaison(Saison saison)                                                                                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::PrintSaison(Saison saison)
+/*const void Serie::PrintSaison(Saison saison)
 {
     if (affichage_Saison_actif)
     {
         PrintSaison_Date_etc(saison);
         PrintEpisodes(saison);
-        /*wchar_t date_string[15];
-        wcsftime(date_string, 15, L"%d/%m/%Y", &saison.dossier.first);
-        std::wstring wstr;
-        wstr = date_string;
-        wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
-        if (saison.dossier.second != L"")
-            wstr += keyColor[0] + saison.dossier.second + valuesColor + L' ';
-        if (saison.titre != L"")
-            wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + saison.titre + valuesColor;
-        wstr += keyColor[1] + L" : " + valuesColor;
-        wstr += saison.saison.second;
-        wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.saison.first) + keyColor[1] + L')' + valuesColor;
-        std::wcout << wstr << std::endl;
-        */
-
-        //std::size_t taille2;
-        //taille2 = std::size(saisons[i].episode);
-        //for (int j = 0; j < taille2; j++)
-        //{
-        //    PrintEpisode();
-        //}
-
-        // Avec
-        //PrintAvec(saisons[i].avec);
-
-    }
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Serie::PrintSaison_Date_etc()                                                                                                                 #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-const void Serie::PrintSaison_Date_etc(Saison saison)
-{
-    if (affichage_Saison_Date_etc_actif)
-    {
         wchar_t date_string[15];
         wcsftime(date_string, 15, L"%d/%m/%Y", &saison.dossier.first);
         std::wstring wstr;
@@ -795,12 +910,51 @@ const void Serie::PrintSaison_Date_etc(Saison saison)
         wstr += saison.saison.second;
         wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.saison.first) + keyColor[1] + L')' + valuesColor;
         std::wcout << wstr << std::endl;
+        
+
+        //std::size_t taille2;
+        //taille2 = std::size(saisons[i].episode);
+        //for (int j = 0; j < taille2; j++)
+        //{
+        //    PrintEpisode();
+        //}
+
+        // Avec
+        //PrintAvec(saisons[i].avec);
+
+    }
+}*/
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Serie::PrintSaison_Date_etc()                                                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Serie::PrintSaison_Date_etc(Saison saison)
+{
+    if (affichage_Saison_Date_etc_actif)
+    {
+        wchar_t date_string[15];
+        //std::wstring date_string;
+        wcsftime(date_string, 15, L"%d/%m/%Y", &saison.dossier.first);
+        std::wstring wstr;
+        wstr = date_string;
+        wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+        if (saison.dossier.second != L"")
+            wstr += keyColor[0] + saison.dossier.second + valuesColor + L' ';
+        if (saison.titre != L"")
+            wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + saison.titre + valuesColor;
+        wstr += keyColor[1] + L" : " + valuesColor;
+        wstr += saison.saison.second;
+        wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.saison.first) + keyColor[1] + L')' + valuesColor;
+        std::wcout << wstr << std::endl;
     }
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::PrintSaisons()                                                                                                                         #
+// # const void Serie::PrintSaisons()                                                                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
