@@ -42,12 +42,7 @@ extern bool checkday(int m, int d, int y);
 extern const void afficher_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec);
 
 Episode::Episode(void)
-{
-    //x = 0;
-    //e = 0;
-    //b = false;
-    //tm = { 0 };
-}
+{}
 
 Episode::~Episode()
 {}
@@ -143,16 +138,15 @@ Serie::~Serie()
 }*/
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Episode::afficher(fs::path const& cheminFichier, std::pair<unsigned short int, std::wstring>saison)                                           #
+// # void Episode::afficher()                                                                                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Episode::afficher(fs::path const& cheminFichier, std::pair<unsigned short int, std::wstring>saison)
+void Episode::afficher()
 {
-    //auto nomFichier = cheminFichier.filename().wstring();
+    auto nomFichier = m_cheminFichier.filename().wstring();
     std::size_t pos = 0;
-    //auto strRestant = nomFichier.substr(pos);
-    std::wstring strRestant;
+    auto strRestant = nomFichier.substr(pos);
     pos = strRestant.length();
     strRestant = strRestant.substr(0, pos - 4);
     assert((strRestant[0] != L'0') && L"Pas de zero !!!");
@@ -172,12 +166,12 @@ void Episode::afficher(fs::path const& cheminFichier, std::pair<unsigned short i
     {
         std::cout << "Erreur : " << exception.what() << std::endl;
     }
-    /*unsigned int */x = std::stoi(strRestant, &pos);
+    x = std::stoi(strRestant, &pos);
     pos++;
     strRestant = strRestant.substr(pos);
-    /*unsigned int */e = stoi(strRestant.substr(0, pos + 1));
+    e = stoi(strRestant.substr(0, pos + 1));
 
-    try
+    /*try
     {
         if (e <= saison.first)
         {
@@ -186,7 +180,7 @@ void Episode::afficher(fs::path const& cheminFichier, std::pair<unsigned short i
     catch (std::runtime_error const& exception)
     {
         std::cout << "Erreur : " << exception.what() << std::endl;
-    }
+    }*/
 
     pos = strRestant.find(L'.');
     strRestant = strRestant.substr(pos);
@@ -321,22 +315,15 @@ void Episode::afficher(fs::path const& cheminFichier, std::pair<unsigned short i
         // ou : 
         exit(1);
     } while (strRestant.length() > 0);
-    //    bool found = afficher_Episode_Titre(cheminFichier);
-    bool found;// = false;
-    //    episode.push_back(make_tuple(x, e, dr, streaming, found));
-        //                               x             e          dr                 streaming     b            t1            t2            t3      temps          p  
-        //std::vector<std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring, bool, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>>e_episode;
-    std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" }, false);
+
+    bool found;
+    std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     unsigned int ee;
-    //std::wstring t1, t2, t3, temps;
-    //std::tm tm_temps{ 0 };
     if (t[0] != L"")
         found = false;
     else
     {
-        //return false;
         pos = t[0].find(L". ");
-        //unsigned int x;
         if (std::isdigit(t[0][0]) && pos == std::wstring::npos)
         {
             ee = 0;
@@ -461,7 +448,6 @@ void Saison::afficher_Dossier(fs::path const& cheminDossier)
 void Saison::afficher_Fichier(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.filename().wstring();
-    //std::wcout << L"===== [" << nomFichier << L"] =====" << std::endl;
  
     auto nomImage = cheminFichier.extension().wstring();
     if (nomImage == L".txt")
@@ -509,7 +495,7 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
             && nomFichier[1] == L'x'
             )
         {
-            afficher_Episode(cheminFichier);
+            Creer_Episode(cheminFichier);
             return;
         }
         if (
@@ -518,7 +504,7 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
             && nomFichier[2] == L'x'
             )
         {
-            afficher_Episode(cheminFichier);
+            Creer_Episode(cheminFichier);
             return;
         }
         if (int j = std::stoi(nomFichier))
@@ -588,106 +574,21 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::afficher_Episode(fs::path const& cheminFichier)                                                                                       #
+// # void Saison::Creer_Episode(fs::path const& cheminFichier)                                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
- /*void test_date_year(int& year)
- {
-     if (year <= 1900 || year >= 3001)
-     {
-         throw exception_date_year();
-     }
-     return;
- }*/
 
-void Saison::afficher_Episode(fs::path const& cheminFichier)
+void Saison::Creer_Episode(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.filename().wstring();
 
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    /*episoode = */afficher(cheminFichier, saison);
+    //afficher(cheminFichier);// , saison* / ); // saison ???
+    Episode episode(cheminFichier);
     //m_episode.push_back(make_tuple(x, e, dr, streaming, found, t1, t2, t3, tm_temps, t[2]));
-    episodes.push_back(episoode);
-
+    //episodes.push_back(episoode);
+    episodes.push_back(episode); // Episode
 }
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # bool Saison::afficher_Episode_Titre(fs::path const& cheminFichier)                                                                                 #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/*bool Saison::afficher_Episode_Titre(fs::path const& cheminFichier)
-{
-    auto nomFichier = cheminFichier.filename().wstring();
-    if (nomFichier.length() == 0)
-        return false;
-
-    std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" }, false);
-    if (t[0] == L"")
-    {
-        return false;
-    }
-    auto pos = t[0].find(L". ");
-    unsigned int x;
-    if (std::isdigit(t[0][0]) && pos == std::wstring::npos)
-    {
-        x = 0;
-    }
-    else
-    {
-        x = std::stoi(t[0], &pos);
-        t[0] = t[0].substr(pos + 2);
-    }
-    // t
-    bool found = false;
-    std::wstring t1, t2, t3, temps;
-    pos = t[0].find(L" - ");
-    if (pos != std::wstring::npos && !found)
-    {
-        t1 = t[0].substr(0, pos);
-        t2 = L" : ";
-        t3 = t[0].substr(pos + 3);
-        found = true;
-    }
-    pos = t[0].find(L" : ");
-    if (pos != std::wstring::npos && !found)
-    {
-        t1 = t[0].substr(0, pos);
-        t2 = L" : ";
-        t3 = t[0].substr(pos + 3);
-        found = true;
-    }
-    pos = t[0].find(L": ");
-    if (pos != std::wstring::npos && !found)
-    {
-        t1 = t[0].substr(0, pos);
-        t2 = L": ";
-        t3 = t[0].substr(pos + 2);
-        found = true;
-    }
-    pos = t[0].find(L'/');
-    if (pos != std::wstring::npos && !found)
-    {
-        t1 = t[0].substr(0, pos);
-        t2 = L"/";
-        t3 = t[0].substr(pos + 1);
-        found = true;
-    }
-    if (pos == std::wstring::npos && !found)
-    {
-        t1 = t[0];
-        t2 = L"";
-        t3 = L"";
-        found = true;
-    }
-    bool temps_ = afficher_Temps(t[1]);
-    std::tm tm_temps{ 0 };
-    pos = 0;
-    tm_temps.tm_min = std::stoi(t[1], &pos);
-    episode_titre.push_back(make_tuple(x, t1, t2, t3, tm_temps, t[2]));
-    return true;
-}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -828,55 +729,6 @@ const bool Serie::PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*const void Serie::PrintEpisodes(Saison saison)
-{
-    if (affichage_Episodes_actif )
-    {
-        wchar_t date_string[15];
-        std::size_t taille;// , taille2;
-        taille = std::size(saison.episode);
-        std::wstring wstr;
-        std::tm tm;
-        int j = 0;
-        for (int i = 0; i < taille; i++)
-        {
-            //std::tuple<unsigned int, unsigned int, std::vector<DateRecord>, std::wstring, bool>& e = saison.episode[i];
-            auto& e = saison.episode[i];
-            //std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t = saison.episode_titre[j];
-            auto& e_t = saison.episode_titre[j];
-            bool chiffre_et_point_ou_pas = PrintEpisode_Titre_chiffre_et_point_ou_pas(get<1>(e_t));
-            wstr = L"";
-            if (!chiffre_et_point_ou_pas)
-            {
-                wstr += std::to_wstring(get<0>(e)) + keyColor[1] + L'x' + valuesColor;
-                wstr += std::to_wstring(get<1>(e));
-                //
-                wstr += keyColor[1] + L" : " + valuesColor;
-            }
-            if (get<4>(e))
-            {
-                std::wstring t2 = get<2>(e_t);
-                if (t2 == L"")
-                    wstr += keyColor[1] + get<1>(e_t) + valuesColor;
-                else
-                    wstr += keyColor[1] + get<1>(e_t) + valuesColor + get<2>(e_t) + keyColor[1] + get<3>(e_t) + valuesColor;
-                // Temps
-                tm = get<4>(e_t);
-                wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(tm.tm_min) + keyColor[1] + min + L')';
-            }
-            // L" : "
-            wstr += keyColor[1] + L" : " + valuesColor;
-            //
-            std::wcout << wstr << std::endl;
-            if (get<4>(e))
-            {
-                PrintEpisode_Titre(e_t);
-            }
-            if (get<1>(e) != get<0>(e_t))
-                j++;
-        }
-    }
-}*/
 const void Serie::PrintEpisodes(Saison saison)
 {
     for (auto ep : saison.episodes)
@@ -968,7 +820,7 @@ const void Serie::PrintSaisons()
         //std::wstring saison_str;
         for (int i = 0; i < taille; i++)
         {
-            PrintSaison(saisons[i]);
+            //PrintSaison(saisons[i]);
         }
     }
 }
