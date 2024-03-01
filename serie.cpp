@@ -381,6 +381,28 @@ void Episode::afficher()
     }
 
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Episode:Print()                                                                                                                               #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Episode::Print()
+{
+    if (affichage_Print_actif)
+    {
+        std::wstring wstr;
+        wstr = std::to_wstring(x);
+        wstr += keyColor[1] + L'x' + valuesColor;
+        wstr += std::to_wstring(e);
+        wstr += keyColor[1] + L" : " + valuesColor;
+        std::wcout << wstr << std::endl;
+    }
+}
+
+
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Saison::afficher_Dossier(fs::path const& cheminFichier)                                                                                       #
@@ -660,6 +682,66 @@ void Saison::afficher_Titre(std::filesystem::path const& cheminFichier)
     assert((titre.size() != 0));
 }
 
+// #
+// #
+// #
+// #
+// #
+
+void Saison::Print()
+{
+    //Print_Date_etc();
+    wchar_t date_string[15];
+    wcsftime(date_string, 15, L"%d/%m/%Y", &dossier.first);
+    std::wstring wstr;
+    wstr = date_string;
+    wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+    if (dossier.second != L"")
+        wstr += keyColor[0] + dossier.second + valuesColor + L' ';
+    if (titre != L"")
+        wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + titre + valuesColor;
+    wstr += keyColor[1] + L" : " + valuesColor;
+    wstr += saison.second;
+    wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
+    std::wcout << L'{' << wstr << std::endl;
+
+//    PrintEpisodes(saison);
+
+
+    std::size_t taille;
+    taille = std::size(episodes);
+    for (auto i = 0; i < taille; i++)
+    {
+        //saison.Print();
+        episodes[i].Print();
+        //PrintEpisodes(saison);
+    }
+
+
+
+}
+
+const void Saison::Print_Date_etc()
+{
+    if (affichage_Date_etc_actif)
+    {
+        wchar_t date_string[15];
+        //std::wstring date_string;
+        wcsftime(date_string, 15, L"%d/%m/%Y", &dossier.first);
+        std::wstring wstr;
+        wstr = date_string;
+        wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+        if (dossier.second != L"")
+            wstr += keyColor[0] + dossier.second + valuesColor + L' ';
+        if (titre != L"")
+            wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + titre + valuesColor;
+        wstr += keyColor[1] + L" : " + valuesColor;
+        wstr += saison.second;
+        wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
+        std::wcout << wstr << std::endl;
+    }
+}
+
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
@@ -676,8 +758,10 @@ const void Serie::Print()
     PrintSaisons();
 }
 
-/*void Serie::Print_Avec(const std::vecor<Avec)
-{}*/
+/*void Serie::PrintAvec(const std::vector<std::pair<std::wstring, std::wstring>> avec)
+{
+}*/
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # const void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t)               #
@@ -743,13 +827,14 @@ const void Serie::PrintEpisodes(Saison saison)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*const void Serie::PrintSaison(Saison saison)
+const void Serie::PrintSaison(Saison saison)
 {
     if (affichage_Saison_actif)
     {
-        PrintSaison_Date_etc(saison);
-        PrintEpisodes(saison);
-        wchar_t date_string[15];
+        //PrintSaison_Date_etc(saison);
+        //PrintEpisodes(saison);
+        
+        /*wchar_t date_string[15];
         wcsftime(date_string, 15, L"%d/%m/%Y", &saison.dossier.first);
         std::wstring wstr;
         wstr = date_string;
@@ -761,9 +846,19 @@ const void Serie::PrintEpisodes(Saison saison)
         wstr += keyColor[1] + L" : " + valuesColor;
         wstr += saison.saison.second;
         wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.saison.first) + keyColor[1] + L')' + valuesColor;
+        */
+
+        std::size_t taille;
+        taille = std::size(saisons);
+        for (auto i = 0; i < taille; i++)
+        {
+            saison.Print();
+            //PrintEpisodes(saison);
+        }
+
+        std::wstring wstr;
         std::wcout << wstr << std::endl;
         
-
         //std::size_t taille2;
         //taille2 = std::size(saisons[i].episode);
         //for (int j = 0; j < taille2; j++)
@@ -773,9 +868,11 @@ const void Serie::PrintEpisodes(Saison saison)
 
         // Avec
         //PrintAvec(saisons[i].avec);
+        //PrintEpisodes(saison);
+        //PrintAvec(saison.avec);
 
     }
-}*/
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -783,7 +880,7 @@ const void Serie::PrintEpisodes(Saison saison)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::PrintSaison_Date_etc(Saison saison)
+/*const void Serie::PrintSaison_Date_etc(Saison saison)
 {
     if (affichage_Saison_Date_etc_actif)
     {
@@ -802,7 +899,7 @@ const void Serie::PrintSaison_Date_etc(Saison saison)
         wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.saison.first) + keyColor[1] + L')' + valuesColor;
         std::wcout << wstr << std::endl;
     }
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -812,7 +909,7 @@ const void Serie::PrintSaison_Date_etc(Saison saison)
 
 const void Serie::PrintSaisons()
 {
-    if (affichage_Saisons_actif /* && dates.size() > 0*/)
+    if (affichage_Saisons_actif )
     {
         std::size_t taille;// , taille2;
         //wchar_t date_string[15];
@@ -820,7 +917,7 @@ const void Serie::PrintSaisons()
         //std::wstring saison_str;
         for (int i = 0; i < taille; i++)
         {
-            //PrintSaison(saisons[i]);
+            PrintSaison(saisons[i]);
         }
     }
 }

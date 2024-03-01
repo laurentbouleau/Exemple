@@ -49,12 +49,18 @@ struct Saison;
 struct Episode
 {
     Episode(void);
-    Episode(std::filesystem::path const& cheminFichier) {};
+    Episode(std::filesystem::path const& cheminFichier) { m_cheminFichier = cheminFichier; };
     ~Episode();
     struct Saison;
     void afficher();
+    void Print();
 
     std::filesystem::path m_cheminFichier;
+
+    std::wstring min = L"min";
+    std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+
     unsigned int x{};
     unsigned int e{};
     std::vector<DateRecord> dr;
@@ -65,6 +71,8 @@ struct Episode
     std::wstring t3;
     std::tm tm_temps{ 0 };
     std::wstring p;
+
+    bool affichage_Print_actif = true;
 };
 
 
@@ -81,15 +89,22 @@ public:
     void afficher_Titre(std::filesystem::path const& cheminFichier);
 
     void Creer_Episode(std::filesystem::path const& cheminFichier);
+    void Print();
+    const void Print_Date_etc();
+    
+    std::wstring min = L"min";
+    std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     std::vector<std::pair<std::wstring, std::wstring>> avec;
     std::pair<std::tm, std::wstring>dossier;
     std::vector<Episode> episodes;
-
-    std::vector<std::wstring> image;
+   std::vector<std::wstring> image;
     double note = -1.0;
     std::pair<unsigned short int, std::wstring>saison;
     std::wstring titre;
+
+    bool affichage_Date_etc_actif = true;
 };
 
 class Serie
@@ -103,13 +118,13 @@ public:
     std::filesystem::path getFileName() { return racine.filename(); };
 private:
     //const bool PrintDate_ou_Dates();
-    //void PrintAvec(const std::vector<std::pair<std::wstring, std::wstring>> avec);
+ //   const void PrintAvec(const std::vector<std::pair<std::wstring, std::wstring>> avec);
     //const void afficher();
     const bool PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre);
     const void PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t);
     const void PrintEpisodes(Saison saison);
-    //const void PrintSaison(Saison saison);
-    const void PrintSaison_Date_etc(Saison saison);
+    const void PrintSaison(Saison saison);
+    //const void PrintSaison_Date_etc(Saison saison);
     const void PrintSaisons();
 
     std::filesystem::path racine;
