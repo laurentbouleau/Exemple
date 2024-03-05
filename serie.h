@@ -26,6 +26,8 @@
 #include <algorithm>
 #include <codecvt>
 #include <tuple>
+#include <regex>
+
 #include <filesystem> // C++17 standard header file name
 //using namespace std;
 
@@ -48,28 +50,28 @@ struct Saison;
 
 struct Episode
 {
-    Episode(void);
-    Episode(std::filesystem::path const& cheminFichier) { m_cheminFichier = cheminFichier; };
-    ~Episode();
+    //Episode(void);
+    Episode(std::filesystem::path const& cheminFichier);// { m_cheminFichier = cheminFichier; };
+    //~Episode();
     struct Saison;
     void afficher();
     void Print();
-
+    bool PrintEpisode_Titre_chiffre_et_point_ou_pas(unsigned char episode);
     std::filesystem::path m_cheminFichier;
 
     std::wstring min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    unsigned int x{};
-    unsigned int e{};
+    unsigned char saison{};
+    unsigned char episode{};
     std::vector<DateRecord> dr;
     std::wstring streaming;
-    bool b{ false };
-    std::wstring t1;
-    std::wstring t2;
-    std::wstring t3;
-    std::tm tm_temps{ 0 };
+    bool b { false };
+    std::wstring titre;
+    std::wstring deux_points;
+    std::wstring sous_titre;
+    std::tm tm{ 0 };
     std::wstring p;
 
     bool affichage_Print_actif = true;
@@ -99,7 +101,7 @@ public:
     std::vector<std::pair<std::wstring, std::wstring>> avec;
     std::pair<std::tm, std::wstring>dossier;
     std::vector<Episode> episodes;
-   std::vector<std::wstring> image;
+    std::vector<std::wstring> image;
     double note = -1.0;
     std::pair<unsigned short int, std::wstring>saison;
     std::wstring titre;
@@ -120,8 +122,8 @@ private:
     //const bool PrintDate_ou_Dates();
  //   const void PrintAvec(const std::vector<std::pair<std::wstring, std::wstring>> avec);
     //const void afficher();
-    const bool PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre);
-    const void PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t);
+    //const bool PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre);
+    //const void PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t);
     const void PrintEpisodes(Saison saison);
     const void PrintSaison(Saison saison);
     //const void PrintSaison_Date_etc(Saison saison);

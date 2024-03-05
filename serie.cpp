@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <codecvt>
 #include <tuple>
+#include <regex>
 
 #include <filesystem> // C++17 standard header file name
 //#include <experimental/filesystem> // Header file for pre-standard implementation
@@ -41,11 +42,11 @@ extern bool checkday(int m, int d, int y);
 
 extern const void afficher_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec);
 
-Episode::Episode(void)
-{}
+//Episode::Episode(void)
+//{}
 
-Episode::~Episode()
-{}
+//Episode::~Episode()
+//{}
 
 Saison::Saison()
 {}
@@ -136,13 +137,9 @@ Serie::~Serie()
         }
     }
 }*/
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Episode::afficher()                                                                                                                           #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
 
-void Episode::afficher()
+Episode::Episode(fs::path const& m_cheminFichier)
+//{ m_cheminFichier = cheminFichier; };
 {
     auto nomFichier = m_cheminFichier.filename().wstring();
     std::size_t pos = 0;
@@ -166,10 +163,10 @@ void Episode::afficher()
     {
         std::cout << "Erreur : " << exception.what() << std::endl;
     }
-    x = std::stoi(strRestant, &pos);
+    saison = std::stoi(strRestant, &pos);
     pos++;
     strRestant = strRestant.substr(pos);
-    e = stoi(strRestant.substr(0, pos + 1));
+    episode = stoi(strRestant.substr(0, pos + 1));
 
     /*try
     {
@@ -318,68 +315,77 @@ void Episode::afficher()
 
     bool found;
     std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
-    unsigned int ee;
-    if (t[0] != L"")
+    pos = 0;
+    if (t[0] == L"")
+    {
         found = false;
+        return;
+    }
+    pos = t[0].find(L". ");
+    if (pos == std::wstring::npos || t[0][3] == L'.')
+    {
+        saison = 0;
+        episode = 0;
+    }
     else
     {
-        pos = t[0].find(L". ");
-        if (std::isdigit(t[0][0]) && pos == std::wstring::npos)
-        {
-            ee = 0;
-        }
-        else
-        {
-            ee = std::stoi(t[0], &pos);
-            t[0] = t[0].substr(pos + 2);
-        }
-        // t
-        bool found2 = false;
-        pos = t[0].find(L" - ");
-        if (pos != std::wstring::npos && !found2)
-        {
-            t1 = t[0].substr(0, pos);
-            t2 = L" : ";
-            t3 = t[0].substr(pos + 3);
-            found2 = true;
-        }
-        pos = t[0].find(L" : ");
-        if (pos != std::wstring::npos && !found2)
-        {
-            t1 = t[0].substr(0, pos);
-            t2 = L" : ";
-            t3 = t[0].substr(pos + 3);
-            found2 = true;
-        }
-        pos = t[0].find(L": ");
-        if (pos != std::wstring::npos && !found2)
-        {
-            t1 = t[0].substr(0, pos);
-            t2 = L": ";
-            t3 = t[0].substr(pos + 2);
-            found2 = true;
-        }
-        pos = t[0].find(L'/');
-        if (pos != std::wstring::npos && !found2)
-        {
-            t1 = t[0].substr(0, pos);
-            t2 = L"/";
-            t3 = t[0].substr(pos + 1);
-            found2 = true;
-        }
-        if (pos == std::wstring::npos && !found2)
-        {
-            t1 = t[0];
-            t2 = L"";
-            t3 = L"";
-            found2 = true;
-        }
-        bool temps_ = afficher_Temps(t[1]);
-        pos = 0;
-        tm_temps.tm_min = std::stoi(t[1], &pos);
-        found = true;
+        unsigned int x = std::stoi(t[0], &pos);
+        t[0] = t[0].substr(pos + 2);
     }
+    bool found2 = false;
+    pos = t[0].find(L" - ");
+    if (pos != std::wstring::npos && !found2)
+    {
+        titre = t[0].substr(0, pos);
+        deux_points = L" : ";
+        sous_titre = t[0].substr(pos + 3);
+        found2 = true;
+    }
+    pos = t[0].find(L" : ");
+    if (pos != std::wstring::npos && !found2)
+    {
+        titre = t[0].substr(0, pos);
+        deux_points = L" : ";
+        sous_titre = t[0].substr(pos + 3);
+        found2 = true;
+    }
+    pos = t[0].find(L": ");
+    if (pos != std::wstring::npos && !found2)
+    {
+        titre = t[0].substr(0, pos);
+        deux_points = L": ";
+        sous_titre = t[0].substr(pos + 2);
+        found2 = true;
+    }
+    pos = t[0].find(L'/');
+    if (pos != std::wstring::npos && !found2)
+    {
+        titre = t[0].substr(0, pos);
+        deux_points = L"/";
+        sous_titre = t[0].substr(pos + 1);
+        found2 = true;
+    }
+    if (pos == std::wstring::npos && !found2)
+    {
+        titre = t[0];
+        deux_points = L"";
+        sous_titre = L"";
+        found2 = true;
+    }
+    bool temps = afficher_Temps(t[1]);
+    pos = 0;
+    tm.tm_min = std::stoi(t[1], &pos);
+    found = true;
+}
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Episode::afficher()                                                                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Episode::afficher()
+{
 }
 
 // ######################################################################################################################################################
@@ -393,14 +399,50 @@ void Episode::Print()
     if (affichage_Print_actif)
     {
         std::wstring wstr;
-        wstr = std::to_wstring(x);
-        wstr += keyColor[1] + L'x' + valuesColor;
-        wstr += std::to_wstring(e);
-        wstr += keyColor[1] + L" : " + valuesColor;
+        bool chiffre_et_point_ou_pas = PrintEpisode_Titre_chiffre_et_point_ou_pas(episode);
+        if (chiffre_et_point_ou_pas)
+        {
+            wstr = std::to_wstring(saison);
+            wstr += keyColor[1] + L'x' + valuesColor;
+            wstr += std::to_wstring(episode);
+            wstr += keyColor[1] + L" : " + valuesColor;
+        }
+        wstr += keyColor[1] + titre + valuesColor;
+        if (deux_points != L"")
+            wstr += deux_points + keyColor[1] + sous_titre + valuesColor;
+        wstr += keyColor[1] + L" (" + valuesColor + to_wstring(tm.tm_min) + keyColor[1]+ min + L')' + valuesColor;
+
+
         std::wcout << wstr << std::endl;
     }
 }
 
+bool Episode::PrintEpisode_Titre_chiffre_et_point_ou_pas(unsigned char episode)
+{
+    if (episode == 0)
+        return false;
+    return true;
+    /*if (!std::isdigit(titre[0]))
+        return false;
+    int i = 0;
+    while (titre[i] != std::wstring::npos)
+    {
+        if (std::isdigit(titre[i]))
+            ;
+        else if (titre[i] == L'.' && i > 0)
+        {
+            if (titre[i + 1] != std::wstring::npos && titre[i + 1] == L' ')
+                break;
+            else
+                return false;
+        }
+        else
+            return false;
+        i++;
+    }
+    titre = titre.substr(i + 2);
+    return true;*/
+}
 
 
 // ######################################################################################################################################################
@@ -703,7 +745,7 @@ void Saison::Print()
     wstr += keyColor[1] + L" : " + valuesColor;
     wstr += saison.second;
     wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
-    std::wcout << L'{' << wstr << std::endl;
+    std::wcout << wstr << std::endl;
 
 //    PrintEpisodes(saison);
 
@@ -713,6 +755,7 @@ void Saison::Print()
     for (auto i = 0; i < taille; i++)
     {
         //saison.Print();
+        //episodes[i].Print();
         episodes[i].Print();
         //PrintEpisodes(saison);
     }
@@ -768,14 +811,14 @@ const void Serie::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t)
+/*const void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t)
 {
     if (affichage_Episode_Titre_actif)
     {
         std::wstring wstr = get<5>(e_t);
         std::wcout << wstr << std::endl;
     }
-}
+}*/
 
 
 // ######################################################################################################################################################
@@ -784,7 +827,7 @@ const void Serie::PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std:
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const bool Serie::PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre)
+/*const bool Serie::PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre)
 {
     if (!std::isdigit(titre[0]))
         return false;
@@ -805,7 +848,7 @@ const bool Serie::PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre
     }
     titre = titre.substr(i + 2);
     return true;
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -817,7 +860,7 @@ const void Serie::PrintEpisodes(Saison saison)
 {
     for (auto ep : saison.episodes)
     {
-        ep.afficher();
+        //ep.afficher();
     }
 }
 
@@ -853,7 +896,6 @@ const void Serie::PrintSaison(Saison saison)
         for (auto i = 0; i < taille; i++)
         {
             saison.Print();
-            //PrintEpisodes(saison);
         }
 
         std::wstring wstr;
@@ -909,7 +951,7 @@ const void Serie::PrintSaison(Saison saison)
 
 const void Serie::PrintSaisons()
 {
-    if (affichage_Saisons_actif )
+    if (affichage_Saisons_actif)
     {
         std::size_t taille;// , taille2;
         //wchar_t date_string[15];
