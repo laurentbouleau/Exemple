@@ -51,12 +51,15 @@ struct Saison;
 struct Episode
 {
     //Episode(void);
-    Episode(std::filesystem::path const& cheminFichier);// { m_cheminFichier = cheminFichier; };
+    //Episode(std::filesystem::path const& cheminFichier);// { m_cheminFichier = cheminFichier; };
+    Episode(/*unsigned short int prefixe, */std::filesystem::path const& cheminFichier);
     //~Episode();
     struct Saison;
     void afficher();
     void Print();
-    bool PrintEpisode_Titre_chiffre_et_point_ou_pas(unsigned char episode);
+    bool Print_Titre_chiffre_et_point_ou_pas(unsigned char episode);
+    const bool Print_Date_ou_Dates();
+
     std::filesystem::path m_cheminFichier;
 
     std::wstring min = L"min";
@@ -72,9 +75,10 @@ struct Episode
     std::wstring deux_points;
     std::wstring sous_titre;
     std::tm tm{ 0 };
-    std::wstring p;
+    std::wstring phrases;
 
     bool affichage_Print_actif = true;
+    bool affichage_date_ou_dates = true;
 };
 
 
@@ -84,16 +88,18 @@ public:
     Saison(void);
     ~Saison();
     void afficher(std::filesystem::path const& cheminFichier);
-    void afficher_Avec(std::filesystem::path const& cheminFichier);
     void afficher_Dossier(std::filesystem::path const& cheminDossier);
     void afficher_Fichier(std::filesystem::path const& cheminFichier);
     void afficher_Note(std::filesystem::path const& cheminFichier);
     void afficher_Titre(std::filesystem::path const& cheminFichier);
 
     void Creer_Episode(std::filesystem::path const& cheminFichier);
+
     void Print();
+    void Print_Avec();
+    void Print_Images();
     const void Print_Date_etc();
-    
+
     std::wstring min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
@@ -106,7 +112,9 @@ public:
     std::pair<unsigned short int, std::wstring>saison;
     std::wstring titre;
 
+    bool affichage_Avec_actif = true;
     bool affichage_Date_etc_actif = true;
+    bool affichage_image_actif = true;
 };
 
 class Serie
@@ -124,10 +132,10 @@ private:
     //const void afficher();
     //const bool PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre);
     //const void PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t);
-    const void PrintEpisodes(Saison saison);
-    const void PrintSaison(Saison saison);
+    const void Print_Episodes(Saison saison);
+    const void Print_Saison(Saison saison);
     //const void PrintSaison_Date_etc(Saison saison);
-    const void PrintSaisons();
+    const void Print_Saisons();
 
     std::filesystem::path racine;
 

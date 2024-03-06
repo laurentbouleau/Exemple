@@ -33,7 +33,7 @@ extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void afficher_Avec(fs::path const& cheminFichier)                                                                                            #
+// # const void afficher_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec)                                  #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -47,7 +47,7 @@ const void afficher_Avec(fs::path const& cheminFichier, std::vector<std::pair<st
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void afficher_Chaine(fs::path const& cheminFichier)                                                                                          #
+// # const void afficher_Chaine(fs::path const& cheminFichier, std::wstring& chaine)                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -72,7 +72,9 @@ const void afficher_Image(fs::path const& cheminFichier, std::vector<std::wstrin
     //std::size_t pos_txt = nf.find_last_of(L"\\");
     //assert((pos_txt != std::wstring::npos) && L"Erreur Image(s) !!!");
     //pos_txt++;
+    //images.push_back(nomFichier);
     images.push_back(nomFichier);
+    std::wcout << L"Image=[" << nomFichier << L']' << std::endl;
 }
 
 // ######################################################################################################################################################
