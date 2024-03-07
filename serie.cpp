@@ -377,10 +377,10 @@ Episode::Episode(fs::path const& m_cheminFichier)
 
 Episode::Episode(fs::path const& m_cheminFichier)
 {
-    const std::wstring numero_saison_format = L"([[:digit:]]+)";
-    const std::wstring sep_numero_saison = L"x";
-    const std::wstring numero_episode_format = L"([[:digit:]]{1,3})";
-    const std::wstring sep_episode_saison = L"\\.";
+    const std::wstring numero_saison_format = L"([[:digit:]]+)"; // saison
+    const std::wstring sep_numero_saison = L"x"; // x
+    const std::wstring numero_episode_format = L"([[:digit:]]{1,3})"; // episode
+    const std::wstring sep_episode_saison = L"\\."; //.
 
     const std::wstring date_year_month_day_format = L"([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_month_day_format = L"([[:digit:]]{2})-([[:digit:]]{2})";
@@ -417,15 +417,16 @@ Episode::Episode(fs::path const& m_cheminFichier)
     assert(nomFichier.length() > 0 && L"Nom de fichier Episode vide");
 
     auto stem = m_cheminFichier.stem().wstring();
+    // prefixe ???
     //assert((stem.length() > (9 + std::to_wstring(prefixe).length() + sep_numero_saison.length())) && L"Nom de fichier Episode trop court pour avoir au moins une date");
     assert((stem.length() > 9) && L"Nom de fichier Episode trop court pour avoir au moins une date");
 
     assert(isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
     unsigned int fucking_x = std::stoi(stem);
-    //assert((prefixe == fucking_x && fucking_x <= 1000) && L"x <= 1000 !!!");
+    //assert((prefixe == fucking_x && fucking_x <= 1000) && L"x <= 1000 !!!"); // prefixe ???
     assert((fucking_x <= 1000) && L"x <= 1000 !!!");
     assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
-    //assert(((fucking_x >= prefixe)) && L"saison.first != x");
+    //assert(((fucking_x >= prefixe)) && L"saison.first != x"); // prefixe ???
     assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
 
     unsigned int fucking_e;
