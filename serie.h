@@ -29,35 +29,23 @@
 #include <regex>
 
 #include <filesystem> // C++17 standard header file name
-//using namespace std;
 
 extern const std::vector<std::wstring> Genre;
 extern const std::vector<std::wstring> Sur;
 extern const std::vector<std::wstring> Sous_Genre;
 extern const std::vector<std::wstring> Nationalite;
 
-/*class exception_Episode_0
-{
-    std::wstring message;
-public:
-    exception_Episode_0() : message(L"Saison::afficher_Episode() : pas de x !!!") {}
-    std::wstring get_message() const { return message; }
-};*/
-
-
 struct DateRecord;
 struct Saison;
 
 struct Episode
 {
-    //Episode(void);
     //Episode(std::filesystem::path const& cheminFichier);// { m_cheminFichier = cheminFichier; };
-    Episode(/*unsigned short int prefixe, */std::filesystem::path const& cheminFichier);
-    //~Episode();
+    Episode(std::filesystem::path const& cheminFichier);
     struct Saison;
     void afficher();
     void Print();
-    bool Print_Titre_chiffre_et_point_ou_pas(unsigned char episode);
+    bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
     const bool Print_Date_ou_Dates();
 
     std::filesystem::path m_cheminFichier;
@@ -66,8 +54,8 @@ struct Episode
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    unsigned char saison{};
-    unsigned char episode{};
+    unsigned short int saison{};
+    unsigned short int episode{};
     std::vector<DateRecord> dr;
     std::wstring streaming;
     bool b { false };
@@ -78,7 +66,7 @@ struct Episode
     std::wstring phrases;
 
     bool affichage_Print_actif = true;
-    bool affichage_date_ou_dates = true;
+    bool affichage_Date_ou_dates = true;
 };
 
 
@@ -90,6 +78,7 @@ public:
     void afficher(std::filesystem::path const& cheminFichier);
     void afficher_Dossier(std::filesystem::path const& cheminDossier);
     void afficher_Fichier(std::filesystem::path const& cheminFichier);
+    void afficher_Netflix(std::filesystem::path const& cheminFichier);
     void afficher_Note(std::filesystem::path const& cheminFichier);
     void afficher_Titre(std::filesystem::path const& cheminFichier);
 
@@ -98,6 +87,7 @@ public:
     void Print();
     void Print_Avec();
     void Print_Images();
+    void Print_Netflix();
     const void Print_Date_etc();
 
     std::wstring min = L"min";
@@ -108,13 +98,15 @@ public:
     std::pair<std::tm, std::wstring>dossier;
     std::vector<Episode> episodes;
     std::vector<std::wstring> image;
+    bool netflix{ false };
     double note = -1.0;
     std::pair<unsigned short int, std::wstring>saison;
     std::wstring titre;
 
     bool affichage_Avec_actif = true;
     bool affichage_Date_etc_actif = true;
-    bool affichage_image_actif = true;
+    bool affichage_Image_actif = true;
+    bool affichage_Netflix_actif = true;
 };
 
 class Serie

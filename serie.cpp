@@ -375,9 +375,10 @@ Episode::Episode(fs::path const& m_cheminFichier)
 }
 */
 
-Episode::Episode(fs::path const& m_cheminFichier)
+Episode::Episode(fs::path const& cheminFichier)
 {
-    const std::wstring numero_saison_format = L"([[:digit:]]+)"; // saison
+    // ([[:digit:]]+)x([[:digit:]]{1,3})\\.(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})))(_?))+)(\\s(.+))?
+    const std::wstring numero_saison_format = L"([[:digit:]]{1,2})"; // saison
     const std::wstring sep_numero_saison = L"x"; // x
     const std::wstring numero_episode_format = L"([[:digit:]]{1,3})"; // episode
     const std::wstring sep_episode_saison = L"\\."; //.
@@ -413,23 +414,22 @@ Episode::Episode(fs::path const& m_cheminFichier)
     const int filename_stream_index = filename_fucking_someFlag_index + 2;
 
 
-    auto nomFichier = m_cheminFichier.filename().wstring();
+    auto nomFichier = cheminFichier.filename().wstring();
+ 
     assert(nomFichier.length() > 0 && L"Nom de fichier Episode vide");
 
-    auto stem = m_cheminFichier.stem().wstring();
+    auto stem = cheminFichier.stem().wstring();
     // prefixe ???
     //assert((stem.length() > (9 + std::to_wstring(prefixe).length() + sep_numero_saison.length())) && L"Nom de fichier Episode trop court pour avoir au moins une date");
     assert((stem.length() > 9) && L"Nom de fichier Episode trop court pour avoir au moins une date");
 
     assert(isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
-    unsigned int fucking_x = std::stoi(stem);
-    //assert((prefixe == fucking_x && fucking_x <= 1000) && L"x <= 1000 !!!"); // prefixe ???
-    assert((fucking_x <= 1000) && L"x <= 1000 !!!");
+    saison = std::stoi(stem);
+    assert((saison <= 1000) && L"x <= 1000 !!!");
     assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
     //assert(((fucking_x >= prefixe)) && L"saison.first != x"); // prefixe ???
     assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
 
-    unsigned int fucking_e;
     std::vector<DateRecord> drS;
     std::wstring streaming = L"";
 
@@ -508,12 +508,9 @@ Episode::Episode(fs::path const& m_cheminFichier)
         streaming = match[filename_stream_index];
     }
 
-    fucking_e = std::stoi(match[filename_numero_episode_index]);
-    //system("PAUSE");
-    //episode.push_back(make_tuple(fucking_x, fucking_e, drS, streaming));
-    //afficher_Episode_Titre(m_cheminFichier);
+    episode = std::stoi(match[filename_numero_episode_index]);
     bool found;
-    std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
+    std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), {L"\n"}, false);
     size_t pos = 0;
     if (t[0] == L"")
     {
@@ -528,7 +525,7 @@ Episode::Episode(fs::path const& m_cheminFichier)
     }
     else
     {
-        unsigned int x = std::stoi(t[0], &pos);
+        episode = std::stoi(t[0]);
         t[0] = t[0].substr(pos + 2);
     }
     bool found2 = false;
@@ -576,9 +573,7 @@ Episode::Episode(fs::path const& m_cheminFichier)
     tm.tm_min = std::stoi(t[1], &pos);
     phrases = L"";
     for (auto j = 2; j < t.size(); j++)
-    {
         phrases += t[j];
-    }
     found = true;
     //system("PAUSE");
 }
@@ -707,7 +702,7 @@ const bool Episode::Print_Date_ou_Dates()
  return false;
 }
 
-bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned char episode)
+bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 {
     if (episode == 0)
         return false;
@@ -830,6 +825,12 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
                 //D_DVD[I] = true;
                 return;
             }
+            // Netflix
+            if (nomFichier == L"Netflix.txt")
+            {
+                afficher_Netflix(cheminFichier);
+                return;
+            }
             // Note
             if (nomFichier == L"Note.txt")
             {
@@ -922,14 +923,21 @@ void Saison::Creer_Episode(fs::path const& cheminFichier)
     auto nomFichier = cheminFichier.filename().wstring();
 
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    //afficher(cheminFichier);// , saison* / ); // saison ???
     Episode episode(cheminFichier);
-    //Episode episode2(cheminFichier);
-
-
-    //m_episode.push_back(make_tuple(x, e, dr, streaming, found, t1, t2, t3, tm_temps, t[2]));
-    //episodes.push_back(episoode);
     episodes.push_back(episode); // Episode
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::afficher_Netflix(fs::path const& cheminFichier)                                                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Saison::afficher_Netflix(fs::path const& cheminFichier)
+{
+    auto nomFichier = cheminFichier.filename().wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    netflix = true;
 }
 
 // ######################################################################################################################################################
@@ -1031,6 +1039,8 @@ void Saison::Print()
     {
         episodes[i].Print();
     }
+    // Netflix
+    Print_Netflix();
     // Avec
     Print_Avec();
     // Images(s)
@@ -1081,6 +1091,12 @@ void Saison::Print_Avec()
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::Print_Date_etc()                                                                                                                      #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 const void Saison::Print_Date_etc()
 {
     if (affichage_Date_etc_actif)
@@ -1110,7 +1126,7 @@ const void Saison::Print_Date_etc()
 
 void Saison::Print_Images()
 {
-    if (affichage_image_actif && image.size() > 0 /*!= 0*/)
+    if (affichage_Image_actif && image.size() > 0 /*!= 0*/)
     {
         std::wstring image_str = keyColor[1] + L"Image" + ((image.size() > 1) ? L"s" : L"") + L" : [" + valuesColor;
         bool first = true;
@@ -1132,6 +1148,20 @@ void Saison::Print_Images()
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::Print_Netflix()                                                                                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Saison::Print_Netflix()
+{
+    if (affichage_Netflix_actif && netflix)
+    {
+        std::wstring netflix_str = keyColor[1] + L'(' + valuesColor + L"Netflix" + keyColor[1] + L')' + valuesColor;
+        std::wcout << netflix_str << std::endl;
+    }
+}
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
