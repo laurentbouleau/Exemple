@@ -74,7 +74,6 @@ const void afficher_Image(fs::path const& cheminFichier, std::vector<std::wstrin
     //pos_txt++;
     //images.push_back(nomFichier);
     images.push_back(nomFichier);
-    std::wcout << L"Image=[" << nomFichier << L']' << std::endl;
 }
 
 // ######################################################################################################################################################

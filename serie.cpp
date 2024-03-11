@@ -41,6 +41,7 @@ extern bool checkmonth(int m);
 extern bool checkday(int m, int d, int y);
 
 extern const void afficher_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec);
+extern const void afficher_Image(fs::path const& cheminFichier, std::vector<std::wstring>& images);
 
 //Episode::Episode(void)
 //{}
@@ -423,7 +424,7 @@ Episode::Episode(fs::path const& cheminFichier)
     //assert((stem.length() > (9 + std::to_wstring(prefixe).length() + sep_numero_saison.length())) && L"Nom de fichier Episode trop court pour avoir au moins une date");
     assert((stem.length() > 9) && L"Nom de fichier Episode trop court pour avoir au moins une date");
 
-    assert(isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
+    assert(std::isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
     saison = std::stoi(stem);
     assert((saison <= 1000) && L"x <= 1000 !!!");
     assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
@@ -611,6 +612,7 @@ void Episode::Print()
         if (deux_points != L"")
             wstr += deux_points + keyColor[1] + sous_titre + valuesColor;
         wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(tm.tm_min) + keyColor[1]+ min + L')' + valuesColor;
+        wstr += Print_Date_ou_Dates(dr);
         std::wcout << wstr << std::endl;
         // phrases
         if (titre != L"")
@@ -621,9 +623,27 @@ void Episode::Print()
     }
 }
 
-const bool Episode::Print_Date_ou_Dates()
+std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dr)
 {
-    //if (affichage_date_ou_dates && date_ou_dates.size() > 0)
+    if (affichage_Date_ou_dates && dr.size() > 0)
+    //    std::tm date{ 0 };
+    //    bool someFlag{ false };
+    {
+        wchar_t date_string[15];
+        std::wstring wstr = L"";
+        if (dr.size() == 1)
+        {
+            wcsftime(date_string, 15, L"%d/%m/%Y", &dr[0].date);
+            wstr = date_string;
+            wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+            if (streaming != L"")
+                wstr += keyColor[1] + L" : " + valuesColor + streaming;
+            if (dr[0].someFlag)
+                wstr += keyColor[1] + L" (" + valuesColor + L"préquel ou pas !" + keyColor[1] + L')' + valuesColor;
+
+            return wstr;
+        }
+    }
 /*    if (affichage_date_ou_dates && dr.size() > 0)
     {
         //std::vector<DateRecord> dr;
@@ -697,9 +717,10 @@ const bool Episode::Print_Date_ou_Dates()
             }
         }
         return true;
-    }
- */
- return false;
+        */
+//    }
+ 
+    return L"";
 }
 
 bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
@@ -797,7 +818,6 @@ void Saison::afficher_Dossier(fs::path const& cheminDossier)
 void Saison::afficher_Fichier(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.filename().wstring();
- 
     auto nomImage = cheminFichier.extension().wstring();
     if (nomImage == L".txt")
     {
@@ -874,7 +894,7 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
             return;// EXIT_FAILURE;
         }
     }
-    else if(nomImage == L".jgp" || nomImage == L".png" || nomImage == L".webp")
+    else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
         // Image
     {
         afficher_Image(cheminFichier, image);

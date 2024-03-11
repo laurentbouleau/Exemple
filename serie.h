@@ -46,7 +46,7 @@ struct Episode
     void afficher();
     void Print();
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
-    const bool Print_Date_ou_Dates();
+    std::wstring Print_Date_ou_Dates(std::vector<DateRecord>& dr);
 
     std::filesystem::path m_cheminFichier;
 
