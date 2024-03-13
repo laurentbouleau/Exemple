@@ -1,5 +1,6 @@
 #pragma once
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+//#define _CRT_SECURE_NO_WARNINGS
 
 //#define TXT_                             0
 //#define JGP_                             1
@@ -56,7 +57,7 @@ struct Episode
 
     unsigned short int saison{};
     unsigned short int episode{};
-    std::vector<DateRecord> dr;
+    std::vector<DateRecord> dates_de_diffusion{ 0 };
     std::wstring streaming;
     bool b { false };
     std::wstring titre;

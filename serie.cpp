@@ -431,7 +431,7 @@ Episode::Episode(fs::path const& cheminFichier)
     //assert(((fucking_x >= prefixe)) && L"saison.first != x"); // prefixe ???
     assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
 
-    std::vector<DateRecord> drS;
+    //std::vector<DateRecord> dates_de_diffusion;
     std::wstring streaming = L"";
 
     std::wsmatch match;
@@ -456,16 +456,16 @@ Episode::Episode(fs::path const& cheminFichier)
 
             DateRecord dr{ {0,0,0,day,month - 1,year - 1900} };
 
-            drS.emplace_back(dr);
+            dates_de_diffusion.emplace_back(dr);
         }
         else if (dates_match[dates_date_month_day_month_index].matched)
         {
-            assert(drS.size() > 0 && L"Utilisation d'un format mois-jour sans avoir d'année déduite.");
+            assert(dates_de_diffusion.size() > 0 && L"Utilisation d'un format mois-jour sans avoir d'année déduite.");
 
             auto month = std::stoi(dates_match[dates_date_month_day_month_index]);
             auto day = std::stoi(dates_match[dates_date_month_day_day_index]);
 
-            auto lastDateRecord = drS.back();
+            auto lastDateRecord = dates_de_diffusion.back();
             auto last_year = lastDateRecord.date.tm_year + 1900;
 
             assert(checkmonth(month));
@@ -473,15 +473,15 @@ Episode::Episode(fs::path const& cheminFichier)
 
             DateRecord dr{ {0,0,0,day,month - 1,last_year - 1900} };
 
-            drS.emplace_back(dr);
+            dates_de_diffusion.emplace_back(dr);
         }
         else if (dates_match[dates_date_day_day_index].matched)
         {
-            assert(drS.size() > 0 && L"Utilisation d'un format jour sans avoir de mois et d'années déduits.");
+            assert(dates_de_diffusion.size() > 0 && L"Utilisation d'un format jour sans avoir de mois et d'années déduits.");
 
             auto day = std::stoi(dates_match[dates_date_day_day_index]);
 
-            auto lastDateRecord = drS.back();
+            auto lastDateRecord = dates_de_diffusion.back();
             auto last_year = lastDateRecord.date.tm_year + 1900;
             auto last_month = lastDateRecord.date.tm_mon + 1;
 
@@ -489,7 +489,7 @@ Episode::Episode(fs::path const& cheminFichier)
 
             DateRecord dr{ {0,0,0,day,last_month - 1,last_year - 1900} };
 
-            drS.emplace_back(dr);
+            dates_de_diffusion.emplace_back(dr);
         }
         else
         {
@@ -498,7 +498,7 @@ Episode::Episode(fs::path const& cheminFichier)
 
         if (dates_match[dates_fucking_someFlag_index].matched)
         {
-            drS.back().someFlag = true;
+            dates_de_diffusion.back().someFlag = true;
         }
 
         dates_str = dates_match.suffix().str();
@@ -518,6 +518,7 @@ Episode::Episode(fs::path const& cheminFichier)
         found = false;
         return;
     }
+ 
     pos = t[0].find(L". ");
     if (pos == std::wstring::npos || t[0][3] == L'.')
     {
@@ -529,6 +530,9 @@ Episode::Episode(fs::path const& cheminFichier)
         episode = std::stoi(t[0]);
         t[0] = t[0].substr(pos + 2);
     }
+    // ben non !!!
+    // episode = std::stoi(t[0]);
+
     bool found2 = false;
     pos = t[0].find(L" - ");
     if (pos != std::wstring::npos && !found2)
@@ -612,7 +616,7 @@ void Episode::Print()
         if (deux_points != L"")
             wstr += deux_points + keyColor[1] + sous_titre + valuesColor;
         wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(tm.tm_min) + keyColor[1]+ min + L')' + valuesColor;
-        wstr += Print_Date_ou_Dates(dr);
+        wstr += keyColor[1] + L" : " + valuesColor + Print_Date_ou_Dates(dates_de_diffusion);
         std::wcout << wstr << std::endl;
         // phrases
         if (titre != L"")
@@ -623,22 +627,25 @@ void Episode::Print()
     }
 }
 
-std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dr)
+std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diffusion)
 {
-    if (affichage_Date_ou_dates && dr.size() > 0)
+    if (affichage_Date_ou_dates && dates_de_diffusion.size() > 0)
     //    std::tm date{ 0 };
     //    bool someFlag{ false };
     {
-        wchar_t date_string[15];
         std::wstring wstr = L"";
-        if (dr.size() == 1)
+        if (dates_de_diffusion.size() == 1)
         {
-            wcsftime(date_string, 15, L"%d/%m/%Y", &dr[0].date);
-            wstr = date_string;
-            wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+            std::time_t t = std::mktime(&dates_de_diffusion[0].date);
+            std::tm local = *std::localtime(&t);
+            std::wcout << "local: " << std::put_time(&local, L"%d/%m/%Y") << '\n';
+            //wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+            // Ici :
+            wstr = std::put_time(&local, L"%d/%m/%Y");
+
             if (streaming != L"")
                 wstr += keyColor[1] + L" : " + valuesColor + streaming;
-            if (dr[0].someFlag)
+            if (dates_de_diffusion[0].someFlag)
                 wstr += keyColor[1] + L" (" + valuesColor + L"préquel ou pas !" + keyColor[1] + L')' + valuesColor;
 
             return wstr;
@@ -830,7 +837,7 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
             // Avec
             if (nomFichier == L"Avec.txt")
             {
-                ::afficher_Avec(cheminFichier, avec);
+                afficher_Avec(cheminFichier, avec);
                 return;
             }
             // Chaîne d'origine -
@@ -906,8 +913,8 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
     return;
  }
 
- // ######################################################################################################################################################
- // ######################################################################################################################################################
+// ######################################################################################################################################################
+// ######################################################################################################################################################
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
