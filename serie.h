@@ -36,6 +36,13 @@ extern const std::vector<std::wstring> Sur;
 extern const std::vector<std::wstring> Sous_Genre;
 extern const std::vector<std::wstring> Nationalite;
 
+const std::vector<std::wstring> min =
+{
+    L"min",
+    L"Min",
+    L"MIN"
+};
+
 struct DateRecord;
 struct Saison;
 
@@ -45,6 +52,7 @@ struct Episode
     Episode(std::filesystem::path const& cheminFichier);
     struct Saison;
     void afficher();
+    void afficher_temps_min(std::wstring &temps);
     void Print();
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
     std::wstring Print_Date_ou_Dates(std::vector<DateRecord>& dr);

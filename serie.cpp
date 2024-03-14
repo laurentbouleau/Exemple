@@ -573,9 +573,11 @@ Episode::Episode(fs::path const& cheminFichier)
         sous_titre = L"";
         found2 = true;
     }
-    bool temps = afficher_Temps(t[1]);
-    pos = 0;
-    tm.tm_min = std::stoi(t[1], &pos);
+    //bool temps = afficher_Temps(t[1]);
+    //pos = 0;
+    //tm.tm_min = std::stoi(t[1], &pos);
+
+    afficher_temps_min(t[1]);
     phrases = L"";
     for (auto j = 2; j < t.size(); j++)
         phrases += t[j];
@@ -591,6 +593,41 @@ Episode::Episode(fs::path const& cheminFichier)
 
 void Episode::afficher()
 {
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Episode::afficher_temps_min(std::wstring& m)                                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Episode::afficher_temps_min(std::wstring& m)
+{
+    assert(m.length() > 0 && L"Nom de temps min et vide");
+    int temps = 0;
+    std::size_t pos = 0;
+    temps = std::stoi(m, &pos);
+    assert((temps != 0 ) && L"Pas de temps !!!");
+    if(temps < 60)
+        tm.tm_min = temps;
+    else
+    {
+        tm.tm_hour = temps / 60;
+        tm.tm_min = temps % 60;
+    }
+    m = m.substr(pos);
+    assert(!(m[0] != L' ' && m[0] != L'm' && m[0] != L'M') && L"Pas d'escapace ou min, Min ou MIN !!!");
+
+    if (m[0] == L' ')
+        m = m.substr(1);
+    if (std::find(::min.begin(), ::min.end(), m) != ::min.end())
+        ;
+    else
+    {
+        assert((m[1] == L' ') && "Attention min non valide ou non incompris !!!");
+    }
+
+    return;
 }
 
 // ######################################################################################################################################################
@@ -615,7 +652,13 @@ void Episode::Print()
         wstr += keyColor[1] + titre + valuesColor;
         if (deux_points != L"")
             wstr += deux_points + keyColor[1] + sous_titre + valuesColor;
-        wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(tm.tm_min) + keyColor[1]+ min + L')' + valuesColor;
+        if(tm.tm_hour == 0)
+            wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(tm.tm_min) + keyColor[1]+ min + L')' + valuesColor;
+        else
+        {
+            int temps = tm.tm_hour * 60 + tm.tm_min % 60;
+            wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(temps) + keyColor[1] + min + L')' + valuesColor;
+        }
         wstr += keyColor[1] + L" : " + valuesColor + Print_Date_ou_Dates(dates_de_diffusion);
         std::wcout << wstr << std::endl;
         // phrases
@@ -634,14 +677,14 @@ std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diff
     //    bool someFlag{ false };
     {
         std::wstring wstr = L"";
-        if (dates_de_diffusion.size() == 1)
+        if (dates_de_diffusion.size() > 0)
         {
-            std::time_t t = std::mktime(&dates_de_diffusion[0].date);
-            std::tm local = *std::localtime(&t);
-            std::wcout << "local: " << std::put_time(&local, L"%d/%m/%Y") << '\n';
+//            std::time_t t = std::mktime(&dates_de_diffusion[0].date);
+//            std::tm local = *std::localtime(&t);
+//            std::wcout << "local: " << std::put_time(&local, L"%d/%m/%Y") << '\n';
             //wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
             // Ici :
-            wstr = std::put_time(&local, L"%d/%m/%Y");
+            //wstr = std::put_time(&local, L"%d/%m/%Y");
 
             if (streaming != L"")
                 wstr += keyColor[1] + L" : " + valuesColor + streaming;
