@@ -691,6 +691,8 @@ std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diff
                 date_ou_dates_wstr = v_wstr[0].substr(0, 2) + keyColor[1] + L'/' + valuesColor + v_wstr[0].substr(3, 2) + keyColor[1] + L'/' + valuesColor + v_wstr[0].substr(6, 4);
                 if(dates_de_diffusion[0].someFlag)
                     date_ou_dates_wstr += keyColor[1] + L" (" + valuesColor + L"préquel ou pas !" + keyColor[1] + L')' + valuesColor;
+                if (streaming != L"")
+                    date_ou_dates_wstr += keyColor[1] + L" : " + valuesColor + streaming;
                 return date_ou_dates_wstr;
             }
             //system("PAUSE");
