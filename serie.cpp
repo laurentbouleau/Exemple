@@ -20,7 +20,8 @@
 #include <locale>
 #include <algorithm>
 #include <codecvt>
-#include <tuple>
+#include <sstream>
+//#include <tuple>
 #include <regex>
 
 #include <filesystem> // C++17 standard header file name
@@ -28,6 +29,8 @@
 //using namespace std::experimental::filesystem::v1;
 using namespace std;
 namespace fs = std::filesystem;
+
+extern std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
 
 extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
 extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
@@ -577,7 +580,8 @@ Episode::Episode(fs::path const& cheminFichier)
     //pos = 0;
     //tm.tm_min = std::stoi(t[1], &pos);
 
-    afficher_temps_min(t[1]);
+    //afficher_temps_min(t[1]);
+    initialiser_duree(t[1]);
     phrases = L"";
     for (auto j = 2; j < t.size(); j++)
         phrases += t[j];
@@ -597,37 +601,25 @@ void Episode::afficher()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Episode::afficher_temps_min(std::wstring& m)                                                                                                  #
+// # void Episode::initialiser_duree(std::wstring& m)                                                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Episode::afficher_temps_min(std::wstring& m)
+void Episode::initialiser_duree(std::wstring& m)
 {
-    assert(m.length() > 0 && L"Nom de temps min et vide");
-    int temps = 0;
-    std::size_t pos = 0;
-    temps = std::stoi(m, &pos);
-    assert((temps != 0 ) && L"Pas de temps !!!");
-    if(temps < 60)
-        tm.tm_min = temps;
+    const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
+
+    std::wsmatch match;
+
+    if (std::regex_match(m, match, duree_format_rg))
+    {
+        auto duree_en_minute = std::stoi(match[1]);
+        duree_en_seconde = duree_en_minute * 60;
+    }
     else
     {
-        tm.tm_hour = temps / 60;
-        tm.tm_min = temps % 60;
+        throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
     }
-    m = m.substr(pos);
-    assert(!(m[0] != L' ' && m[0] != L'm' && m[0] != L'M') && L"Pas d'escapace ou min, Min ou MIN !!!");
-
-    if (m[0] == L' ')
-        m = m.substr(1);
-    if (std::find(::min.begin(), ::min.end(), m) != ::min.end())
-        ;
-    else
-    {
-        assert((m[1] == L' ') && "Attention min non valide ou non incompris !!!");
-    }
-
-    return;
 }
 
 // ######################################################################################################################################################
@@ -652,13 +644,7 @@ void Episode::Print()
         wstr += keyColor[1] + titre + valuesColor;
         if (deux_points != L"")
             wstr += deux_points + keyColor[1] + sous_titre + valuesColor;
-        if(tm.tm_hour == 0)
-            wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(tm.tm_min) + keyColor[1]+ min + L')' + valuesColor;
-        else
-        {
-            int temps = tm.tm_hour * 60 + tm.tm_min % 60;
-            wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(temps) + keyColor[1] + min + L')' + valuesColor;
-        }
+        wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(duree_en_seconde/60) + keyColor[1] + min + L')' + valuesColor;
         wstr += keyColor[1] + L" : " + valuesColor + Print_Date_ou_Dates(dates_de_diffusion);
         std::wcout << wstr << std::endl;
         // phrases
@@ -670,136 +656,117 @@ void Episode::Print()
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diffusion)                                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diffusion)
 {
     if (affichage_Date_ou_dates && dates_de_diffusion.size() > 0)
     //    std::tm date{ 0 };
     //    bool someFlag{ false };
     {
-        std::wstring wstr = L"";
+        std::wstring date_ou_dates_wstr = L"";
         if (dates_de_diffusion.size() > 0)
         {
-//            std::time_t t = std::mktime(&dates_de_diffusion[0].date);
-//            std::tm local = *std::localtime(&t);
-//            std::wcout << "local: " << std::put_time(&local, L"%d/%m/%Y") << '\n';
-            //wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
-            // Ici :
-            //wstr = std::put_time(&local, L"%d/%m/%Y");
-
-            if (streaming != L"")
-                wstr += keyColor[1] + L" : " + valuesColor + streaming;
-            if (dates_de_diffusion[0].someFlag)
-                wstr += keyColor[1] + L" (" + valuesColor + L"préquel ou pas !" + keyColor[1] + L')' + valuesColor;
-
-            return wstr;
-        }
-    }
-/*    if (affichage_date_ou_dates && dr.size() > 0)
-    {
-        //std::vector<DateRecord> dr;
-
-        std::size_t taille, taille2;
-        wchar_t date_string[15];
-        taille = std::size(date_ou_dates);
-        std::wstring wstr;
-        for (int i = 0; i < taille; i++)
-        {
-            taille2 = std::size(date_ou_dates[i].first);
-            if (taille2 == 1)
+            std::vector<std::wstring> v_wstr;
+            //for (const auto& y : x)
+            for (auto i = 0; i < dates_de_diffusion.size(); i++)
             {
-                wcsftime(date_string, 15, L"%d/%m/%Y", &date_ou_dates[i].first[0].date);
-                wstr = date_string;
-                wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
-                if (date_ou_dates[i].second != L"")
-                    wstr += keyColor[1] + L" : " + valuesColor + date_ou_dates[i].second;
-                if (date_ou_dates[i].first[0].someFlag)
-                    wstr += keyColor[1] + L" (" + valuesColor + L"préquel ou pas !" + keyColor[1] + L')' + valuesColor;
-                //Console_Lire(hOut, wstr + L"\r\n", 4, L' ');
+                std::time_t t = std::mktime(&dates_de_diffusion[i].date);
+                std::tm local = *std::localtime(&t);
+                std::wstringstream target_stream;
+                target_stream << std::put_time(&local, L"%d/%m/%Y");
+                std::wstring date = target_stream.str();
+                //date = date.substr(0, 2) + L'/' + date.substr(3, 2) + L'/' + date.substr(6, 4);
+                //date = date.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date.substr(6, 4);
+                v_wstr.push_back(date);
+                date = L"";
+                target_stream.str() = L"";
             }
-            else
+            if (v_wstr.size() == 1)
             {
-                int j;
-                wstr = L"";
-                std::wstring wstr2;
-                std::size_t pos = 0;
-                std::vector<wstring>k(taille2);
-                std::tm temp{ 0 };
-                int temp2 = 1;
-                for (j = 0; j < taille2; j++)
+                date_ou_dates_wstr = v_wstr[0].substr(0, 2) + keyColor[1] + L'/' + valuesColor + v_wstr[0].substr(3, 2) + keyColor[1] + L'/' + valuesColor + v_wstr[0].substr(6, 4);
+                if(dates_de_diffusion[0].someFlag)
+                    date_ou_dates_wstr += keyColor[1] + L" (" + valuesColor + L"préquel ou pas !" + keyColor[1] + L')' + valuesColor;
+                return date_ou_dates_wstr;
+            }
+            //system("PAUSE");
+            std::wstring date2 = v_wstr[0];
+            int j = 1;
+            for (size_t i = 0; i < v_wstr.size(); i++)
+            {
+                if (i > 0 && date2 == v_wstr[i])
                 {
-                    if (date_ou_dates[i].first[j].date.tm_year == temp.tm_year && date_ou_dates[i].first[j].date.tm_mon == temp.tm_mon && date_ou_dates[i].first[j].date.tm_mday == temp.tm_mday)
-                        // dates[i].first[j].date == temp : Marche pas !!!
+                    if (v_wstr[i - 1] == v_wstr[i])
                     {
-                        k[j] = keyColor[1] + L'(' + valuesColor + std::to_wstring(temp2 + 1) + keyColor[1] + L')' + valuesColor;
-                        if (temp2 == 1)
-                            k[j - 1] += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(temp2) + keyColor[1] + L')' + valuesColor;
-                        temp2++;
+                        v_wstr[i - 1] += L"(1)";
+                        v_wstr[i] = L"(2)";
+                        j += 2;
                     }
                     else
                     {
-                        wcsftime(date_string, 15, L"%d/%m/%Y", &date_ou_dates[i].first[j].date);
-                        wstr2 = date_string;
-                        k[j] = wstr2.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr2.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr2.substr(6, 4);
-                        temp.tm_year = date_ou_dates[i].first[j].date.tm_year;
-                        temp.tm_mon = date_ou_dates[i].first[j].date.tm_mon;
-                        temp.tm_mday = date_ou_dates[i].first[j].date.tm_mday;
-                        temp2 = 1;
+                        v_wstr[i] = L'(' + std::to_wstring(j) + L')';
+                        j++;
                     }
-
                 }
-                wstr2 = L"";
-                for (j = 1; j < taille2 - 1; j++)
+                else
                 {
-                    pos = k[j].find(L"/");
-                    if (pos != string::npos)
-                        k[j] = keyColor[1] + L", " + valuesColor + k[j];
+                    j = 1;
+                    date2 = v_wstr[i];
                 }
-                k.back() = keyColor[1] + L" et " + valuesColor + k.back();
-                for (j = 0; j < taille2; j++)
-                    wstr2 += k[j];
-                wstr += wstr2;
-                wstr += L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
-                if (date_ou_dates[i].first.back().someFlag == true)
-                    wstr += keyColor[1] + L" (" + valuesColor + L"préquel" + keyColor[1] + L')' + valuesColor;
-                if (date_ou_dates[i].second != L"")
-                    wstr += keyColor[1] + L" : " + valuesColor + date_ou_dates[i].second;
-                //Console_Lire(hOut, wstr + L"\r\n", 4, L' ');
             }
+            bool first = true;
+            for (auto i = 0; i < v_wstr.size(); i++)
+                //for (auto& v : v_wstr)
+            {
+                if (!first && v_wstr[i][0] != L'(')
+                    date_ou_dates_wstr += L", ";
+                date_ou_dates_wstr += v_wstr[i];
+                first = false;
+            }
+
+            //bool last = false;
+            if (dates_de_diffusion.back().someFlag)
+            {
+                std::wcout << L"aaaa";
+                date_ou_dates_wstr += keyColor[1] + L" (" + valuesColor + L"préquel" + keyColor[1] + L')' + valuesColor;
+            }
+            size_t pos;
+            if (pos = date_ou_dates_wstr.find(L" et "))
+                date_ou_dates_wstr = replace_all(date_ou_dates_wstr, L" et ", keyColor[1] + L" et " + valuesColor);
+            if (pos = date_ou_dates_wstr.find(L")("))
+                date_ou_dates_wstr = replace_all(date_ou_dates_wstr, L")(", keyColor[1] + L")(" + valuesColor);
+            if (pos = date_ou_dates_wstr.find(L"("))
+                date_ou_dates_wstr = replace_all(date_ou_dates_wstr, L"(", keyColor[1] + L"(" + valuesColor);
+            if (pos = date_ou_dates_wstr.find(L")"))
+                date_ou_dates_wstr = replace_all(date_ou_dates_wstr, L")", keyColor[1] + L")" + valuesColor);
+            if (pos = date_ou_dates_wstr.find(L", "))
+                date_ou_dates_wstr = replace_all(date_ou_dates_wstr, L", ", keyColor[1] + L", " + valuesColor);
+            date_ou_dates_wstr += L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
+            if (streaming != L"")
+                date_ou_dates_wstr += keyColor[1] + L" : " + valuesColor + streaming;
+
+            return date_ou_dates_wstr;
         }
-        return true;
-        */
-//    }
- 
+    }
     return L"";
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int epi                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 {
     if (episode == 0)
         return false;
     return true;
-    /*if (!std::isdigit(titre[0]))
-        return false;
-    int i = 0;
-    while (titre[i] != std::wstring::npos)
-    {
-        if (std::isdigit(titre[i]))
-            ;
-        else if (titre[i] == L'.' && i > 0)
-        {
-            if (titre[i + 1] != std::wstring::npos && titre[i + 1] == L' ')
-                break;
-            else
-                return false;
-        }
-        else
-            return false;
-        i++;
-    }
-    titre = titre.substr(i + 2);
-    return true;*/
 }
-
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

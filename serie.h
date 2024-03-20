@@ -1,6 +1,6 @@
 #pragma once
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
-//#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 
 //#define TXT_                             0
 //#define JGP_                             1
@@ -26,7 +26,8 @@
 #include <locale>
 #include <algorithm>
 #include <codecvt>
-#include <tuple>
+#include <sstream>
+//#include <tuple>
 #include <regex>
 
 #include <filesystem> // C++17 standard header file name
@@ -36,12 +37,12 @@ extern const std::vector<std::wstring> Sur;
 extern const std::vector<std::wstring> Sous_Genre;
 extern const std::vector<std::wstring> Nationalite;
 
-const std::vector<std::wstring> min =
+/*const std::vector<std::wstring> min =
 {
     L"min",
     L"Min",
     L"MIN"
-};
+};*/
 
 struct DateRecord;
 struct Saison;
@@ -52,7 +53,7 @@ struct Episode
     Episode(std::filesystem::path const& cheminFichier);
     struct Saison;
     void afficher();
-    void afficher_temps_min(std::wstring &temps);
+    void initialiser_duree(std::wstring& m);
     void Print();
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
     std::wstring Print_Date_ou_Dates(std::vector<DateRecord>& dr);
@@ -66,13 +67,14 @@ struct Episode
     unsigned short int saison{};
     unsigned short int episode{};
     std::vector<DateRecord> dates_de_diffusion{ 0 };
-    std::wstring streaming;
-    bool b { false };
+    std::wstring streaming = L"";
+    bool fichier_zero { false };
     std::wstring titre;
     std::wstring deux_points;
     std::wstring sous_titre;
-    std::tm tm{ 0 };
-    std::wstring phrases;
+    //std::tm tm{ 0 };
+    long duree_en_seconde{ -1 };
+    std::wstring phrases = L"";
 
     bool affichage_Print_actif = true;
     bool affichage_Date_ou_dates = true;
