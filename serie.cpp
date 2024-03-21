@@ -435,7 +435,7 @@ Episode::Episode(fs::path const& cheminFichier)
     assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
 
     //std::vector<DateRecord> dates_de_diffusion;
-    std::wstring streaming = L"";
+    //std::wstring streaming = L"";
 
     std::wsmatch match;
     auto str = stem;
@@ -733,7 +733,6 @@ std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diff
             //bool last = false;
             if (dates_de_diffusion.back().someFlag)
             {
-                std::wcout << L"aaaa";
                 date_ou_dates_wstr += keyColor[1] + L" (" + valuesColor + L"préquel" + keyColor[1] + L')' + valuesColor;
             }
             size_t pos;

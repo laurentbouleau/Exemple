@@ -67,14 +67,14 @@ struct Episode
     unsigned short int saison{};
     unsigned short int episode{};
     std::vector<DateRecord> dates_de_diffusion{ 0 };
-    std::wstring streaming = L"";
+    std::wstring streaming{ L"" };
     bool fichier_zero { false };
     std::wstring titre;
     std::wstring deux_points;
     std::wstring sous_titre;
     //std::tm tm{ 0 };
     long duree_en_seconde{ -1 };
-    std::wstring phrases = L"";
+    std::wstring phrases{ L"" };
 
     bool affichage_Print_actif = true;
     bool affichage_Date_ou_dates = true;
