@@ -46,12 +46,22 @@ extern const std::vector<std::wstring> Nationalite;
 
 struct DateRecord;
 struct Saison;
+ 
+struct Saison_Episode
+{
+    friend struct Episode;
+    std::wstring titre;
+    std::wstring deux_points;
+    std::wstring sous_titre;
+};
 
 struct Episode
 {
     //Episode(std::filesystem::path const& cheminFichier);// { m_cheminFichier = cheminFichier; };
     Episode(std::filesystem::path const& cheminFichier);
     struct Saison;
+    friend Saison_Episode;// saison_epise{};
+    //struct Saison_Episode;
     void afficher();
     void initialiser_duree(std::wstring& m);
     void Print();
@@ -62,17 +72,16 @@ struct Episode
 
     std::wstring min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    std::wstring valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
 
     unsigned short int saison{};
     unsigned short int episode{};
     std::vector<DateRecord> dates_de_diffusion{ 0 };
     std::wstring streaming{ L"" };
-    bool fichier_zero { false };
+    bool fichier_pas_zero { false };
     std::wstring titre;
     std::wstring deux_points;
     std::wstring sous_titre;
-    //std::tm tm{ 0 };
     long duree_en_seconde{ -1 };
     std::wstring phrases{ L"" };
 
@@ -113,6 +122,8 @@ public:
     double note = -1.0;
     std::pair<unsigned short int, std::wstring>saison;
     std::wstring titre;
+
+    //struct Saison_Episode saison_epise {};
 
     bool affichage_Avec_actif = true;
     bool affichage_Date_etc_actif = true;
