@@ -90,14 +90,15 @@ struct Episode
     unsigned short int episode{};
     std::vector<DateRecord> dates_de_diffusion{ 0 };
     std::wstring streaming{ L"" };
-    bool fichier_pas_zero { false };
+    //bool fichier_pas_zero { false };
     std::wstring titre;
     std::wstring deux_points;
     std::wstring sous_titre;
+    unsigned short int numero{ 1 };
     long duree_en_seconde{ -1 };
     std::wstring phrases{ L"" };
 
-    bool affichage_Print_actif = true;
+    //bool affichage_Print_actif = true;
     bool affichage_Date_ou_dates = true;
 };
 

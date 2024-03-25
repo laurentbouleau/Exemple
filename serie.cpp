@@ -209,10 +209,11 @@ Episode::Episode(fs::path const& cheminFichier)
     std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), {L"\n"}, false);
     if (t[0] == L"")
     {
-        fichier_pas_zero = false;
-        titre = saison_episode.titre;
-        deux_points = saison_episode.deux_points;
-        sous_titre = saison_episode.sous_titre;
+        //fichier_pas_zero = false;
+        //titre = saison_episode.titre;
+        //deux_points = saison_episode.deux_points;
+        //sous_titre = saison_episode.sous_titre;
+        numero++;
         return;
     }
  
@@ -239,29 +240,29 @@ Episode::Episode(fs::path const& cheminFichier)
 //if (std::regex_match(texte_a_analyser, soustitre_match, soustitre_format_rg))
     if (std::regex_match(titre, soustitre_match, soustitre_format_rg))
     {
-        std::wstring titre = soustitre_match[1];
-        std::wstring sous_titre = soustitre_match[2];
+        titre = soustitre_match[1];
+        sous_titre = soustitre_match[2];
         found = true;
     }
     const std::wregex soustitre_format_rg2{ L"(.+) \\: (.+)" };
     if (std::regex_match(titre, soustitre_match, soustitre_format_rg2))
     {
-        std::wstring titre = soustitre_match[1];
-        std::wstring sous_titre = soustitre_match[2];
+        titre = soustitre_match[1];
+        sous_titre = soustitre_match[2];
         found = true;
     }
     const std::wregex soustitre_format_rg3{ L"(.+)\\: (.+)" };
     if (std::regex_match(titre, soustitre_match, soustitre_format_rg3))
     {
-        std::wstring titre = soustitre_match[1];
-        std::wstring sous_titre = soustitre_match[2];
+        titre = soustitre_match[1];
+        sous_titre = soustitre_match[2];
         found = true;
     }
     const std::wregex soustitre_format_rg4{ L"(.+)\\/(.+)" };
     if (std::regex_match(titre, soustitre_match, soustitre_format_rg4))
     {
-        std::wstring titre = soustitre_match[1];
-        std::wstring sous_titre = soustitre_match[2];
+        titre = soustitre_match[1];
+        sous_titre = soustitre_match[2];
         found = true;
     }
 
@@ -311,8 +312,8 @@ Episode::Episode(fs::path const& cheminFichier)
         titre = t[0];
         found = true;
     }
-    fichier_pas_zero = true;
-
+    //fichier_pas_zero = true;
+    numero = 1;
     initialiser_duree(t[1]);
     phrases = L"";
     for (auto j = 2; j < t.size(); j++)
@@ -362,40 +363,31 @@ void Episode::initialiser_duree(std::wstring& m)
 
 void Episode::Print()
 {
-    if (affichage_Print_actif)
+    std::wstring wstr;
+    bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(episode);
+    if (chiffre_et_point_ou_pas)
     {
-        std::wstring wstr;
-        bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(episode);
-        if (chiffre_et_point_ou_pas)
-        {
-            wstr = std::to_wstring(saison);
-            wstr += keyColor[1] + L'x' + valuesColor;
-            wstr += std::to_wstring(episode);
-            wstr += keyColor[1] + L" : " + valuesColor;
-        }
-        wstr += keyColor[1] + titre + valuesColor;
-        if (deux_points != L"")
-            wstr += deux_points + keyColor[1] + sous_titre + valuesColor;
-        if (fichier_pas_zero)
-        {
-            saison_episode.numero = 1;
-            wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(duree_en_seconde / 60) + keyColor[1] + min + L')' + valuesColor;
-        }
-            
-        else
-        {
-            saison_episode.numero++;
-            wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(saison_episode.numero) + keyColor[1] + L']' + valuesColor;
-        }
-        wstr += keyColor[1] + L" : " + valuesColor;
-        wstr += Print_Date_ou_Dates(dates_de_diffusion);
-
-        // phrases
-        if (fichier_pas_zero)//titre != L"")
-            wstr += L"\r\n" + phrases;
-        std::wcout << wstr << std::endl;
-
+        wstr = std::to_wstring(saison) + keyColor[1] + L'x' + valuesColor + std::to_wstring(episode) + keyColor[1] + L" : " + valuesColor;
     }
+    wstr += keyColor[1] + titre + valuesColor;
+    if (deux_points != L"")
+        wstr += deux_points + keyColor[1] + sous_titre + valuesColor;
+    if (numero == 1)
+    {
+        wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(duree_en_seconde / 60) + keyColor[1] + min + L')' + valuesColor;
+    }
+    else
+    {
+        wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(numero) + keyColor[1] + L']' + valuesColor;
+        numero++;
+    }
+    wstr += keyColor[1] + L" : " + valuesColor;
+    wstr += Print_Date_ou_Dates(dates_de_diffusion);
+
+    // phrases
+    if (numero == 1)//titre != L"")
+        wstr += L"\r\n" + phrases;
+    std::wcout << wstr << std::endl;
 }
 
 // ######################################################################################################################################################
