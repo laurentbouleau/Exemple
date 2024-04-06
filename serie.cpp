@@ -151,16 +151,16 @@ Episode::Episode(fs::path const& cheminFichier)
 
             DateRecord dr{ {0,0,0,day,month - 1,year - 1900} };
 
-            dates_de_diffusion.emplace_back(dr);
+            dates_de_visionnage.emplace_back(dr);
         }
         else if (dates_match[dates_date_month_day_month_index].matched)
         {
-            assert(dates_de_diffusion.size() > 0 && L"Utilisation d'un format mois-jour sans avoir d'année déduite.");
+            assert(dates_de_visionnage.size() > 0 && L"Utilisation d'un format mois-jour sans avoir d'année déduite.");
 
             auto month = std::stoi(dates_match[dates_date_month_day_month_index]);
             auto day = std::stoi(dates_match[dates_date_month_day_day_index]);
 
-            auto lastDateRecord = dates_de_diffusion.back();
+            auto lastDateRecord = dates_de_visionnage.back();
             auto last_year = lastDateRecord.date.tm_year + 1900;
 
             assert(checkmonth(month));
@@ -168,15 +168,15 @@ Episode::Episode(fs::path const& cheminFichier)
 
             DateRecord dr{ {0,0,0,day,month - 1,last_year - 1900} };
 
-            dates_de_diffusion.emplace_back(dr);
+            dates_de_visionnage.emplace_back(dr);
         }
         else if (dates_match[dates_date_day_day_index].matched)
         {
-            assert(dates_de_diffusion.size() > 0 && L"Utilisation d'un format jour sans avoir de mois et d'années déduits.");
+            assert(dates_de_visionnage.size() > 0 && L"Utilisation d'un format jour sans avoir de mois et d'années déduits.");
 
             auto day = std::stoi(dates_match[dates_date_day_day_index]);
 
-            auto lastDateRecord = dates_de_diffusion.back();
+            auto lastDateRecord = dates_de_visionnage.back();
             auto last_year = lastDateRecord.date.tm_year + 1900;
             auto last_month = lastDateRecord.date.tm_mon + 1;
 
@@ -184,7 +184,7 @@ Episode::Episode(fs::path const& cheminFichier)
 
             DateRecord dr{ {0,0,0,day,last_month - 1,last_year - 1900} };
 
-            dates_de_diffusion.emplace_back(dr);
+            dates_de_visionnage.emplace_back(dr);
         }
         else
         {
@@ -194,7 +194,7 @@ Episode::Episode(fs::path const& cheminFichier)
         //if (dates_match[dates_fucking_someFlag_index].matched)
         if (dates_match[dates_someFlag_index].matched)
         {
-            dates_de_diffusion.back().someFlag = true;
+            dates_de_visionnage.back().someFlag = true;
         }
 
         dates_str = dates_match.suffix().str();
@@ -209,11 +209,12 @@ Episode::Episode(fs::path const& cheminFichier)
     std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), {L"\n"}, false);
     if (t[0] == L"")
     {
-        //fichier_pas_zero = false;
-        //titre = saison_episode.titre;
-        //deux_points = saison_episode.deux_points;
-        //sous_titre = saison_episode.sous_titre;
+        fichier_pas_zero = false;
+        titre = saison_episode.titre;
+        deux_points = saison_episode.deux_points;
+        sous_titre = saison_episode.sous_titre;
         numero++;
+        //numero = saison_episode.numero++;
         return;
     }
  
@@ -235,90 +236,86 @@ Episode::Episode(fs::path const& cheminFichier)
     bool found = false;
 
 
-    const std::wregex soustitre_format_rg{ L"(.+) \\- (.+)" };
-    std::wsmatch soustitre_match;
-//if (std::regex_match(texte_a_analyser, soustitre_match, soustitre_format_rg))
+    /*std::wsmatch soustitre_match;
+    const std::wregex soustitre_format_rg{ L"(.+) \\: (.+)" };
     if (std::regex_match(titre, soustitre_match, soustitre_format_rg))
     {
         titre = soustitre_match[1];
         sous_titre = soustitre_match[2];
+        //sous_titre = keyColor[1] + L"xxx" + valuesColor + soustitre_match[2];
         found = true;
     }
-    const std::wregex soustitre_format_rg2{ L"(.+) \\: (.+)" };
+    const std::wregex soustitre_format_rg2{ L"(.+)\\: (.+)" };
     if (std::regex_match(titre, soustitre_match, soustitre_format_rg2))
     {
         titre = soustitre_match[1];
         sous_titre = soustitre_match[2];
         found = true;
     }
-    const std::wregex soustitre_format_rg3{ L"(.+)\\: (.+)" };
+    const std::wregex soustitre_format_rg3{ L"(.+)\\/(.+)" };
     if (std::regex_match(titre, soustitre_match, soustitre_format_rg3))
     {
         titre = soustitre_match[1];
         sous_titre = soustitre_match[2];
         found = true;
     }
-    const std::wregex soustitre_format_rg4{ L"(.+)\\/(.+)" };
+    const std::wregex soustitre_format_rg4{ L"(.+) \\- (.+)" };
     if (std::regex_match(titre, soustitre_match, soustitre_format_rg4))
     {
         titre = soustitre_match[1];
         sous_titre = soustitre_match[2];
         found = true;
-    }
+    }*/
 
 
-/*    pos = t[0].find(L" - ");
-    if (pos != std::wstring::npos && !found)
+
+    const std::wstring d_p = L" : ";
+    pos = t[0].find(d_p);
+    if (!found && pos != std::wstring::npos)
     {
         titre = t[0].substr(0, pos);
-        deux_points = L" : ";
+        deux_points = d_p;
         sous_titre = t[0].substr(pos + 3);
         found = true;
     }
-    pos = t[0].find(L" : ");
-    if (pos != std::wstring::npos && !found)
+    const std::wstring d_p2 = L": ";
+    pos = t[0].find(d_p2);
+    if (!found && pos != std::wstring::npos)
     {
         titre = t[0].substr(0, pos);
-        deux_points = L" : ";
-        sous_titre = t[0].substr(pos + 3);
-        found = true;
-    }
-    pos = t[0].find(L": ");
-    if (pos != std::wstring::npos && !found)
-    {
-        titre = t[0].substr(0, pos);
-        deux_points = L": ";
+        deux_points = d_p2;
         sous_titre = t[0].substr(pos + 2);
         found = true;
     }
-    pos = t[0].find(L'/');
-    if (pos != std::wstring::npos && !found)
+    const std::wstring d_p3 = L"/";
+    pos = t[0].find(d_p3);
+    if (!found && pos != std::wstring::npos)
     {
         titre = t[0].substr(0, pos);
-        deux_points = L"/";
+        deux_points = d_p3;
         sous_titre = t[0].substr(pos + 1);
         found = true;
     }
-    if (pos == std::wstring::npos && !found)
+    const std::wstring d_p4 = L" - ";
+    pos = t[0].find(d_p4);
+    if (!found && pos != std::wstring::npos)
     {
-        titre = t[0];
-        deux_points = L"";
-        sous_titre = L"";
+        titre = t[0].substr(0, pos);
+        deux_points = d_p4;
+        sous_titre = t[0].substr(pos + 3);
         found = true;
-    }*/
-
+    }
     if (!found)
     {
         titre = t[0];
         found = true;
     }
-    //fichier_pas_zero = true;
+    fichier_pas_zero = true;
     numero = 1;
     initialiser_duree(t[1]);
-    phrases = L"";
     for (auto j = 2; j < t.size(); j++)
         phrases += t[j];
-    saison_episode = {titre, deux_points, sous_titre, 1 };
+    saison_episode = {titre, deux_points, sous_titre, numero };
     //system("PAUSE");
 }
 
@@ -378,21 +375,27 @@ void Episode::Print()
     }
     else
     {
-        wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(numero) + keyColor[1] + L']' + valuesColor;
-        numero++;
+        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(numero++) + keyColor[1] + L']' + valuesColor;
+        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
+        wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(1 + saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
+        //numero++;
+        //saison_episode.numero++;
     }
     wstr += keyColor[1] + L" : " + valuesColor;
-    wstr += Print_Date_ou_Dates(dates_de_diffusion);
+    wstr += Print_Dates_de_visionnage(dates_de_visionnage);
 
     // phrases
     if (numero == 1)//titre != L"")
+    {
         wstr += L"\r\n" + phrases;
+        saison_episode.numero = 1;
+    }
     std::wcout << wstr << std::endl;
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diffusion)                                                             #
+// # std::wstring Episode::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -489,7 +492,7 @@ void Episode::Print()
     }
     return L"";
 }*/
-std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diffusion)
+std::wstring Episode::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)
 {
     const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
     const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
@@ -498,12 +501,12 @@ std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diff
     const std::wstring streaming_format = keyColor[1] + L" : " + valuesColor + L"%s";
     const std::wstring step_by_step_tag = L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
 
-    std::wstring date_ou_dates_wstr = L"";
+    std::wstring dates_de_visionnage_wstr = L"";
 
     std::vector<std::wstring> v_wstr;
     std::time_t last_date{ 0 };
     int same_date_counter = 0;
-    for (auto dr : dates_de_diffusion)
+    for (auto dr : dates_de_visionnage)
     {
         std::time_t time = std::mktime(&dr.date);
 
@@ -531,31 +534,31 @@ std::wstring Episode::Print_Date_ou_Dates(std::vector<DateRecord>& dates_de_diff
     for (auto i = 0; i < v_wstr.size(); i++)
     {
         if (i != 0)
-            date_ou_dates_wstr += L", ";
-        date_ou_dates_wstr += v_wstr[i];
+            dates_de_visionnage_wstr += L", ";
+        dates_de_visionnage_wstr += v_wstr[i];
     }
 
-    if (dates_de_diffusion.size() == 1)
+    if (dates_de_visionnage.size() == 1)
     {
-        if (dates_de_diffusion[0].someFlag)
-            date_ou_dates_wstr += wstring_format(prequel_format, L"préquel ou pas !");
+        if (dates_de_visionnage[0].someFlag)
+            dates_de_visionnage_wstr += wstring_format(prequel_format, L"stop ou pas !");
     }
     else
     {
-        if (dates_de_diffusion.size() > 0)
+        if (dates_de_visionnage.size() > 0)
         {
-            if (dates_de_diffusion.back().someFlag)
+            if (dates_de_visionnage.back().someFlag)
             {
-                date_ou_dates_wstr += wstring_format(prequel_format, L"préquel");
+                dates_de_visionnage_wstr += wstring_format(prequel_format, L"à suivre");
             }
-            date_ou_dates_wstr += step_by_step_tag;
+            dates_de_visionnage_wstr += step_by_step_tag;
         }
     }
 
-    if (streaming != L"" && date_ou_dates_wstr.length() > 0)
-        date_ou_dates_wstr += wstring_format(streaming_format, streaming.c_str());
+    if (streaming != L"" && dates_de_visionnage_wstr.length() > 0)
+        dates_de_visionnage_wstr += wstring_format(streaming_format, streaming.c_str());
 
-    return date_ou_dates_wstr;
+    return dates_de_visionnage_wstr;
 }
 
 // ######################################################################################################################################################
@@ -570,6 +573,9 @@ bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
         return false;
     return true;
 }
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -725,9 +731,6 @@ void Saison::afficher_Fichier(fs::path const& cheminFichier)
     }
     return;
  }
-
-// ######################################################################################################################################################
-// ######################################################################################################################################################
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

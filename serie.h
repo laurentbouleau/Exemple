@@ -56,6 +56,7 @@ std::wstring wstring_format(const std::wstring& format, Args ... args)
 }
 
 struct DateRecord;
+struct Episode;
 struct Saison;
  
 struct Saison_Episode
@@ -64,21 +65,24 @@ struct Saison_Episode
     std::wstring titre;
     std::wstring deux_points;
     std::wstring sous_titre;
-    unsigned short int numero{ 1 };
+    unsigned short int numero;// { 2 };
 };
+
+struct SequenceVisionnage
+{};
 
 struct Episode
 {
     //Episode(std::filesystem::path const& cheminFichier);// { m_cheminFichier = cheminFichier; };
     Episode(std::filesystem::path const& cheminFichier);
     struct Saison;
-    friend Saison_Episode;// saison_epise{};
-    //struct Saison_Episode;
+    friend Saison_Episode;
     void afficher();
     void initialiser_duree(std::wstring& m);
     void Print();
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
-    std::wstring Print_Date_ou_Dates(std::vector<DateRecord>& dr);
+    //std::wstring Print_Date_ou_Dates(std::vector<DateRecord>& dr);
+    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
 
     std::filesystem::path m_cheminFichier;
 
@@ -88,9 +92,9 @@ struct Episode
 
     unsigned short int saison{};
     unsigned short int episode{};
-    std::vector<DateRecord> dates_de_diffusion{ 0 };
+    std::vector<DateRecord> dates_de_visionnage{ 0 };
     std::wstring streaming{ L"" };
-    //bool fichier_pas_zero { false };
+    bool fichier_pas_zero { false };
     std::wstring titre;
     std::wstring deux_points;
     std::wstring sous_titre;
@@ -99,7 +103,7 @@ struct Episode
     std::wstring phrases{ L"" };
 
     //bool affichage_Print_actif = true;
-    bool affichage_Date_ou_dates = true;
+    //bool affichage_Date_ou_dates = true;
 };
 
 
@@ -108,6 +112,7 @@ struct Saison
 public:
     Saison(void);
     ~Saison();
+    //struct Episode;
     void afficher(std::filesystem::path const& cheminFichier);
     void afficher_Dossier(std::filesystem::path const& cheminDossier);
     void afficher_Fichier(std::filesystem::path const& cheminFichier);
