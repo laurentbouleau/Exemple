@@ -28,3 +28,4 @@ const void afficher_Avec(std::filesystem::path const& cheminFichier, std::vector
 const void afficher_Image(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& images);
 const bool afficher_Min(std::wstring& t);
 const bool afficher_Temps(std::wstring ttt);
+

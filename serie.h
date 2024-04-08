@@ -59,26 +59,32 @@ struct DateRecord;
 struct Episode;
 struct Saison;
  
-struct Saison_Episode
+struct SequenceVisionnage
 {
-    friend struct Episode;
+    struct Episode;
+    SequenceVisionnage(std::filesystem::path const& cheminFichier);
+    void initialiser_duree(std::wstring& m);
+
+    unsigned short int saison{};
+    unsigned short int episode{};
+    std::vector<DateRecord> dates_de_visionnage{ 0 };
+    std::wstring streaming{ L"" };
+    bool fichier_pas_zero{ false };
     std::wstring titre;
     std::wstring deux_points;
     std::wstring sous_titre;
-    unsigned short int numero;// { 2 };
+    unsigned short int numero{ 1 };
+    long duree_en_seconde{ -1 };
+    std::wstring phrases{ L"" };
 };
-
-struct SequenceVisionnage
-{};
 
 struct Episode
 {
-    //Episode(std::filesystem::path const& cheminFichier);// { m_cheminFichier = cheminFichier; };
-    Episode(std::filesystem::path const& cheminFichier);
+    //Episode(std::filesystem::path const& cheminFichier);
+    Episode(SequenceVisionnage const& seq_vis);
     struct Saison;
-    friend Saison_Episode;
     void afficher();
-    void initialiser_duree(std::wstring& m);
+    //void initialiser_duree(std::wstring& m);
     void Print();
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
     //std::wstring Print_Date_ou_Dates(std::vector<DateRecord>& dr);
@@ -102,9 +108,7 @@ struct Episode
     long duree_en_seconde{ -1 };
     std::wstring phrases{ L"" };
 
-    //bool affichage_Print_actif = true;
-    //bool affichage_Date_ou_dates = true;
-};
+ };
 
 
 struct Saison
@@ -116,6 +120,7 @@ public:
     void afficher(std::filesystem::path const& cheminFichier);
     void afficher_Dossier(std::filesystem::path const& cheminDossier);
     void afficher_Fichier(std::filesystem::path const& cheminFichier);
+    void afficher_Chaine(std::filesystem::path const& cheminFichier);
     void afficher_Netflix(std::filesystem::path const& cheminFichier);
     void afficher_Note(std::filesystem::path const& cheminFichier);
     void afficher_Titre(std::filesystem::path const& cheminFichier);
@@ -124,6 +129,7 @@ public:
 
     void Print();
     void Print_Avec();
+    void Print_Chaine();
     void Print_Images();
     void Print_Netflix();
     const void Print_Date_etc();
@@ -135,18 +141,18 @@ public:
     std::vector<std::pair<std::wstring, std::wstring>> avec;
     std::pair<std::tm, std::wstring>dossier;
     std::vector<Episode> episodes;
+    std::wstring chaine;
     std::vector<std::wstring> image;
     bool netflix{ false };
     double note = -1.0;
     std::pair<unsigned short int, std::wstring>saison;
     std::wstring titre;
 
-    //struct Saison_Episode saison_epise {};
-
-    bool affichage_Avec_actif = true;
-    bool affichage_Date_etc_actif = true;
-    bool affichage_Image_actif = true;
-    bool affichage_Netflix_actif = true;
+    bool affichage_avec_actif = true;
+    bool affichage_chaine_actif = true;
+    bool affichage_date_etc_actif = true;
+    bool affichage_image_actif = true;
+    bool affichage_netflix_actif = true;
 };
 
 class Serie
@@ -154,20 +160,18 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
     ~Serie();
+    void afficher_Fichier(std::filesystem::path const& cheminFichier);
+    void afficher_Chaine(std::filesystem::path const& cheminFichier);
     const void Print();
     std::vector<Saison>saisons{};
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
 private:
-    //const bool PrintDate_ou_Dates();
- //   const void PrintAvec(const std::vector<std::pair<std::wstring, std::wstring>> avec);
-    //const void afficher();
-    //const bool PrintEpisode_Titre_chiffre_et_point_ou_pas(std::wstring& titre);
-    //const void PrintEpisode_Titre(std::tuple<unsigned int, std::wstring, std::wstring, std::wstring, std::tm, std::wstring>& e_t);
     const void Print_Episodes(Saison saison);
     const void Print_Saison(Saison saison);
     //const void PrintSaison_Date_etc(Saison saison);
     const void Print_Saisons();
+    void Print_Chaine();
 
     std::filesystem::path racine;
 
@@ -175,12 +179,25 @@ private:
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    //bool affichage;
-    bool afficage_Avec_actif = true;
-    bool affichage_Episode_Titre_actif = true;
-    //bool affichage_Episodes_actif = true;
-    bool affichage_Saison_actif = true;
-    bool affichage_Saison_Date_etc_actif = true;
-    bool affichage_Saisons_actif = true;
+    std::wstring audiodescription;
+    std::wstring chaine;
+    std::vector<std::wstring> genre;
+    std::vector<std::wstring> image;
+    std::vector<std::wstring> nationalite;
+    std::wstring sous_genre{};
+
+
+    bool affichage_avec_actif = true;
+    bool affichage_audiodescription_actif = true;
+    bool affichage_chaine_actif = true;
+    bool affichage_episode_titre_actif = true;
+    bool affichage_image_actif = true;
+    bool affichage_genres_actif = true;
+    bool affichage_nationalite_actif = true;
+    //bool affichage_saison_actif = true;
+    bool affichage_saison_date_etc_actif = true;
+    bool affichage_saisons_actif = true;
+    bool affichage_serie_actif = true;
+    bool affichage_sous_genre_actif = true;
 };
 

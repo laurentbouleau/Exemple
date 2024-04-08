@@ -27,9 +27,145 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+//extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
+//extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
+//extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
+extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
 extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
+//extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
+// Allociné : https://www.allocine.fr/
+
+const std::vector<std::wstring> Audiodescription =
+{ // AD : Audiodescription
+    L"Allemagne",
+    L"Anglais",
+    L"Espagne",
+    L"Français",
+    L"Hébreu",
+    L"Portugais brésilien"
+};
+
+const std::vector<std::wstring>Genre
+{
+    L"Action",
+    L"Arts Martiaux",
+    L"Animation",
+    L"Aventure",
+    L"Biopic",
+    L"Comédie",
+    L"Comédie musicale",
+    L"Comédie dramatique",
+    L"Concert",
+    L"Divers",
+
+    L"Docu-séries",
+    L"Documentaire",
+    L"Drama",
+    L"Drame",
+    L"Espionnage",
+    L"Epouvante-horreur",
+    L"Erotique",
+    L"Expérimental",
+    L"Famille",
+    L"Fantastique",
+
+    L"Guerre",
+    L"Judiciaire",
+    L"Historique",
+    L"Manga",
+    L"Musical",
+    L"Péplum",
+    L"Policier",
+    L"Opéra",
+    L"Romance",
+    L"Science fiction", L"Science Fiction",
+
+    L"Show",
+    L"Survival",
+    L"Thriller",
+    L"Western"
+};
+
+const std::vector<std::wstring> Nationalite
+{
+    L"Afrique du Sud",
+    L"Allemagne",
+    L"Argentine",
+    L"Australie",
+    L"Barbade",
+    L"Belgique",
+    L"Brésil",
+    L"Canada",
+    L"Chili",
+    L"Chine",
+    L"Corée du Sud",
+    L"Danemark",
+    L"Danoise",
+    L"Egypte",
+    L"Espagne",
+    L"Finlande",
+    L"France",
+    L"Grande-Bretagne",
+    L"Hong-Kong",
+    L"Inde",
+    L"Irlande",
+    L"Israël",
+    L"Italie",
+    L"Japon",
+    L"Jordanie",
+    L"Luxembourg",
+    L"Mexique",
+    L"Nigéria",
+    L"Norvège",
+    L"Pays-Bas",
+    L"Philippines",
+    L"Pologne",
+    L"République Tchèque",
+    L"Russie",
+    L"Suède",
+    L"Thaïlande",
+    L"Turquie",
+    L"Ukraine",
+    L"U.S.A."
+};
+
+const std::vector<std::wstring> Sous_Genre
+{
+    L"Animation",
+    L"Documentaire",
+    L"Docu-séries",
+    L"Manga",
+    L"Mini-série"
+};
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void afficher_Audiodescription(std::wstring& a_filename, std::wstring const& nomFichier, std::wstring& audiodescription)                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void afficher_Audiodescription(fs::path const& cheminFichier, std::wstring& ad)
+{
+    auto nomFichier = cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::wstring a = lire_fichierTxt(nomFichier);
+    std::size_t pos = a.find(L"Audiodescription");
+    if (pos == std::wstring::npos)
+        ;
+    else
+        a = a.substr(0, pos - 3);
+    if (std::find(::Audiodescription.begin(), ::Audiodescription.end(), a) != ::Audiodescription.end())
+        ad = a;
+    assert((ad.size() != 0));
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -47,16 +183,29 @@ const void afficher_Avec(fs::path const& cheminFichier, std::vector<std::pair<st
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void afficher_Chaine(fs::path const& cheminFichier, std::wstring& chaine)                                                                    #
+// # const void afficher_Genre(fs::path const& cheminFichier,                                                                                           #
+// #                           std::vector<std::wstring>& genres_renvoyes,                                                                              #
+// #                           const std::vector<std::wstring>& genres_valides)                                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void afficher_Chaine(fs::path const& cheminFichier, std::wstring& chaine)
-{ // Chaîne
-    auto nomFichier = cheminFichier.filename().wstring();
+const void afficher_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& genres_renvoyes, const std::vector<std::wstring>& genres_valides)
+{ // Genre
+    auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    chaine = lire_fichierTxt(cheminFichier.wstring());
-    assert((chaine.size() != 0));
+
+    std::vector<std::wstring>g;
+    g = lire_fichierTxt(nomFichier, { L"\n", L", " });
+    for (auto&& genre : g)
+    {
+        if (std::find(genres_valides.begin(), genres_valides.end(), genre) != genres_valides.end())
+            genres_renvoyes.push_back(genre);
+        else
+        {
+            assert((false) && "Attention genre non valide !!!");
+        }
+    }
+    //system("PAUSSE");
 }
 
 // ######################################################################################################################################################
@@ -69,190 +218,179 @@ const void afficher_Image(fs::path const& cheminFichier, std::vector<std::wstrin
 {
     auto nomFichier = cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    //std::size_t pos_txt = nf.find_last_of(L"\\");
-    //assert((pos_txt != std::wstring::npos) && L"Erreur Image(s) !!!");
-    //pos_txt++;
-    //images.push_back(nomFichier);
     images.push_back(nomFichier);
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const bool afficher_Min(std::wstring& t)                                                                                                           #
+// # const void afficher_Nationalite(std::wstring& nationalite_filename,                                                                                #
+// #                                 std::wstring const& nomFichier,                                                                                    #
+// #                                 std::vector<std::wstring>& nationalites_renvoyes,                                                                  #
+// #                                 const std::vector<std::wstring>& nationalites_valides)                                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const bool afficher_Min(std::wstring& t)
-{
-    if (
-        (t[0] == L'M' && t[1] == L'I' && t[2] == L'N' /* && t[3] == wstring::npos*/)
-        ||
-        (t[0] == L'M' && t[1] == L'i' && t[2] == L'n' /* && t[3] == wstring::npos*/)
-        ||
-        (t[0] == L'm' && t[1] == L'i' && t[2] == L'n' /* && t[3] == wstring::npos*/)
-        )
+const void afficher_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides)
+{ // Nationalite
+    auto nomFichier = cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+
+//    std::size_t pos_txt = nationalite_filename.find(L".txt");
+//    assert((pos_txt != std::wstring::npos) && L"Erreur Nationalite(s) !!!");
+    //std::wstring radical = nationalite_filename.substr(0, pos_txt);
+    std::vector<std::wstring>n;
+    n = lire_fichierTxt(nomFichier, { L"\n", L", " });
+    for (auto&& nationalite : n)
     {
+        if (std::find(nationalites_valides.begin(), nationalites_valides.end(), nationalite) != nationalites_valides.end())
+            nationalites_renvoyes.push_back(nationalite);
+        else
+        {
+            assert((false) && "Attention nationalite non valide !!!");
+        }
     }
-    else
-    {
-        return false;
-    }
-    return true;
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const bool afficher_Temps(std::wstring ttt)                                                                                                        #
+// # const int afficher_Sous_Genre(std::wstring& s_g)                                                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const bool afficher_Temps(std::wstring ttt)
-// "_h__min" ou "_h __min" ou "_ h __ min" ou "__min" ou "___min" ou "__ min" ou "___ min"
-{
-    static const basic_string <char>::size_type npos = -1;
-    std::wstring t = ttt;
-    std::size_t length = t.length();
-    bool h = false;
-    bool ok = false;
-    bool w1 = false;
-    // 1
-    if (t[0] == npos)
-        return false;
-    if (std::isdigit(t[0]))
-        w1 = true; // oui w1
-    else
-        return false;
-    // 2
-    t = t.substr(1);
-    if (t[0] == std::wstring::npos)
-        return false;
-    bool w2 = false;
-    bool espace1 = false;
-    if (!ok)
-    {
-        if (w1 && afficher_Min(t))
-            return true; // "_min"
-        if (w1 && !espace1 && t[0] == L' ')
-            espace1 = true;
-        if (w1 && !w2 && std::isdigit(t[0]))
-            w2 = true; // Oui w2
-        if (w1 && !h && (t[0] == L'h' || t[0] == L'H'))
-            h = true;
-        if (w1 && (!espace1 && t[0] == L' '))
-            espace1 = true;
-    }
-    // 3
-    t = t.substr(1);
-    if (t[0] == std::wstring::npos)
-        return false;
-    bool w3 = false;
-    if (!ok)
-    {
-        if (w1 && espace1 && !w2 && afficher_Min(t))
-            return true;
-        if (w1 == true && w2 == true && afficher_Min(t))
-            return true;
-        if (w1 && w2 && (!espace1 && t[0] == L' '))
-            espace1 = true;
-        if (w1 && w2 && !w3 && std::isdigit(t[0]))
-            w3 = true;
-        if (w1 && h && std::isdigit(t[0]))
-            w3 = true;
-        if (w1 && h && (!espace1 && t[0] == L' '))
-            espace1 = true;
-        if (w1 && espace1 && !h && (t[0] == L'h' || t[0] == L'H'))
-            h = true;
-    }
-    // 4
-    t = t.substr(1);
-    if (t[0] == std::wstring::npos)
-        return false;
-    bool w4 = false;
-    bool espace2 = false;
-    if (!ok)
-    {
-        if (w1 && w2 && espace1 && !w3 && afficher_Min(t))
-            return true;
-        if (w1 && w2 && w3 && afficher_Min(t))
-        {
-            if (ttt[0] == L'1')
-                return true;
-            else
-                return false;
-        }
-        if (w1 && w2 && w3 && (!espace1 && t[0] == L' '))
-            espace1 = true;
-        if (w1 && h && w3 && std::isdigit(t[0]))
-            w4 = true;
-        if (w1 && h && espace1 && !w4 && std::isdigit(t[0]))
-            w4 = true;
-        if (w1 && espace1 && h && (!espace2 && t[0] == L' '))
-            espace2 = true;
-    }
-    // 5
-    t = t.substr(1);
-    if (t[0] == std::wstring::npos)
-        return false;
-    bool w5 = false;
-    if (!ok)
-    {
-        if (w1 && w2 && w3 && espace1 && afficher_Min(t))
-        {
-            if (ttt[0] == L'1')
-                return true;
-            else
-                return false;
-        }
-        if (w1 == true && h == true && w3 == true && w4 == true && afficher_Min(t))
-        {
-            if (ttt[2] == L'6' || ttt[2] == L'7' || ttt[2] == L'8' || ttt[2] == L'9')
-                return false;
-            else
-                return true;
-        }
-        if (w1 == true && h == true && espace1 == true && w4 == true && w5 == false && std::isdigit(t[0]))
-            w5 = true;
-        if (w1 == true && espace1 == true && h == true && espace2 == true && w5 == false && std::isdigit(t[0]))
-            w5 = true;
-    }
-    // 6
-    t = t.substr(1);
-    if (t[0] == std::wstring::npos)
-        return false;
-    bool w6 = false;
-    if (!ok)
-    {
-        if (w1 && h && espace1 && w4 && w5 && afficher_Min(t))
-        {
-            if (ttt[3] == L'6' || ttt[3] == L'7' || ttt[3] == L'8' || ttt[3] == L'9')
-                return false;
-            else
-                return true;
-        }
-        if (w1 && espace1 && h && espace2 && w5 && !w6 && std::isdigit(t[0]))
-            w6 = true;
-    }
-    // 7
-    t = t.substr(1);
-    if (t[0] == std::wstring::npos)
-        return false;
-    bool espace3 = false;
-    if (!ok)
-    {
-        if (w1 && espace1 && h && espace2 && w5 && w6 && (!espace3 && t[0] == L' '))
-            espace3 = true;
-    }
-    // 8
-    t = t.substr(1);
-    if (!ok)
-    {
-        if (w1 && espace1 && h && espace2 && w5 && w6 && espace3 && afficher_Min(t))
-        {
-            if (ttt[4] == L'6' || ttt[4] == L'7' || ttt[4] == L'8' || ttt[4] == L'9')
-                return false;
-            else
-                return true;
-        }
-    }
-    return false;
+const void afficher_Sous_Genre(std::wstring& s_g)
+{ // Sous_Genre
+    bool s_g_ = false;
+    if (std::find(::Sous_Genre.begin(), ::Sous_Genre.end(), s_g) != ::Sous_Genre.end())
+        s_g_ = true;
+    return;
 }
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Printaudiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif,                                      #
+// #                                  std::wstring& keyColor, std::wstring& valuesColor)                                                                #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void PrintAudiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor)
+{
+    if (affichage_audiodescription_actif && audiodescription.size() > 0)
+    {
+        std::wstring audiodescription_str = keyColor + L"Audiodescription : " + valuesColor + audiodescription + L"\r\n";
+        //PrintStringW(m_hOut, creee_par_str, 0);
+        //PrintStringW(HANDLE hOut, creee_par_str);
+        //Console_Lire(audiodescription_str, 0, 0);
+        //Console_Lire(hOut, audiodescription_str, 0);// , 0);
+        //Console_Lire(hOut, audiodescription_str, 0, L' ');
+        std::wcout << audiodescription_str;// << std::endl;
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void PrintGenres(const std::vector<std::wstring>& genres, bool affichage_genres_actif,                                                             #
+// #                  const std::wstring& sous_genre, bool affichage_sous_genre_actif,                                                                  #
+// #                  std::wstring& keyColor, std::wstring& valuesColor)                                                                                #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void PrintGenres(const std::vector<std::wstring>& genres, bool affichage_genres_actif, const std::wstring& sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor)
+{
+    if (affichage_genres_actif && genres.size() > 0)
+    {
+        std::wstring genre_str = keyColor + L"Genre" + ((genres.size() > 1) ? L"s" : L"") + L" : " + valuesColor;
+
+        bool first = true;
+        for (auto&& genre : genres)
+        {
+            if (!first)
+            {
+                genre_str += keyColor + L", " + valuesColor;
+            }
+            genre_str += genre;
+            first = false;
+        }
+        genre_str += L"\r\n";
+        //int i = Console_Lire_txt(genre_str, 0, 0);
+        //Console_Lire(genre_str, 0, 0);
+        //Console_Lire(hOut, genre_str, 0);// , 0);
+        //Console_Lire(hOut, genre_str, 0, L' ');
+        std::wcout << genre_str;// << std::endl;
+        if (affichage_sous_genre_actif && sous_genre.size() != 0)
+        {
+            genre_str = keyColor + L"Sous-genre : " + valuesColor + sous_genre + L"\r\n";
+            //Console_Lire(genre_str, 0, 0);
+            //Console_Lire(hOut, genre_str, 0);// , 0);
+            //Console_Lire(hOut, genre_str, 0, L' ');
+            std::wcout << genre_str;// << std::endl;
+        }
+        //PrintStringW(m_hOut, genre_str, 0);
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Print_Images(const std::vector<std::wstring>& image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor)           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Print_Images(const std::vector<std::wstring>& image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor)
+{
+    if (affichage_image_actif && image.size() > 0)
+    {
+        std::wstring image_str = keyColor + L"Image" + ((image.size() > 1) ? L"s" : L"") + L" : [" + valuesColor;
+        bool first = true;
+        for (auto&& i : image)
+        {
+            if (!first)
+            {
+                image_str += keyColor + L"], [" + valuesColor;
+            }
+            image_str += i;
+            first = false;
+        }
+        image_str += keyColor + L']' + valuesColor + L"\r\n";
+        //PrintStringW(m_hOut, image_str, x1);
+        //Console_Lire(image_str, x1, 0);
+        //Console_Lire(hOut, image_str, 0);// , 0);
+        //Console_Lire(hOut, image_str, x1, L' ');
+        std::wcout << image_str;
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void PrintNationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif                                       #                                                                                                    #
+// #                        std::wstring& keyColor, std::wstring& valuesColor)                                                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void PrintNationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor)
+{
+    if (affichage_nationalite_actif && nationalites.size() > 0)
+    {
+        std::wstring nationalite_str = keyColor + L"Nationalite" + ((nationalites.size() > 1) ? L"s" : L"") + L" : " + valuesColor;
+
+        bool first = true;
+        for (auto&& nationalite : nationalites)
+        {
+            if (!first)
+            {
+                nationalite_str += keyColor + L", " + valuesColor;
+            }
+            nationalite_str += nationalite;
+            first = false;
+        }
+        nationalite_str += L"\r\n";
+
+        //PrintStringW(m_hOut, genre_str, 0);
+        //Console_Lire(nationalite_str, 0, 0);
+        //Console_Lire(hOut, nationalite_str, 0);// , 0);
+        //Console_Lire(hOut, nationalite_str, 0, L' ');
+        std::wcout << nationalite_str;
+    }
+}
+
