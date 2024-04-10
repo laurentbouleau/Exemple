@@ -270,12 +270,12 @@ const void afficher_Sous_Genre(std::wstring& s_g)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Printaudiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif,                                      #
+// # const void Print_Audiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif,                                     #
 // #                                  std::wstring& keyColor, std::wstring& valuesColor)                                                                #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void PrintAudiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor)
+void Print_Audiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor)
 {
     if (affichage_audiodescription_actif && audiodescription.size() > 0)
     {
@@ -291,13 +291,13 @@ void PrintAudiodescription(const std::wstring& audiodescription, bool affichage_
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void PrintGenres(const std::vector<std::wstring>& genres, bool affichage_genres_actif,                                                             #
+// # void Print_Genres(const std::vector<std::wstring>& genres, bool affichage_genres_actif,                                                            #
 // #                  const std::wstring& sous_genre, bool affichage_sous_genre_actif,                                                                  #
 // #                  std::wstring& keyColor, std::wstring& valuesColor)                                                                                #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void PrintGenres(const std::vector<std::wstring>& genres, bool affichage_genres_actif, const std::wstring& sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor)
+void Print_Genres(const std::vector<std::wstring>& genres, bool affichage_genres_actif, const std::wstring& sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor)
 {
     if (affichage_genres_actif && genres.size() > 0)
     {
@@ -363,12 +363,12 @@ void Print_Images(const std::vector<std::wstring>& image, bool affichage_image_a
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void PrintNationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif                                       #                                                                                                    #
+// # const void Print_Nationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif                                      #                                                                                                    #
 // #                        std::wstring& keyColor, std::wstring& valuesColor)                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void PrintNationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor)
+void Print_Nationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor)
 {
     if (affichage_nationalite_actif && nationalites.size() > 0)
     {
