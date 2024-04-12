@@ -56,7 +56,7 @@ std::wstring wstring_format(const std::wstring& format, Args ... args)
 }
 
 struct DateRecord;
-//struct Episode;
+struct Episode;
 struct Saison;
  
 struct InfosVisionnage
@@ -81,21 +81,21 @@ struct SequenceVisionnage
 
     std::filesystem::path m_cheminFichier;
 
-    std::wstring min = L"min";
+    std::wstring m_min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    unsigned short int saison{};
-    unsigned short int episode{};
+    unsigned short int m_saison{};
+    unsigned short int m_episode{};
     std::vector<DateRecord> m_dates{ 0 };
-    std::wstring streaming{ L"" };
-    bool fichier_pas_zero{ false };
-    std::wstring titre;
-    std::wstring deux_points;
-    std::wstring sous_titre;
-    unsigned short int numero{ 1 };
-    long duree_en_seconde{ -1 };
-    std::wstring phrases{ L"" };
+    std::wstring m_streaming{ L"" };
+    bool m_fichier_pas_zero{ false };
+    std::wstring m_titre;
+    std::wstring m_deux_points;
+    std::wstring m_sous_titre;
+    unsigned short int m_numero{ 1 };
+    long m_duree_en_seconde{ -1 };
+    std::wstring m_phrases{ L"" };
 };
 
 /*struct Episode
@@ -130,6 +130,15 @@ struct SequenceVisionnage
 
  };*/
 
+struct Episode
+{
+    //Episode(std::filesystem::path const& cheminFichier);
+    Episode(SequenceVisionnage const& seq_vis);
+
+    void Print();
+
+    std::vector<SequenceVisionnage> sequencevisionnages;
+};
 
 struct Saison
 {
@@ -138,23 +147,24 @@ public:
     ~Saison();
     //struct Episode;
     void afficher(std::filesystem::path const& cheminFichier);
-    void afficher_Dossier(std::filesystem::path const& cheminDossier);
-    void afficher_Fichier(std::filesystem::path const& cheminFichier);
-    void afficher_Netflix(std::filesystem::path const& cheminFichier);
-    void afficher_Note(std::filesystem::path const& cheminFichier);
-    void afficher_Titre(std::filesystem::path const& cheminFichier);
 
-    //void creer_Episode(std::filesystem::path const& cheminFichier);
     void creer_SequenceVisionnage(std::filesystem::path const& cheminFichier);
 
-    void initialiser_Chaine(std::filesystem::path const& cheminFichier);
+    void initialiser_Dossier(std::filesystem::path const& cheminDossier);
+    void initialiser_Fichier(std::filesystem::path const& cheminFichier);
 
+    void initialiser_Chaine(std::filesystem::path const& cheminFichier);
+    void initialiser_Netflix(std::filesystem::path const& cheminFichier);
+    void initialiser_Note(std::filesystem::path const& cheminFichier);
+    void initialiser_Titre(std::filesystem::path const& cheminFichier);
+
+ 
     void Print();
     void Print_Avec();
     void Print_Chaine();
+    const void Print_Date_etc();
     void Print_Images();
     void Print_Netflix();
-    const void Print_Date_etc();
 
     std::wstring min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
@@ -162,7 +172,7 @@ public:
 
     std::vector<std::pair<std::wstring, std::wstring>> avec;
     std::pair<std::tm, std::wstring>dossier;
-    std::vector<SequenceVisionnage> sequencevisionnages;
+    std::vector<Episode> episodes;
     std::wstring m_chaine;
     std::vector<std::wstring> image;
     bool netflix{ false };
@@ -182,16 +192,16 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
     ~Serie();
-    void afficher_Fichier(std::filesystem::path const& cheminFichier);
-    void afficher_Chaine(std::filesystem::path const& cheminFichier);
+    void initialiser_Fichier(std::filesystem::path const& cheminFichier);
+    void initialiser_Chaine(std::filesystem::path const& cheminFichier);
+
     const void Print();
+
     std::vector<Saison>saisons{};
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
 private:
-    //const void Print_Episodes(Saison saison);
     const void Print_Saison(Saison saison);
-    //const void PrintSaison_Date_etc(Saison saison);
     const void Print_Saisons();
     const void Print_Chaine();
 
