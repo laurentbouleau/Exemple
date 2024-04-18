@@ -148,13 +148,13 @@ const std::vector<std::wstring> Sous_Genre
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void initialiser_Audiodescription(std::wstring& a_filename, std::wstring const& nomFichier, std::wstring& audiodescription)                  #
+// # const void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& ad)                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& ad)
+const void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& ad)
 {
-    auto nomFichier = cheminFichier.wstring();
+    auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     std::wstring a = lire_fichierTxt(nomFichier);
     std::size_t pos = a.find(L"Audiodescription");
@@ -169,29 +169,29 @@ const void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstr
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec)                               #
+// # const void initialiser_Avec(fs::path const& m_cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec)                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec)
+const void initialiser_Avec(fs::path const& m_cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec)
 {
-    auto nomFichier = cheminFichier.filename().wstring();
+    auto nomFichier = m_cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    avec = lire_paireCleValeur_depuisFichierTxt(cheminFichier.wstring(), L" : ");
+    avec = lire_paireCleValeur_depuisFichierTxt(m_cheminFichier.wstring(), L" : ");
     assert((avec.size() != 0));
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void initialiser_Genre(fs::path const& cheminFichier,                                                                                        #
+// # const void initialiser_Genre(fs::path const& m_cheminFichier,                                                                                      #
 // #                           std::vector<std::wstring>& genres_renvoyes,                                                                              #
 // #                           const std::vector<std::wstring>& genres_valides)                                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& genres_renvoyes, const std::vector<std::wstring>& genres_valides)
+const void initialiser_Genre(fs::path const& m_cheminFichier, std::vector<std::wstring>& genres_renvoyes, const std::vector<std::wstring>& genres_valides)
 { // Genre
-    auto nomFichier = cheminFichier.wstring();
+    auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
 
     std::vector<std::wstring>g;
@@ -210,29 +210,28 @@ const void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wst
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& images)                                                     #
+// # const void initialiser_Image(fs::path const& m_cheminFichier, std::vector<std::wstring>& images)                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& images)
+const void initialiser_Image(fs::path const& m_cheminFichier, std::vector<std::wstring>& images)
 {
-    auto nomFichier = cheminFichier.filename().wstring();
+    auto nomFichier = m_cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     images.push_back(nomFichier);
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void initialiser_Nationalite(std::wstring& nationalite_filename,                                                                             #
-// #                                 std::wstring const& nomFichier,                                                                                    #
+// # const void initialiser_Nationalite(fs::path const& m_cheminFichier,                                                                                #
 // #                                 std::vector<std::wstring>& nationalites_renvoyes,                                                                  #
 // #                                 const std::vector<std::wstring>& nationalites_valides)                                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides)
+const void initialiser_Nationalite(fs::path const& m_cheminFichier, std::vector<std::wstring>& nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides)
 { // Nationalite
-    auto nomFichier = cheminFichier.wstring();
+    auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
 
 //    std::size_t pos_txt = nationalite_filename.find(L".txt");
