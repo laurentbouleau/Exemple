@@ -128,6 +128,7 @@ struct Episode
     void Print();
 
     std::vector<SequenceVisionnage> sequencevisionnages;
+    //std::vector<SequenceVisionnage> m_liste_visionnages{ 0 };
 };
 
 struct Saison
@@ -139,7 +140,7 @@ public:
     void afficher(std::filesystem::path const& m_cheminFichier);
 
     //
-    void creer_InfosVisionnage(std::filesystem::path const& m_cheminFichier);
+//    void creer_InfosVisionnage(std::filesystem::path const& m_cheminFichier);
     //
     
     void creer_SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
@@ -180,6 +181,10 @@ public:
     bool affichage_date_etc_actif = true;
     bool affichage_image_actif = true;
     bool affichage_netflix_actif = true;
+
+    std::vector<std::vector<Episode>> m_liste_episodes;
+
+
 };
 
 class Serie

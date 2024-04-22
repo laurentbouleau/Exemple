@@ -1202,7 +1202,7 @@ void Saison::afficher(fs::path const& cheminFichier)
 }
 
 
-void Saison::creer_InfosVisionnage(fs::path const& m_cheminFichier)
+/*void Saison::creer_InfosVisionnage(fs::path const& m_cheminFichier)
 {
     auto nomFichier = m_cheminFichier.filename().wstring();
 
@@ -1211,7 +1211,7 @@ void Saison::creer_InfosVisionnage(fs::path const& m_cheminFichier)
     infosvisionnages.push_back(infosvisionnage);
     //Episode episode(m_cheminFichier);
     //episodes.push_back(episode); // Episode
-}
+}*/
 
 
 
@@ -1345,7 +1345,7 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
             }
         }
         //
-        if (
+        /*if (
             (nomFichier[0] == L'1' || nomFichier[0] == L'2' || nomFichier[0] == L'3' || nomFichier[0] == L'4' || nomFichier[0] == L'5' || nomFichier[0] == L'6' || nomFichier[0] == L'7' || nomFichier[0] == L'8' || nomFichier[0] == L'9')
             && nomFichier[1] == L'x'
             )
@@ -1354,14 +1354,25 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
             //creer_Episode(m_cheminFichier);
             //creer_SequenceVisionnage(m_cheminFichier);
             return;
-        }
-        if (
+        }*/
+        /*if (
             (nomFichier[0] == L'1' || nomFichier[0] == L'2' || nomFichier[0] == L'3' || nomFichier[0] == L'4' || nomFichier[0] == L'5' || nomFichier[0] == L'6' || nomFichier[0] == L'7' || nomFichier[0] == L'8' || nomFichier[0] == L'9')
             && (std::isdigit(nomFichier[1]))
             && nomFichier[2] == L'x'
-            )
+            )*/
+        if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{1,2})x(.)+" }))
         {
-            creer_InfosVisionnage(m_cheminFichier);
+            //creer_InfosVisionnage(m_cheminFichier);
+            InfosVisionnage info_vis{ m_cheminFichier };
+            /*if (m_liste_episodes.exists(info_vis.m_NumeroEpisode))
+            {
+                //m_liste_episodes[info_vis.m_NumeroEpisode].AjouterInfosVisionnage(info_vis);
+            }
+            else
+            {
+                m_liste_episodes[info_vis.m_NumeroEpisode] = Creer_Episode(info_vis);
+            }*/
+
             //creer_SequenceVisionnage(m_cheminFichier);
             return;
         }
