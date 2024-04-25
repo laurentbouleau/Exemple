@@ -16,6 +16,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 //#include <stdio.h>
 #include <locale>
 #include <algorithm>
@@ -32,8 +33,8 @@ namespace fs = std::filesystem;
 
 using DateVisionnage = DateRecord;
 
-extern const std::vector<std::wstring>Audiodescription;
-extern const std::vector<std::wstring>Genre;
+extern const std::vector<std::wstring> Audiodescription;
+extern const std::vector<std::wstring> Genre;
 extern const std::vector<std::wstring> Nationalite;
 extern const std::vector<std::wstring> Sous_Genre;
 
@@ -50,17 +51,17 @@ extern bool checkyear(int y);
 extern bool checkmonth(int m);
 extern bool checkday(int m, int d, int y);
 
-extern const void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& ad);
-extern const void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec);
-extern const void initialiser_Chaine(fs::path const& cheminFichier, std::wstring& chaine);
-extern const void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& genres_renvoyes, const std::vector<std::wstring>& genres_valides);
-extern const void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& images);
-extern const void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
+extern const void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& m_ad);
+extern const void initialiser_Avec(fs::path const& m_cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
+extern const void initialiser_Chaine(fs::path const& m_cheminFichier, std::wstring& m_chaine);
+extern const void initialiser_Genre(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
+extern const void initialiser_Image(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_images);
+extern const void initialiser_Nationalite(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
 
-extern void Print_Audiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void Print_Images(const std::vector<std::wstring>& image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void Print_Genres(const std::vector<std::wstring>& genres, bool affichage_genres_actif, const std::wstring& sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void Print_Nationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
+extern void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor);
+extern void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
+extern void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
+extern void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -463,7 +464,7 @@ bool InfosVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int epi
 
 SequenceVisionnage::SequenceVisionnage(fs::path const& cheminFichier)
 {
-    // ([[:digit:]]+)x([[:digit:]]{1,3})\\.(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})))(_?))+)(\\s(.+))?
+/*    // ([[:digit:]]+)x([[:digit:]]{1,3})\\.(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})))(_?))+)(\\s(.+))?
     const std::wstring numero_saison_format = L"([[:digit:]]{1,2})"; // saison
     const std::wstring sep_numero_saison = L"x"; // x
     const std::wstring numero_episode_format = L"([[:digit:]]{1,3})"; // episode
@@ -624,37 +625,6 @@ SequenceVisionnage::SequenceVisionnage(fs::path const& cheminFichier)
 
     bool found = false;
 
-    /*std::wsmatch soustitre_match;
-    const std::wregex soustitre_format_rg{ L"(.+) \\: (.+)" };
-    if (std::regex_match(titre, soustitre_match, soustitre_format_rg))
-    {
-        titre = soustitre_match[1];
-        sous_titre = soustitre_match[2];
-        //sous_titre = keyColor[1] + L"xxx" + valuesColor + soustitre_match[2];
-        found = true;
-    }
-    const std::wregex soustitre_format_rg2{ L"(.+)\\: (.+)" };
-    if (std::regex_match(titre, soustitre_match, soustitre_format_rg2))
-    {
-        titre = soustitre_match[1];
-        sous_titre = soustitre_match[2];
-        found = true;
-    }
-    const std::wregex soustitre_format_rg3{ L"(.+)\\/(.+)" };
-    if (std::regex_match(titre, soustitre_match, soustitre_format_rg3))
-    {
-        titre = soustitre_match[1];
-        sous_titre = soustitre_match[2];
-        found = true;
-    }
-    const std::wregex soustitre_format_rg4{ L"(.+) \\- (.+)" };
-    if (std::regex_match(titre, soustitre_match, soustitre_format_rg4))
-    {
-        titre = soustitre_match[1];
-        sous_titre = soustitre_match[2];
-        found = true;
-    }*/
-
     const std::wstring d_p = L" : ";
     pos = t[0].find(d_p);
     if (!found && pos != std::wstring::npos)
@@ -703,7 +673,7 @@ SequenceVisionnage::SequenceVisionnage(fs::path const& cheminFichier)
         m_phrases += t[j];
 
 //    system("PAUSE");
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -711,7 +681,7 @@ SequenceVisionnage::SequenceVisionnage(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void SequenceVisionnage::initialiser_duree(std::wstring& m)
+/*void SequenceVisionnage::initialiser_duree(std::wstring& m)
 {
     const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
 
@@ -726,7 +696,7 @@ void SequenceVisionnage::initialiser_duree(std::wstring& m)
     {
         throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
     }
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -734,7 +704,7 @@ void SequenceVisionnage::initialiser_duree(std::wstring& m)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void SequenceVisionnage::Print()
+/*void SequenceVisionnage::Print()
 {
     std::wstring wstr;
     bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_episode);
@@ -766,8 +736,8 @@ void SequenceVisionnage::Print()
         wstr += L"\r\n" + m_phrases;
         //saison_episode.numero = 1;
     }
-    std::wcout << wstr << std::endl;
-}
+    std::wcout << wstr;
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -775,7 +745,7 @@ void SequenceVisionnage::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)
+/*std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)
 {
     const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
     const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
@@ -842,7 +812,7 @@ std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecor
         dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
 //
     return dates_de_visionnage_wstr;
-}
+}*/
 
 
 // ######################################################################################################################################################
@@ -851,12 +821,12 @@ std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecor
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
+/*bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 {
     if (episode == 0)
         return false;
     return true;
-}
+}*/
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -867,7 +837,7 @@ bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int 
 //Episode::~Episode()
 //{}
 
-Episode::Episode(SequenceVisionnage const& seq_vis)
+/*Episode::Episode(SequenceVisionnage const& seq_vis)
 {
     //auto nomFichier = seq_vis.filename().wstring();
     auto nomFichier = seq_vis;
@@ -878,7 +848,7 @@ Episode::Episode(SequenceVisionnage const& seq_vis)
 
     //SequenceVisionnage sequencevisionnage(seq_vis);
     //titre = sequencevisionnage.titre;
-}
+}*/
 
 
 
@@ -1010,6 +980,14 @@ Episode::Episode(SequenceVisionnage const& seq_vis)
 /*void Episode::afficher()
 {
 }*/
+/*void Episode::ajouter_InfosVisionnage(InfosVisionnage const& seq_vis)
+{
+    ;
+}*/
+/*void Episode::creer_Episode(InfosVisionnage const& seq_vis)
+{
+    ;
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1040,44 +1018,17 @@ Episode::Episode(SequenceVisionnage const& seq_vis)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void Episode::Print()
-{
-    std::wstring wstr;
-    bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(episode);
-    if (chiffre_et_point_ou_pas)
-    {
-        wstr = std::to_wstring(saison) + keyColor[1] + L'x' + valuesColor + std::to_wstring(episode) + keyColor[1] + L" : " + valuesColor;
-    }
-    wstr += keyColor[1] + titre + valuesColor;
-    if (deux_points != L"")
-        wstr += deux_points + keyColor[1] + sous_titre + valuesColor;
-    if (numero == 1)
-    {
-        wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(duree_en_seconde / 60) + keyColor[1] + min + L')' + valuesColor;
-    }
-    else
-    {
-        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(numero++) + keyColor[1] + L']' + valuesColor;
-        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
-        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(1 + saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
-        //numero++;
-        //saison_episode.numero++;
-    }
-    wstr += keyColor[1] + L" : " + valuesColor;
-    wstr += Print_Dates_de_visionnage(dates_de_visionnage);
-
-    // phrases
-    if (numero == 1)//titre != L"")
-    {
-        wstr += L"\r\n" + phrases;
-        //saison_episode.numero = 1;
-    }
-    std::wcout << wstr << std::endl;
-}*/
 
 void Episode::Print()
 {
-    //system("PAUSE");
+    std::wcout << L"www" << std::endl;
+    system("PAUSE");
+
+//    PrintData();
+    for (auto vis : m_liste_visionnages)
+    {
+        vis.Print();
+    }
 }
 
 // ######################################################################################################################################################
@@ -1201,6 +1152,10 @@ void Saison::afficher(fs::path const& cheminFichier)
     assert((saison.second.size() != 0));
 }
 
+void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
+{
+
+}
 
 /*void Saison::creer_InfosVisionnage(fs::path const& m_cheminFichier)
 {
@@ -1213,6 +1168,10 @@ void Saison::afficher(fs::path const& cheminFichier)
     //episodes.push_back(episode); // Episode
 }*/
 
+void Saison::creer_Episode(SequenceVisionnage const& seq_vis)
+{
+    ;
+}
 
 
 
@@ -1285,8 +1244,8 @@ void Saison::initialiser_Dossier(fs::path const& m_cheminFichier)
     tm.tm_mon = m - 1;
     tm.tm_mday = d;
     wstr = wstr.substr(2);
-    dossier.first = tm;
-    dossier.second = wstr;
+    m_dossier.first = tm;
+    m_dossier.second = wstr;
 }
 
 // ######################################################################################################################################################
@@ -1310,7 +1269,7 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
             // Avec
             if (nomFichier == L"Avec.txt")
             {
-                initialiser_Avec(m_cheminFichier, avec);
+                initialiser_Avec(m_cheminFichier, m_avec);
                 return;
             }
             // Chaîne d'origine
@@ -1355,25 +1314,19 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
             //creer_SequenceVisionnage(m_cheminFichier);
             return;
         }*/
-        /*if (
-            (nomFichier[0] == L'1' || nomFichier[0] == L'2' || nomFichier[0] == L'3' || nomFichier[0] == L'4' || nomFichier[0] == L'5' || nomFichier[0] == L'6' || nomFichier[0] == L'7' || nomFichier[0] == L'8' || nomFichier[0] == L'9')
-            && (std::isdigit(nomFichier[1]))
-            && nomFichier[2] == L'x'
-            )*/
         if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{1,2})x(.)+" }))
         {
             //creer_InfosVisionnage(m_cheminFichier);
             InfosVisionnage info_vis{ m_cheminFichier };
-            /*if (m_liste_episodes.exists(info_vis.m_NumeroEpisode))
+            if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
             {
-                //m_liste_episodes[info_vis.m_NumeroEpisode].AjouterInfosVisionnage(info_vis);
+                m_liste_episodes[info_vis.m_NumeroEpisode].ajouter_InfosVisionnage(info_vis);
             }
             else
             {
-                m_liste_episodes[info_vis.m_NumeroEpisode] = Creer_Episode(info_vis);
-            }*/
-
-            //creer_SequenceVisionnage(m_cheminFichier);
+                m_liste_episodes[info_vis.m_NumeroEpisode] = creer_Episode(info_vis);
+            }
+                //creer_SequenceVisionnage(m_cheminFichier);
             return;
         }
         if (int j = std::stoi(nomFichier))
@@ -1391,7 +1344,7 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
     else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
         // Image
     {
-        initialiser_Image(m_cheminFichier, image);
+        initialiser_Image(m_cheminFichier, m_image);
         return;
     }
     else
@@ -1463,7 +1416,7 @@ void Saison::initialiser_Note(fs::path const& m_cheminFichier)
     std::size_t pos = n.length();
     if (n == L"")
     {
-        note = -1.0;
+        m_note = -1.0;
         return;
     }
     if (pos != 1 && pos != 3)
@@ -1483,7 +1436,7 @@ void Saison::initialiser_Note(fs::path const& m_cheminFichier)
     }
     if (pos == 1)
     {
-        note = std::stod(n);
+        m_note = std::stod(n);
     }
     else
     {
@@ -1493,7 +1446,7 @@ void Saison::initialiser_Note(fs::path const& m_cheminFichier)
             n[1] = L',';
             //
             // Ok !!!
-            note = std::stod(n);
+            m_note = std::stod(n);
         }
         else
         {
@@ -1513,8 +1466,8 @@ void Saison::initialiser_Titre(std::filesystem::path const& m_cheminFichier)
 {
     auto nomFichier = m_cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    titre = lire_fichierTxt(m_cheminFichier.wstring());
-    assert((titre.size() != 0));
+    m_titre = lire_fichierTxt(m_cheminFichier.wstring());
+    assert((m_titre.size() != 0));
 }
 
 // ######################################################################################################################################################
@@ -1526,7 +1479,7 @@ void Saison::initialiser_Titre(std::filesystem::path const& m_cheminFichier)
 void Saison::Print()
 {
     wchar_t date_string[15];
-    std::wcsftime(date_string, 15, L"%d/%m/%Y", &dossier.first);
+    std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_dossier.first);
     std::wstring wstr;
     wstr = date_string;
 
@@ -1545,10 +1498,10 @@ void Saison::Print()
 
 
     wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
-    if (dossier.second != L"")
-        wstr += keyColor[0] + dossier.second + valuesColor + L' ';
-    if (titre != L"")
-        wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + titre + valuesColor;
+    if (m_dossier.second != L"")
+        wstr += keyColor[0] + m_dossier.second + valuesColor + L' ';
+    if (m_titre != L"")
+        wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + m_titre + valuesColor;
     wstr += keyColor[1] + L" : " + valuesColor;
     wstr += saison.second;
     wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
@@ -1559,7 +1512,8 @@ void Saison::Print()
     taille = std::size(infosvisionnages);
     for (auto i = 0; i < taille; i++)
     {
-//        episodes[i].Print();
+        episodes[i].Print();
+        // ou
         infosvisionnages[i].Print();
     }
     // Chaîne
@@ -1582,11 +1536,11 @@ void Saison::Print()
 
 void Saison::Print_Avec()
 {
-    if (affichage_avec_actif && avec.size())
+    if (affichage_avec_actif && m_avec.size())
     {
         std::wstring avec_str = keyColor[1] + L"Avec : " + valuesColor;
         bool found = false;
-        for (auto&& [nom, role] : avec)
+        for (auto&& [nom, role] : m_avec)
         {
             if (nom == L"…" || nom == L"..." || nom == L".")
             {
@@ -1605,7 +1559,7 @@ void Saison::Print_Avec()
             {
                 avec_str += nom;
             }
-            if (avec.back().first != nom)
+            if (m_avec.back().first != nom)
                 avec_str += keyColor[1] + L", " + valuesColor;
             else
                 avec_str += keyColor[1] + L'.' + valuesColor;
@@ -1646,15 +1600,14 @@ const void Saison::Print_Date_etc()
     if (affichage_date_etc_actif)
     {
         wchar_t date_string[15];
-        //std::wstring date_string;
-        wcsftime(date_string, 15, L"%d/%m/%Y", &dossier.first);
+        std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_dossier.first);
         std::wstring wstr;
         wstr = date_string;
         wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
-        if (dossier.second != L"")
-            wstr += keyColor[0] + dossier.second + valuesColor + L' ';
-        if (titre != L"")
-            wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + titre + valuesColor;
+        if (m_dossier.second != L"")
+            wstr += keyColor[0] + m_dossier.second + valuesColor + L' ';
+        if (m_titre != L"")
+            wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + m_titre + valuesColor;
         wstr += keyColor[1] + L" : " + valuesColor;
         wstr += saison.second;
         wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
@@ -1670,11 +1623,11 @@ const void Saison::Print_Date_etc()
 
 void Saison::Print_Images()
 {
-    if (affichage_image_actif && image.size() > 0 /*!= 0*/)
+    if (affichage_image_actif && m_image.size() > 0 /*!= 0*/)
     {
-        std::wstring image_str = keyColor[1] + L"Image" + ((image.size() > 1) ? L"s" : L"") + L" : [" + valuesColor;
+        std::wstring image_str = keyColor[1] + L"Image" + ((m_image.size() > 1) ? L"s" : L"") + L" : [" + valuesColor;
         bool first = true;
-        for (auto&& i : image)
+        for (auto&& i : m_image)
         {
             if (!first)
             {
@@ -1733,7 +1686,7 @@ void Serie::initialiser_Fichier(fs::path const& m_cheminFichier)
         // AD
         if (nomFichier == L"AD.txt")
         {
-            initialiser_Audiodescription(m_cheminFichier, audiodescription);
+            initialiser_Audiodescription(m_cheminFichier, m_audiodescription);
             return;
         }
         // Chaîne d'origine
@@ -1745,20 +1698,20 @@ void Serie::initialiser_Fichier(fs::path const& m_cheminFichier)
         // Genre
         if (nomFichier == L"Genre.txt")
         {
-            initialiser_Genre(m_cheminFichier, genre, ::Genre);
+            initialiser_Genre(m_cheminFichier, m_genre, ::Genre);
             return;
         }
         // Nationalité
         if (nomFichier == L"Nationalité.txt")
         {
-            initialiser_Nationalite(m_cheminFichier, nationalite, ::Nationalite);
+            initialiser_Nationalite(m_cheminFichier, m_nationalite, ::Nationalite);
             return;
         }
     }
     else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
         // Image
     {
-        initialiser_Image(m_cheminFichier, image);
+        initialiser_Image(m_cheminFichier, m_image);
         return;
     }
     else
@@ -1777,8 +1730,8 @@ void Serie::initialiser_Chaine(fs::path const& m_cheminFichier)
 { // Chaîne
     auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    chaine = lire_fichierTxt(m_cheminFichier.wstring());
-    assert((chaine.size() != 0));
+    m_chaine = lire_fichierTxt(m_cheminFichier.wstring());
+    assert((m_chaine.size() != 0));
 }
 
 // ######################################################################################################################################################
@@ -1792,13 +1745,13 @@ const void Serie::Print()
     // Chaîne d'origine
     Print_Chaine();
     // AD
-    Print_Audiodescription(audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
+    Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
     // Genre(s)
-    Print_Genres(genre, affichage_genres_actif, sous_genre, affichage_sous_genre_actif, keyColor[0], valuesColor);
+    Print_Genres(m_genre, affichage_genres_actif, m_sous_genre, affichage_sous_genre_actif, keyColor[0], valuesColor);
     // Nationalité(s)
-    Print_Nationalites(nationalite, affichage_nationalite_actif, keyColor[0], valuesColor);
+    Print_Nationalites(m_nationalite, affichage_nationalite_actif, keyColor[0], valuesColor);
     // Image(s)
-    ::Print_Images(image, affichage_image_actif, keyColor[0], valuesColor);
+    ::Print_Images(m_image, affichage_image_actif, keyColor[0], valuesColor);
     // Saison(s)
     Print_Saisons();
 }
@@ -1811,9 +1764,9 @@ const void Serie::Print()
 
 const void Serie::Print_Chaine()
 {
-    if (affichage_chaine_actif && chaine.size() > 0)
+    if (affichage_chaine_actif && m_chaine.size() > 0)
     {
-        std::wstring chaine_str = keyColor[0] + L"Chaîne d'origine : " + valuesColor + chaine + L"\r\n";
+        std::wstring chaine_str = keyColor[0] + L"Chaîne d'origine : " + valuesColor + m_chaine + L"\r\n";
         //PrintStringW(m_hOut, creee_par_str, 0);
         //PrintStringW(HANDLE hOut, creee_par_str);
         //Console_Lire(chaine_str, 0, 0);

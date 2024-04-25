@@ -22,6 +22,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 //#include <stdio.h>
 #include <locale>
 #include <algorithm>
@@ -63,6 +64,7 @@ struct Saison;
 struct InfosVisionnage
 {
     struct Saison;
+    struct Episode;
     //InfosVisionnage(void);
     InfosVisionnage(std::filesystem::path const& m_cheminFichier);
     void creer_InfosVisionnage(std::filesystem::path const& m_cheminFichier);
@@ -96,10 +98,10 @@ struct SequenceVisionnage
 {
     struct Saison;
     SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
-    void initialiser_duree(std::wstring& m);
-    void Print();
-    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
-    bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
+    //void initialiser_duree(std::wstring& m);
+    //void Print();
+    //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
+    //bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
     std::filesystem::path m_cheminFichier;
 
@@ -107,28 +109,35 @@ struct SequenceVisionnage
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    unsigned short int m_saison{};
-    unsigned short int m_episode{};
-    std::vector<DateRecord> m_dates{ 0 };
-    std::wstring m_streaming{ L"" };
-    bool m_fichier_pas_zero{ false };
-    std::wstring m_titre;
-    std::wstring m_deux_points;
-    std::wstring m_sous_titre;
-    unsigned short int m_numero{ 1 };
-    long m_duree_en_seconde{ -1 };
-    std::wstring m_phrases{ L"" };
+    //unsigned short int m_saison{};
+    //unsigned short int m_episode{};
+    //std::vector<DateRecord> m_dates{ 0 };
+    //std::wstring m_streaming{ L"" };
+    //bool m_fichier_pas_zero{ false };
+    //std::wstring m_titre;
+    //std::wstring m_deux_points;
+    //std::wstring m_sous_titre;
+    //unsigned short int m_numero{ 1 };
+    //long m_duree_en_seconde{ -1 };
+    //std::wstring m_phrases{ L"" };
+
+
+    std::vector<InfosVisionnage>m_liste_visionnages;
 };
 
 struct Episode
 {
-    //Episode(std::filesystem::path const& cheminFichier);
+    struct Saison;
+    Episode(std::filesystem::path const& cheminFichier);
     Episode(SequenceVisionnage const& seq_vis);
 
-    void Print();
+    //void ajouter_InfosVisionnage(InfosVisionnage const& seq_vis);
+    void creer_Episode(InfosVisionnage const& seq_vis);
 
-    std::vector<SequenceVisionnage> sequencevisionnages;
-    //std::vector<SequenceVisionnage> m_liste_visionnages{ 0 };
+    void Print();
+    //::vector<InfosVisionnage> info_vis;
+    //std::vector<SequenceVisionnage> sequencevisionnages;
+    std::vector<SequenceVisionnage> m_liste_visionnages{ 0 };
 };
 
 struct Saison
@@ -138,11 +147,13 @@ public:
     ~Saison();
     //struct Episode;
     void afficher(std::filesystem::path const& m_cheminFichier);
+    void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     //
 //    void creer_InfosVisionnage(std::filesystem::path const& m_cheminFichier);
     //
     
+    void creer_Episode(SequenceVisionnage const& seq_vis);
     void creer_SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
 
     void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
@@ -165,16 +176,16 @@ public:
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    std::vector<std::pair<std::wstring, std::wstring>> avec;
-    std::pair<std::tm, std::wstring>dossier;
+    std::vector<std::pair<std::wstring, std::wstring>> m_avec;
+    std::pair<std::tm, std::wstring>m_dossier;
     std::vector<Episode> episodes;
     std::vector<InfosVisionnage>infosvisionnages;
     std::wstring m_chaine;
-    std::vector<std::wstring> image;
+    std::vector<std::wstring> m_image;
     bool netflix{ false };
-    double note = -1.0;
+    double m_note = -1.0;
     std::pair<unsigned short int, std::wstring>saison;
-    std::wstring titre;
+    std::wstring m_titre;
 
     bool affichage_avec_actif = true;
     bool affichage_chaine_actif = true;
@@ -182,7 +193,7 @@ public:
     bool affichage_image_actif = true;
     bool affichage_netflix_actif = true;
 
-    std::vector<std::vector<Episode>> m_liste_episodes;
+    std::map<int, Episode> m_liste_episodes;
 
 
 };
@@ -211,12 +222,12 @@ private:
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    std::wstring audiodescription;
-    std::wstring chaine;
-    std::vector<std::wstring> genre;
-    std::vector<std::wstring> image;
-    std::vector<std::wstring> nationalite;
-    std::wstring sous_genre{};
+    std::wstring m_audiodescription;
+    std::wstring m_chaine;
+    std::vector<std::wstring> m_genre;
+    std::vector<std::wstring> m_image;
+    std::vector<std::wstring> m_nationalite;
+    std::wstring m_sous_genre{};
 
 
     bool affichage_avec_actif = true;

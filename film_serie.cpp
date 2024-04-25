@@ -148,11 +148,11 @@ const std::vector<std::wstring> Sous_Genre
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& ad)                                                         #
+// # const void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& m_ad)                                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& ad)
+const void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& m_ad)
 {
     auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
@@ -163,8 +163,8 @@ const void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::ws
     else
         a = a.substr(0, pos - 3);
     if (std::find(::Audiodescription.begin(), ::Audiodescription.end(), a) != ::Audiodescription.end())
-        ad = a;
-    assert((ad.size() != 0));
+        m_ad = a;
+    assert((m_ad.size() != 0));
 }
 
 // ######################################################################################################################################################
@@ -269,16 +269,16 @@ const void initialiser_Sous_Genre(std::wstring& s_g)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Print_Audiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif,                                     #
+// # const void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif,                                   #
 // #                                  std::wstring& keyColor, std::wstring& valuesColor)                                                                #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Audiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor)
+void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor)
 {
-    if (affichage_audiodescription_actif && audiodescription.size() > 0)
+    if (affichage_audiodescription_actif && m_audiodescription.size() > 0)
     {
-        std::wstring audiodescription_str = keyColor + L"Audiodescription : " + valuesColor + audiodescription + L"\r\n";
+        std::wstring audiodescription_str = keyColor + L"Audiodescription : " + valuesColor + m_audiodescription + L"\r\n";
         //PrintStringW(m_hOut, creee_par_str, 0);
         //PrintStringW(HANDLE hOut, creee_par_str);
         //Console_Lire(audiodescription_str, 0, 0);
@@ -362,19 +362,19 @@ void Print_Images(const std::vector<std::wstring>& image, bool affichage_image_a
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Print_Nationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif                                      #                                                                                                    #
+// # const void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif                                    #                                                                                                    #
 // #                        std::wstring& keyColor, std::wstring& valuesColor)                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Nationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor)
+void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor)
 {
-    if (affichage_nationalite_actif && nationalites.size() > 0)
+    if (affichage_nationalite_actif && m_nationalites.size() > 0)
     {
-        std::wstring nationalite_str = keyColor + L"Nationalite" + ((nationalites.size() > 1) ? L"s" : L"") + L" : " + valuesColor;
+        std::wstring nationalite_str = keyColor + L"Nationalite" + ((m_nationalites.size() > 1) ? L"s" : L"") + L" : " + valuesColor;
 
         bool first = true;
-        for (auto&& nationalite : nationalites)
+        for (auto&& nationalite : m_nationalites)
         {
             if (!first)
             {
