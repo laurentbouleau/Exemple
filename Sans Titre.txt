@@ -1,0 +1,68 @@
+ajouter_InfosVisionnage(info_vis)
+creer_Episode(info_vis)
+
+Print_Netflix()
+
+SequenceVisionnage sequencevisionnage(seq_vis);
+
+Non : std::vector<DateRecord> dates_de_visionnage{ 0 };
+
+Oui : std::vector<SequenceVisionnage> m_liste_visionnages{ 0 };
+
+void Episode::Print()
+{
+    PrintData();
+    for (auto vis : m_liste_visionnages)
+    {
+        vis.Print();
+    }
+}
+
+
+
+void Serie::afficher_Fichier(fs::path const& cheminFichier)
+...
+const void Serie::Print_Episodes(Saison saison)
+...
+const void Serie::Print_Saison(Saison saison)
+...
+const void Serie::Print_Saisons()
+
+
+
+
+
+/*void Episode::Print()
+{
+    std::wstring wstr;
+    bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(episode);
+    if (chiffre_et_point_ou_pas)
+    {
+        wstr = std::to_wstring(saison) + keyColor[1] + L'x' + valuesColor + std::to_wstring(episode) + keyColor[1] + L" : " + valuesColor;
+    }
+    wstr += keyColor[1] + titre + valuesColor;
+    if (deux_points != L"")
+        wstr += deux_points + keyColor[1] + sous_titre + valuesColor;
+    if (numero == 1)
+    {
+        wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(duree_en_seconde / 60) + keyColor[1] + min + L')' + valuesColor;
+    }
+    else
+    {
+        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(numero++) + keyColor[1] + L']' + valuesColor;
+        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
+        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(1 + saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
+        //numero++;
+        //saison_episode.numero++;
+    }
+    wstr += keyColor[1] + L" : " + valuesColor;
+    wstr += Print_Dates_de_visionnage(dates_de_visionnage);
+
+    // phrases
+    if (numero == 1)//titre != L"")
+    {
+        wstr += L"\r\n" + phrases;
+        //saison_episode.numero = 1;
+    }
+    std::wcout << wstr << std::endl;
+}*/
