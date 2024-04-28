@@ -97,9 +97,10 @@ struct InfosVisionnage
 struct SequenceVisionnage
 {
     struct Saison;
-    SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
+    //SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
+    SequenceVisionnage(InfosVisionnage const& vis);
     //void initialiser_duree(std::wstring& m);
-    //void Print();
+    void Print();
     //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     //bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
@@ -131,10 +132,11 @@ struct Episode
     Episode(std::filesystem::path const& cheminFichier);
     Episode(SequenceVisionnage const& seq_vis);
 
-    //void ajouter_InfosVisionnage(InfosVisionnage const& seq_vis);
+    void ajouter_InfosVisionnage(InfosVisionnage const& seq_vis);
     void creer_Episode(InfosVisionnage const& seq_vis);
 
     void Print();
+    void Print_Data();
     //::vector<InfosVisionnage> info_vis;
     //std::vector<SequenceVisionnage> sequencevisionnages;
     std::vector<SequenceVisionnage> m_liste_visionnages{ 0 };
@@ -153,7 +155,8 @@ public:
 //    void creer_InfosVisionnage(std::filesystem::path const& m_cheminFichier);
     //
     
-    void creer_Episode(SequenceVisionnage const& seq_vis);
+    //void creer_Episode(SequenceVisionnage const& seq_vis);
+    Episode creer_Episode(SequenceVisionnage const& seq_vis);
     void creer_SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
 
     void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
