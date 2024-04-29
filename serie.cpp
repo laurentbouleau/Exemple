@@ -465,6 +465,7 @@ bool InfosVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int epi
 //SequenceVisionnage::SequenceVisionnage(fs::path const& cheminFichier)
 SequenceVisionnage::SequenceVisionnage(InfosVisionnage const& vis)
 {
+
 }
 
 // ######################################################################################################################################################
@@ -513,81 +514,6 @@ void SequenceVisionnage::Print()
     std::wcout << wstr;
 }*/
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)                                           #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/*std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)
-{
-    const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
-    const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
-    const std::wstring same_date_format = between_parenthesis;
-    const std::wstring prequel_format = between_parenthesis;
-    const std::wstring streaming_format = keyColor[1] + L" : " + valuesColor + L"%s";
-    const std::wstring step_by_step_tag = L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
-
-    std::wstring dates_de_visionnage_wstr = L"";
-
-    std::vector<std::wstring> v_wstr;
-    std::time_t last_date{ 0 };
-    int same_date_counter = 0;
-    for (auto dr : dates_de_visionnage)
-    {
-        std::time_t time = std::mktime(&dr.date);
-
-        if (last_date != time)
-        {
-            std::tm localtime = *std::localtime(&time);
-            std::wstringstream target_stream;
-            target_stream << std::put_time(&localtime, date_format.c_str());
-            std::wstring date_str = target_stream.str();
-            v_wstr.push_back(date_str);
-            same_date_counter = 0;
-        }
-        else
-        {
-            same_date_counter++;
-            if (same_date_counter == 1)
-            {
-                v_wstr.back() += wstring_format(same_date_format, L"1");
-            }
-            v_wstr.back() += wstring_format(same_date_format, std::to_wstring(same_date_counter + 1).c_str());
-        }
-        last_date = time;
-    }
-
-    for (auto i = 0; i < v_wstr.size(); i++)
-    {
-        if (i != 0)
-            dates_de_visionnage_wstr += L", ";
-        dates_de_visionnage_wstr += v_wstr[i];
-    }
-
-    if (dates_de_visionnage.size() == 1)
-    {
-        if (dates_de_visionnage[0].someFlag)
-            dates_de_visionnage_wstr += wstring_format(prequel_format, L"stop ou pas !");
-    }
-    else
-    {
-        if (dates_de_visionnage.size() > 0)
-        {
-            if (dates_de_visionnage.back().someFlag)
-            {
-                dates_de_visionnage_wstr += wstring_format(prequel_format, L"à suivre");
-            }
-            dates_de_visionnage_wstr += step_by_step_tag;
-        }
-    }
-
-    if (m_streaming != L"" && dates_de_visionnage_wstr.length() > 0)
-        dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
-//
-    return dates_de_visionnage_wstr;
-}*/
-
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -611,7 +537,7 @@ void SequenceVisionnage::Print()
 //Episode::~Episode()
 //{}
 
-/*Episode::Episode(SequenceVisionnage const& seq_vis)
+Episode::Episode(SequenceVisionnage const& seq_vis)
 {
     //auto nomFichier = seq_vis.filename().wstring();
     auto nomFichier = seq_vis;
@@ -621,129 +547,12 @@ void SequenceVisionnage::Print()
     //episodes.push_back(episode); // Episode
 
     //SequenceVisionnage sequencevisionnage(seq_vis);
+
     //titre = sequencevisionnage.titre;
-}*/
+}
 
 
 
-/*Episode::Episode(fs::path const& cheminFichier)
-{
-    auto nomFichier = cheminFichier.filename().wstring();
-
-    assert(nomFichier.length() > 0 && L"Nom de fichier Episode vide");
-    //episode = std::stoi(match[filename_numero_episode_index]);
-    //episode = std::stoi(match[filename_numero_episode_index]);
-    std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" }, false);
-    if (t[0] == L"")
-    {
-        fichier_pas_zero = false;
-        //titre = saison_episode.titre;
-        //deux_points = saison_episode.deux_points;
-        //sous_titre = saison_episode.sous_titre;
-        numero++;
-        //numero = saison_episode.numero++;
-        return;
-    }
-
-    size_t pos;// = 0;
-    pos = t[0].find(L". ");
-    if (pos == std::wstring::npos || t[0][3] == L'.')
-    {
-        //saison = 0;
-        episode = 0;
-    }
-    else
-    {
-        episode = std::stoi(t[0]);
-        t[0] = t[0].substr(pos + 2);
-    }
-    // ben non !!!
-    // episode = std::stoi(t[0]);
-
-    bool found = false;
-
-
-    //std::wsmatch soustitre_match;
-    //const std::wregex soustitre_format_rg{ L"(.+) \\: (.+)" };
-    //if (std::regex_match(titre, soustitre_match, soustitre_format_rg))
-    //{
-    //    titre = soustitre_match[1];
-    //    sous_titre = soustitre_match[2];
-    //    found = true;
-    //}
-    //const std::wregex soustitre_format_rg2{ L"(.+)\\: (.+)" };
-    //if (std::regex_match(titre, soustitre_match, soustitre_format_rg2))
-    //{
-    //    titre = soustitre_match[1];
-    //    sous_titre = soustitre_match[2];
-    //    found = true;
-    //}
-    //const std::wregex soustitre_format_rg3{ L"(.+)\\/(.+)" };
-    //if (std::regex_match(titre, soustitre_match, soustitre_format_rg3))
-    //{
-    //    titre = soustitre_match[1];
-    //    sous_titre = soustitre_match[2];
-    //    found = true;
-    //}
-    //const std::wregex soustitre_format_rg4{ L"(.+) \\- (.+)" };
-    //if (std::regex_match(titre, soustitre_match, soustitre_format_rg4))
-    //{
-    //    titre = soustitre_match[1];
-    //    sous_titre = soustitre_match[2];
-    //    found = true;
-    //}
-
-
-
-    const std::wstring d_p = L" : ";
-    pos = t[0].find(d_p);
-    if (!found && pos != std::wstring::npos)
-    {
-        titre = t[0].substr(0, pos);
-        deux_points = d_p;
-        sous_titre = t[0].substr(pos + 3);
-        found = true;
-    }
-    const std::wstring d_p2 = L": ";
-    pos = t[0].find(d_p2);
-    if (!found && pos != std::wstring::npos)
-    {
-        titre = t[0].substr(0, pos);
-        deux_points = d_p2;
-        sous_titre = t[0].substr(pos + 2);
-        found = true;
-    }
-    const std::wstring d_p3 = L"/";
-    pos = t[0].find(d_p3);
-    if (!found && pos != std::wstring::npos)
-    {
-        titre = t[0].substr(0, pos);
-        deux_points = d_p3;
-        sous_titre = t[0].substr(pos + 1);
-        found = true;
-    }
-    const std::wstring d_p4 = L" - ";
-    pos = t[0].find(d_p4);
-    if (!found && pos != std::wstring::npos)
-    {
-        titre = t[0].substr(0, pos);
-        deux_points = d_p4;
-        sous_titre = t[0].substr(pos + 3);
-        found = true;
-    }
-    if (!found)
-    {
-        titre = t[0];
-        found = true;
-    }
-    fichier_pas_zero = true;
-    numero = 1;
-    initialiser_duree(t[1]);
-    for (auto j = 2; j < t.size(); j++)
-        phrases += t[j];
-    //saison_episode = { titre, deux_points, sous_titre, numero };
-    //system("PAUSE");
-}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -765,29 +574,6 @@ void Episode::ajouter_InfosVisionnage(InfosVisionnage const& seq_vis)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Episode::initialiser_duree(std::wstring& m)                                                                                                   #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/*void Episode::initialiser_duree(std::wstring& m)
-{
-    const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
-
-    std::wsmatch match;
-
-    if (std::regex_match(m, match, duree_format_rg))
-    {
-        auto duree_en_minute = std::stoi(match[1]);
-        duree_en_seconde = duree_en_minute * 60;
-    }
-    else
-    {
-        throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
-    }
-}*/
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # void Episode::Print()                                                                                                                              #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -795,8 +581,6 @@ void Episode::ajouter_InfosVisionnage(InfosVisionnage const& seq_vis)
 
 void Episode::Print()
 {
-    //std::wcout << L"www" << std::endl;
-    //system("PAUSE");
 
     Print_Data();
     for (auto vis : m_liste_visionnages)
@@ -805,84 +589,6 @@ void Episode::Print()
     }
 }
 
-void Episode::Print_Data()
-{}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # std::wstring Episode::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)                                                      #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-
-/*std::wstring Episode::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)
-{
-    const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
-    const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
-    const std::wstring same_date_format = between_parenthesis;
-    const std::wstring prequel_format = between_parenthesis;
-    const std::wstring streaming_format = keyColor[1] + L" : " + valuesColor + L"%s";
-    const std::wstring step_by_step_tag = L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
-
-    std::wstring dates_de_visionnage_wstr = L"";
-
-    std::vector<std::wstring> v_wstr;
-    std::time_t last_date{ 0 };
-    int same_date_counter = 0;
-    for (auto dr : dates_de_visionnage)
-    {
-        std::time_t time = std::mktime(&dr.date);
-
-        if (last_date != time)
-        {
-            std::tm localtime = *std::localtime(&time);
-            std::wstringstream target_stream;
-            target_stream << std::put_time(&localtime, date_format.c_str());
-            std::wstring date_str = target_stream.str();
-            v_wstr.push_back(date_str);
-            same_date_counter = 0;
-        }
-        else
-        {
-            same_date_counter++;
-            if (same_date_counter == 1)
-            {
-                v_wstr.back() += wstring_format(same_date_format, L"1");
-            }
-            v_wstr.back() += wstring_format(same_date_format, std::to_wstring(same_date_counter + 1).c_str());
-        }
-        last_date = time;
-    }
-
-    for (auto i = 0; i < v_wstr.size(); i++)
-    {
-        if (i != 0)
-            dates_de_visionnage_wstr += L", ";
-        dates_de_visionnage_wstr += v_wstr[i];
-    }
-
-    if (dates_de_visionnage.size() == 1)
-    {
-        if (dates_de_visionnage[0].someFlag)
-            dates_de_visionnage_wstr += wstring_format(prequel_format, L"stop ou pas !");
-    }
-    else
-    {
-        if (dates_de_visionnage.size() > 0)
-        {
-            if (dates_de_visionnage.back().someFlag)
-            {
-                dates_de_visionnage_wstr += wstring_format(prequel_format, L"à suivre");
-            }
-            dates_de_visionnage_wstr += step_by_step_tag;
-        }
-    }
-
-    if (streaming != L"" && dates_de_visionnage_wstr.length() > 0)
-        dates_de_visionnage_wstr += wstring_format(streaming_format, streaming.c_str());
-//
-    return dates_de_visionnage_wstr;
-}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

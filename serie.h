@@ -63,8 +63,8 @@ struct Saison;
  
 struct InfosVisionnage
 {
-    struct Saison;
-    struct Episode;
+    //struct Saison;
+    //struct Episode;
     //InfosVisionnage(void);
     InfosVisionnage(std::filesystem::path const& m_cheminFichier);
     void creer_InfosVisionnage(std::filesystem::path const& m_cheminFichier);
@@ -96,7 +96,7 @@ struct InfosVisionnage
 
 struct SequenceVisionnage
 {
-    struct Saison;
+    //struct Saison;
     //SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
     SequenceVisionnage(InfosVisionnage const& vis);
     //void initialiser_duree(std::wstring& m);
@@ -104,7 +104,7 @@ struct SequenceVisionnage
     //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     //bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
-    std::filesystem::path m_cheminFichier;
+    //std::filesystem::path m_cheminFichier;
 
     std::wstring m_min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
@@ -128,8 +128,8 @@ struct SequenceVisionnage
 
 struct Episode
 {
-    struct Saison;
-    Episode(std::filesystem::path const& cheminFichier);
+    //struct Saison;
+//    Episode(std::filesystem::path const& cheminFichier);
     Episode(SequenceVisionnage const& seq_vis);
 
     void ajouter_InfosVisionnage(InfosVisionnage const& seq_vis);
