@@ -651,10 +651,10 @@ void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
     //episodes.push_back(episode); // Episode
 }*/
 
-/*void Saison::creer_Episode(SequenceVisionnage const& seq_vis)
+Episode Saison::creer_Episode(InfosVisionnag const& seq_vis)
 {
     ;
-}*/
+}
 
 
 
