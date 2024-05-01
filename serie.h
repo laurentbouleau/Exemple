@@ -132,8 +132,7 @@ public:
     void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     Episode creer_Episode(InfosVisionnage const& seq_vis);
-
-    void creer_SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
+//    void creer_SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
 
     void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
     void initialiser_Fichier(std::filesystem::path const& m_cheminFichier);
