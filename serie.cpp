@@ -651,11 +651,22 @@ void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
     //episodes.push_back(episode); // Episode
 }*/
 
-Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
+/*Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
 {
     ;
-}
+}*/
 
+//Episode Saison::creer_Episode(SequenceVisionnage const& seq_vis)
+Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
+{
+    //    auto nomFichier = m_cheminFichier.filename().wstring();
+
+    //    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+        //Episode episode(cheminFichier);
+    //    SequenceVisionnage(m_cheminFichier);
+        //episodes.push_back(episode); // Episode
+    //    sequencevisionnages.push_back(sequencevisionnage);
+}
 
 
 // ######################################################################################################################################################
@@ -860,16 +871,6 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
 
 //void Saison::creer_Episode(fs::path const& cheminFichier)
 //void Saison::creer_Episode(SequenceVisionnage const& seq_vis)
-Episode Saison::creer_Episode(SequenceVisionnage const& seq_vis)
-{
-//    auto nomFichier = m_cheminFichier.filename().wstring();
-
-//    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    //Episode episode(cheminFichier);
-//    SequenceVisionnage(m_cheminFichier);
-    //episodes.push_back(episode); // Episode
-//    sequencevisionnages.push_back(sequencevisionnage);
-}
 
 
 // ######################################################################################################################################################
