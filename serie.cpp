@@ -1233,7 +1233,7 @@ void Serie::initialiser_Chaine(fs::path const& m_cheminFichier)
 // ######################################################################################################################################################
 
 void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)
-{ // Chaîne
+{ // Creee par
     auto nomFichier = m_cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_creee_par = lire_fichierTxt(nomFichier, { L"\n", L", " });
