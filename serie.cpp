@@ -863,7 +863,7 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
      assert((m_chaine.size() != 0));
  }
 
- // ######################################################################################################################################################
+// ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Saison::creer_Episode(fs::path const& m_cheminFichier)                                                                                        #
 // #                                                                                                                                                    #
@@ -1181,6 +1181,12 @@ void Serie::initialiser_Fichier(fs::path const& m_cheminFichier)
             initialiser_Chaine(m_cheminFichier);
             return;
         }
+        // Créée par
+        if (nomFichier == L"Créée par.txt")
+        {
+            initialiser_Creee_par(m_cheminFichier);
+            return;
+        }
         // Genre
         if (nomFichier == L"Genre.txt")
         {
@@ -1222,6 +1228,20 @@ void Serie::initialiser_Chaine(fs::path const& m_cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)                                                                                 #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)
+{ // Chaîne
+    auto nomFichier = m_cheminFichier.filename().wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    m_creee_par = lire_fichierTxt(nomFichier, { L"\n", L", " });
+    assert((m_creee_par.size() != 0));
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # void Serie::Print()                                                                                                                                #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -1232,6 +1252,8 @@ const void Serie::Print()
     Print_Chaine();
     // AD
     Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
+    // Creee par
+    Print_Creee_par(m_creee_par);
     // Genre(s)
     Print_Genres(m_genre, affichage_genres_actif, m_sous_genre, affichage_sous_genre_actif, keyColor[0], valuesColor);
     // Nationalité(s)
@@ -1258,6 +1280,37 @@ const void Serie::Print_Chaine()
         //Console_Lire(chaine_str, 0, 0);
         //Console_Lire(hOut, chaine_str, 0, L' ');
         std::wcout << chaine_str;
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Serie::Print_Creee_par(const std::vector<std::wstring>&m_creee_par)                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Serie::Print_Creee_par(const std::vector<std::wstring>& m_creee_par)
+{
+    if (affichage_creee_par_actif && m_creee_par.size() > 0)
+    {
+        std::wstring creee_par_str = keyColor[0] + L"Créée" + ((m_creee_par.size() > 1) ? L"s" : L"") + L" par : " + valuesColor;
+        bool first = true;
+        for (auto&& c : m_creee_par)
+        {
+            if (!first)
+            {
+                creee_par_str += keyColor[0] + L", " + valuesColor;
+            }
+            creee_par_str += c;
+            first = false;
+        }
+        creee_par_str += L"\r\n";
+
+        //PrintStringW(m_hOut, creee_par_str, 0);
+        //PrintStringW(HANDLE hOut, creee_par_str);
+        //int i = Console_Lire_txt(creee_par_str, 0, 0);
+        //Console::PrintStringW(creee_par_str, 0);
+        std::wcout << creee_par_str;
     }
 }
 

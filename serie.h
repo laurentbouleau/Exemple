@@ -172,8 +172,6 @@ public:
     bool affichage_netflix_actif = true;
 
     std::map<int, Episode> m_liste_episodes;
-
-
 };
 
 class Serie
@@ -183,6 +181,7 @@ public:
     ~Serie();
     void initialiser_Fichier(std::filesystem::path const& m_cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& m_cheminFichier);
+    void initialiser_Creee_par(std::filesystem::path const& m_cheminFichier);
 
     const void Print();
 
@@ -193,6 +192,7 @@ private:
     const void Print_Saison(Saison saison);
     const void Print_Saisons();
     const void Print_Chaine();
+    const void Print_Creee_par(const std::vector<std::wstring>& m_creee_par);
 
     std::filesystem::path racine;
 
@@ -202,6 +202,7 @@ private:
 
     std::wstring m_audiodescription;
     std::wstring m_chaine;
+    std::vector<std::wstring>m_creee_par;
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
     std::vector<std::wstring> m_nationalite;
@@ -211,6 +212,7 @@ private:
     bool affichage_avec_actif = true;
     bool affichage_audiodescription_actif = true;
     bool affichage_chaine_actif = true;
+    bool affichage_creee_par_actif = true;
     bool affichage_episode_titre_actif = true;
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
