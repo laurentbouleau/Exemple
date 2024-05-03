@@ -265,6 +265,63 @@ const void initialiser_Sous_Genre(std::wstring& s_g)
 }
 
 // ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Serie::initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original)                               #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original)
+{ // Chaîne
+    auto nomFichier = m_cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::wstring titre = lire_fichierTxt(m_cheminFichier.wstring());
+    assert((titre.size() != 0));
+    bool found = false;
+    const std::wstring d_p = L" : ";
+    size_t pos;
+    pos = titre.find(d_p);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titre_original[0] = titre.substr(0, pos);
+        m_titre_original[1] = d_p;
+        m_titre_original[2] = titre.substr(pos + 3);
+        found = true;
+    }
+    const std::wstring d_p2 = L": ";
+    pos = titre.find(d_p2);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titre_original[0] = titre.substr(0, pos);
+        m_titre_original[1] = d_p2;
+        m_titre_original[2] = titre.substr(pos + 2);
+        found = true;
+    }
+    const std::wstring d_p3 = L"/";
+    pos = titre.find(d_p3);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titre_original[0] = titre.substr(0, pos);
+        m_titre_original[1] = d_p3;
+        m_titre_original[2] = titre.substr(pos + 1);
+        found = true;
+    }
+    const std::wstring d_p4 = L" - ";
+    pos = titre.find(d_p4);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titre_original[0] = titre.substr(0, pos);
+        m_titre_original[1] = d_p4;
+        m_titre_original[2] = titre.substr(pos + 3);
+        found = true;
+    }
+    if (!found)
+    {
+        m_titre_original[0] = titre;
+        found = true;
+    }
+}
+
+// ######################################################################################################################################################
 // ######################################################################################################################################################
 
 // ######################################################################################################################################################
@@ -393,3 +450,27 @@ void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool af
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif,                                  #
+// #                              std::vector<std::wstring>& keyColor, std::wstring& valuesColor)                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor)
+{
+    if (affichage_titre_original_actif && m_titre_original.size() > 0)
+    {
+        //Titre_Original.begin();
+        std::wstring titre_original_str = keyColor[0] + L"Titre original : " + valuesColor + m_titre_original[0];
+        if (m_titre_original[2] != L"")
+        {
+            titre_original_str += keyColor[1] + m_titre_original[1] + valuesColor;
+            titre_original_str += m_titre_original[2];
+        }
+        //Console_Lire(titre_original_str, 0, 17);
+        //Console_Lire(hOut, titre_original_str + L"\r\n", 0);// , 0);
+        //Console_Lire(hOut, titre_original_str + L"\r\n", 0, L' ');
+        std::wcout << titre_original_str;
+    }
+}

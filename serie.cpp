@@ -57,11 +57,13 @@ extern const void initialiser_Chaine(fs::path const& m_cheminFichier, std::wstri
 extern const void initialiser_Genre(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 extern const void initialiser_Image(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_images);
 extern const void initialiser_Nationalite(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
+extern const void initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 extern void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
+extern void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -1199,6 +1201,12 @@ void Serie::initialiser_Fichier(fs::path const& m_cheminFichier)
             initialiser_Nationalite(m_cheminFichier, m_nationalite, ::Nationalite);
             return;
         }
+        // Titre original
+        if (nomFichier == L"Titre original.txt")
+        {
+            initialiser_Titre_Original(m_cheminFichier, m_titre_original);
+            return;
+        }
     }
     else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
         // Image
@@ -1248,6 +1256,8 @@ void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)
 
 const void Serie::Print()
 {
+    // Titre Original
+    Print_Titre_Original(m_titre_original, affichage_titre_original_actif, keyColor, valuesColor);
     // Chaîne d'origine
     Print_Chaine();
     // AD

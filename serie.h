@@ -207,7 +207,7 @@ private:
     std::vector<std::wstring> m_image;
     std::vector<std::wstring> m_nationalite;
     std::wstring m_sous_genre{};
-
+    std::vector<std::wstring> m_titre_original;
 
     bool affichage_avec_actif = true;
     bool affichage_audiodescription_actif = true;
@@ -222,5 +222,6 @@ private:
     bool affichage_saisons_actif = true;
     bool affichage_serie_actif = true;
     bool affichage_sous_genre_actif = true;
+    bool affichage_titre_original_actif = true;
 };
 
