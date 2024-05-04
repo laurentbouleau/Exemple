@@ -68,8 +68,11 @@ extern void Print_Titre_Original(const std::vector<std::wstring>& m_titre_origin
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-//InfosVisionnage::InfosVisionnage(void)
-//{}
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # SequenceVisionnage::InfosVisionnage(fs::path const& cheminFichier)                                                                                 #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 InfosVisionnage::InfosVisionnage(fs::path const& cheminFichier)
 {
@@ -308,17 +311,16 @@ InfosVisionnage::InfosVisionnage(fs::path const& cheminFichier)
     }
     m_fichier_pas_zero = true;
     m_numero = 1;
-    initialiser_duree(t[1]);
+    initialiser_Duree(t[1]);
     for (auto j = 2; j < t.size(); j++)
         m_phrases += t[j];
 
     //    system("PAUSE");
 }
 
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # SequenceVisionnage::SequenceVisionnage(fs::path const& cheminFichier)                                                                              #
+// # SequenceVisionnage::creer_InfosVisionnage(fs::path const& cheminFichier)                                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -327,7 +329,13 @@ void InfosVisionnage::creer_InfosVisionnage(fs::path const& cheminFichier)
     system("PAUSE");
 }
 
-void InfosVisionnage::initialiser_duree(std::wstring& m)
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # SequenceVisionnage::initialiser_Duree(std::wstring& m)                                                                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void InfosVisionnage::initialiser_Duree(std::wstring& m)
 {
     const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
 
@@ -336,7 +344,7 @@ void InfosVisionnage::initialiser_duree(std::wstring& m)
     if (std::regex_match(m, match, duree_format_rg))
     {
         auto duree_en_minute = std::stoi(match[1]);
-        m_Duree = duree_en_minute * 60;
+        m_duree = duree_en_minute * 60;
     }
     else
     {
@@ -357,7 +365,7 @@ void InfosVisionnage::Print()
         wstr += m_deux_points + keyColor[1] + m_sous_titre + valuesColor;
     if (m_numero == 1)
     {
-        wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(m_Duree / 60) + keyColor[1] + m_min + L')' + valuesColor;
+        wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(m_duree / 60) + keyColor[1] + m_min + L')' + valuesColor;
     }
     else
     {
@@ -552,9 +560,6 @@ Episode::Episode(SequenceVisionnage const& seq_vis)
 
     //titre = sequencevisionnage.titre;
 }
-
-
-
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1201,6 +1206,12 @@ void Serie::initialiser_Fichier(fs::path const& m_cheminFichier)
             initialiser_Nationalite(m_cheminFichier, m_nationalite, ::Nationalite);
             return;
         }
+        // Titre
+        if (nomFichier == L"Titre.txt")
+        {
+            initialiser_Titre(m_cheminFichier, m_titre);
+            return;
+        }
         // Titre original
         if (nomFichier == L"Titre original.txt")
         {
@@ -1250,12 +1261,96 @@ void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # Serie::initialiser_Duree(std::wstring& m)                                                                                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Serie::initialiser_Duree(std::wstring& m)
+{
+    const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
+
+    std::wsmatch match;
+
+    if (std::regex_match(m, match, duree_format_rg))
+    {
+        auto duree_en_minute = std::stoi(match[1]);
+        m_duree = duree_en_minute * 60;
+    }
+    else
+    {
+        throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # Serie::void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre)                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre)
+{ // Titre
+    auto nomFichier = m_cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" });
+    assert((titre.size() != 0));
+    bool found = false;
+    const std::wstring d_p = L" : ";
+    size_t pos;
+    pos = titre[0].find(d_p);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titre[0] = titre[0].substr(0, pos);
+        m_titre[1] = d_p;
+        m_titre[2] = titre[0].substr(pos + 3);
+        found = true;
+    }
+    const std::wstring d_p2 = L": ";
+    pos = titre[0].find(d_p2);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titre[0] = titre[0].substr(0, pos);
+        m_titre[1] = d_p2;
+        m_titre[2] = titre[0].substr(pos + 2);
+        found = true;
+    }
+    const std::wstring d_p3 = L"/";
+    pos = titre[0].find(d_p3);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titre[0] = titre[0].substr(0, pos);
+        m_titre[1] = d_p3;
+        m_titre[2] = titre[0].substr(pos + 1);
+        found = true;
+    }
+    const std::wstring d_p4 = L" - ";
+    pos = titre[0].find(d_p4);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titre[0] = titre[0].substr(0, pos);
+        m_titre[1] = d_p4;
+        m_titre[2] = titre[0].substr(pos + 3);
+        found = true;
+    }
+    if (!found)
+    {
+        m_titre[0] = titre[0];
+        found = true;
+    }
+    initialiser_Duree(titre[1]);
+    for (auto j = 2; j < titre[1].size(); j++)
+        m_phrases += titre[j];
+}
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # void Serie::Print()                                                                                                                                #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
 const void Serie::Print()
 {
+    // Titre
+    Print_Titre();
     // Titre Original
     Print_Titre_Original(m_titre_original, affichage_titre_original_actif, keyColor, valuesColor);
     // Chaîne d'origine
@@ -1263,7 +1358,7 @@ const void Serie::Print()
     // AD
     Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
     // Creee par
-    Print_Creee_par(m_creee_par);
+    Print_Creee_par();
     // Genre(s)
     Print_Genres(m_genre, affichage_genres_actif, m_sous_genre, affichage_sous_genre_actif, keyColor[0], valuesColor);
     // Nationalité(s)
@@ -1295,11 +1390,11 @@ const void Serie::Print_Chaine()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::Print_Creee_par(const std::vector<std::wstring>&m_creee_par)                                                                           #
+// # void Serie::Print_Creee_par()                                                                                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_Creee_par(const std::vector<std::wstring>& m_creee_par)
+const void Serie::Print_Creee_par()
 {
     if (affichage_creee_par_actif && m_creee_par.size() > 0)
     {
@@ -1325,6 +1420,51 @@ const void Serie::Print_Creee_par(const std::vector<std::wstring>& m_creee_par)
 }
 
 // ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Serie::Print_Note()                                                                                                                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Serie::Print_Note(int I, int x)
+{
+    if (affichage_note_actif)
+    {
+        std::wstring m_note_str;
+        bool found = false;
+        for (const auto& [cle, valeur] : m_note)
+        {
+            if (I == cle)
+            {
+                found = true;
+                m_note_str = keyColor[1] + L"Note : " + valuesColor;
+                if (valeur == -1.0)
+                {
+                    found = false;
+                    break;
+                }
+                else if (valeur == 0 || valeur == 1 || valeur == 2 || valeur == 3 || valeur == 4 || valeur == 5)
+                {
+                    m_note_str += std::to_wstring(static_cast<int>(std::floor(valeur)));
+                }
+                else
+                {
+                    std::wstring wstr = std::to_wstring(valeur);
+                    wstr = wstr[0] + keyColor[1] + wstr[1] + valuesColor + wstr[2];
+                    m_note_str += wstr;
+                }
+                m_note_str += keyColor[1] + L"/5" + valuesColor;
+                //Console_Lire(m_note_str, x, x);
+                //Console_Lire(hOut, m_note_str + L"\r\n", x, L' ');
+                break;
+            }
+        }
+        if (!found)
+            //Console_Lire(keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor, x, x);
+            //Console_Lire(hOut, keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor + L"\r\n", x, L' ');
+            m_note_str += keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor;
+    }
+    return;
+}// ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # const void Serie::Print_Saison(Saison saison)                                                                                                      #
 // #                                                                                                                                                    #
@@ -1357,3 +1497,52 @@ const void Serie::Print_Saisons()
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Serie::Print_Titre()                                                                                                                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Serie::Print_Titre()
+{
+    if (affichage_titre_actif)
+    {
+        std::wstring titre_str;
+        std::wstring wstr;
+        bool titre_ = false;
+        titre_str = keyColor[0] + L"Titre : " + valuesColor + m_titre[0];
+        if (m_titre[2] != L"")
+            titre_str += keyColor[1] + m_titre[1] + valuesColor + m_titre[2];
+        /*if (m_date_Diffusee_a_partir_de_[0] && Date_Diffusee_a_partir_de[0].tm_year != 0)
+        {
+            wchar_t date_string[22];
+            wcsftime(date_string, 15, L"%Y", &Date_Diffusee_a_partir_de[0]);
+            wstr = date_string;
+            titre_str += keyColor[0] + L" (" + valuesColor + wstr + keyColor[0] + L')' + valuesColor;
+        }*/
+        // Sur
+        if (affichage_sur_actif && m_sur != L"")
+            titre_str += keyColor[0] + L" (" + valuesColor + m_sur + keyColor[0] + L')' + valuesColor;
+        //
+                // La signalétique jeunesse
+        if (affichage_sj_actif && m_sj.length() != 0)
+            titre_str += keyColor[0] + L" (" + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
+        // Netflix SJ
+        if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+            titre_str += (keyColor[0] + L" [" + valuesColor + m_netflix_sj + keyColor[0] + L']' + valuesColor);
+        /*if (affichage_temps_actif)
+        {
+            titre_str += L' ';
+            wstr = afficher_OK_Temps(Temps, keyColor[0], valuesColor);
+            titre_str += wstr;
+        }*/
+        // Note
+        //wstr = afficher_OK_Note();
+        titre_str += wstr;
+        //int i = Console_Lire_txt(titre_str + wstr, 0, 0);
+        //Console_Lire(titre_str, 0, 0);
+        //Console_Lire(hOut, titre_str + L"\r\n", 0, L' ');
+        titre_str += L"\r\n";
+        std::wcout << titre_str;
+    }
+}

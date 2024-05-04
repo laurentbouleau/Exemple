@@ -266,12 +266,12 @@ const void initialiser_Sous_Genre(std::wstring& s_g)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original)                               #
+// # void initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original)                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
 const void initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original)
-{ // Chaîne
+{ // Titre Original
     auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     std::wstring titre = lire_fichierTxt(m_cheminFichier.wstring());

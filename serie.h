@@ -68,7 +68,7 @@ struct InfosVisionnage
     //InfosVisionnage(void);
     InfosVisionnage(std::filesystem::path const& m_cheminFichier);
     void creer_InfosVisionnage(std::filesystem::path const& m_cheminFichier);
-    void initialiser_duree(std::wstring& m);
+    void initialiser_Duree(std::wstring& m);
     void Print();
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
@@ -89,7 +89,7 @@ struct InfosVisionnage
     std::wstring m_deux_points;
     std::wstring m_sous_titre;
     unsigned short int m_numero{ 1 };
-    long m_Duree{ -1 };
+    long m_duree{ -1 };
     std::wstring m_phrases{ L"" };
     // ???
 };
@@ -182,6 +182,8 @@ public:
     void initialiser_Fichier(std::filesystem::path const& m_cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& m_cheminFichier);
     void initialiser_Creee_par(std::filesystem::path const& m_cheminFichier);
+    void initialiser_Duree(std::wstring& m);
+    void initialiser_Titre(std::filesystem::path const& m_cheminFichier, std::vector<std::wstring>& m_titre);
 
     const void Print();
 
@@ -192,7 +194,9 @@ private:
     const void Print_Saison(Saison saison);
     const void Print_Saisons();
     const void Print_Chaine();
-    const void Print_Creee_par(const std::vector<std::wstring>& m_creee_par);
+    const void Print_Creee_par();
+    const void Print_Note(int I, int x);
+    const void Print_Titre();
 
     std::filesystem::path racine;
 
@@ -206,7 +210,15 @@ private:
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
     std::vector<std::wstring> m_nationalite;
-    std::wstring m_sous_genre{};
+    std::wstring m_netflix_sj;
+    double m_note = 0.0;
+    std::wstring m_sj;
+    std::wstring m_sous_genre;// {};
+    std::wstring m_sur;
+
+    std::vector<std::wstring> m_titre;
+    long m_duree{ -1 };
+    std::wstring m_phrases{ L"" };
     std::vector<std::wstring> m_titre_original;
 
     bool affichage_avec_actif = true;
@@ -217,11 +229,16 @@ private:
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
     bool affichage_nationalite_actif = true;
+    bool affichage_note_actif = true;
+    bool affichage_netflix_sj_actif = true;
     //bool affichage_saison_actif = true;
     bool affichage_saison_date_etc_actif = true;
     bool affichage_saisons_actif = true;
     bool affichage_serie_actif = true;
+    bool affichage_sj_actif = true;
     bool affichage_sous_genre_actif = true;
+    bool affichage_sur_actif = true;
+    bool affichage_titre_actif = true;
     bool affichage_titre_original_actif = true;
 };
 
