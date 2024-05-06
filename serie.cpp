@@ -472,9 +472,10 @@ bool InfosVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int epi
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-//SequenceVisionnage::SequenceVisionnage(fs::path const& cheminFichier)
 SequenceVisionnage::SequenceVisionnage(InfosVisionnage const& vis)
 {
+    //std::vector<InfosVisionnage>m_liste_visionnages;
+    m_liste_visionnages.push_back(vis);
 
 }
 
@@ -550,7 +551,8 @@ void SequenceVisionnage::Print()
 Episode::Episode(SequenceVisionnage const& seq_vis)
 {
     //auto nomFichier = seq_vis.filename().wstring();
-    auto nomFichier = seq_vis;
+    //auto nomFichier = seq_vis;
+    m_liste_sequence_visionnages.push_back(seq_vis);
     //system("PAUSE");
     //assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     //Episode episode(cheminFichier);
@@ -590,10 +592,10 @@ void Episode::Print()
 {
 
     Print_Data();
-    for (auto vis : m_liste_visionnages)
+    /*for (auto vis : m_liste_visionnages)
     {
         vis.Print();
-    }
+    }*/
 }
 
 
@@ -805,16 +807,6 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
             }
         }
         //
-        /*if (
-            (nomFichier[0] == L'1' || nomFichier[0] == L'2' || nomFichier[0] == L'3' || nomFichier[0] == L'4' || nomFichier[0] == L'5' || nomFichier[0] == L'6' || nomFichier[0] == L'7' || nomFichier[0] == L'8' || nomFichier[0] == L'9')
-            && nomFichier[1] == L'x'
-            )
-        {
-            creer_InfosVisionnage(m_cheminFichier);
-            //creer_Episode(m_cheminFichier);
-            //creer_SequenceVisionnage(m_cheminFichier);
-            return;
-        }*/
         if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{1,2})x(.)+" }))
         {
             //creer_InfosVisionnage(m_cheminFichier);
@@ -1431,7 +1423,7 @@ const void Serie::Print_Note(int I, int x)
     {
         std::wstring m_note_str;
         bool found = false;
-        for (const auto& [cle, valeur] : m_note)
+        /*for (const auto& [cle, valeur] : m_note)
         {
             if (I == cle)
             {
@@ -1458,13 +1450,17 @@ const void Serie::Print_Note(int I, int x)
                 break;
             }
         }
+        */
         if (!found)
             //Console_Lire(keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor, x, x);
             //Console_Lire(hOut, keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor + L"\r\n", x, L' ');
             m_note_str += keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor;
+            
     }
     return;
-}// ######################################################################################################################################################
+}
+
+// ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # const void Serie::Print_Saison(Saison saison)                                                                                                      #
 // #                                                                                                                                                    #

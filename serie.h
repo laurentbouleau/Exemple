@@ -109,7 +109,7 @@ struct SequenceVisionnage
 struct Episode
 {
     //struct Saison;
-//    Episode(std::filesystem::path const& cheminFichier);
+    //Episode(std::filesystem::path const& cheminFichier);
     Episode(SequenceVisionnage const& seq_vis);
 
     void ajouter_InfosVisionnage(InfosVisionnage const& seq_vis);
@@ -119,7 +119,7 @@ struct Episode
     void Print_Data();
     //::vector<InfosVisionnage> info_vis;
 //    std::vector<SequenceVisionnage> sequencevisionnages;
-    std::vector<SequenceVisionnage> m_liste_visionnages{ 0 };
+    std::vector<SequenceVisionnage> m_liste_sequence_visionnages;// { 0 };
 };
 
 struct Saison
