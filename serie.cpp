@@ -574,12 +574,12 @@ Episode::Episode(SequenceVisionnage const& seq_vis)
 }*/
 void Episode::ajouter_InfosVisionnage(InfosVisionnage const& seq_vis)
 {
-    ;
+    m_liste_sequence_visionnages.push_back(seq_vis);
 }
-/*void Episode::creer_Episode(InfosVisionnage const& seq_vis)
+void Episode::creer_Episode(InfosVisionnage const& seq_vis)
 {
-    ;
-}*/
+    m_liste_sequence_visionnages.push_back(seq_vis);
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -592,10 +592,10 @@ void Episode::Print()
 {
 
     Print_Data();
-    /*for (auto vis : m_liste_visionnages)
+    for (auto vis : m_liste_sequence_visionnages)
     {
         vis.Print();
-    }*/
+    }
 }
 
 
@@ -646,7 +646,7 @@ void Saison::afficher(fs::path const& m_cheminFichier)
 
 void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
 {
-
+    m_liste_episodes.insert({ 1, seq_vis });
 }
 
 /*void Saison::creer_InfosVisionnage(fs::path const& m_cheminFichier)
@@ -669,7 +669,9 @@ void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
 Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
 {
     //    auto nomFichier = m_cheminFichier.filename().wstring();
-
+    //m_liste_sequence_visionnages.push_back(seq_vis);
+//    m_liste_episodes.insert({ 2, seq_vis });
+    m_liste_episodes.emplace( 1, seq_vis );
     //    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
         //Episode episode(cheminFichier);
     //    SequenceVisionnage(m_cheminFichier);
