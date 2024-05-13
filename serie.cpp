@@ -70,12 +70,12 @@ extern void Print_Titre_Original(const std::vector<std::wstring>& m_titre_origin
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # SequenceVisionnage::InfosVisionnage(fs::path const& cheminFichier)                                                                                 #
+// # SequenceVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier)                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-InfosVisionnage::InfosVisionnage(fs::path const& cheminFichier)
-{
+InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier)
+{ // "{" : marche pas !!!
     // ([[:digit:]]+)x([[:digit:]]{1,3})\\.(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})))(_?))+)(\\s(.+))?
     const std::wstring numero_saison_format = L"([[:digit:]]{1,2})"; // saison
     const std::wstring sep_numero_saison = L"x"; // x
@@ -99,6 +99,7 @@ InfosVisionnage::InfosVisionnage(fs::path const& cheminFichier)
     const int dates_someFlag_index = dates_date_day_day_index + 2;
 
     const std::wregex filename_format_rg{ numero_saison_format + sep_numero_saison + numero_episode_format + sep_episode_saison + L"(" + dates_format + L"+)" + stream_format };
+    //const std::wregex filename_format_rg{ sep_numero_saison + numero_episode_format + sep_episode_saison + L"(" + dates_format + L"+)" + stream_format };
 
     const int filename_full_match_index = 0;
     const int filename_numero_saison_index = filename_full_match_index + 1;
@@ -116,11 +117,11 @@ InfosVisionnage::InfosVisionnage(fs::path const& cheminFichier)
     const int filename_stream_index = filename_someFlag_index + 2;
 
 
-    auto nomFichier = cheminFichier.filename().wstring();
+    auto nomFichier = m_cheminFichier.filename().wstring();
 
     assert(nomFichier.length() > 0 && L"Nom de fichier Episode vide");
 
-    auto stem = cheminFichier.stem().wstring();
+    auto stem = m_cheminFichier.stem().wstring();
     // prefixe ???
     //assert((stem.length() > (9 + std::to_wstring(prefixe).length() + sep_numero_saison.length())) && L"Nom de fichier Episode trop court pour avoir au moins une date");
     assert((stem.length() > 9) && L"Nom de fichier Episode trop court pour avoir au moins une date");
@@ -128,6 +129,9 @@ InfosVisionnage::InfosVisionnage(fs::path const& cheminFichier)
     assert(std::isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
     m_NumeroSaison = std::stoi(stem);
     assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");
+    //
+    assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");// saison == m_NumeroSaison
+    //
     assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
     //assert(((fucking_x >= prefixe)) && L"saison.first != x"); // prefixe ???
     assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
@@ -212,7 +216,7 @@ InfosVisionnage::InfosVisionnage(fs::path const& cheminFichier)
     }
 
     //episode = std::stoi(match[filename_numero_episode_index]);
-    std::vector<std::wstring> t = lire_fichierTxt(cheminFichier.wstring(), { L"\n" }, false);
+    std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     if (t[0] == L"")
     {
         m_fichier_pas_zero = false;
@@ -314,24 +318,11 @@ InfosVisionnage::InfosVisionnage(fs::path const& cheminFichier)
     initialiser_Duree(t[1]);
     for (auto j = 2; j < t.size(); j++)
         m_phrases += t[j];
-
-    //    system("PAUSE");
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # SequenceVisionnage::creer_InfosVisionnage(fs::path const& cheminFichier)                                                                           #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void InfosVisionnage::creer_InfosVisionnage(fs::path const& cheminFichier)
-{
-    system("PAUSE");
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # SequenceVisionnage::initialiser_Duree(std::wstring& m)                                                                                             #
+// # InfosVisionnage::initialiser_Duree(std::wstring& m)                                                                                                #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -352,7 +343,7 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
     }
 }
 
-void InfosVisionnage::Print()
+/*void InfosVisionnage::Print()
 {
     std::wstring wstr;
     bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_NumeroEpisode);
@@ -385,9 +376,9 @@ void InfosVisionnage::Print()
         //saison_episode.numero = 1;
     }
     std::wcout << wstr << std::endl;
-}
+}*/
 
-std::wstring InfosVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)
+/*std::wstring InfosVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)
 {
     const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
     const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
@@ -454,30 +445,40 @@ std::wstring InfosVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>&
         dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
     //
     return dates_de_visionnage_wstr;
-}
+}*/
 
-bool InfosVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
+/*bool InfosVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 {
     if (episode == 0)
         return false;
     return true;
-}
+}*/
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # SequenceVisionnage::SequenceVisionnage(???)                                                                              #
+// # SequenceVisionnage::SequenceVisionnage(const Episode& episode) :m_episode{ episode                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-SequenceVisionnage::SequenceVisionnage(InfosVisionnage const& vis)
+// Ok !!!
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # SequenceVisionnage::SequenceVisionnage(const SequenceVisionnage& sep) = default;                                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+// Ok !!!
+
+/*SequenceVisionnage::SequenceVisionnage(InfosVisionnage const& vis)
 {
     //std::vector<InfosVisionnage>m_liste_visionnages;
     m_liste_visionnages.push_back(vis);
 
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -525,30 +526,109 @@ void SequenceVisionnage::Print()
     std::wcout << wstr;
 }*/
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
+{
+    const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
+    const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
+    const std::wstring same_date_format = between_parenthesis;
+    const std::wstring prequel_format = between_parenthesis;
+    const std::wstring streaming_format = keyColor[1] + L" : " + valuesColor + L"%s";
+    const std::wstring step_by_step_tag = L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
+
+    std::wstring dates_de_visionnage_wstr = L"";
+
+    std::vector<std::wstring> v_wstr;
+    std::time_t last_date{ 0 };
+    int same_date_counter = 0;
+    for (auto dr : m_DatesVisionnage)
+    {
+        std::time_t time = std::mktime(&dr.date);
+
+        if (last_date != time)
+        {
+            std::tm localtime = *std::localtime(&time);
+            std::wstringstream target_stream;
+            target_stream << std::put_time(&localtime, date_format.c_str());
+            std::wstring date_str = target_stream.str();
+            v_wstr.push_back(date_str);
+            same_date_counter = 0;
+        }
+        else
+        {
+            same_date_counter++;
+            if (same_date_counter == 1)
+            {
+                v_wstr.back() += wstring_format(same_date_format, L"1");
+            }
+            v_wstr.back() += wstring_format(same_date_format, std::to_wstring(same_date_counter + 1).c_str());
+        }
+        last_date = time;
+    }
+
+    for (auto i = 0; i < v_wstr.size(); i++)
+    {
+        if (i != 0)
+            dates_de_visionnage_wstr += L", ";
+        dates_de_visionnage_wstr += v_wstr[i];
+    }
+
+    if (m_DatesVisionnage.size() == 1)
+    {
+        if (m_DatesVisionnage[0].someFlag)
+            dates_de_visionnage_wstr += wstring_format(prequel_format, L"stop ou pas !");
+    }
+    else
+    {
+        if (m_DatesVisionnage.size() > 0)
+        {
+            if (m_DatesVisionnage.back().someFlag)
+            {
+                dates_de_visionnage_wstr += wstring_format(prequel_format, L"à suivre");
+            }
+            dates_de_visionnage_wstr += step_by_step_tag;
+        }
+    }
+
+    if (m_streaming != L"" && dates_de_visionnage_wstr.length() > 0)
+        dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
+    //
+    return dates_de_visionnage_wstr;
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int epi                                                                           #
+// # bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
+bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 {
     if (episode == 0)
         return false;
     return true;
+}
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Episode::Episode(InfosVisionnage const& seq_vis) :m_saison{ info_vis.m_saison } {};                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+// Ok !!!
+/*Episode::Episode(InfosVisionnage const& seq_vis)
+{
+    m_saison{ info_vis.m_saison };
 }*/
-
-// ######################################################################################################################################################
-// ######################################################################################################################################################
-
-//Episode::Episode(void)
-//{}
-
-//Episode::~Episode()
-//{}
-
-Episode::Episode(SequenceVisionnage const& seq_vis)
+/*Episode::Episode(SequenceVisionnage const& seq_vis)
 {
     //auto nomFichier = seq_vis.filename().wstring();
     //auto nomFichier = seq_vis;
@@ -561,18 +641,23 @@ Episode::Episode(SequenceVisionnage const& seq_vis)
     //SequenceVisionnage sequencevisionnage(seq_vis);
 
     //titre = sequencevisionnage.titre;
+}*/
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& seq_vis)                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
+{
+    m_liste_sequence_visionnages.push_back(info_vis);
 }
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Episode::ajouter_InfosVisionnage(InfosVisionnage const&  seq_vis)                                                                             #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void Episode::ajouter_InfosVisionnage(InfosVisionnage const& seq_vis)
+/*void Episode::ajouter_InfosVisionnage(InfosVisionnage const& seq_vis)
 {
     m_liste_sequence_visionnages.push_back(seq_vis);
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -580,11 +665,11 @@ void Episode::ajouter_InfosVisionnage(InfosVisionnage const& seq_vis)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Episode::creer_Episode(InfosVisionnage const& seq_vis)
+/*void Episode::creer_Episode(InfosVisionnage const& seq_vis)
 {
     // ???
     m_liste_sequence_visionnages.push_back(seq_vis);
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -594,7 +679,7 @@ void Episode::creer_Episode(InfosVisionnage const& seq_vis)
 
 void Episode::Print()
 {
-    Print_Data();
+    //Print_Data();
     for (auto vis : m_liste_sequence_visionnages)
     {
         vis.Print();
@@ -607,9 +692,9 @@ void Episode::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Episode::Print_Data()
+/*void Episode::Print_Data()
 {
-}
+}*/
 
 /*bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 {
@@ -621,93 +706,13 @@ void Episode::Print_Data()
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-Saison::Saison()
-{}
-
-Saison::~Saison()
-{}
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::afficher(fs::path const& m_cheminFichier)                                                                                             #
+// # Saison::Saison(fs::path const& m_cheminFichier)                                                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Saison::afficher(fs::path const& m_cheminFichier)
-{
-    auto nomFichier = m_cheminFichier.filename().wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::size_t pos;
-    saison.first = std::stoi(nomFichier, &pos);
-    try
-    {
-        saison.second = lire_fichierTxt(m_cheminFichier.wstring());
-    }
-    catch (runtime_error const& exception)
-    {
-        std::wcout << L"Erreur : " << exception.what() << std::endl;
-    }
-    assert((saison.second.size() != 0));
-}
-
-void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
-{
-    m_liste_episodes.insert({ 1, seq_vis });
-}
-
-/*void Saison::creer_InfosVisionnage(fs::path const& m_cheminFichier)
-{
-    auto nomFichier = m_cheminFichier.filename().wstring();
-
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    InfosVisionnage infosvisionnage(m_cheminFichier);
-    infosvisionnages.push_back(infosvisionnage);
-    //Episode episode(m_cheminFichier);
-    //episodes.push_back(episode); // Episode
-}*/
-
-/*Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
-{
-    ;
-}*/
-
-//Episode Saison::creer_Episode(SequenceVisionnage const& seq_vis)
-Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
-{
-    //    auto nomFichier = m_cheminFichier.filename().wstring();
-    //m_liste_sequence_visionnages.push_back(seq_vis);
-//    m_liste_episodes.insert({ 2, seq_vis });
-    m_liste_episodes.emplace( 1, seq_vis );
-    //    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-        //Episode episode(cheminFichier);
-    //    SequenceVisionnage(m_cheminFichier);
-        //episodes.push_back(episode); // Episode
-    //    sequencevisionnages.push_back(sequencevisionnage);
-}
-
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Saison::creer_SequenceVisionnage(fs::path const& m_cheminFichier)                                                                             #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-//void Saison::creer_SequenceVisionnage(fs::path const& m_cheminFichier)
-//{
-//    auto nomFichier = m_cheminFichier.filename().wstring();
-
-//    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-//    Episode episode(m_cheminFichier);
-//    episodes.push_back(episode); // Episode
-//}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Saison::initialiser_Dossier(fs::path const& m_cheminFichier)                                                                                  #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void Saison::initialiser_Dossier(fs::path const& m_cheminFichier)
+Saison::Saison(fs::path const& m_cheminFichier)
 {
     auto nomDossier = m_cheminFichier.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
@@ -758,6 +763,144 @@ void Saison::initialiser_Dossier(fs::path const& m_cheminFichier)
     m_dossier.first = tm;
     m_dossier.second = wstr;
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::afficher(fs::path const& m_cheminFichier)                                                                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Saison::afficher(fs::path const& m_cheminFichier)
+{
+    auto nomFichier = m_cheminFichier.filename().wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::size_t pos;
+    saison.first = std::stoi(nomFichier, &pos);
+    try
+    {
+        saison.second = lire_fichierTxt(m_cheminFichier.wstring());
+    }
+    catch (runtime_error const& exception)
+    {
+        std::wcout << L"Erreur : " << exception.what() << std::endl;
+    }
+    assert((saison.second.size() != 0));
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::afficher(fs::path const& m_cheminFichier)                                                                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
+{
+    //m_liste_episodes.insert({ 1, seq_vis });
+}
+
+/*void Saison::creer_InfosVisionnage(fs::path const& m_cheminFichier)
+{
+    auto nomFichier = m_cheminFichier.filename().wstring();
+
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    InfosVisionnage infosvisionnage(m_cheminFichier);
+    infosvisionnages.push_back(infosvisionnage);
+    //Episode episode(m_cheminFichier);
+    //episodes.push_back(episode); // Episode
+}*/
+
+/*Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
+{
+    ;
+}*/
+
+//Episode Saison::creer_Episode(SequenceVisionnage const& seq_vis)
+/*Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
+{
+    //    auto nomFichier = m_cheminFichier.filename().wstring();
+    //m_liste_sequence_visionnages.push_back(seq_vis);
+//    m_liste_episodes.insert({ 2, seq_vis });
+    m_liste_episodes.emplace( 1, seq_vis );
+    //    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+        //Episode episode(cheminFichier);
+    //    SequenceVisionnage(m_cheminFichier);
+        //episodes.push_back(episode); // Episode
+    //    sequencevisionnages.push_back(sequencevisionnage);
+}*/
+
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::creer_SequenceVisionnage(fs::path const& m_cheminFichier)                                                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+//void Saison::creer_SequenceVisionnage(fs::path const& m_cheminFichier)
+//{
+//    auto nomFichier = m_cheminFichier.filename().wstring();
+
+//    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+//    Episode episode(m_cheminFichier);
+//    episodes.push_back(episode); // Episode
+//}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::initialiser_Dossier(fs::path const& m_cheminFichier)                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+/*void Saison::initialiser_Dossier(fs::path const& m_cheminFichier)
+{
+    auto nomDossier = m_cheminFichier.filename().wstring();
+    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
+    assert(nomDossier.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
+    std::size_t pos = 0;
+    std::wstring wstr = nomDossier.substr(pos);
+
+    wchar_t sp = L' ', tiret = L'-';
+    //int y;
+    auto y = std::stoi(wstr, &pos);
+    assert(1582 <= y && L"L'année est inférieur !");
+    wstr = wstr.substr(4);
+    try
+    {
+        test_date_tire(wstr[0]);
+    }
+    catch (exception_date_tiret e2)
+    {
+        std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
+        exit(1);
+    }
+    wstr = wstr.substr(1);
+    auto m = std::stoi(wstr, &pos);
+    assert((1 <= m && m <= 12) && L"Le mois invalide !");
+    wstr = wstr.substr(2);
+    try
+    {
+        test_date_tire(wstr[0]);
+    }
+    catch (exception_date_tiret e2)
+    {
+        std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
+        exit(1);
+    }
+    wstr = wstr.substr(1);
+    auto d = std::stoi(wstr, &pos);
+    assert((1 <= d && d <= 31) && L"Le jour invalide !");
+    if (!checkday(m, d, y))
+    {
+        std::wcout << L"Le jour invalide !!!!" << std::endl;
+        exit(1);
+    }
+    std::tm tm;
+    tm.tm_year = y - 1900;
+    tm.tm_mon = m - 1;
+    tm.tm_mday = d;
+    wstr = wstr.substr(2);
+    m_dossier.first = tm;
+    m_dossier.second = wstr;
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -818,15 +961,19 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
         if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{1,2})x(.)+" }))
         {
             //creer_InfosVisionnage(m_cheminFichier);
-            InfosVisionnage info_vis{ m_cheminFichier };
+            //InfosVisionnage info_vis{ m_cheminFichier };
+            InfosVisionnage info_vis{ *this, m_cheminFichier};
+//            if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
             if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
             {
-                m_liste_episodes[info_vis.m_NumeroEpisode].ajouter_InfosVisionnage(info_vis);
+//                m_liste_episodes[info_vis.m_NumeroEpisode].ajouter_InfosVisionnage(info_vis);
+                //m_liste_episodes[info_vis.m_NumeroEpisode].ajouter_InfosVisionnage(this,info_vis);
+                //m_liste_episodes[info_vis.m_NumeroEpisode].ajouter_InfosVisionnage(seq_vis);
             }
             else
             {
-                //m_liste_episodes[info_vis.m_NumeroEpisode] = creer_Episode(info_vis);
-                m_liste_episodes.emplace(std::pair<const int, Episode>{ info_vis.m_NumeroEpisode, creer_Episode(info_vis) });
+                //m_liste_episodes.emplace(std::pair<const int, Episode>{ info_vis.m_NumeroEpisode, creer_Episode(info_vis) });
+                //m_liste_episodes.emplace(std::pair<const int, Episode>{ info_vis.m_NumeroEpisode};// , creer_Episode(info_vis)});
             }
             return;
         }
@@ -890,7 +1037,7 @@ void Saison::initialiser_Netflix(fs::path const& m_cheminFichier)
 {
     auto nomFichier = m_cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    netflix = true;
+    m_netflix = true;
 }
 
 // ######################################################################################################################################################
@@ -1001,13 +1148,14 @@ void Saison::Print()
     std::wcout << wstr << std::endl;
 
     std::size_t taille;
-//    taille = std::size(episodes);
+    //taille = std::size(episodes);
     taille = std::size(infosvisionnages);
+    //taille = std::size(sequenceVisionnages);
     for (auto i = 0; i < taille; i++)
     {
-        episodes[i].Print();
+        //episodes[i].Print();
         // ou
-        //infosvisionnages[i].Print();
+        infosvisionnages[i].Print();
     }
     // Chaîne
     Print_Chaine();
@@ -1146,7 +1294,7 @@ void Saison::Print_Images()
 
 void Saison::Print_Netflix()
 {
-    if (affichage_netflix_actif && netflix)
+    if (affichage_netflix_actif && m_netflix)
     {
         std::wstring netflix_str = keyColor[1] + L'(' + valuesColor + L"Netflix" + keyColor[1] + L')' + valuesColor;
         std::wcout << netflix_str << std::endl;
@@ -1253,7 +1401,7 @@ void Serie::initialiser_Chaine(fs::path const& m_cheminFichier)
 
 void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)
 { // Creee par
-    auto nomFichier = m_cheminFichier.filename().wstring();
+    auto nomFichier = m_cheminFichier/*.filename()*/.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_creee_par = lire_fichierTxt(nomFichier, { L"\n", L", " });
     assert((m_creee_par.size() != 0));

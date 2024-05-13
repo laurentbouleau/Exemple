@@ -57,21 +57,19 @@ std::wstring wstring_format(const std::wstring& format, Args ... args)
 }
 
 struct DateRecord;
+struct InfosVisionnage;
 struct SequenceVisionnage;
 struct Episode;
 struct Saison;
  
 struct InfosVisionnage
 {
-    //struct Saison;
-    //struct Episode;
-    //InfosVisionnage(void);
-    InfosVisionnage(std::filesystem::path const& m_cheminFichier);
-    void creer_InfosVisionnage(std::filesystem::path const& m_cheminFichier);
-    void initialiser_Duree(std::wstring& m);
-    void Print();
-    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
-    bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
+    const Saison& saison;
+
+    InfosVisionnage(const Saison& saison, std::filesystem::path const& m_cheminFichier);
+    //void Print();
+    //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
+    //bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
     std::filesystem::path m_cheminFichier;
 
@@ -81,7 +79,6 @@ struct InfosVisionnage
 
     unsigned short int m_NumeroSaison{};
     unsigned short int m_NumeroEpisode{}; 
-    //std::vector<DateRecord> m_dates{ 0 };
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
     bool m_fichier_pas_zero{ false };
@@ -91,57 +88,72 @@ struct InfosVisionnage
     unsigned short int m_numero{ 1 };
     long m_duree{ -1 };
     std::wstring m_phrases{ L"" };
-    // ???
+    
+private:
+    void initialiser_Duree(std::wstring& m);
+
 };
 
 struct SequenceVisionnage
 {
-    SequenceVisionnage(InfosVisionnage const& vis);
-    //void initialiser_duree(std::wstring& m);
+    SequenceVisionnage(const Episode& episode) :m_episode{ episode } {};
+    SequenceVisionnage(const SequenceVisionnage& sep) = default;
+
     void Print();
+    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
+    bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
+
     std::wstring m_min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    std::vector<InfosVisionnage>m_liste_visionnages;
+    std::wstring m_streaming{ L"" };
+    //bool m_fichier_pas_zero{ false };
+    std::wstring m_titre;
+    std::wstring m_deux_points;
+    std::wstring m_sous_titre;
+    long m_duree_en_seconde{ -1 };
+    std::wstring m_phrases{ L"" };
+    std::vector<DateRecord> m_DatesVisionnage{};
+
+private:
+    const Episode& m_episode;
 };
 
 struct Episode
 {
-    //struct Saison;
-    //Episode(std::filesystem::path const& cheminFichier);
-    Episode(SequenceVisionnage const& seq_vis);
+    const Saison& m_saison;
+    Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } {};
 
-    void ajouter_InfosVisionnage(InfosVisionnage const& seq_vis);
-    void creer_Episode(InfosVisionnage const& seq_vis);
+    void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
     void Print();
-    void Print_Data();
-    //::vector<InfosVisionnage> info_vis;
-//    std::vector<SequenceVisionnage> sequencevisionnages;
-    std::vector<SequenceVisionnage> m_liste_sequence_visionnages;// { 0 };
+    std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
+
+    int m_numero{ -1 };
+    long m_duree{ -1 };
+    std::wstring m_phrases{ L"" };
 };
 
 struct Saison
 {
 public:
-    Saison(void);
-    ~Saison();
-    //struct Episode;
+    Saison(std::filesystem::path const& m_cheminFichier);
     void afficher(std::filesystem::path const& m_cheminFichier);
     void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
-    Episode creer_Episode(InfosVisionnage const& seq_vis);
-//    void creer_SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
-
-    void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
     void initialiser_Fichier(std::filesystem::path const& m_cheminFichier);
+
+    //void afficher(std::filesystem::path const& m_cheminFichier);
+    //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
+    //Episode creer_Episode(InfosVisionnage const& seq_vis);
+    //void creer_SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
+    //void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
 
     void initialiser_Chaine(std::filesystem::path const& m_cheminFichier);
     void initialiser_Netflix(std::filesystem::path const& m_cheminFichier);
     void initialiser_Note(std::filesystem::path const& m_cheminFichier);
     void initialiser_Titre(std::filesystem::path const& m_cheminFichier);
-
  
     void Print();
     void Print_Avec();
@@ -156,11 +168,11 @@ public:
 
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
     std::pair<std::tm, std::wstring>m_dossier;
-    std::vector<Episode> episodes;
-    std::vector<InfosVisionnage>infosvisionnages;
+    //std::vector<Episode> episodes;
+    //std::vector<InfosVisionnage>infosvisionnages;
     std::wstring m_chaine;
     std::vector<std::wstring> m_image;
-    bool netflix{ false };
+    bool m_netflix{ false };
     double m_note = -1.0;
     std::pair<unsigned short int, std::wstring>saison;
     std::wstring m_titre;
@@ -171,7 +183,10 @@ public:
     bool affichage_image_actif = true;
     bool affichage_netflix_actif = true;
 
-    std::map<int, Episode> m_liste_episodes;
+    //std::map<int, Episode> m_liste_episodes;
+    std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
+
+    int m_numero{ -1 };
 };
 
 class Serie
