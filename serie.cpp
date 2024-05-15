@@ -51,13 +51,13 @@ extern bool checkyear(int y);
 extern bool checkmonth(int m);
 extern bool checkday(int m, int d, int y);
 
-extern const void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& m_ad);
-extern const void initialiser_Avec(fs::path const& m_cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
-extern const void initialiser_Chaine(fs::path const& m_cheminFichier, std::wstring& m_chaine);
-extern const void initialiser_Genre(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
-extern const void initialiser_Image(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_images);
-extern const void initialiser_Nationalite(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-extern const void initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original);
+extern void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& m_ad);
+extern void initialiser_Avec(fs::path const& m_cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
+//extern const void initialiser_Chaine(fs::path const& m_cheminFichier, std::wstring& m_chaine);
+extern void initialiser_Genre(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
+extern void initialiser_Image(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_images);
+extern void initialiser_Nationalite(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
+extern void initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 extern void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
@@ -70,11 +70,11 @@ extern void Print_Titre_Original(const std::vector<std::wstring>& m_titre_origin
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # SequenceVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier)                                                         #
+// # SequenceVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier)                                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier)
+InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier) : m_saison{ saison }
 { // "{" : marche pas !!!
     // ([[:digit:]]+)x([[:digit:]]{1,3})\\.(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})))(_?))+)(\\s(.+))?
     const std::wstring numero_saison_format = L"([[:digit:]]{1,2})"; // saison
@@ -459,11 +459,12 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # SequenceVisionnage::SequenceVisionnage(const Episode& episode) :m_episode{ episode                                                                 #
+// # SequenceVisionnage::SequenceVisionnage(const Episode& episode) :m_episode{ episode } {};                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
 // Ok !!!
+//SequenceVisionnage::SequenceVisionnage(const Episode& episode) :m_episode{ episode } {};
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -472,6 +473,7 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 // ######################################################################################################################################################
 
 // Ok !!!
+//SequenceVisionnage::SequenceVisionnage(const SequenceVisionnage& sep) = default;
 
 /*SequenceVisionnage::SequenceVisionnage(InfosVisionnage const& vis)
 {
@@ -494,7 +496,7 @@ void SequenceVisionnage::Print()
 /*void SequenceVisionnage::Print()
 {
     std::wstring wstr;
-    bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_episode);
+    bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_NumeroEpisod);
     if (chiffre_et_point_ou_pas)
     {
         wstr = std::to_wstring(m_saison) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode) + keyColor[1] + L" : " + valuesColor;
@@ -651,7 +653,8 @@ bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int 
 
 void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 {
-    m_liste_sequence_visionnages.push_back(info_vis);
+    //m_liste_sequence_visionnages.push_back(info_vis);
+    m_liste_sequence_visionnages.push_back(SequenceVisionnage{ info_vis });
 }
 
 /*void Episode::ajouter_InfosVisionnage(InfosVisionnage const& seq_vis)
@@ -960,17 +963,15 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
         //
         if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{1,2})x(.)+" }))
         {
-            //creer_InfosVisionnage(m_cheminFichier);
-            //InfosVisionnage info_vis{ m_cheminFichier };
             InfosVisionnage info_vis{ *this, m_cheminFichier};
 //            if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
-            if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
             {
 //                m_liste_episodes[info_vis.m_NumeroEpisode].ajouter_InfosVisionnage(info_vis);
                 //m_liste_episodes[info_vis.m_NumeroEpisode].ajouter_InfosVisionnage(this,info_vis);
                 //m_liste_episodes[info_vis.m_NumeroEpisode].ajouter_InfosVisionnage(seq_vis);
+                ;
             }
-            else
+//            else
             {
                 //m_liste_episodes.emplace(std::pair<const int, Episode>{ info_vis.m_NumeroEpisode, creer_Episode(info_vis) });
                 //m_liste_episodes.emplace(std::pair<const int, Episode>{ info_vis.m_NumeroEpisode};// , creer_Episode(info_vis)});
@@ -1148,14 +1149,10 @@ void Saison::Print()
     std::wcout << wstr << std::endl;
 
     std::size_t taille;
-    //taille = std::size(episodes);
-    taille = std::size(infosvisionnages);
-    //taille = std::size(sequenceVisionnages);
+    taille = std::size(m_liste_episodes);
     for (auto i = 0; i < taille; i++)
     {
-        //episodes[i].Print();
-        // ou
-        infosvisionnages[i].Print();
+        m_liste_episodes[i]->Print();
     }
     // Chaîne
     Print_Chaine();
@@ -1489,6 +1486,7 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
     for (auto j = 2; j < titre[1].size(); j++)
         m_phrases += titre[j];
 }
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Serie::Print()                                                                                                                                #

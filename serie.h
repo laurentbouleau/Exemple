@@ -64,7 +64,7 @@ struct Saison;
  
 struct InfosVisionnage
 {
-    const Saison& saison;
+    const Saison& m_saison;
 
     InfosVisionnage(const Saison& saison, std::filesystem::path const& m_cheminFichier);
     //void Print();

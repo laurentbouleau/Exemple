@@ -24,8 +24,6 @@
 #include <filesystem> // C++17 standard header file name
 //using namespace std;
 
-const void initialiser_Avec(std::filesystem::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec);
-const void initialiser_Image(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& images);
-//const bool initialiser_Min(std::wstring& t);
-//const bool initialiser_Temps(std::wstring ttt);
-
+void initialiser_Avec(std::filesystem::path const& m_cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
+void initialiser_Image(std::filesystem::path const& m_cheminFichier, std::vector<std::wstring>& m_images);
+//void initialiser_Titre_Original(std::filesystem::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original);
