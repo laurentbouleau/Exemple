@@ -15,11 +15,12 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 //#include <stdio.h>
 #include <locale>
 #include <algorithm>
 #include <codecvt>
-#include <tuple>
+#include <regex>
 
 #include <filesystem> // C++17 standard header file name
 //#include <experimental/filesystem> // Header file for pre-standard implementation
@@ -255,7 +256,7 @@ void initialiser_Nationalite(fs::path const& m_cheminFichier, std::vector<std::w
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void initialiser_Sous_Genre(std::wstring& m_s_g)
+void initialiser_Sous_Genre(std::wstring& m_s_g)
 { // Sous_Genre
     bool s_g = false;
     if (std::find(::Sous_Genre.begin(), ::Sous_Genre.end(), m_s_g) != ::Sous_Genre.end())

@@ -96,8 +96,13 @@ private:
 
 struct SequenceVisionnage
 {
-    SequenceVisionnage(const Episode& episode) :m_episode{ episode } {};
-    SequenceVisionnage(const SequenceVisionnage& sep) = default;
+    //SequenceVisionnage(const Episode& episode) :m_episode{ episode } {};
+    //SequenceVisionnage(const SequenceVisionnage& sep) = default;
+    SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
+        m_episode{ episode }, m_titre{ info_vis.m_titre }, m_deux_points{ info_vis.m_deux_points }, m_streaming{ info_vis.m_streaming },
+        m_sous_titre{ info_vis.m_sous_titre }, m_duree_en_seconde{ info_vis.m_duree * 60 }, m_phrases{ info_vis.m_phrases },
+        m_DatesVisionnage{ info_vis.m_DatesVisionnage }
+    {};
 
     void Print();
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
