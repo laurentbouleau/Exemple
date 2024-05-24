@@ -128,6 +128,7 @@ const std::vector<std::wstring> Nationalite
     L"Pologne",
     L"République Tchèque",
     L"Russie",
+    L"Samoa",
     L"Suède",
     L"Thaïlande",
     L"Turquie",
@@ -277,7 +278,7 @@ void initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std
     std::wstring titre = lire_fichierTxt(m_cheminFichier.wstring());
     assert((titre.size() != 0));
 
-    wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
+    std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     std::wsmatch match;
     if (std::regex_match(titre, match, titre_pattern))
     {
@@ -426,6 +427,7 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
             titre_original_str += keyColor[1] + m_titre_original[1] + valuesColor;
             titre_original_str += m_titre_original[2];
         }
+        titre_original_str += L"\r\n";
         std::wcout << titre_original_str;
     }
 }

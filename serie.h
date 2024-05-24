@@ -226,7 +226,7 @@ private:
 
     std::wstring m_audiodescription;
     std::wstring m_chaine;
-    std::vector<std::wstring>m_creee_par;
+    std::vector<std::wstring> m_creee_par;
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
     std::vector<std::wstring> m_nationalite;

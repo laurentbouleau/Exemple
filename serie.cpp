@@ -485,8 +485,6 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 
 void SequenceVisionnage::Print()
 {
-    std::wcout << L"aaa" << std::endl;
-    system("PAUSE");
     ;
 }
 
@@ -709,7 +707,6 @@ Saison::Saison(fs::path const& m_cheminFichier)
     std::wstring wstr = nomDossier.substr(pos);
 
     wchar_t sp = L' ', tiret = L'-';
-    //int y;
     auto y = std::stoi(wstr, &pos);
     assert(1582 <= y && L"L'année est inférieur !");
     wstr = wstr.substr(4);
@@ -1409,63 +1406,18 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
 { // Titre
     auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" });
+    //std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" });
+    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
     assert((titre.size() != 0));
 
-    /*    bool found = false;
-    const std::wstring d_p = L" : ";
-    size_t pos;
-    pos = titre[0].find(d_p);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titre[0] = titre[0].substr(0, pos);
-        m_titre[1] = d_p;
-        m_titre[2] = titre[0].substr(pos + 3);
-        found = true;
-    }
-    const std::wstring d_p2 = L": ";
-    pos = titre[0].find(d_p2);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titre[0] = titre[0].substr(0, pos);
-        m_titre[1] = d_p2;
-        m_titre[2] = titre[0].substr(pos + 2);
-        found = true;
-    }
-    const std::wstring d_p3 = L"/";
-    pos = titre[0].find(d_p3);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titre[0] = titre[0].substr(0, pos);
-        m_titre[1] = d_p3;
-        m_titre[2] = titre[0].substr(pos + 1);
-        found = true;
-    }
-    const std::wstring d_p4 = L" - ";
-    pos = titre[0].find(d_p4);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titre[0] = titre[0].substr(0, pos);
-        m_titre[1] = d_p4;
-        m_titre[2] = titre[0].substr(pos + 3);
-        found = true;
-    }
-    if (!found)
-    {
-        m_titre[0] = titre[0];
-        found = true;
-    }
-    */
-
-    const std::wstring t = titre[0];
-    wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
+    std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     std::wsmatch match;
-    if (std::regex_match(t, match, titre_pattern))
+    if (std::regex_match(titre[0], match, titre_pattern))
     {
         m_titre.push_back(match[1]);
         if (match.length() > 2)
         {
-            m_titre_original.push_back(match[2]);
+            m_titre.push_back(match[2]);
         }
         if (match.length() > 3)
         {
@@ -1474,7 +1426,7 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
     }
     else
     {
-        m_titre.push_back(t);
+        m_titre.push_back(titre[0]);
     }
 
     initialiser_Duree(titre[1]);
