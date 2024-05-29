@@ -216,7 +216,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     }
 
     //episode = std::stoi(match[filename_numero_episode_index]);
-    std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
+    std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" }, false);
     ;
     if (t[0] == L"")
     {
@@ -648,13 +648,7 @@ bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int 
 
 void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 {
-    //m_liste_sequence_visionnages.push_back(SequenceVisionnage{ info_vis });
-
-//    SequenceVisionnage seq_vis{ info_vis };
-//    m_liste_sequence_visionnages.push_back(seq_vis);
-
     m_liste_sequence_visionnages.push_back(SequenceVisionnage(*this, info_vis));
-
 }
 
 // ######################################################################################################################################################
@@ -781,6 +775,11 @@ void Saison::afficher(fs::path const& m_cheminFichier)
 void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
 {
     //m_liste_episodes.insert({ 1, seq_vis });
+    //m_liste_episodes.insert({ 1, seq_vis });
+    m_numero++;
+    //auto [xxx, success] = m_liste_episodes.insert({ m_numero, seq_vis });
+    //m_liste_episodes.insert(std::pair<int, Episode>(m_numero, seq_vis));
+    //m_liste_episodes.insert({ m_numero, seq_vis });
 }
 
 /*void Saison::creer_InfosVisionnage(fs::path const& m_cheminFichier)
@@ -1369,7 +1368,7 @@ void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)
 { // Creee par
     auto nomFichier = m_cheminFichier/*.filename()*/.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    m_creee_par = lire_fichierTxt(nomFichier, { L"\n", L", " });
+    m_creee_par = lire_fichierTxt(nomFichier, { L"\r\n", L", " });
     assert((m_creee_par.size() != 0));
 }
 
@@ -1406,8 +1405,7 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
 { // Titre
     auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    //std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" });
-    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
+    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" });
     assert((titre.size() != 0));
 
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };

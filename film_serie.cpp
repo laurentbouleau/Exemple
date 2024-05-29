@@ -197,7 +197,7 @@ void initialiser_Genre(fs::path const& m_cheminFichier, std::vector<std::wstring
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
 
     std::vector<std::wstring>g;
-    g = lire_fichierTxt(nomFichier, { L"\n", L", " });
+    g = lire_fichierTxt(nomFichier, { L"\r\n", L", " });
     for (auto&& genre : g)
     {
         if (std::find(genres_valides.begin(), genres_valides.end(), genre) != genres_valides.end())
@@ -239,7 +239,7 @@ void initialiser_Nationalite(fs::path const& m_cheminFichier, std::vector<std::w
 //    assert((pos_txt != std::wstring::npos) && L"Erreur Nationalite(s) !!!");
     //std::wstring radical = nationalite_filename.substr(0, pos_txt);
     std::vector<std::wstring>n;
-    n = lire_fichierTxt(nomFichier, { L"\n", L", " });
+    n = lire_fichierTxt(nomFichier, { L"\r\n", L", " });
     for (auto&& nationalite : n)
     {
         if (std::find(nationalites_valides.begin(), nationalites_valides.end(), nationalite) != nationalites_valides.end())
