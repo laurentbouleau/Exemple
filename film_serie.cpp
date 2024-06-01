@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include "Exemple.h"
 #include "film_serie.h"
@@ -39,16 +39,16 @@ extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
-// Allociné : https://www.allocine.fr/
+// AllocinÃ© : https://www.allocine.fr/
 
 const std::vector<std::wstring> Audiodescription
 { // AD : Audiodescription
     L"Allemagne",
     L"Anglais",
     L"Espagne",
-    L"Français",
-    L"Hébreu",
-    L"Portugais brésilien"
+    L"FranÃ§ais",
+    L"HÃ©breu",
+    L"Portugais brÃ©silien"
 };
 
 const std::vector<std::wstring>Genre
@@ -58,20 +58,20 @@ const std::vector<std::wstring>Genre
     L"Animation",
     L"Aventure",
     L"Biopic",
-    L"Comédie",
-    L"Comédie musicale",
-    L"Comédie dramatique",
+    L"ComÃ©die",
+    L"ComÃ©die musicale",
+    L"ComÃ©die dramatique",
     L"Concert",
     L"Divers",
 
-    L"Docu-séries",
+    L"Docu-sÃ©ries",
     L"Documentaire",
     L"Drama",
     L"Drame",
     L"Espionnage",
     L"Epouvante-horreur",
     L"Erotique",
-    L"Expérimental",
+    L"ExpÃ©rimental",
     L"Famille",
     L"Fantastique",
 
@@ -80,9 +80,9 @@ const std::vector<std::wstring>Genre
     L"Historique",
     L"Manga",
     L"Musical",
-    L"Péplum",
+    L"PÃ©plum",
     L"Policier",
-    L"Opéra",
+    L"OpÃ©ra",
     L"Romance",
     L"Science fiction", L"Science Fiction",
 
@@ -100,11 +100,11 @@ const std::vector<std::wstring> Nationalite
     L"Australie",
     L"Barbade",
     L"Belgique",
-    L"Brésil",
+    L"BrÃ©sil",
     L"Canada",
     L"Chili",
     L"Chine",
-    L"Corée du Sud",
+    L"CorÃ©e du Sud",
     L"Danemark",
     L"Danoise",
     L"Egypte",
@@ -115,22 +115,22 @@ const std::vector<std::wstring> Nationalite
     L"Hong-Kong",
     L"Inde",
     L"Irlande",
-    L"Israël",
+    L"IsraÃ«l",
     L"Italie",
     L"Japon",
     L"Jordanie",
     L"Luxembourg",
     L"Mexique",
-    L"Nigéria",
-    L"Norvège",
+    L"NigÃ©ria",
+    L"NorvÃ¨ge",
     L"Pays-Bas",
     L"Philippines",
     L"Pologne",
-    L"République Tchèque",
+    L"RÃ©publique TchÃ¨que",
     L"Russie",
     L"Samoa",
-    L"Suède",
-    L"Thaïlande",
+    L"SuÃ¨de",
+    L"ThaÃ¯lande",
     L"Turquie",
     L"Ukraine",
     L"U.S.A."
@@ -140,11 +140,30 @@ const std::vector<std::wstring> Sous_Genre
 {
     L"Animation",
     L"Documentaire",
-    L"Docu-séries",
+    L"Docu-sÃ©ries",
     L"Manga",
-    L"Mini-série"
+    L"Mini-sÃ©rie"
 };
 
+const std::vector<std::wstring> Soundtrack
+{
+    L"Compositeur",
+    L"Compositeur (chansons du film)",
+    L"Montage musical",
+    L"Superviseur musical"
+};
+
+const std::vector<std::wstring> Sur
+{
+    L"Apple TV+",
+    L"Amazon Prime Video",
+    L"Crunchyroll",
+    L"Disney+",
+    L"DVD",
+    L"Netflix",
+    L"Sâ±¯LTO",
+    L"VOD"
+};
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 

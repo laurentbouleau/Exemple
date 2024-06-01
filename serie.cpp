@@ -944,15 +944,17 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
         //
         if (std::regex_match(nomFichier, std::wregex{L"([[:digit:]]{1,2})x(.)+"}))
         {
-            InfosVisionnage info_vis{ *this, m_cheminFichier };
-            if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
+            return;
+            //InfosVisionnage info_vis{*this, m_cheminFichier};
+            //bool none();
+            /*if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
             {
                 m_liste_episodes[info_vis.m_NumeroEpisode]->ajouter_SequenceVisionnage(info_vis);
             }
             else
             {
                 m_liste_episodes.emplace(std::pair<const int, shared_ptr<Episode>>{ info_vis.m_NumeroEpisode, make_shared<Episode>(info_vis) });
-            }
+            }*/
             return;
         }
         //
@@ -1116,12 +1118,12 @@ void Saison::Print()
     wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
     std::wcout << wstr << std::endl;
 
-    std::size_t taille;
+    /*std::size_t taille;
     taille = std::size(m_liste_episodes);
     for (auto i = 0; i < taille; i++)
     {
         m_liste_episodes[i]->Print();
-    }
+    }*/
     // Chaîne
     Print_Chaine();
     // Netflix
@@ -1405,8 +1407,10 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
 { // Titre
     auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" });
+    //std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" });
+    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
     assert((titre.size() != 0));
+    /*const*/ std::vector<std::wstring> wstr = titre;
 
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     std::wsmatch match;
@@ -1427,9 +1431,17 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
         m_titre.push_back(titre[0]);
     }
 
-    initialiser_Duree(titre[1]);
-    for (auto j = 2; j < titre[1].size(); j++)
-        m_phrases += titre[j];
+    //initialiser_Duree(wstr[1]);
+    if (wstr.size() > 1)
+    {
+        initialiser_Duree(wstr[1]);
+    }
+    if (wstr.size() > 2)
+    {
+        for (auto j = 2; j < wstr[j].size(); j++)
+            m_phrases += wstr[j];
+
+    }
 }
 
 // ######################################################################################################################################################
