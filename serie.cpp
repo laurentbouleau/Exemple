@@ -216,9 +216,9 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     }
 
     //episode = std::stoi(match[filename_numero_episode_index]);
-    std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" }, false);
-    ;
-    if (t[0] == L"")
+    std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
+
+/*    if (t[0] == L"")
     {
         m_fichier_pas_zero = false;
         //m_numero++;
@@ -226,7 +226,8 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         //InfosVisionnage.push_back();
 //        SequenceVisionnage.push_back({ InfosVisionnage });
         return;
-    }
+    }*/
+    m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
 
     size_t pos;// = 0;
     pos = t[0].find(L". ");
@@ -1370,7 +1371,7 @@ void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)
 { // Creee par
     auto nomFichier = m_cheminFichier/*.filename()*/.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    m_creee_par = lire_fichierTxt(nomFichier, { L"\r\n", L", " });
+    m_creee_par = lire_fichierTxt(nomFichier, { L"\n", L", " });
     assert((m_creee_par.size() != 0));
 }
 
@@ -1410,7 +1411,7 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
     //std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" });
     std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
     assert((titre.size() != 0));
-    /*const*/ std::vector<std::wstring> wstr = titre;
+    /*const*/ //std::vector<std::wstring> wstr = titre;
 
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     std::wsmatch match;
@@ -1432,16 +1433,16 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
     }
 
     //initialiser_Duree(wstr[1]);
-    if (wstr.size() > 1)
+    if (titre.size() > 1)
     {
-        initialiser_Duree(wstr[1]);
+        initialiser_Duree(titre[1]);
+        if (titre.size() > 2)
+        {
+            for (auto j = 2; j < titre[j].size(); j++)
+                m_phrases += titre[j];
+        }
     }
-    if (wstr.size() > 2)
-    {
-        for (auto j = 2; j < wstr[j].size(); j++)
-            m_phrases += wstr[j];
-
-    }
+    //system("PAUSE");
 }
 
 // ######################################################################################################################################################
