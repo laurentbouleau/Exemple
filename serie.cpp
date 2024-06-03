@@ -40,9 +40,10 @@ extern const std::vector<std::wstring> Sous_Genre;
 
 extern std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
 
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
+extern const std::vector<std::wstring> lire_et_decouper_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
+extern const std::vector<std::wstring> lire_et_decouper_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
 extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
+extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
 extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 extern void test_date_tire(wchar_t d);
@@ -1369,7 +1370,7 @@ void Serie::initialiser_Chaine(fs::path const& m_cheminFichier)
 
 void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)
 { // Creee par
-    auto nomFichier = m_cheminFichier/*.filename()*/.wstring();
+    auto nomFichier = m_cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_creee_par = lire_fichierTxt(nomFichier, { L"\n", L", " });
     assert((m_creee_par.size() != 0));
@@ -1432,7 +1433,6 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
         m_titre.push_back(titre[0]);
     }
 
-    //initialiser_Duree(wstr[1]);
     if (titre.size() > 1)
     {
         initialiser_Duree(titre[1]);

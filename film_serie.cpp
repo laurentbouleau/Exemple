@@ -31,10 +31,11 @@ namespace fs = std::filesystem;
 //extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
 //extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
 //extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
+extern const std::vector<std::wstring> lire_et_decouper_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
+extern const std::vector<std::wstring> lire_et_decouper_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
 extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
 //extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
+extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
 extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 // ######################################################################################################################################################
@@ -441,7 +442,7 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
     if (affichage_titre_original_actif && m_titre_original.size() > 0)
     {
         std::wstring titre_original_str = keyColor[0] + L"Titre original : " + valuesColor + m_titre_original[0];
-        if (m_titre_original[2] != L"")
+        if (m_titre_original.size() > 3 && m_titre_original[2] != L"")
         {
             titre_original_str += keyColor[1] + m_titre_original[1] + valuesColor;
             titre_original_str += m_titre_original[2];
