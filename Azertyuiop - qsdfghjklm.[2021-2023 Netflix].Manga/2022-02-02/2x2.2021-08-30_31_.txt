@@ -1,5 +1,0 @@
-wxcvbn
-24 min
-Si une fonction est invitée à générer une séquence plus longue que des max_size éléments, la fonction signale une erreur de longueur en levant un objet de type length_error.
-
-Les références, les pointeurs et les itérateurs qui désignent des éléments de la séquence contrôlée peuvent devenir non valides après tout appel à une fonction qui modifie la séquence contrôlée, ou après le premier appel à une const fonction non membre.
