@@ -61,7 +61,8 @@ struct InfosVisionnage;
 struct SequenceVisionnage;
 struct Episode;
 struct Saison;
- 
+struct Serie;
+
 struct InfosVisionnage
 {
     const Saison& m_saison;
@@ -141,13 +142,18 @@ struct Episode
 
     int m_numero{ -1 };
     long m_duree{ -1 };
-    std::wstring m_phrases{ L"" };
+    //std::wstring m_phrases{ L"" };
+    std::vector<std::wstring> m_resume;
 };
 
 struct Saison
 {
 public:
-    Saison(std::filesystem::path const& m_cheminFichier);
+    const Serie& m_serie;
+    std::vector<std::wstring> m_resume;
+    //Saison() :m_serie; // ???
+    //Saison(std::filesystem::path const& m_cheminFichier);
+    Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
     void afficher(std::filesystem::path const& m_cheminFichier);
     void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
@@ -183,8 +189,10 @@ public:
     std::vector<std::wstring> m_image;
     bool m_netflix{ false };
     double m_note = -1.0;
-    std::pair<unsigned short int, std::vector<std::wstring>>saison;
-    std::wstring m_titre;
+    //std::pair<unsigned short int, std::vector<std::wstring>>saison;
+    //std::vector<std::wstring>& m_resume = saison.second;
+    //std::wstring m_titre; // Titre.txt
+    std::vector<std::wstring> m_titres;
 
     bool affichage_avec_actif = true;
     bool affichage_chaine_actif = true;
@@ -214,6 +222,9 @@ public:
     std::vector<Saison>saisons{};
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
+
+    std::vector<std::wstring> m_resume;
+
 private:
     const void Print_Saison(Saison saison);
     const void Print_Saisons();
@@ -242,7 +253,6 @@ private:
 
     std::vector<std::wstring> m_titres;
     long m_duree{ -1 };
-    std::vector<std::wstring> m_resume;
     std::vector<std::wstring> m_titres_originaux;
 
     bool affichage_avec_actif = true;

@@ -696,7 +696,9 @@ void Episode::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-Saison::Saison(fs::path const& m_cheminFichier)
+//Saison::Saison(fs::path const& m_cheminFichier)
+
+Saison::Saison(fs::path const& m_cheminFichier, const Serie& serie) : m_serie{ serie }
 {
     auto nomDossier = m_cheminFichier.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
@@ -758,17 +760,19 @@ void Saison::afficher(fs::path const& m_cheminFichier)
     auto nomFichier = m_cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     std::size_t pos;
-    saison.first = std::stoi(nomFichier, &pos);
+    //saison.first = std::stoi(nomFichier, &pos);
+    m_numero = std::stoi(nomFichier, &pos);
     try
     {
         //saison.second = lire_fichierTxt(m_cheminFichier.wstring());
-        saison.second = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
+        //saison.second = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
+        m_resume = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
     }
     catch (runtime_error const& exception)
     {
         std::wcout << L"Erreur : " << exception.what() << std::endl;
     }
-    assert((saison.second.size() != 0));
+    assert((m_resume.size() != 0));
 }
 
 // ######################################################################################################################################################
@@ -781,7 +785,7 @@ void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
 {
     //m_liste_episodes.insert({ 1, seq_vis });
     //m_liste_episodes.insert({ 1, seq_vis });
-    m_numero++;
+    //m_numero++;
     //auto [xxx, success] = m_liste_episodes.insert({ m_numero, seq_vis });
     //m_liste_episodes.insert(std::pair<int, Episode>(m_numero, seq_vis));
     //m_liste_episodes.insert({ m_numero, seq_vis });
@@ -1079,10 +1083,33 @@ void Saison::initialiser_Note(fs::path const& m_cheminFichier)
 
 void Saison::initialiser_Titre(std::filesystem::path const& m_cheminFichier)
 {
-    auto nomFichier = m_cheminFichier.filename().wstring();
+    /*auto nomFichier = m_cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_titre = lire_fichierTxt(m_cheminFichier.wstring());
-    assert((m_titre.size() != 0));
+    assert((m_titre.size() != 0));*/
+    auto nomFichier = m_cheminFichier.filename().wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
+    assert((titre.size() != 0));
+
+    std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
+    std::wsmatch match;
+    if (std::regex_match(titre[0], match, titre_pattern))
+    {
+        m_titres.push_back(match[1]);
+        if (match.length() > 2)
+        {
+            m_titres.push_back(match[2]);
+        }
+        if (match.length() > 3)
+        {
+            m_titres.push_back(match[3]);
+        }
+    }
+    else
+    {
+        m_titres.push_back(titre[0]);
+    }
 }
 
 // ######################################################################################################################################################
@@ -1115,18 +1142,32 @@ void Saison::Print()
     wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
     if (m_dossier.second != L"")
         wstr += keyColor[0] + m_dossier.second + valuesColor + L' ';
-    if (m_titre != L"")
-        wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + m_titre + valuesColor;
 
     wstr += keyColor[1] + L" : " + valuesColor;
 
-    if (serie.m_resume != saison.second)
+    //    if (m_titres != L"")
+//        wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + m_titre + valuesColor;
+    if (m_titres.size() != 0)
     {
-        for (auto s : saison.second)
-            wstr += s;
+        wstr += keyColor[0] + m_titres[0] + valuesColor;
+        if (m_titres.size() > 1)
+        {
+            wstr += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
+        }
+        wstr += keyColor[1] + L" : " + valuesColor;
     }
 
-    wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
+    //if (m_serie.m_resume != /*m_resume*/saison.second)
+    if (m_serie.m_resume != 
+        m_resume)
+    {
+//        for (auto s : saison.second)
+        for (auto r : m_resume)
+            wstr += r;
+    }
+
+    //wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
+    wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
     wstr += L"\r\n";
     std::wcout << wstr;
 
@@ -1145,7 +1186,7 @@ void Saison::Print()
     // Images(s)
     Print_Images();
     // Saison ok !
-    std::wcout << std::endl;
+    std::wcout << L"\r\n";
 }
 
 // ######################################################################################################################################################
@@ -1226,13 +1267,20 @@ const void Saison::Print_Date_etc()
         wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
         if (m_dossier.second != L"")
             wstr += keyColor[0] + m_dossier.second + valuesColor + L' ';
-        if (m_titre != L"")
-            wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + m_titre + valuesColor;
+//        if (m_titre != L"")
+//            wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + m_titre + valuesColor;
+
+        wstr += keyColor[0] + m_titres[0] + valuesColor;
+        if (m_titres[2] != L"")
+            wstr += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
+
         wstr += keyColor[1] + L" : " + valuesColor;
         //wstr += saison.second;
-        for (auto s : saison.second)
-            wstr += s;
-        wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
+        //for (auto s : saison.second)
+        for (auto r : m_resume)
+            wstr += r;
+        //wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
+        wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
         std::wcout << wstr << std::endl;
     }
 }
@@ -1430,19 +1478,19 @@ void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::
     std::wsmatch match;
     if (std::regex_match(titre[0], match, titre_pattern))
     {
-        m_titre.push_back(match[1]);
+        m_titres.push_back(match[1]);
         if (match.length() > 2)
         {
-            m_titre.push_back(match[2]);
+            m_titres.push_back(match[2]);
         }
         if (match.length() > 3)
         {
-            m_titre.push_back(match[3]);
+            m_titres.push_back(match[3]);
         }
     }
     else
     {
-        m_titre.push_back(titre[0]);
+        m_titres.push_back(titre[0]);
     }
     titre.erase(titre.begin());
     if (titre.size() > 0)
