@@ -154,10 +154,9 @@ public:
     //Saison() :m_serie; // ???
     //Saison(std::filesystem::path const& m_cheminFichier);
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
-    void afficher(std::filesystem::path const& m_cheminFichier);
     void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
-    void initialiser_Fichier(std::filesystem::path const& m_cheminFichier);
+    void initialiser_Fichier(std::filesystem::path const& cheminFichier);
 
     //void afficher(std::filesystem::path const& m_cheminFichier);
     //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
@@ -165,10 +164,11 @@ public:
     //void creer_SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
     //void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
 
-    void initialiser_Chaine(std::filesystem::path const& m_cheminFichier);
-    void initialiser_Netflix(std::filesystem::path const& m_cheminFichier);
-    void initialiser_Note(std::filesystem::path const& m_cheminFichier);
-    void initialiser_Titre(std::filesystem::path const& m_cheminFichier);
+    void initialiser_Chaine(std::filesystem::path const& cheminFichier);
+    void initialiser_Netflix(std::filesystem::path const& cheminFichier);
+    void initialiser_Note(std::filesystem::path const& cheminFichier);
+    void initialiser_Numero(std::filesystem::path const& cheminFichier);
+    void initialiser_Titre(std::filesystem::path const& cheminFichier);
  
     void Print();
     void Print_Avec();
@@ -211,11 +211,11 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
     ~Serie();
-    void initialiser_Fichier(std::filesystem::path const& m_cheminFichier);
-    void initialiser_Chaine(std::filesystem::path const& m_cheminFichier);
-    void initialiser_Creee_par(std::filesystem::path const& m_cheminFichier);
+    void initialiser_Fichier(std::filesystem::path const& cheminFichier);
+    void initialiser_Chaine(std::filesystem::path const& cheminFichier);
+    void initialiser_Creee_par(std::filesystem::path const& cheminFichier);
     void initialiser_Duree(std::wstring& m);
-    void initialiser_Titre(std::filesystem::path const& m_cheminFichier, std::vector<std::wstring>& m_titre);
+    void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_titre);
 
     const void Print();
 

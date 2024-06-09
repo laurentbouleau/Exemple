@@ -52,13 +52,13 @@ extern bool checkyear(int y);
 extern bool checkmonth(int m);
 extern bool checkday(int m, int d, int y);
 
-extern void initialiser_Audiodescription(fs::path const& m_cheminFichier, std::wstring& m_ad);
-extern void initialiser_Avec(fs::path const& m_cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
-//extern const void initialiser_Chaine(fs::path const& m_cheminFichier, std::wstring& m_chaine);
-extern void initialiser_Genre(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
-extern void initialiser_Image(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_images);
-extern void initialiser_Nationalite(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-extern void initialiser_Titre_Original(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original);
+extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
+extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
+//extern const void initialiser_Chaine(fs::path const& cheminFichier, std::wstring& m_chaine);
+extern void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
+extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
+extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
+extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 extern void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
@@ -692,15 +692,13 @@ void Episode::Print()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # Saison::Saison(fs::path const& m_cheminFichier)                                                                                                    #
+// # Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ serie }                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-//Saison::Saison(fs::path const& m_cheminFichier)
-
-Saison::Saison(fs::path const& m_cheminFichier, const Serie& serie) : m_serie{ serie }
+Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ serie }
 {
-    auto nomDossier = m_cheminFichier.filename().wstring();
+    auto nomDossier = cheminFichier.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
     assert(nomDossier.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
     std::size_t pos = 0;
@@ -751,33 +749,7 @@ Saison::Saison(fs::path const& m_cheminFichier, const Serie& serie) : m_serie{ s
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::afficher(fs::path const& m_cheminFichier)                                                                                             #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void Saison::afficher(fs::path const& m_cheminFichier)
-{
-    auto nomFichier = m_cheminFichier.filename().wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::size_t pos;
-    //saison.first = std::stoi(nomFichier, &pos);
-    m_numero = std::stoi(nomFichier, &pos);
-    try
-    {
-        //saison.second = lire_fichierTxt(m_cheminFichier.wstring());
-        //saison.second = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
-        m_resume = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
-    }
-    catch (runtime_error const& exception)
-    {
-        std::wcout << L"Erreur : " << exception.what() << std::endl;
-    }
-    assert((m_resume.size() != 0));
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Saison::afficher(fs::path const& m_cheminFichier)                                                                                             #
+// # void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)                                                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -896,14 +868,14 @@ void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)                                                                                  #
+// # void Saison::initialiser_Fichier(fs::path const& cheminFichier)                                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
+void Saison::initialiser_Fichier(fs::path const& cheminFichier)
 {
-    auto nomFichier = m_cheminFichier.filename().wstring();
-    auto nomImage = m_cheminFichier.extension().wstring();
+    auto nomFichier = cheminFichier.filename().wstring();
+    auto nomImage = cheminFichier.extension().wstring();
     if (nomImage == L".txt")
     {
         if (nomFichier == L"_you_.txt")
@@ -915,13 +887,13 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
             // Avec
             if (nomFichier == L"Avec.txt")
             {
-                initialiser_Avec(m_cheminFichier, m_avec);
+                initialiser_Avec(cheminFichier, m_avec);
                 return;
             }
             // Chaîne d'origine
             if (nomFichier == L"Chaîne d'origine.txt")
             {
-                initialiser_Chaine(m_cheminFichier);
+                initialiser_Chaine(cheminFichier);
                 return;
             }
             // DVD
@@ -933,19 +905,19 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
             // Netflix
             if (nomFichier == L"Netflix.txt")
             {
-                initialiser_Netflix(m_cheminFichier);
+                initialiser_Netflix(cheminFichier);
                 return;
             }
             // Note
             if (nomFichier == L"Note.txt")
             {
-                initialiser_Note(m_cheminFichier);
+                initialiser_Note(cheminFichier);
                 return;
             }
             // Titre
             if (nomFichier == L"Titre.txt")
             {
-                initialiser_Titre(m_cheminFichier);
+                initialiser_Titre(cheminFichier);
                 return;
             }
         }
@@ -968,7 +940,7 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
         //
         if (int j = std::stoi(nomFichier))
         {
-            afficher(m_cheminFichier); // ??? initialiser_chiffre(m_cheminFichier) ?
+            initialiser_Numero(cheminFichier);
             return;
         }
         // Erreur !
@@ -981,7 +953,7 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
     else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
         // Image
     {
-        initialiser_Image(m_cheminFichier, m_image);
+        initialiser_Image(cheminFichier, m_image);
         return;
     }
     else
@@ -992,46 +964,45 @@ void Saison::initialiser_Fichier(fs::path const& m_cheminFichier)
 
 // ######################################################################################################################################################
 
- // ######################################################################################################################################################
- // #                                                                                                                                                    #
- // # void Saison::initialiser_Chaine(fs::path const& m_cheminFichier)                                                                                   #
- // #                                                                                                                                                    #
- // ######################################################################################################################################################
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::initialiser_Chaine(fs::path const& cheminFichier)                                                                                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
- void Saison::initialiser_Chaine(fs::path const& m_cheminFichier)
+ void Saison::initialiser_Chaine(fs::path const& cheminFichier)
  { // Chaîne
-     auto nomFichier = m_cheminFichier.filename().wstring();
+     auto nomFichier = cheminFichier.filename().wstring();
      assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-     m_chaine = lire_fichierTxt(m_cheminFichier.wstring());
+     m_chaine = lire_fichierTxt(cheminFichier.wstring());
      assert((m_chaine.size() != 0));
  }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::initialiser_Netflix(fs::path const& m_cheminFichier)                                                                                  #
+// # void Saison::initialiser_Netflix(fs::path const& cheminFichier)                                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Saison::initialiser_Netflix(fs::path const& m_cheminFichier)
+void Saison::initialiser_Netflix(fs::path const& cheminFichier)
 {
-    auto nomFichier = m_cheminFichier.filename().wstring();
+    auto nomFichier = cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_netflix = true;
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::initialiser_Note(fs::path const& m_cheminFichier)                                                                                     #
+// # void Saison::initialiser_Note(fs::path const& cheminFichier)                                                                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Saison::initialiser_Note(fs::path const& m_cheminFichier)
+void Saison::initialiser_Note(fs::path const& cheminFichier)
 { // 0...5 ou -1
-    auto nomFichier = m_cheminFichier.filename().wstring();
+    auto nomFichier = cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
 
-    //assert((n_filename == createdBy_filename) && L"Erreur !!! Note... !");
-    std::wstring n = lire_fichierTxt(m_cheminFichier.wstring());
+    std::wstring n = lire_fichierTxt(cheminFichier.wstring());
     std::size_t pos = n.length();
     if (n == L"")
     {
@@ -1077,19 +1048,42 @@ void Saison::initialiser_Note(fs::path const& m_cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::initialiser_Titre(fs::path const& m_cheminFichier)                                                                                    #
+// # void Saison::initialiser_Numero(fs::path const& cheminFichier)                                                                                     #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Saison::initialiser_Titre(std::filesystem::path const& m_cheminFichier)
+void Saison::initialiser_Numero(fs::path const& cheminFichier)
+{
+    auto nomFichier = cheminFichier.filename().wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::size_t pos;
+    m_numero = std::stoi(nomFichier, &pos);
+    try
+    {
+        m_resume = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    }
+    catch (runtime_error const& exception)
+    {
+        std::wcout << L"Erreur : " << exception.what() << std::endl;
+    }
+    assert((m_resume.size() != 0));
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::initialiser_Titre(fs::path const& cheminFichier)                                                                                      #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
 {
     /*auto nomFichier = m_cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_titre = lire_fichierTxt(m_cheminFichier.wstring());
     assert((m_titre.size() != 0));*/
-    auto nomFichier = m_cheminFichier.filename().wstring();
+    auto nomFichier = cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
+    std::vector<std::wstring> titre = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((titre.size() != 0));
 
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
@@ -1122,8 +1116,8 @@ void Saison::Print()
 {
     wchar_t date_string[15];
     std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_dossier.first);
-    std::wstring wstr;
-    wstr = date_string;
+    std::wstring saison_str;
+    saison_str = date_string;
 
     //std::time_t t = std::mktime(&dossier.first);
     //std::tm local = *std::localtime(&t);
@@ -1139,37 +1133,45 @@ void Saison::Print()
 //        std::wcout << wstr << '\n';
 
 
-    wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+    saison_str = saison_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + saison_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + saison_str.substr(6, 4);
     if (m_dossier.second != L"")
-        wstr += keyColor[0] + m_dossier.second + valuesColor + L' ';
+        saison_str += keyColor[0] + m_dossier.second + valuesColor + L' ';
 
-    wstr += keyColor[1] + L" : " + valuesColor;
+    saison_str += keyColor[1] + L" : " + valuesColor;
 
-    //    if (m_titres != L"")
-//        wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + m_titre + valuesColor;
     if (m_titres.size() != 0)
     {
-        wstr += keyColor[0] + m_titres[0] + valuesColor;
+        saison_str += keyColor[0] + m_titres[0] + valuesColor;
         if (m_titres.size() > 1)
         {
-            wstr += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
+            saison_str += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
         }
-        wstr += keyColor[1] + L" : " + valuesColor;
+        saison_str += keyColor[1] + L" : " + valuesColor;
     }
 
-    //if (m_serie.m_resume != /*m_resume*/saison.second)
-    if (m_serie.m_resume != 
-        m_resume)
+    if (m_serie.m_resume != m_resume)
     {
-//        for (auto s : saison.second)
         for (auto r : m_resume)
-            wstr += r;
+            saison_str += r;
+    }
+    else
+    {
+        std::wstring wstr;
+        if (m_resume[0].size() < 40)
+        {
+            wstr = m_resume[0];
+
+        }
+        else
+        {
+            wstr = m_resume[0].substr(0, 40) + L"...";
+        }
+        saison_str += wstr + keyColor[1] + L'(' + valuesColor + L"Bis" + keyColor[1] + L')' + valuesColor;
     }
 
-    //wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
-    wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
-    wstr += L"\r\n";
-    std::wcout << wstr;
+    saison_str += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
+    saison_str += L"\r\n";
+    std::wcout << saison_str;
 
     /*std::size_t taille;
     taille = std::size(m_liste_episodes);
@@ -1227,7 +1229,8 @@ void Saison::Print_Avec()
         }
         if (found)
             avec_str += L"...";
-        std::wcout << avec_str << std::endl;
+        avec_str += L"\r\n";
+        std::wcout << avec_str;
     }
 }
 
@@ -1255,33 +1258,28 @@ void Saison::Print_Chaine()
 // # void Saison::Print_Date_etc()                                                                                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
-
+// ???
 const void Saison::Print_Date_etc()
 {
     if (affichage_date_etc_actif)
     {
         wchar_t date_string[15];
         std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_dossier.first);
-        std::wstring wstr;
-        wstr = date_string;
-        wstr = wstr.substr(0, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[1] + L'/' + valuesColor + wstr.substr(6, 4);
+        std::wstring date_etc_str;
+        date_etc_str = date_string;
+        date_etc_str = date_etc_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_etc_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_etc_str.substr(6, 4);
         if (m_dossier.second != L"")
-            wstr += keyColor[0] + m_dossier.second + valuesColor + L' ';
-//        if (m_titre != L"")
-//            wstr += keyColor[1] + L" : " + valuesColor + keyColor[0] + m_titre + valuesColor;
-
-        wstr += keyColor[0] + m_titres[0] + valuesColor;
+            date_etc_str += keyColor[0] + m_dossier.second + valuesColor + L' ';
+        date_etc_str += keyColor[0] + m_titres[0] + valuesColor;
         if (m_titres[2] != L"")
-            wstr += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
+            date_etc_str += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
 
-        wstr += keyColor[1] + L" : " + valuesColor;
-        //wstr += saison.second;
-        //for (auto s : saison.second)
+        date_etc_str += keyColor[1] + L" : " + valuesColor;
         for (auto r : m_resume)
-            wstr += r;
-        //wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(saison.first) + keyColor[1] + L')' + valuesColor;
-        wstr += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
-        std::wcout << wstr << std::endl;
+            date_etc_str += r;
+        date_etc_str += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
+        date_etc_str += L"\r\n";
+        std::wcout << date_etc_str << std::endl;
     }
 }
 
@@ -1293,7 +1291,7 @@ const void Saison::Print_Date_etc()
 
 void Saison::Print_Images()
 {
-    if (affichage_image_actif && m_image.size() > 0 /*!= 0*/)
+    if (affichage_image_actif && m_image.size() > 0 )
     {
         std::wstring image_str = keyColor[1] + L"Image" + ((m_image.size() > 1) ? L"s" : L"") + L" : [" + valuesColor;
         bool first = true;
@@ -1343,63 +1341,63 @@ Serie::~Serie()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::initialiser_Fichier(fs::path const& m_cheminFichier)                                                                                   #
+// # void Serie::initialiser_Fichier(fs::path const& cheminFichier)                                                                                     #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::initialiser_Fichier(fs::path const& m_cheminFichier)
+void Serie::initialiser_Fichier(fs::path const& cheminFichier)
 {
-    auto nomFichier = m_cheminFichier.filename().wstring();
-    auto nomImage = m_cheminFichier.extension().wstring();
+    auto nomFichier = cheminFichier.filename().wstring();
+    auto nomImage = cheminFichier.extension().wstring();
     if (nomImage == L".txt")
     {
         // AD
         if (nomFichier == L"AD.txt")
         {
-            initialiser_Audiodescription(m_cheminFichier, m_audiodescription);
+            initialiser_Audiodescription(cheminFichier, m_audiodescription);
             return;
         }
         // Chaîne d'origine
         if (nomFichier == L"Chaîne d'origine.txt")
         {
-            initialiser_Chaine(m_cheminFichier);
+            initialiser_Chaine(cheminFichier);
             return;
         }
         // Créée par
         if (nomFichier == L"Créée par.txt")
         {
-            initialiser_Creee_par(m_cheminFichier);
+            initialiser_Creee_par(cheminFichier);
             return;
         }
         // Genre
         if (nomFichier == L"Genre.txt")
         {
-            initialiser_Genre(m_cheminFichier, m_genre, ::Genre);
+            initialiser_Genre(cheminFichier, m_genre, ::Genre);
             return;
         }
         // Nationalité
         if (nomFichier == L"Nationalité.txt")
         {
-            initialiser_Nationalite(m_cheminFichier, m_nationalite, ::Nationalite);
+            initialiser_Nationalite(cheminFichier, m_nationalite, ::Nationalite);
             return;
         }
         // Titre
         if (nomFichier == L"Titre.txt")
         {
-            initialiser_Titre(m_cheminFichier, m_titres);
+            initialiser_Titre(cheminFichier, m_titres);
             return;
         }
         // Titre original
         if (nomFichier == L"Titre original.txt")
         {
-            initialiser_Titre_Original(m_cheminFichier, m_titres_originaux);
+            initialiser_Titre_Original(cheminFichier, m_titres_originaux);
             return;
         }
     }
     else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
         // Image
     {
-        initialiser_Image(m_cheminFichier, m_image);
+        initialiser_Image(cheminFichier, m_image);
         return;
     }
     else
@@ -1410,27 +1408,27 @@ void Serie::initialiser_Fichier(fs::path const& m_cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::initialiser_Chaine(fs::path const& m_cheminFichier)                                                                                    #
+// # void Serie::initialiser_Chaine(fs::path const& cheminFichier)                                                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::initialiser_Chaine(fs::path const& m_cheminFichier)
+void Serie::initialiser_Chaine(fs::path const& cheminFichier)
 { // Chaîne
-    auto nomFichier = m_cheminFichier.wstring();
+    auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    m_chaine = lire_fichierTxt(m_cheminFichier.wstring());
+    m_chaine = lire_fichierTxt(cheminFichier.wstring());
     assert((m_chaine.size() != 0));
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)                                                                                 #
+// # void Serie::initialiser_Creee_par(fs::path const& cheminFichier)                                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::initialiser_Creee_par(fs::path const& m_cheminFichier)
+void Serie::initialiser_Creee_par(fs::path const& cheminFichier)
 { // Creee par
-    auto nomFichier = m_cheminFichier.wstring();
+    auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_creee_par = lire_fichierTxt(nomFichier, { L"\n", L", " });
     assert((m_creee_par.size() != 0));
@@ -1461,18 +1459,16 @@ void Serie::initialiser_Duree(std::wstring& m)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # Serie::void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre)                                          #
+// # Serie::void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre)                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::initialiser_Titre(fs::path const& m_cheminFichier, std::vector<std::wstring>& m_titre)
+void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre)
 { // Titre
-    auto nomFichier = m_cheminFichier.wstring();
+    auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    //std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\r\n" });
-    std::vector<std::wstring> titre = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" });
+    std::vector<std::wstring> titre = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((titre.size() != 0));
-    /*const*/ //std::vector<std::wstring> wstr = titre;
 
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     std::wsmatch match;
