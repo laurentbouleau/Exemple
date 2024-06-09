@@ -61,7 +61,7 @@ struct InfosVisionnage;
 struct SequenceVisionnage;
 struct Episode;
 struct Saison;
-struct Serie;
+class Serie;
 
 struct InfosVisionnage
 {
