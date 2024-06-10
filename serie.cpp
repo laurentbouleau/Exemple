@@ -940,7 +940,8 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
         //
         if (int j = std::stoi(nomFichier))
         {
-            initialiser_Numero(cheminFichier);
+            m_numero = j;
+            initialiser_Resume(cheminFichier);
             return;
         }
         // Erreur !
@@ -1048,24 +1049,13 @@ void Saison::initialiser_Note(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::initialiser_Numero(fs::path const& cheminFichier)                                                                                     #
+// # void Saison::initialiser_Resume(fs::path const& cheminFichier)                                                                                     #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Saison::initialiser_Numero(fs::path const& cheminFichier)
+void Saison::initialiser_Resume(fs::path const& cheminFichier)
 {
-    auto nomFichier = cheminFichier.filename().wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::size_t pos;
-    m_numero = std::stoi(nomFichier, &pos);
-    try
-    {
-        m_resume = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
-    }
-    catch (runtime_error const& exception)
-    {
-        std::wcout << L"Erreur : " << exception.what() << std::endl;
-    }
+    m_resume = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((m_resume.size() != 0));
 }
 
@@ -1077,10 +1067,6 @@ void Saison::initialiser_Numero(fs::path const& cheminFichier)
 
 void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
 {
-    /*auto nomFichier = m_cheminFichier.filename().wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    m_titre = lire_fichierTxt(m_cheminFichier.wstring());
-    assert((m_titre.size() != 0));*/
     auto nomFichier = cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     std::vector<std::wstring> titre = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
@@ -1160,7 +1146,6 @@ void Saison::Print()
         if (m_resume[0].size() < 40)
         {
             wstr = m_resume[0];
-
         }
         else
         {

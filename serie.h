@@ -167,7 +167,7 @@ public:
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Netflix(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);
-    void initialiser_Numero(std::filesystem::path const& cheminFichier);
+    void initialiser_Resume(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
  
     void Print();
