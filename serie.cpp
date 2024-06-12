@@ -43,7 +43,7 @@ extern std::wstring replace_all(std::wstring subject, const std::wstring& search
 extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
 extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
 extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
-extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
+//extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
 extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 extern void test_date_tire(wchar_t d);
@@ -58,6 +58,11 @@ extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pai
 extern void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
 extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
+extern void initialiser_Netflix_SJ(fs::path const& cheminFichier, std::wstring& n_sj);
+extern void initialiser_SJ(fs::path const& cheminFichier, std::wstring& m_sj);
+//extern void initialiser_Sous_Genre(std::wstring& m_s_g);
+extern bool initialiser_Sous_Genre(std::wstring& m_s_g);
+extern void initialiser_Sur(std::wstring& m_s);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 extern void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor);
@@ -935,7 +940,6 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             {
                 m_liste_episodes.emplace(std::pair<const int, shared_ptr<Episode>>{ info_vis.m_NumeroEpisode, make_shared<Episode>(info_vis) });
             }*/
-            return;
         }
         //
         if (int j = std::stoi(nomFichier))
@@ -948,19 +952,17 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
         if (nomFichier != L"")
         {
             //E.afficher_X(-1, nomFichier, L'{' + t + L".txt} !!!");
-            return;// EXIT_FAILURE;
+            return;
         }
     }
     else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
         // Image
     {
         initialiser_Image(cheminFichier, m_image);
-        return;
     }
     else
     {
     }
-    return;
  }
 
 // ######################################################################################################################################################
@@ -1044,7 +1046,6 @@ void Saison::initialiser_Note(fs::path const& cheminFichier)
             //E.afficher_X(-1, n, L"Pas de…");
         }
     }
-    return;
 }
 
 // ######################################################################################################################################################
@@ -1264,7 +1265,7 @@ const void Saison::Print_Date_etc()
             date_etc_str += r;
         date_etc_str += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
         date_etc_str += L"\r\n";
-        std::wcout << date_etc_str << std::endl;
+        std::wcout << date_etc_str;
     }
 }
 
@@ -1309,7 +1310,8 @@ void Saison::Print_Netflix()
     if (affichage_netflix_actif && m_netflix)
     {
         std::wstring netflix_str = keyColor[1] + L'(' + valuesColor + L"Netflix" + keyColor[1] + L')' + valuesColor;
-        std::wcout << netflix_str << std::endl;
+        netflix_str += L"\r\n";
+        std::wcout << netflix_str;
     }
 }
 
@@ -1323,6 +1325,104 @@ Serie::Serie(std::filesystem::path racine)
 
 Serie::~Serie()
 {}
+
+
+void Serie::initialiser_Dossier(fs::path const& cheminFichier)
+{
+    auto nomDossier = cheminFichier.filename().wstring();
+    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
+    //assert(nomDossier.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
+    std::size_t pos = 0;
+    pos = nomDossier.find_first_of(L".[");
+    m_titres2 = nomDossier.substr(0, pos);
+
+    nomDossier = nomDossier.substr(pos + 2);
+    std::wstring textes = nomDossier;
+    pos = textes.find_last_of(L"]");
+    textes = textes.substr(0, pos);
+    bool found = false;
+    for (unsigned i = 0; i < textes.length(); ++i)
+    {
+        if (textes.at(i) == L' ' || textes.at(i) == std::wstring::npos)
+        {
+            m_dates2 = textes.substr(0, i);
+            found = true;
+            if (textes.at(i) == L' ')
+            {
+                textes = textes.substr(i);
+            }
+        }
+    }
+    if (!found)
+    {
+        exit(1);
+    }
+    if (textes[0] != L']')
+    {
+        textes = textes.substr(1);
+        m_sur = textes;
+    }
+    std::wstring sous_genre = nomDossier;
+    pos = sous_genre.find_last_of(L"]");
+    if (sous_genre.at(pos) != std::wstring::npos)
+    {
+        sous_genre = sous_genre.substr(pos + 2);
+        found = initialiser_Sous_Genre(sous_genre);
+        m_sous_genre = sous_genre;
+    }
+    /*int tm_year = 0;// , tm_mon = 0, tm_mday = 0;
+    std::wstring t2;
+    std::size_t idx, idx2 = 0;
+    idx = nomFichier.find(L".[", 0);
+    t2 = nomFichier.substr(0, idx);
+    //i = ::afficher_Titre(t2, titre, affichage_titre_actif);
+    m_titres2 = t2;
+    idx = nomFichier.find_last_of(L"[");
+    idx2 = nomFichier.find_last_of(L"]");
+    if (idx2 - idx - 1 == 0)
+        return;// -1;
+    idx2--;
+    if (!(nomFichier.at(idx2) == L' ' || nomFichier.at(idx2) == L'-' ||
+        nomFichier.at(idx2) == L'0' || nomFichier.at(idx2) == L'1' || nomFichier.at(idx2) == L'2' || nomFichier.at(idx2) == L'3' || nomFichier.at(idx2) == L'4' ||
+        nomFichier.at(idx2) == L'5' || nomFichier.at(idx2) == L'6' || nomFichier.at(idx2) == L'7' || nomFichier.at(idx2) == L'8' || nomFichier.at(idx2) == L'9'))
+    { // Sur
+        std::size_t idx3;
+        idx3 = nomFichier.find_first_of(L" ", idx);
+        idx3++;
+        t2 = nomFichier.substr(idx3, idx2 - idx3 + 1);
+        initialiser_Sur(t2);
+        if (m_sur == t2)
+        {
+            //
+        }
+        else
+        {
+            m_sur = t2;
+        }
+        //if (m_sur == L"Netflix")
+        //    netflix_ok_ou_non = true;
+        idx2 = idx3 - 2;
+    }
+    idx++;
+    if (nomFichier.at(idx2) == L' ' || nomFichier.at(idx2) == L'-' ||
+        nomFichier.at(idx2) == L'0' || nomFichier.at(idx2) == L'1' || nomFichier.at(idx2) == L'2' || nomFichier.at(idx2) == L'3' || nomFichier.at(idx2) == L'4' ||
+        nomFichier.at(idx2) == L'5' || nomFichier.at(idx2) == L'6' || nomFichier.at(idx2) == L'7' || nomFichier.at(idx2) == L'8' || nomFichier.at(idx2) == L'9')
+    { // Date
+        t2 = nomFichier.substr(idx, idx2 - idx + 1);
+        //i = afficher_Date(t2);
+    }
+    idx = nomFichier.find(L"].");
+    if (idx != std::wstring::npos)
+    { // Sous_Genre
+        idx += 2;
+        m_sous_genre = nomFichier.substr(idx);
+        //wstring sous_genre = L"";
+        initialiser_Sous_Genre(m_sous_genre);
+        //affichage_sous_genre_actif = true;
+    }*/
+}
+
+
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1340,55 +1440,57 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         if (nomFichier == L"AD.txt")
         {
             initialiser_Audiodescription(cheminFichier, m_audiodescription);
-            return;
         }
         // Chaîne d'origine
         if (nomFichier == L"Chaîne d'origine.txt")
         {
             initialiser_Chaine(cheminFichier);
-            return;
         }
         // Créée par
         if (nomFichier == L"Créée par.txt")
         {
             initialiser_Creee_par(cheminFichier);
-            return;
         }
         // Genre
         if (nomFichier == L"Genre.txt")
         {
             initialiser_Genre(cheminFichier, m_genre, ::Genre);
-            return;
         }
         // Nationalité
         if (nomFichier == L"Nationalité.txt")
         {
             initialiser_Nationalite(cheminFichier, m_nationalite, ::Nationalite);
-            return;
+        }
+        // Netflix
+        if (nomFichier == L"Netflix.txt")
+        {
+            initialiser_Netflix_SJ(cheminFichier, m_netflix_sj);
+        }
+        // SJ
+        if (nomFichier == L"SJ.txt")
+        {
+            initialiser_SJ(cheminFichier, m_sj);
         }
         // Titre
         if (nomFichier == L"Titre.txt")
         {
             initialiser_Titre(cheminFichier, m_titres);
-            return;
         }
         // Titre original
         if (nomFichier == L"Titre original.txt")
         {
             initialiser_Titre_Original(cheminFichier, m_titres_originaux);
-            return;
         }
     }
     else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
         // Image
     {
         initialiser_Image(cheminFichier, m_image);
-        return;
     }
     else
     {
+        // ???
     }
-    return;
 }
 
 // ######################################################################################################################################################
@@ -1610,7 +1712,6 @@ const void Serie::Print_Note(int I, int x)
             m_note_str += keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor;
             
     }
-    return;
 }
 
 // ######################################################################################################################################################
@@ -1673,11 +1774,12 @@ const void Serie::Print_Titre()
         if (affichage_sur_actif && m_sur != L"")
             titres_str += keyColor[0] + L" (" + valuesColor + m_sur + keyColor[0] + L')' + valuesColor;
         //
-                // La signalétique jeunesse
+        // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
             titres_str += keyColor[0] + L" (" + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
         // Netflix SJ
-        if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+        if (affichage_netflix_sj_actif && 
+            m_netflix_sj.length() != 0)
             titres_str += (keyColor[0] + L" [" + valuesColor + m_netflix_sj + keyColor[0] + L']' + valuesColor);
         /*if (affichage_temps_actif)
         {

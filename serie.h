@@ -211,6 +211,7 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
     ~Serie();
+    void initialiser_Dossier(std::filesystem::path const& cheminFichier);
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Creee_par(std::filesystem::path const& cheminFichier);
@@ -252,8 +253,12 @@ private:
     std::wstring m_sur;
 
     std::vector<std::wstring> m_titres;
+    std::wstring m_titres2;
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
+
+    std::wstring m_dates2;
+    //std::vector<std::tm> dates;// { 0 };
 
     bool affichage_avec_actif = true;
     bool affichage_audiodescription_actif = true;
@@ -265,7 +270,8 @@ private:
     bool affichage_nationalite_actif = true;
     bool affichage_note_actif = true;
     bool affichage_netflix_sj_actif = true;
-    bool affichage_resume_actif = true;    //bool affichage_saison_actif = true;
+    bool affichage_resume_actif = true;
+    //bool affichage_saison_actif = true;
     bool affichage_saison_date_etc_actif = true;
     bool affichage_saisons_actif = true;
     bool affichage_serie_actif = true;
