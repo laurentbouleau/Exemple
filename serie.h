@@ -30,6 +30,7 @@
 #include <sstream>
 //#include <tuple>
 #include <regex>
+//#include <algorithm>
 
 #include <filesystem> // C++17 standard header file name
 
@@ -231,7 +232,8 @@ private:
     const void Print_Saisons();
     const void Print_Chaine();
     const void Print_Creee_par();
-    const void Print_Note(int I, int x);
+    //const void Print_Note(int I, int x);
+    const std::wstring Print_Note();
     const void Print_Titre();
 
     std::filesystem::path racine;

@@ -24,6 +24,7 @@
 #include <sstream>
 //#include <tuple>
 #include <regex>
+//#include <algorithm>
 
 #include <filesystem> // C++17 standard header file name
 //#include <experimental/filesystem> // Header file for pre-standard implementation
@@ -1672,45 +1673,36 @@ const void Serie::Print_Creee_par()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_Note(int I, int x)
+const std::wstring Serie::Print_Note()
 {
     if (affichage_note_actif)
     {
-        std::wstring m_note_str;
         bool found = false;
-        /*for (const auto& [cle, valeur] : m_note)
+        std::vector<double>d;
+        for (const auto& s : saisons)
         {
-            if (I == cle)
+            if (s.m_note != -1.0)
             {
                 found = true;
-                m_note_str = keyColor[1] + L"Note : " + valuesColor;
-                if (valeur == -1.0)
-                {
-                    found = false;
-                    break;
-                }
-                else if (valeur == 0 || valeur == 1 || valeur == 2 || valeur == 3 || valeur == 4 || valeur == 5)
-                {
-                    m_note_str += std::to_wstring(static_cast<int>(std::floor(valeur)));
-                }
-                else
-                {
-                    std::wstring wstr = std::to_wstring(valeur);
-                    wstr = wstr[0] + keyColor[1] + wstr[1] + valuesColor + wstr[2];
-                    m_note_str += wstr;
-                }
-                m_note_str += keyColor[1] + L"/5" + valuesColor;
-                //Console_Lire(m_note_str, x, x);
-                //Console_Lire(hOut, m_note_str + L"\r\n", x, L' ');
-                break;
+                d.push_back(s.m_note);
             }
         }
-        */
         if (!found)
-            //Console_Lire(keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor, x, x);
-            //Console_Lire(hOut, keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor + L"\r\n", x, L' ');
-            m_note_str += keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor;
-            
+            return L' ' + keyColor[0] + L'(' + valuesColor + L"pas de note !" + keyColor[0] + L')' + valuesColor;
+        else
+        {
+            double n = std::accumulate(d.begin(), d.end(), 0.0) / d.size();
+            std::wstring m_note_str = std::to_wstring(n);
+            if (m_note_str[2] == L'0')
+                m_note_str = m_note_str[0];
+            else if (m_note_str[3] == L'0')
+                m_note_str = m_note_str[0] + keyColor[0] + m_note_str[1] + valuesColor + m_note_str[2];
+            else
+                m_note_str = m_note_str[0] + keyColor[0] + m_note_str[1] + valuesColor + m_note_str[2] + m_note_str[3];
+            m_note_str = L' ' + m_note_str + keyColor[0] + L"/5" + valuesColor;
+            return m_note_str;
+
+        }
     }
 }
 
@@ -1788,8 +1780,11 @@ const void Serie::Print_Titre()
             titres_str += wstr;
         }*/
         // Note
-        //wstr = afficher_OK_Note();
-        titres_str += wstr;
+        if (affichage_note_actif)
+        {
+            titres_str += Print_Note();
+            //titres_str += m_note;
+        }
         //int i = Console_Lire_txt(titre_str + wstr, 0, 0);
         //Console_Lire(titre_str, 0, 0);
         //Console_Lire(hOut, titre_str + L"\r\n", 0, L' ');
