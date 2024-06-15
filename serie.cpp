@@ -24,9 +24,10 @@
 #include <sstream>
 //#include <tuple>
 #include <regex>
-//#include <algorithm>
+#include <numeric>
 
 #include <filesystem> // C++17 standard header file name
+
 //#include <experimental/filesystem> // Header file for pre-standard implementation
 //using namespace std::experimental::filesystem::v1;
 using namespace std;
@@ -1166,14 +1167,16 @@ void Saison::Print()
     {
         m_liste_episodes[i]->Print();
     }*/
+    // Note
+    Print_Note();    
     // Chaîne
     Print_Chaine();
     // Netflix
     Print_Netflix();
-    // Avec
-    Print_Avec();
     // Images(s)
     Print_Images();
+    // Avec
+    Print_Avec();
     // Saison ok !
     std::wcout << L"\r\n";
 }
@@ -1314,6 +1317,41 @@ void Saison::Print_Netflix()
         netflix_str += L"\r\n";
         std::wcout << netflix_str;
     }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::Print_Netflix()                                                                                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Saison::Print_Note()
+{ // 0...5 ou -1
+    if (affichage_note_actif && m_note)
+    {
+        std::wstring note_str;
+        if (m_note == -1.0)
+        {
+            note_str = keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor;
+        }
+        else if (m_note == 0 || m_note == 1 || m_note == 2 || m_note == 3 || m_note == 4 || m_note == 5)
+        {
+            note_str += keyColor[1] + L"Note : " + valuesColor;
+            note_str += std::to_wstring(static_cast<int>(std::floor(m_note)));
+            note_str += keyColor[1] + L"/5" + valuesColor;
+        }
+        else
+        {
+            note_str += keyColor[1] + L"Note : " + valuesColor;
+            std::wstring wstr = std::to_wstring(m_note);
+            wstr = wstr[0] + keyColor[1] + wstr[1] + valuesColor + wstr[2];
+            note_str += wstr;
+            note_str += keyColor[1] + L"/5" + valuesColor;
+        }
+        note_str += L"\r\n";
+        std::wcout << note_str;
+    }
+
 }
 
 // ######################################################################################################################################################
@@ -1701,9 +1739,9 @@ const std::wstring Serie::Print_Note()
                 m_note_str = m_note_str[0] + keyColor[0] + m_note_str[1] + valuesColor + m_note_str[2] + m_note_str[3];
             m_note_str = L' ' + m_note_str + keyColor[0] + L"/5" + valuesColor;
             return m_note_str;
-
         }
     }
+    return L"";
 }
 
 // ######################################################################################################################################################
@@ -1764,7 +1802,7 @@ const void Serie::Print_Titre()
         }*/
         // Sur
         if (affichage_sur_actif && m_sur != L"")
-            titres_str += keyColor[0] + L" (" + valuesColor + m_sur + keyColor[0] + L')' + valuesColor;
+            titres_str += keyColor[0] + L" (sur " + valuesColor + m_sur + keyColor[0] + L')' + valuesColor;
         //
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)

@@ -30,7 +30,7 @@
 #include <sstream>
 //#include <tuple>
 #include <regex>
-//#include <algorithm>
+#include <numeric>
 
 #include <filesystem> // C++17 standard header file name
 
@@ -177,6 +177,7 @@ public:
     const void Print_Date_etc();
     void Print_Images();
     void Print_Netflix();
+    void Print_Note();
 
     std::wstring min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
@@ -200,6 +201,7 @@ public:
     bool affichage_date_etc_actif = true;
     bool affichage_image_actif = true;
     bool affichage_netflix_actif = true;
+    bool affichage_note_actif = true;
 
     //std::map<int, Episode> m_liste_episodes;
     std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
@@ -270,8 +272,8 @@ private:
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
     bool affichage_nationalite_actif = true;
-    bool affichage_note_actif = true;
     bool affichage_netflix_sj_actif = true;
+    bool affichage_note_actif = true;
     bool affichage_resume_actif = true;
     //bool affichage_saison_actif = true;
     bool affichage_saison_date_etc_actif = true;
