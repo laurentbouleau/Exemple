@@ -31,6 +31,7 @@
 //#include <tuple>
 #include <regex>
 #include <numeric>
+#include <string_view>
 
 #include <filesystem> // C++17 standard header file name
 
@@ -225,11 +226,12 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
+    const std::wstring Calcul_Note_Affichage();
+
     const void Print_Saison(Saison saison);
     const void Print_Saisons();
     const void Print_Chaine();
     const void Print_Creee_par();
-    const std::wstring Print_Note();
     const void Print_Titre();
 
     std::filesystem::path racine;

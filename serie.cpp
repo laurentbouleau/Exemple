@@ -25,11 +25,10 @@
 //#include <tuple>
 #include <regex>
 #include <numeric>
+#include <string_view>
 
 #include <filesystem> // C++17 standard header file name
 
-//#include <experimental/filesystem> // Header file for pre-standard implementation
-//using namespace std::experimental::filesystem::v1;
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -73,6 +72,14 @@ extern void Print_Genres(const std::vector<std::wstring>& m_genres, bool afficha
 extern void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Resume(const std::vector<wstring>& m_resume, bool affichage_resume_actif);
 extern void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
+
+static bool ends_with(std::wstring_view str, std::wstring_view suffix)
+{
+    return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
+}
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -1007,46 +1014,18 @@ void Saison::initialiser_Note(fs::path const& cheminFichier)
     auto nomFichier = cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
 
-    std::wstring n = lire_fichierTxt(cheminFichier.wstring());
-    std::size_t pos = n.length();
-    if (n == L"")
+    std::wstring str = lire_fichierTxt(cheminFichier.wstring());
+
+    std::wregex note_pattern{ L"([0-5])((\\.|,)(\\d+))?" };
+    std::wsmatch match;
+    if (std::regex_match(str, match, note_pattern))
     {
-        m_note = -1.0;
-        return;
-    }
-    if (pos != 1 && pos != 3)
-    {
-        //E.afficher_X(-1, n, L"Pas de [a-z] et/ou [0-9] et/ou etc…");
-        return;
-    }
-    if (!iswdigit(n[0]))
-    {
-        //E.afficher_X(-1, n, L"Pas de [a-z] et/ou etc…");
-        return;
-    }
-    if (!(n[0] == L'0' || n[0] == L'1' || n[0] == L'2' || n[0] == L'3' || n[0] == L'4' || n[0] == L'5'))
-    {
-        //E.afficher_X(-1, n, L"Pas de [0-5]");
-        return;
-    }
-    if (pos == 1)
-    {
-        m_note = std::stod(n);
-    }
-    else
-    {
-        if ((n[1] == L',' || n[1] == L'.') && iswdigit(n[2]) && pos == 3)
+        if (match[2].matched)
         {
-            //
-            n[1] = L',';
-            //
-            // Ok !!!
-            m_note = std::stod(n);
+            str[1] = L',';
         }
-        else
-        {
-            //E.afficher_X(-1, n, L"Pas de…");
-        }
+
+        m_note = std::stod(str);
     }
 }
 
@@ -1650,6 +1629,54 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # const std::wstring Serie::Calcul_Note_Affichage()                                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const std::wstring Serie::Calcul_Note_Affichage()
+{
+    std::wstring res;
+
+    std::vector<double>notes;
+    for (const auto& saison : saisons)
+    {
+        if (saison.m_note >= 0.0)
+        {
+            notes.push_back(saison.m_note);
+        }
+    }
+    if (notes.size() < 1)
+        res = keyColor[0] + L'(' + valuesColor + L"pas de note !" + keyColor[0] + L')';
+    else
+    {
+        double note = std::accumulate(notes.begin(), notes.end(), 0.0) / notes.size();
+        double whole, fractional;
+        fractional = std::modf(note, &whole);
+
+        std::wstring whole_str = wstring_format(L"%.0f", whole);
+        std::wstring fractional_tmp = wstring_format(L"%.2f", fractional);
+        std::wstring sepDecimal = fractional_tmp.substr(1, 1);
+        std::wstring fractional_str;
+        if (ends_with(fractional_tmp, L"00"))
+        {
+            fractional_str = L"";
+        }
+        else if (ends_with(fractional_tmp, L"0"))
+        {
+            fractional_str = fractional_tmp.substr(2, 1);
+        }
+        else
+        {
+            fractional_str = fractional_tmp.substr(2, 2);
+        }
+
+        res = whole_str + keyColor[0] + sepDecimal + valuesColor + fractional_str + keyColor[0] + L"/5";
+    }
+    return (res.length() > 0) ? L" " + res + valuesColor : L"";
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # void Serie::Print()                                                                                                                                #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -1731,45 +1758,6 @@ const void Serie::Print_Creee_par()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::Print_Note()                                                                                                                     #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-const std::wstring Serie::Print_Note()
-{
-    if (affichage_note_actif)
-    {
-        bool found = false;
-        std::vector<double>d;
-        for (const auto& s : saisons)
-        {
-            if (s.m_note != -1.0)
-            {
-                found = true;
-                d.push_back(s.m_note);
-            }
-        }
-        if (!found)
-            return L' ' + keyColor[0] + L'(' + valuesColor + L"pas de note !" + keyColor[0] + L')' + valuesColor;
-        else
-        {
-            double n = std::accumulate(d.begin(), d.end(), 0.0) / d.size();
-            std::wstring m_note_str = std::to_wstring(n);
-            if (m_note_str[2] == L'0')
-                m_note_str = m_note_str[0];
-            else if (m_note_str[3] == L'0')
-                m_note_str = m_note_str[0] + keyColor[0] + m_note_str[1] + valuesColor + m_note_str[2];
-            else
-                m_note_str = m_note_str[0] + keyColor[0] + m_note_str[1] + valuesColor + m_note_str[2] + m_note_str[3];
-            m_note_str = L' ' + m_note_str + keyColor[0] + L"/5" + valuesColor;
-            return m_note_str;
-        }
-    }
-    return L"";
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # const void Serie::Print_Saison(Saison saison)                                                                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -1832,21 +1820,11 @@ const void Serie::Print_Titre()
         if (affichage_sj_actif && m_sj.length() != 0)
             titres_str += keyColor[0] + L" (" + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
         // Netflix SJ
-        if (affichage_netflix_sj_actif && 
-            m_netflix_sj.length() != 0)
+        if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
             titres_str += (keyColor[0] + L" [" + valuesColor + m_netflix_sj + keyColor[0] + L']' + valuesColor);
-        /*if (affichage_temps_actif)
-        {
-            titres_str += L' ';
-            wstr = afficher_OK_Temps(Temps, keyColor[0], valuesColor);
-            titres_str += wstr;
-        }*/
         // Note
         if (affichage_note_actif)
-        {
-            titres_str += Print_Note();
-            //titres_str += m_note;
-        }
+            titres_str += Calcul_Note_Affichage();
         //int i = Console_Lire_txt(titre_str + wstr, 0, 0);
         //Console_Lire(titre_str, 0, 0);
         //Console_Lire(hOut, titre_str + L"\r\n", 0, L' ');

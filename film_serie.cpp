@@ -23,8 +23,7 @@
 #include <regex>
 
 #include <filesystem> // C++17 standard header file name
-//#include <experimental/filesystem> // Header file for pre-standard implementation
-//using namespace std::experimental::filesystem::v1;
+
 using namespace std;
 namespace fs = std::filesystem;
 
