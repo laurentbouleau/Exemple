@@ -25,8 +25,3 @@
 #include <regex>
 
 #include <filesystem> // C++17 standard header file name
-//using namespace std;
-
-void initialiser_Avec(std::filesystem::path const& m_cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
-void initialiser_Image(std::filesystem::path const& m_cheminFichier, std::vector<std::wstring>& m_images);
-//void initialiser_Titre_Original(std::filesystem::path const& m_cheminFichier, std::vector<std::wstring>& m_titre_original);

@@ -152,8 +152,6 @@ struct Saison
 public:
     const Serie& m_serie;
     std::vector<std::wstring> m_resume;
-    //Saison() :m_serie; // ???
-    //Saison(std::filesystem::path const& m_cheminFichier);
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
     void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
@@ -171,6 +169,7 @@ public:
     void initialiser_Resume(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
  
+    void Print_Header();
     void Print();
     void Print_Avec();
     void Print_Chaine();
@@ -192,8 +191,6 @@ public:
     bool m_netflix{ false };
     double m_note = -1.0;
     //std::pair<unsigned short int, std::vector<std::wstring>>saison;
-    //std::vector<std::wstring>& m_resume = saison.second;
-    //std::wstring m_titre; // Titre.txt
     std::vector<std::wstring> m_titres;
 
     bool affichage_avec_actif = true;
@@ -203,7 +200,6 @@ public:
     bool affichage_netflix_actif = true;
     bool affichage_note_actif = true;
 
-    //std::map<int, Episode> m_liste_episodes;
     std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
 
     int m_numero{ -1 };
@@ -214,7 +210,6 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
     ~Serie();
-    void initialiser_Dossier(std::filesystem::path const& cheminFichier);
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Creee_par(std::filesystem::path const& cheminFichier);
@@ -234,7 +229,6 @@ private:
     const void Print_Saisons();
     const void Print_Chaine();
     const void Print_Creee_par();
-    //const void Print_Note(int I, int x);
     const std::wstring Print_Note();
     const void Print_Titre();
 

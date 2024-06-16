@@ -1097,16 +1097,85 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # std::wstring stringFormatOneLine(std::wstring str,                                                                                                 #
+// #                                  int lengthMax,                                                                                                    #
+// #                                  std::wstring marqueurTroncature,                                                                                  #
+// #                                  int marqueurTroncature_len,                                                                                       #
+// #                                  std::wstring suffixe,                                                                                             #
+// #                                  int suffixe_len)                                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring marqueurTroncature, int marqueurTroncature_len, std::wstring suffixe, int suffixe_len)
+{
+    std::wstring res;
+
+    if (str.size() < lengthMax - suffixe_len)
+    {
+        res = str;
+    }
+    else
+    {
+        res = str.substr(0, lengthMax - marqueurTroncature_len - suffixe_len) + marqueurTroncature;
+    }
+    res += suffixe;
+    return res;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::Print_Header()                                                                                                                        #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Saison::Print_Header()
+{
+    wchar_t date_tab[15];
+    std::wcsftime(date_tab, 15, L"%d/%m/%Y", &m_dossier.first);
+    std::wstring date_tab_str = date_tab;
+
+    std::wstring date_str = date_tab_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(6, 4);
+
+    std::wstring dossier_str;
+    if (m_dossier.second != L"")
+        dossier_str = keyColor[0] + m_dossier.second + valuesColor + L' ';
+
+    std::wstring titre_str;
+    if (m_titres.size() != 0)
+    {
+        titre_str = keyColor[0] + m_titres[0] + valuesColor;
+        if (m_titres.size() > 1)
+        {
+            titre_str += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
+        }
+        titre_str += keyColor[1] + L" : " + valuesColor;
+    }
+
+    std::wstring resume_str;
+    if (m_serie.m_resume != m_resume)
+    {
+        for (auto r : m_resume)
+            resume_str += r;
+    }
+    else
+    {
+        resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, keyColor[1] + L'(' + valuesColor + L"Bis" + keyColor[1] + L')' + valuesColor, 5);
+    }
+
+    std::wstring numero_str = L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
+
+    std::wcout << date_str << dossier_str << keyColor[1] + L" : " + valuesColor << titre_str << resume_str << numero_str << std::endl;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # void Saison::Print()                                                                                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
 void Saison::Print()
 {
-    wchar_t date_string[15];
-    std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_dossier.first);
-    std::wstring saison_str;
-    saison_str = date_string;
+    Print_Header();
 
     //std::time_t t = std::mktime(&dossier.first);
     //std::tm local = *std::localtime(&t);
@@ -1120,46 +1189,6 @@ void Saison::Print()
 //    wchar_t wstr[100];
 //    if (std::wcsftime(wstr, 100, L"%A %c", std::localtime(&t)))
 //        std::wcout << wstr << '\n';
-
-
-    saison_str = saison_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + saison_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + saison_str.substr(6, 4);
-    if (m_dossier.second != L"")
-        saison_str += keyColor[0] + m_dossier.second + valuesColor + L' ';
-
-    saison_str += keyColor[1] + L" : " + valuesColor;
-
-    if (m_titres.size() != 0)
-    {
-        saison_str += keyColor[0] + m_titres[0] + valuesColor;
-        if (m_titres.size() > 1)
-        {
-            saison_str += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
-        }
-        saison_str += keyColor[1] + L" : " + valuesColor;
-    }
-
-    if (m_serie.m_resume != m_resume)
-    {
-        for (auto r : m_resume)
-            saison_str += r;
-    }
-    else
-    {
-        std::wstring wstr;
-        if (m_resume[0].size() < 40)
-        {
-            wstr = m_resume[0];
-        }
-        else
-        {
-            wstr = m_resume[0].substr(0, 40) + L"...";
-        }
-        saison_str += wstr + keyColor[1] + L'(' + valuesColor + L"Bis" + keyColor[1] + L')' + valuesColor;
-    }
-
-    saison_str += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
-    saison_str += L"\r\n";
-    std::wcout << saison_str;
 
     /*std::size_t taille;
     taille = std::size(m_liste_episodes);
@@ -1360,17 +1389,9 @@ void Saison::Print_Note()
 Serie::Serie(std::filesystem::path racine)
 {
     this->racine = racine;
-}
-
-Serie::~Serie()
-{}
-
-
-void Serie::initialiser_Dossier(fs::path const& cheminFichier)
-{
-    auto nomDossier = cheminFichier.filename().wstring();
+    auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
-    //assert(nomDossier.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
+
     std::size_t pos = 0;
     pos = nomDossier.find_first_of(L".[");
     m_titres2 = nomDossier.substr(0, pos);
@@ -1409,6 +1430,12 @@ void Serie::initialiser_Dossier(fs::path const& cheminFichier)
         found = initialiser_Sous_Genre(sous_genre);
         m_sous_genre = sous_genre;
     }
+}
+
+Serie::~Serie()
+{}
+
+
     /*int tm_year = 0;// , tm_mon = 0, tm_mday = 0;
     std::wstring t2;
     std::size_t idx, idx2 = 0;
@@ -1459,9 +1486,6 @@ void Serie::initialiser_Dossier(fs::path const& cheminFichier)
         initialiser_Sous_Genre(m_sous_genre);
         //affichage_sous_genre_actif = true;
     }*/
-}
-
-
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
