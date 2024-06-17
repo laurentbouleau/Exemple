@@ -55,6 +55,7 @@ extern bool checkday(int m, int d, int y);
 
 extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
 extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
+extern void initialiser_Disney_SJ(fs::path const& cheminFichier, std::wstring& m_d_sj);
 //extern const void initialiser_Chaine(fs::path const& cheminFichier, std::wstring& m_chaine);
 extern void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
@@ -1493,6 +1494,10 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         {
             initialiser_Creee_par(cheminFichier);
         }
+        if (nomFichier == L"Disney+.txt")
+        {
+            initialiser_Disney_SJ(cheminFichier, m_disney_sj);
+        }
         // Genre
         if (nomFichier == L"Genre.txt")
         {
@@ -1716,7 +1721,8 @@ const void Serie::Print_Chaine()
 {
     if (affichage_chaine_actif && m_chaine.size() > 0)
     {
-        std::wstring chaine_str = keyColor[0] + L"Chaîne d'origine : " + valuesColor + m_chaine + L"\r\n";
+        std::wstring chaine_str = keyColor[0] + L"Chaîne d'origine : " + valuesColor;
+        chaine_str += m_chaine + L"\r\n";
         //PrintStringW(m_hOut, creee_par_str, 0);
         //PrintStringW(HANDLE hOut, creee_par_str);
         //Console_Lire(chaine_str, 0, 0);
@@ -1812,16 +1818,30 @@ const void Serie::Print_Titre()
             wstr = date_string;
             titres_str += keyColor[0] + L" (" + valuesColor + wstr + keyColor[0] + L')' + valuesColor;
         }*/
-        // Sur
+        // sur
         if (affichage_sur_actif && m_sur != L"")
-            titres_str += keyColor[0] + L" (sur " + valuesColor + m_sur + keyColor[0] + L')' + valuesColor;
-        //
+        {
+            titres_str += keyColor[0] + L" (sur " + valuesColor + m_sur + keyColor[0] + L" : " + valuesColor;
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
+                titres_str += m_disney_sj;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+                titres_str += m_netflix_sj;
+            titres_str += keyColor[0] + L')' + valuesColor;
+        }
+        else
+        {
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
+                titres_str += keyColor[0] + L" (" + valuesColor + L"Disney+ : " + m_disney_sj + keyColor[0] + L')' + valuesColor;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+                titres_str += keyColor[0] + L" (" + valuesColor + L"Netflix : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
+        }
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
-            titres_str += keyColor[0] + L" (" + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
-        // Netflix SJ
-        if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-            titres_str += (keyColor[0] + L" [" + valuesColor + m_netflix_sj + keyColor[0] + L']' + valuesColor);
+            titres_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[0] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
         // Note
         if (affichage_note_actif)
             titres_str += Calcul_Note_Affichage();

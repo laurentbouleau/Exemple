@@ -206,6 +206,32 @@ void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # void initialiser_Disney_SJ(fs::path const& cheminFichier, std::wstring& m_d_sj)                                                                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void initialiser_Disney_SJ(fs::path const& cheminFichier, std::wstring& m_d_sj)
+{ // Disney+ SJ
+    auto nomFichier = cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+
+    std::wstring d = lire_fichierTxt(nomFichier);
+    assert((d.size() != 0));
+    try
+    {
+        if (d == L"6+" || d == L"12+" || d == L"14+")
+        {
+            m_d_sj = d;
+        }
+    }
+    catch (runtime_error const& exception)
+    {
+        std::wcout << L"Erreur : " << exception.what() << std::endl;
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # void initialiser_Genre(fs::path const& cheminFichier,                                                                                              #
 // #                        std::vector<std::wstring>& m_genres_renvoyes,                                                                               #
 // #                        const std::vector<std::wstring>& genres_valides)                                                                            #
