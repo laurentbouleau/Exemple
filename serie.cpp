@@ -55,17 +55,18 @@ extern bool checkday(int m, int d, int y);
 
 extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
 extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
-extern void initialiser_Disney_SJ(fs::path const& cheminFichier, std::wstring& m_d_sj);
 //extern const void initialiser_Chaine(fs::path const& cheminFichier, std::wstring& m_chaine);
 extern void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
 extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-extern void initialiser_Netflix_SJ(fs::path const& cheminFichier, std::wstring& n_sj);
-extern void initialiser_SJ(fs::path const& cheminFichier, std::wstring& m_sj);
 //extern void initialiser_Sous_Genre(std::wstring& m_s_g);
 extern bool initialiser_Sous_Genre(std::wstring& m_s_g);
 extern void initialiser_Sur(std::wstring& m_s);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
+
+extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
+extern std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
+extern std::wstring recuperer_SJ(fs::path const& cheminFichier);
 
 extern void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
@@ -1494,9 +1495,10 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         {
             initialiser_Creee_par(cheminFichier);
         }
+        // Disney+ SJ
         if (nomFichier == L"Disney+.txt")
         {
-            initialiser_Disney_SJ(cheminFichier, m_disney_sj);
+            m_disney_sj = recuperer_Disney_SJ(cheminFichier);
         }
         // Genre
         if (nomFichier == L"Genre.txt")
@@ -1511,12 +1513,12 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         // Netflix
         if (nomFichier == L"Netflix.txt")
         {
-            initialiser_Netflix_SJ(cheminFichier, m_netflix_sj);
+            m_netflix_sj = recuperer_Netflix_SJ(cheminFichier);
         }
         // SJ
         if (nomFichier == L"SJ.txt")
         {
-            initialiser_SJ(cheminFichier, m_sj);
+            m_sj =  recuperer_SJ(cheminFichier);
         }
         // Titre
         if (nomFichier == L"Titre.txt")
