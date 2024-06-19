@@ -1686,13 +1686,14 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
         m_titres[0] = titres2[0];
         found = true;
     }
-    if (!found && m_titres[0].length() == titres2[0].length() && m_titres[2].length() == titres2[2].length())
+    if (!found && m_titres.size() == 3 && m_titres[0].length() == titres2[0].length() && m_titres[2].length() == titres2[2].length())
     {
-        m_titres[1] == titres2[1];
+        m_titres[1] = titres2[1];
         found = true;
     }
 
     //???
+
     titre.erase(titre.begin());
     if (titre.size() > 0)
     {
