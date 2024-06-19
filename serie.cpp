@@ -1426,8 +1426,7 @@ Serie::~Serie()
 
 std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titre)
 {
-    //auto nomDossier = titre;
-    assert(titre.length() > 0 && L"Nom de dossier vide");
+    assert(titre.length() > 0 && L"Nom de dossier vide"); // ??? pour Mot de... ?
     bool found = false;
     size_t pos = 0;
     const std::wstring d_p = L" - ";
@@ -1459,7 +1458,6 @@ std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titre)
     }
     if (!found)
     {
-        //m_titres[0] = titre;
         m_titres.push_back(titre);
         found = true;
     }
@@ -1677,8 +1675,24 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
         titres2.push_back(titre[0]);
     }
 
-    //???
+    bool found = false;
 
+    if (m_titres.size() == 1 && titres2.size() == 1 && m_titres == titres2)
+    {
+        found = true;
+    }
+    if (!found && m_titres.size() == 1 && titres2.size() == 1 && m_titres[0].length() == titres2[0].length())
+    {
+        m_titres[0] = titres2[0];
+        found = true;
+    }
+    if (!found && m_titres[0].length() == titres2[0].length() && m_titres[2].length() == titres2[2].length())
+    {
+        m_titres[1] == titres2[1];
+        found = true;
+    }
+
+    //???
     titre.erase(titre.begin());
     if (titre.size() > 0)
     {
