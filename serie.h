@@ -211,6 +211,8 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
     ~Serie();
+
+    std::vector<std::wstring> Dossier_Titres(std::wstring titre);
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Creee_par(std::filesystem::path const& cheminFichier);
@@ -254,7 +256,6 @@ private:
     std::wstring m_sur;
 
     std::vector<std::wstring> m_titres;
-    std::wstring m_titres2;
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
 

@@ -114,6 +114,7 @@ const std::vector<std::wstring> Nationalite
     L"Grande-Bretagne",
     L"Hong-Kong",
     L"Inde",
+    L"Indonésie",
     L"Irlande",
     L"Islande",
     L"Israël",
@@ -341,25 +342,6 @@ void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void initialiser_Disney_SJ(fs::path const& cheminFichier, std::wstring& m_d_sj)
-{ // Disney+ SJ
-    auto nomFichier = cheminFichier.wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-
-    std::wstring d = lire_fichierTxt(nomFichier);
-    assert((d.size() != 0));
-    try
-    {
-        if (d == L"6+" || d == L"12+" || d == L"14+")
-        {
-            m_d_sj = d;
-        }
-    }
-    catch (runtime_error const& exception)
-    {
-        std::wcout << L"Erreur : " << exception.what() << std::endl;
-    }
-}*/
 std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier)
 { // Disney+ SJ
     auto nomFichier = cheminFichier.wstring();
@@ -381,25 +363,6 @@ std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void initialiser_Netflix_SJ(fs::path const& cheminFichier, std::wstring& m_n_sj)
-{ // Netflix SJ
-    auto nomFichier = cheminFichier.wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-
-    std::wstring n = lire_fichierTxt(nomFichier);
-    assert((n.size() != 0));
-    try
-    {
-        if (n == L"7+" || n == L"10+" || n == L"13+" || n == L"16+" || n == L"18+" || n == L"Tous publics")
-        {
-            m_n_sj = n;
-        }
-    }
-    catch (runtime_error const& exception)
-    {
-        std::wcout << L"Erreur : " << exception.what() << std::endl;
-    }
-}*/
 std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier)
 { // Netflix SJ
     auto nomFichier = cheminFichier.wstring();
@@ -421,24 +384,6 @@ std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 // Cinéma et serie
-/*void initialiser_SJ(fs::path const& cheminFichier, std::wstring& m_sj)
-{ // SJ
-    auto nomFichier = cheminFichier.wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-
-    std::wstring sj = lire_fichierTxt(nomFichier);
-    assert((sj.size() != 0));
-    sj = lire_fichierTxt(nomFichier);
-    try
-    {
-        if (sj == L"-7" || sj == L"-10" || sj == L"-12" || sj == L"-16" || sj == L"-18")
-            m_sj = sj;
-    }
-    catch (runtime_error const& exception)
-    {
-        std::wcout << L"Erreur : " << exception.what() << std::endl;
-    }
-}*/
 std::wstring recuperer_SJ(fs::path const& cheminFichier)
 { // SJ
     auto nomFichier = cheminFichier.wstring();

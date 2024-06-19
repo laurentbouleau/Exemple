@@ -29,6 +29,11 @@
 
 #include <filesystem> // C++17 standard header file name
 
+// Hors saison : ???
+// Saison 1 : exemple : 2023/02/15
+// Saison 2 : exemple : 2024/09/10
+// etc...
+
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -1373,9 +1378,11 @@ Serie::Serie(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
-    std::size_t pos = 0;
+    std::size_t pos;// = 0;
     pos = nomDossier.find_first_of(L".[");
-    m_titres2 = nomDossier.substr(0, pos);
+    assert(pos != std::wstring::npos && L"???");
+    const std::wstring titres = nomDossier.substr(0, pos);
+    m_titres = Dossier_Titres(titres);
 
     nomDossier = nomDossier.substr(pos + 2);
     std::wstring textes = nomDossier;
@@ -1396,12 +1403,12 @@ Serie::Serie(std::filesystem::path racine)
     }
     if (!found)
     {
-        exit(1);
+        m_sur = L"";
     }
     if (textes[0] != L']')
     {
-        textes = textes.substr(1);
-        m_sur = textes;
+        //textes = textes.substr(1);
+        //m_sur = textes;
     }
     std::wstring sous_genre = nomDossier;
     pos = sous_genre.find_last_of(L"]");
@@ -1414,8 +1421,50 @@ Serie::Serie(std::filesystem::path racine)
 }
 
 Serie::~Serie()
-{}
+{
+}
 
+std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titre)
+{
+    //auto nomDossier = titre;
+    assert(titre.length() > 0 && L"Nom de dossier vide");
+    bool found = false;
+    size_t pos = 0;
+    const std::wstring d_p = L" - ";
+    pos = titre.find(d_p);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(titre.substr(0, pos));
+        m_titres.push_back(d_p);
+        m_titres.push_back(titre.substr(pos + 3));
+        found = true;
+    }
+    const std::wstring d_p2 = L"- ";
+    pos = titre.find(d_p2);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(titre.substr(0, pos));
+        m_titres.push_back(d_p2);
+        m_titres.push_back(titre.substr(pos + 2));
+        found = true;
+    }
+    const std::wstring d_p3 = L"- ";
+    pos = titre.find(d_p3);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(titre.substr(0, pos));
+        m_titres.push_back(d_p3);
+        m_titres.push_back(titre.substr(pos + 1));
+        found = true;
+    }
+    if (!found)
+    {
+        //m_titres[0] = titre;
+        m_titres.push_back(titre);
+        found = true;
+    }
+    return m_titres;
+}
 
     /*int tm_year = 0;// , tm_mon = 0, tm_mday = 0;
     std::wstring t2;
@@ -1606,24 +1655,30 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     std::vector<std::wstring> titre = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((titre.size() != 0));
 
+    std::vector<std::wstring> titres2;
+
+
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     std::wsmatch match;
     if (std::regex_match(titre[0], match, titre_pattern))
     {
-        m_titres.push_back(match[1]);
+        titres2.push_back(match[1]);
         if (match.length() > 2)
         {
-            m_titres.push_back(match[2]);
+            titres2.push_back(match[2]);
         }
         if (match.length() > 3)
         {
-            m_titres.push_back(match[3]);
+            titres2.push_back(match[3]);
         }
     }
     else
     {
-        m_titres.push_back(titre[0]);
+        titres2.push_back(titre[0]);
     }
+
+    //???
+
     titre.erase(titre.begin());
     if (titre.size() > 0)
     {
@@ -1809,9 +1864,8 @@ const void Serie::Print_Titre()
     {
         std::wstring titres_str;
         std::wstring wstr;
-        //bool titre_ = false;
         titres_str = keyColor[0] + L"Titre : " + valuesColor + m_titres[0];
-        if (m_titres[2] != L"")
+        if (m_titres.size() > 1)
             titres_str += keyColor[1] + m_titres[1] + valuesColor + m_titres[2];
         /*if (m_date_Diffusee_a_partir_de_[0] && Date_Diffusee_a_partir_de[0].tm_year != 0)
         {
