@@ -41,6 +41,20 @@ extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 // ######################################################################################################################################################
 // Allociné : https://www.allocine.fr/
 
+// Exception des éléments
+const std::vector<wchar_t> Exception_des_elements
+{
+    L'\\',
+    L'/',
+    L':',
+    L'*',
+    L'?',
+    L'"',
+    L'<',
+    L'>',
+    L'|'
+};
+
 const std::vector<std::wstring> Audiodescription
 { // AD : Audiodescription
     L"Allemagne",

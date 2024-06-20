@@ -210,13 +210,13 @@ class Serie
 {
 public:
     Serie(std::filesystem::path racine);
-    ~Serie();
-
-    std::vector<std::wstring> Dossier_Titres(std::wstring titre);
+ 
+    std::vector<std::wstring> Dossier_Titres(std::wstring titres);
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Creee_par(std::filesystem::path const& cheminFichier);
     void initialiser_Duree(std::wstring& m);
+    void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_titre);
 
     const void Print();
@@ -234,6 +234,7 @@ private:
     const void Print_Saisons();
     const void Print_Chaine();
     const void Print_Creee_par();
+    const void Print_En_relation_avec();
     const void Print_Titre();
 
     std::filesystem::path racine;
@@ -246,6 +247,7 @@ private:
     std::wstring m_chaine;
     std::vector<std::wstring> m_creee_par;
     std::wstring m_disney_sj;
+    std::wstring m_en_relation_avec;
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
     std::vector<std::wstring> m_nationalite;
@@ -268,6 +270,7 @@ private:
     bool affichage_creee_par_actif = true;
     bool affichage_disney_sj_actif = true;
     bool affichage_episode_titre_actif = true;
+    bool affichage_en_relation_avec_actif = true;
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
     bool affichage_nationalite_actif = true;

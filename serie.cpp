@@ -978,6 +978,7 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else
     {
+        std::wcout << L'{' << cheminFichier << L'}' << std::endl;
     }
  }
 
@@ -1381,7 +1382,7 @@ Serie::Serie(std::filesystem::path racine)
     std::size_t pos;// = 0;
     pos = nomDossier.find_first_of(L".[");
     assert(pos != std::wstring::npos && L"???");
-    const std::wstring titres = nomDossier.substr(0, pos);
+    /*/*/const std::wstring titres = nomDossier.substr(0, pos);
     m_titres = Dossier_Titres(titres);
 
     nomDossier = nomDossier.substr(pos + 2);
@@ -1420,45 +1421,47 @@ Serie::Serie(std::filesystem::path racine)
     }
 }
 
-Serie::~Serie()
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)                                                                               #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+/// ???
+std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
 {
-}
-
-std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titre)
-{
-    assert(titre.length() > 0 && L"Nom de dossier vide"); // ??? pour Mot de... ?
+    assert(titres.length() > 0 && L"Nom de dossier vide"); // ??? pour Mot de... ?
     bool found = false;
     size_t pos = 0;
     const std::wstring d_p = L" - ";
-    pos = titre.find(d_p);
+    pos = titres.find(d_p);
     if (!found && pos != std::wstring::npos)
     {
-        m_titres.push_back(titre.substr(0, pos));
+        m_titres.push_back(titres.substr(0, pos));
         m_titres.push_back(d_p);
-        m_titres.push_back(titre.substr(pos + 3));
+        m_titres.push_back(titres.substr(pos + 3));
         found = true;
     }
     const std::wstring d_p2 = L"- ";
-    pos = titre.find(d_p2);
+    pos = titres.find(d_p2);
     if (!found && pos != std::wstring::npos)
     {
-        m_titres.push_back(titre.substr(0, pos));
+        m_titres.push_back(titres.substr(0, pos));
         m_titres.push_back(d_p2);
-        m_titres.push_back(titre.substr(pos + 2));
+        m_titres.push_back(titres.substr(pos + 2));
         found = true;
     }
     const std::wstring d_p3 = L"- ";
-    pos = titre.find(d_p3);
+    pos = titres.find(d_p3);
     if (!found && pos != std::wstring::npos)
     {
-        m_titres.push_back(titre.substr(0, pos));
+        m_titres.push_back(titres.substr(0, pos));
         m_titres.push_back(d_p3);
-        m_titres.push_back(titre.substr(pos + 1));
+        m_titres.push_back(titres.substr(pos + 1));
         found = true;
     }
     if (!found)
     {
-        m_titres.push_back(titre);
+        m_titres.push_back(titres);
         found = true;
     }
     return m_titres;
@@ -1547,6 +1550,11 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         {
             m_disney_sj = recuperer_Disney_SJ(cheminFichier);
         }
+        // En relation avec
+        if (nomFichier == L"En relation avec.txt")
+        {
+            initialiser_En_relation_avec(cheminFichier);
+        }
         // Genre
         if (nomFichier == L"Genre.txt")
         {
@@ -1585,7 +1593,7 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else
     {
-        // ???
+        std::wcout << L'{' << cheminFichier << L'}' << std::endl;
     }
 }
 
@@ -1638,6 +1646,20 @@ void Serie::initialiser_Duree(std::wstring& m)
     {
         throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
     }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)                                                                            #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
+{ // Chaîne
+    auto nomFichier = cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    m_en_relation_avec = lire_fichierTxt(cheminFichier.wstring());
+    assert((m_en_relation_avec.size() != 0));
 }
 
 // ######################################################################################################################################################
@@ -1772,6 +1794,8 @@ const void Serie::Print()
     Print_Creee_par();
     // Genre(s)
     Print_Genres(m_genre, affichage_genres_actif, m_sous_genre, affichage_sous_genre_actif, keyColor[0], valuesColor);
+    // En relation avec
+    Print_En_relation_avec();
     // Nationalité(s)
     Print_Nationalites(m_nationalite, affichage_nationalite_actif, keyColor[0], valuesColor);
     // Image(s)
@@ -1831,6 +1855,26 @@ const void Serie::Print_Creee_par()
         //int i = Console_Lire_txt(creee_par_str, 0, 0);
         //Console::PrintStringW(creee_par_str, 0);
         std::wcout << creee_par_str;
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Serie::Print_En_relation_avec()                                                                                                         #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Serie::Print_En_relation_avec()
+{
+    if (affichage_en_relation_avec_actif && m_en_relation_avec.size() > 0)
+    {
+        std::wstring en_relation_avec_str = keyColor[0] + L"En relation avec : " + valuesColor;
+        en_relation_avec_str += m_en_relation_avec + L"\r\n";
+        //PrintStringW(m_hOut, creee_par_str, 0);
+        //PrintStringW(HANDLE hOut, creee_par_str);
+        //Console_Lire(chaine_str, 0, 0);
+        //Console_Lire(hOut, chaine_str, 0, L' ');
+        std::wcout << en_relation_avec_str;
     }
 }
 
