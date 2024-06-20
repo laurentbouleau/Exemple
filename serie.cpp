@@ -721,7 +721,7 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
 {
     auto nomDossier = cheminFichier.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
-    assert(nomDossier.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
+    assert(nomDossier.length() > 3 && L"Nom de fichier trop court pour avoir au moins une date");
     std::size_t pos = 0;
     std::wstring wstr = nomDossier.substr(pos);
 
@@ -968,6 +968,7 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
         if (nomFichier != L"")
         {
             //E.afficher_X(-1, nomFichier, L'{' + t + L".txt} !!!");
+            std::wcout << L'{' << cheminFichier << L'}' << std::endl;
             return;
         }
     }
@@ -1032,7 +1033,6 @@ void Saison::initialiser_Note(fs::path const& cheminFichier)
         {
             str[1] = L',';
         }
-
         m_note = std::stod(str);
     }
 }
@@ -1382,7 +1382,7 @@ Serie::Serie(std::filesystem::path racine)
     std::size_t pos;// = 0;
     pos = nomDossier.find_first_of(L".[");
     assert(pos != std::wstring::npos && L"???");
-    /*/*/const std::wstring titres = nomDossier.substr(0, pos);
+    const std::wstring titres = nomDossier.substr(0, pos);
     m_titres = Dossier_Titres(titres);
 
     nomDossier = nomDossier.substr(pos + 2);
@@ -1394,7 +1394,7 @@ Serie::Serie(std::filesystem::path racine)
     {
         if (textes.at(i) == L' ' || textes.at(i) == std::wstring::npos)
         {
-            m_dates2 = textes.substr(0, i);
+            m_annees = textes.substr(0, i);
             found = true;
             if (textes.at(i) == L' ')
             {
@@ -1450,7 +1450,7 @@ std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
         m_titres.push_back(titres.substr(pos + 2));
         found = true;
     }
-    const std::wstring d_p3 = L"- ";
+    const std::wstring d_p3 = L"-";
     pos = titres.find(d_p3);
     if (!found && pos != std::wstring::npos)
     {
@@ -1462,7 +1462,7 @@ std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
     if (!found)
     {
         m_titres.push_back(titres);
-        found = true;
+        //found = true;
     }
     return m_titres;
 }
@@ -1655,7 +1655,7 @@ void Serie::initialiser_Duree(std::wstring& m)
 // ######################################################################################################################################################
 
 void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
-{ // Chaîne
+{ 
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_en_relation_avec = lire_fichierTxt(cheminFichier.wstring());
@@ -1672,57 +1672,57 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
 { // Titre
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::vector<std::wstring> titre = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
-    assert((titre.size() != 0));
+    std::vector<std::wstring> titres = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    assert((titres.size() != 0));
 
-    std::vector<std::wstring> titres2;
+    std::vector<std::wstring> t;
 
 
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     std::wsmatch match;
-    if (std::regex_match(titre[0], match, titre_pattern))
+    if (std::regex_match(titres[0], match, titre_pattern))
     {
-        titres2.push_back(match[1]);
+        t.push_back(match[1]);
         if (match.length() > 2)
         {
-            titres2.push_back(match[2]);
+            t.push_back(match[2]);
         }
         if (match.length() > 3)
         {
-            titres2.push_back(match[3]);
+            t.push_back(match[3]);
         }
     }
     else
     {
-        titres2.push_back(titre[0]);
+        t.push_back(titres[0]);
     }
 
     bool found = false;
 
-    if (m_titres.size() == 1 && titres2.size() == 1 && m_titres == titres2)
+    if (m_titres.size() == 1 && t.size() == 1 && m_titres == t)
     {
         found = true;
     }
-    if (!found && m_titres.size() == 1 && titres2.size() == 1 && m_titres[0].length() == titres2[0].length())
+    if (!found && m_titres.size() == 1 && t.size() == 1 && m_titres[0].length() == t[0].length())
     {
-        m_titres[0] = titres2[0];
+        m_titres[0] = t[0];
         found = true;
     }
-    if (!found && m_titres.size() == 3 && m_titres[0].length() == titres2[0].length() && m_titres[2].length() == titres2[2].length())
+    if (!found && m_titres.size() == 3 && m_titres[0].length() == t[0].length() && m_titres[2].length() == t[2].length())
     {
-        m_titres[1] = titres2[1];
+        m_titres[1] = t[1];
         found = true;
     }
 
     //???
 
-    titre.erase(titre.begin());
-    if (titre.size() > 0)
+    titres.erase(titres.begin());
+    if (titres.size() > 0)
     {
-        initialiser_Duree(titre[0]);
-        titre.erase(titre.begin());
-        if (titre.size() > 0)
-            m_resume = titre;
+        initialiser_Duree(titres[0]);
+        titres.erase(titres.begin());
+        if (titres.size() > 0)
+            m_resume = titres;
     }
 }
 

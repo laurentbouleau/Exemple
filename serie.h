@@ -261,7 +261,7 @@ private:
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
 
-    std::wstring m_dates2;
+    std::wstring m_annees;
     //std::vector<std::tm> dates;// { 0 };
 
     bool affichage_avec_actif = true;
