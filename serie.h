@@ -262,8 +262,9 @@ private:
     std::vector<std::wstring> m_titres_originaux;
 
     std::wstring m_annees;
-    //std::vector<std::tm> dates;// { 0 };
-
+    //std::vector<std::tm> m_annees;
+    bool m_annees_et = false;
+ 
     bool affichage_avec_actif = true;
     bool affichage_audiodescription_actif = true;
     bool affichage_chaine_actif = true;

@@ -1379,9 +1379,11 @@ Serie::Serie(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
-    std::size_t pos;// = 0;
+    std::size_t pos, pos2;
     pos = nomDossier.find_first_of(L".[");
-    assert(pos != std::wstring::npos && L"???");
+    pos2 = nomDossier.find_first_of(L']');
+    assert((pos != std::wstring::npos && pos2 != std::wstring::npos && pos < pos2) && L"Attention : pas \".[\" et/ou \"]\" !!!");
+
     const std::wstring titres = nomDossier.substr(0, pos);
     m_titres = Dossier_Titres(titres);
 
@@ -1579,6 +1581,7 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         if (nomFichier == L"Titre.txt")
         {
             initialiser_Titre(cheminFichier, m_titres);
+            return;
         }
         // Titre original
         if (nomFichier == L"Titre original.txt")
@@ -1697,23 +1700,52 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
         t.push_back(titres[0]);
     }
 
+ 
+    /*if (m_titres.size() == 1 && t.size() == 1 && m_titres == t)
+    {
+        found = true;
+    }*/
+/*    if (m_titres[0] == t[0])
+        assert(m_titres[0] == t[0] && L"Erreur : m_titre[0] != t[0] !!!");
     bool found = false;
+    if (!found && m_titres[0].size() == t[0].size())
+    {
+        int j = 0;
+        for (int i = 0; i < m_titres.size(); i++)
+        {
+            if (m_titres[i] != t[i])
+            {
+                j++;
+                m_titres[i] = t[i];
+            }
 
-    if (m_titres.size() == 1 && t.size() == 1 && m_titres == t)
-    {
-        found = true;
-    }
-    if (!found && m_titres.size() == 1 && t.size() == 1 && m_titres[0].length() == t[0].length())
-    {
-        m_titres[0] = t[0];
-        found = true;
+        }
+        try
+        {
+            if (j > 2)
+                ;
+            else
+            {
+                throw 505;
+            }
+        }
+        catch (...)
+        {
+            std::wcout << L"Erreur : j > 4" << std::endl;
+        }
+        if (m_titres.size() == 1 && t.size() == 1)
+        {
+            //m_titres[0] = t[0];
+            //throw wstring(L"ERREUR : m_titres[0] par de... !");
+            found = true;
+        }
     }
     if (!found && m_titres.size() == 3 && m_titres[0].length() == t[0].length() && m_titres[2].length() == t[2].length())
     {
         m_titres[1] = t[1];
         found = true;
     }
-
+*/
     //???
 
     titres.erase(titres.begin());

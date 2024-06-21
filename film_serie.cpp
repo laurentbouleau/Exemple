@@ -352,6 +352,29 @@ void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # std::wstring filter_values(std::wstring const& content, std::vector<std::wstring> const& values)                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring filter_values(std::wstring const& content, std::vector<std::wstring> const& values)
+{
+    std::wstring pattern;
+    for (const auto value : values)
+    {
+        if (pattern.length() > 0) { pattern += L"|"; }
+        pattern += value;
+    }
+    std::wregex value_pattern{ L"(" + pattern + L")" };
+    std::wsmatch match;
+    if (std::regex_match(content, match, value_pattern))
+    {
+        return match[1];
+    }
+    return L"";
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier)                                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -362,13 +385,7 @@ std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier)
 
     std::wstring content = lire_fichierTxt(nomFichier);
 
-    std::wregex sj_pattern{ L"(6\\+|12\\+|14\\+)" };
-    std::wsmatch match;
-    if (std::regex_match(content, match, sj_pattern))
-    {
-        return match[1];
-    }
-    return L"";
+    return filter_values(content, { L"6\\+",L"12\\+",L"14\\+" });
 }
 
 // ######################################################################################################################################################
@@ -383,13 +400,7 @@ std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier)
 
     std::wstring content = lire_fichierTxt(nomFichier);
 
-    std::wregex sj_pattern{ L"(7\\+|10\\+|13\\+|16\\+|18+\\Tous publics)" };
-    std::wsmatch match;
-    if (std::regex_match(content, match, sj_pattern))
-    {
-        return match[1];
-    }
-    return L"";
+    return filter_values(content, { L"7\\+",L"10\\+",L"13\\+", L"16\\+", L"18\\+", L"Tous publics" });
 }
 
 // ######################################################################################################################################################
