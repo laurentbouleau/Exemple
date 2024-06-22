@@ -1954,7 +1954,10 @@ const void Serie::Print_Titre()
     if (affichage_titres_actif)
     {
         std::wstring titres_str;
-        std::wstring wstr;
+        std::wstring sur_str;
+        std::wstring sj_str;
+        std::wstring note_str;
+
         titres_str = keyColor[0] + L"Titre : " + valuesColor + m_titres[0];
         if (m_titres.size() > 1)
             titres_str += keyColor[1] + m_titres[1] + valuesColor + m_titres[2];
@@ -1968,34 +1971,31 @@ const void Serie::Print_Titre()
         // sur
         if (affichage_sur_actif && m_sur != L"")
         {
-            titres_str += keyColor[0] + L" (sur " + valuesColor + m_sur + keyColor[0] + L" : " + valuesColor;
+            sur_str += keyColor[0] + L" (sur " + valuesColor + m_sur + keyColor[0] + L" : " + valuesColor;
             // Disney+ SJ
             if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                titres_str += m_disney_sj;
+                sur_str += m_disney_sj;
             // Netflix SJ
             if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                titres_str += m_netflix_sj;
-            titres_str += keyColor[0] + L')' + valuesColor;
+                sur_str += m_netflix_sj;
+            sur_str += keyColor[0] + L')' + valuesColor;
         }
         else
         {
             // Disney+ SJ
             if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                titres_str += keyColor[0] + L" (" + valuesColor + L"Disney+ : " + m_disney_sj + keyColor[0] + L')' + valuesColor;
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+ : " + m_disney_sj + keyColor[0] + L')' + valuesColor;
             // Netflix SJ
             if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                titres_str += keyColor[0] + L" (" + valuesColor + L"Netflix : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
         }
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
-            titres_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[0] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
+            sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[0] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
         // Note
         if (affichage_note_actif)
-            titres_str += Calcul_Note_Affichage();
-        //int i = Console_Lire_txt(titre_str + wstr, 0, 0);
-        //Console_Lire(titre_str, 0, 0);
-        //Console_Lire(hOut, titre_str + L"\r\n", 0, L' ');
-        titres_str += L"\r\n";
-        std::wcout << titres_str;
+            note_str += Calcul_Note_Affichage();
+
+        std::wcout << titres_str << sur_str << sj_str << note_str << std::endl;
     }
 }
