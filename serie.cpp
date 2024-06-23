@@ -1373,7 +1373,7 @@ void Saison::Print_Note()
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-Serie::Serie(std::filesystem::path racine)
+/*Serie::Serie(std::filesystem::path racine)
 {
     this->racine = racine;
     auto nomDossier = racine.filename().wstring();
@@ -1421,8 +1421,34 @@ Serie::Serie(std::filesystem::path racine)
         found = initialiser_Sous_Genre(sous_genre);
         m_sous_genre = sous_genre;
     }
-}
+}*/
+Serie::Serie(std::filesystem::path racine)
+{
+    this->racine = racine;
+    auto nomDossier = racine.filename().wstring();
+    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
+    //std::wregex filename_pattern{ L"(xxxx)__(yyyy)?__(zzzz)?__(tttt)?" };
+    //std::wregex filename_pattern{ L"(.+?)(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)?(.+)?" };
+//    std::wregex filename_pattern{ L"(.+?)(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)?(.+)?" };
+    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)\\])?(?:\\.(.+))?" };
+    std::wsmatch match;
+    if (std::regex_match(nomDossier, match, filename_pattern))
+    {
+        std::wstring titres = match[1];
+        m_titres = Dossier_Titres(titres);
+        m_annees = (match[2].matched) ? match[2].str() : L"";
+
+        m_sur = (match[3].matched) ? match[3].str() : L"";
+
+        std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
+        m_sous_genre = sous_genre;
+    }
+    else
+    {
+        assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
+    }
+}
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)                                                                               #
@@ -1431,11 +1457,11 @@ Serie::Serie(std::filesystem::path racine)
 /// ???
 std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
 {
-    assert(titres.length() > 0 && L"Nom de dossier vide"); // ??? pour Mot de... ?
-    bool found = false;
+    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
     size_t pos = 0;
     const std::wstring d_p = L" - ";
     pos = titres.find(d_p);
+    bool found = false;
     if (!found && pos != std::wstring::npos)
     {
         m_titres.push_back(titres.substr(0, pos));
