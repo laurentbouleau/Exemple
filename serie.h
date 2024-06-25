@@ -264,11 +264,7 @@ private:
     std::vector<std::wstring> m_titres_originaux;
 
     std::wstring m_annees; // std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
-    bool m_annees_tiret = false;
-    //std::vector<std::tm> m_annees;
-    
-    //bool m_annees_et = false;
- 
+
     bool affichage_annees_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_audiodescription_actif = true;
