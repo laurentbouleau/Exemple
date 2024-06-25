@@ -230,6 +230,8 @@ public:
 private:
     const std::wstring Calcul_Note_Affichage();
 
+    const std::wstring xyz_Annees(std::wstring annees);
+
     const void Print_Saison(Saison saison);
     const void Print_Saisons();
     const void Print_Chaine();
@@ -261,10 +263,13 @@ private:
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
 
-    std::wstring m_annees;
+    std::wstring m_annees; // std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
+    bool m_annees_tiret = false;
     //std::vector<std::tm> m_annees;
-    bool m_annees_et = false;
+    
+    //bool m_annees_et = false;
  
+    bool affichage_annees_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_audiodescription_actif = true;
     bool affichage_chaine_actif = true;

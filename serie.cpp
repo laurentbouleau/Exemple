@@ -1373,55 +1373,122 @@ void Saison::Print_Note()
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-/*Serie::Serie(std::filesystem::path racine)
+
+/*const int Serie::afficher_Diffusee(int& I, std::wstring const& d)
 {
-    this->racine = racine;
-    auto nomDossier = racine.filename().wstring();
-    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
-
-    std::size_t pos, pos2;
-    pos = nomDossier.find_first_of(L".[");
-    pos2 = nomDossier.find_first_of(L']');
-    assert((pos != std::wstring::npos && pos2 != std::wstring::npos && pos < pos2) && L"Attention : pas \".[\" et/ou \"]\" !!!");
-
-    const std::wstring titres = nomDossier.substr(0, pos);
-    m_titres = Dossier_Titres(titres);
-
-    nomDossier = nomDossier.substr(pos + 2);
-    std::wstring textes = nomDossier;
-    pos = textes.find_last_of(L"]");
-    textes = textes.substr(0, pos);
-    bool found = false;
-    for (unsigned i = 0; i < textes.length(); ++i)
+#if	Serie_afficher_Diffusee_ == 1
+    //wcout << B_T << L"const int Serie_afficher_Diffusee(" << I + 1 << L", " << d << L") :" << B_t << endl;
+    B.Ok_T(L"const int Serie_afficher_Diffusee(" + std::to_wstring(I) + L", " + d + L") :");
+#endif
+    if (d == L"")
     {
-        if (textes.at(i) == L' ' || textes.at(i) == std::wstring::npos)
-        {
-            m_annees = textes.substr(0, i);
-            found = true;
-            if (textes.at(i) == L' ')
-            {
-                textes = textes.substr(i);
-            }
+#if	Serie_afficher_Diffusee_ == 1
+        //wcout << L"    " << L"Date_Diffusee_a_partir_de[" << I << L"] = 0 !!!" << endl;
+        B.Ok_W(L"Date_Diffusee_a_partir_de[" + std::to_wstring(I) + L"} = 0 !!!");
+#endif
+        B.Ok_T(L"const int Serie_afficher_Diffusee() : Ok !");
+        return EXIT_SUCCESS;
+    }
+    if (
+        (d[0] == L'1' || d[0] == L'2' || d[0] == L'3') &&
+        std::isdigit(d[1]) &&
+        std::isdigit(d[2]) &&
+        std::isdigit(d[3]))
+    {
+        goto stop;
+    }
+    E.afficher_X(-1, L"", d);
+    return EXIT_FAILURE;
+stop:
+    int year = 0, mon = 0, mday = 0;
+    // %d/%m/%Y
+    std::tm D = { 0 };
+    // year
+    std::wstring x = d.substr(0, 4);
+    year = std::stoi(x);
+    if (
+        (d[0] == L'1' || d[0] == L'2' || d[0] == L'3') &&
+        //(d[1] == L'0' || d[1] == L'1' || d[1] == L'2' || d[1] == L'3' || d[1] == L'4' || d[1] == L'5' || d[1] == L'5' || d[1] == L'6' || d[1] == L'7' || d[1] == L'8' || d[1] == L'9') &&
+        //(d[2] == L'0' || d[2] == L'1' || d[2] == L'2' || d[2] == L'3' || d[2] == L'4' || d[2] == L'5' || d[2] == L'5' || d[2] == L'6' || d[2] == L'7' || d[2] == L'8' || d[2] == L'9') &&
+        //(d[3] == L'0' || d[3] == L'1' || d[3] == L'2' || d[3] == L'3' || d[3] == L'4' || d[3] == L'5' || d[3] == L'5' || d[3] == L'6' || d[3] == L'7' || d[3] == L'8' || d[3] == L'9')
+        std::isdigit(d[1]) &&
+        std::isdigit(d[2]) &&
+        std::isdigit(d[3])
+        )
+    {
+        x = d.substr(0, 4);
+        year = std::stoi(d);
+        if (year <= 1900 || year >= 3001)
+        { // Erreur year
+#if Serie_afficher_Diffusee_ == 1
+            //wcerr << L"    " << L"year=" << year << endl;
+            B.Ok_W(L"year=" + std::to_wstring(year));
+#endif
+            return EXIT_FAILURE;
         }
     }
-    if (!found)
+    else
     {
-        m_sur = L"";
+#if Serie_afficher_Diffusee_ == 1
+        //wcout << L"    " << L"year=???" << endl;
+        B.Ok_W(L"year=???");
+#endif
+        return EXIT_FAILURE;
     }
-    if (textes[0] != L']')
+    if (
+        (d[5] == L'0' || d[5] == L'1') &&
+        //(d[6] == L'0' || d[6] == L'1' || d[6] == L'2' || d[6] == L'3' || d[6] == L'4' || d[6] == L'5' || d[6] == L'6' || d[6] == L'7' || d[6] == L'8' || d[6] == L'9')
+        std::isdigit(d[6])
+        )
     {
-        //textes = textes.substr(1);
-        //m_sur = textes;
+        x = d.substr(5, 2);
+        mon = std::stoi(x);
+        if (mon <= 0 || mon >= 13)
+        { // Erreur mon
+#if Serie_afficher_Diffusee_ == 1
+            //wcerr << L"    " << L"mon=" << mon << endl;
+            B.Ok_W(L"mon=" + std::to_wstring(mon));
+#endif
+            return EXIT_FAILURE;
+        }
     }
-    std::wstring sous_genre = nomDossier;
-    pos = sous_genre.find_last_of(L"]");
-    if (sous_genre.at(pos) != std::wstring::npos)
+    if (
+        (d[8] == L'0' || d[8] == L'1' || d[8] == L'2' || d[8] == L'3') &&
+        //(d[9] == L'0' || d[9] == L'1' || d[9] == L'2' || d[9] == L'3' || d[9] == L'4' || d[9] == L'5' || d[9] == L'6' || d[9] == L'7' || d[9] == L'8' || d[9] == L'9')
+        std::isdigit(d[9])
+        )
     {
-        sous_genre = sous_genre.substr(pos + 2);
-        found = initialiser_Sous_Genre(sous_genre);
-        m_sous_genre = sous_genre;
+        x = d.substr(8, 2);
+        mday = std::stoi(x);
+        if (mday <= 0 || mday >= 32)
+        { // Erreur mday
+#if Serie_afficher_Diffusee_ == 1
+            //wcerr << L"    " << L"mday=" << mday << endl;
+            B.Ok_W(L"mday=" + std::to_wstring(mday));
+#endif
+            return EXIT_FAILURE;
+        }
     }
-}*/
+    D.tm_year = year - 1900;
+    D.tm_mon = mon - 1;
+    D.tm_mday = mday;
+#if Serie_afficher_Diffusee_ == 1
+    //wcout << L"    " << L"[" << year << L"/" << mon << L"/" << mday << L"]" << endl;
+    B.Ok_W(L'{' + to_wstring(year) + L'/' + std::to_wstring(mon) + L'/' + to_wstring(mday) + L'}');
+#endif
+    Date_Diffusee_a_partir_de[I] = D;
+    Date_Diffusee_a_partir_de_[I] = true;
+#if	Serie_afficher_Diffusee_ == 1
+    //wcout << B_T << L"const int Serie_afficher_Diffusee(" << I + 1 << L", " << d << L") : Ok !" << B_t << endl;
+    B.Ok_T(L"const int Serie_afficher_Diffusee() : Ok !");
+#endif
+    return EXIT_SUCCESS;
+}
+*/
+
+
+
+
 Serie::Serie(std::filesystem::path racine)
 {
     this->racine = racine;
@@ -1438,6 +1505,7 @@ Serie::Serie(std::filesystem::path racine)
         std::wstring titres = match[1];
         m_titres = Dossier_Titres(titres);
         m_annees = (match[2].matched) ? match[2].str() : L"";
+        //m_annees = ? ? ? _Annees(annees);
 
         m_sur = (match[3].matched) ? match[3].str() : L"";
 
@@ -1449,6 +1517,7 @@ Serie::Serie(std::filesystem::path racine)
         assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
     }
 }
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)                                                                               #
@@ -1457,6 +1526,8 @@ Serie::Serie(std::filesystem::path racine)
 /// ???
 std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
 {
+    //bool found = (titres2==m_titres); !!!
+    //assert(titres2==m_titre && "Le contenu du fichier ne correspond pas au nom du répertoire");
     assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
     size_t pos = 0;
     const std::wstring d_p = L" - ";
@@ -1827,9 +1898,25 @@ const std::wstring Serie::Calcul_Note_Affichage()
             fractional_str = fractional_tmp.substr(2, 2);
         }
 
-        res = whole_str + keyColor[0] + sepDecimal + valuesColor + fractional_str + keyColor[0] + L"/5";
+        res = whole_str + keyColor[1] + sepDecimal + valuesColor + fractional_str + keyColor[0] + L"/5";
     }
     return (res.length() > 0) ? L" " + res + valuesColor : L"";
+}
+
+const std::wstring Serie::xyz_Annees(std::wstring annees)
+{
+    assert(annees.length() > 0 && L"L'année---");
+    //std::wstring a;
+    std::tm tm;
+    tm = saisons[0].m_dossier.first;
+    m_annees = std::to_wstring(1900 + tm.tm_year);
+    annees = annees.substr(4);
+    if(annees.size() == 1)
+        return m_annees;
+    if(annees[0] && (annees[1] != std::wstring::npos && annees[1] == L' '))
+        return m_annees + keyColor[1] + L'-' + valuesColor;
+    tm = saisons.back().m_dossier.first;
+    return m_annees + keyColor[1] + L'-' + valuesColor + std::to_wstring(1900 + tm.tm_year);
 }
 
 // ######################################################################################################################################################
@@ -1980,6 +2067,7 @@ const void Serie::Print_Titre()
     if (affichage_titres_actif)
     {
         std::wstring titres_str;
+        std::wstring annees_str;
         std::wstring sur_str;
         std::wstring sj_str;
         std::wstring note_str;
@@ -1994,10 +2082,13 @@ const void Serie::Print_Titre()
             wstr = date_string;
             titres_str += keyColor[0] + L" (" + valuesColor + wstr + keyColor[0] + L')' + valuesColor;
         }*/
+        // Année(s)
+        if (affichage_annees_actif)
+            annees_str += keyColor[0] + L" (" + valuesColor + xyz_Annees(m_annees) + keyColor[0] + L')' + valuesColor;        
         // sur
         if (affichage_sur_actif && m_sur != L"")
         {
-            sur_str += keyColor[0] + L" (sur " + valuesColor + m_sur + keyColor[0] + L" : " + valuesColor;
+            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
             // Disney+ SJ
             if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
                 sur_str += m_disney_sj;
@@ -2010,18 +2101,18 @@ const void Serie::Print_Titre()
         {
             // Disney+ SJ
             if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+ : " + m_disney_sj + keyColor[0] + L')' + valuesColor;
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + m_disney_sj + keyColor[0] + L')' + valuesColor;
             // Netflix SJ
             if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
         }
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
-            sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[0] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
+            sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
         // Note
         if (affichage_note_actif)
             note_str += Calcul_Note_Affichage();
 
-        std::wcout << titres_str << sur_str << sj_str << note_str << std::endl;
+        std::wcout << titres_str << annees_str <<sur_str << sj_str << note_str << std::endl;
     }
 }
