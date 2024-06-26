@@ -2024,6 +2024,60 @@ const void Serie::Print_En_relation_avec()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # const void Serie::Print_Header()                                                                                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Serie::Print_Header()
+{
+    if (affichage_titres_actif)
+    {
+        std::wstring titres_str;
+        std::wstring annees_str;
+        std::wstring sur_str;
+        std::wstring sj_str;
+        std::wstring note_str;
+
+        titres_str = keyColor[0] + L"Titre : " + valuesColor + m_titres[0];
+        if (m_titres.size() > 1)
+            titres_str += keyColor[1] + m_titres[1] + valuesColor + m_titres[2];
+        // Année(s)
+        if (affichage_annees_actif)
+            m_annees = keyColor[0] + L" (" + valuesColor + xyz_Annees(m_annees) + keyColor[0] + L')' + valuesColor;
+        // sur
+        if (affichage_sur_actif && m_sur != L"")
+        {
+            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
+                sur_str += m_disney_sj;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+                sur_str += m_netflix_sj;
+            sur_str += keyColor[0] + L')' + valuesColor;
+        }
+        else
+        {
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + m_disney_sj + keyColor[0] + L')' + valuesColor;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
+        }
+        // La signalétique jeunesse
+        if (affichage_sj_actif && m_sj.length() != 0)
+            sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
+        // Note
+        if (affichage_note_actif)
+            note_str += Calcul_Note_Affichage();
+
+        std::wcout << titres_str << m_annees << sur_str << sj_str << note_str << std::endl;
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # const void Serie::Print_Saison(Saison saison)                                                                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -2055,56 +2109,3 @@ const void Serie::Print_Saisons()
     }
 }
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # const void Serie::Print_Header()                                                                                                                   #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-const void Serie::Print_Header()
-{
-    if (affichage_titres_actif)
-    {
-        std::wstring titres_str;
-        std::wstring annees_str;
-        std::wstring sur_str;
-        std::wstring sj_str;
-        std::wstring note_str;
-
-        titres_str = keyColor[0] + L"Titre : " + valuesColor + m_titres[0];
-        if (m_titres.size() > 1)
-            titres_str += keyColor[1] + m_titres[1] + valuesColor + m_titres[2];
-        // Année(s)
-        if (affichage_annees_actif)
-            m_annees += keyColor[0] + L" (" + valuesColor + xyz_Annees(m_annees) + keyColor[0] + L')' + valuesColor;        
-        // sur
-        if (affichage_sur_actif && m_sur != L"")
-        {
-            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += m_disney_sj;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += m_netflix_sj;
-            sur_str += keyColor[0] + L')' + valuesColor;
-        }
-        else
-        {
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + m_disney_sj + keyColor[0] + L')' + valuesColor;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
-        }
-        // La signalétique jeunesse
-        if (affichage_sj_actif && m_sj.length() != 0)
-            sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
-        // Note
-        if (affichage_note_actif)
-            note_str += Calcul_Note_Affichage();
-
-        std::wcout << titres_str << /*m_annees << */sur_str << sj_str << note_str << std::endl;
-    }
-}
