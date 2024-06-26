@@ -1111,51 +1111,6 @@ std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring m
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::Print_Header()                                                                                                                        #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void Saison::Print_Header()
-{
-    wchar_t date_tab[15];
-    std::wcsftime(date_tab, 15, L"%d/%m/%Y", &m_dossier.first);
-    std::wstring date_tab_str = date_tab;
-
-    std::wstring date_str = date_tab_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(6, 4);
-
-    std::wstring dossier_str;
-    if (m_dossier.second != L"")
-        dossier_str = keyColor[0] + m_dossier.second + valuesColor + L' ';
-
-    std::wstring titre_str;
-    if (m_titres.size() != 0)
-    {
-        titre_str = keyColor[0] + m_titres[0] + valuesColor;
-        if (m_titres.size() > 1)
-        {
-            titre_str += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
-        }
-        titre_str += keyColor[1] + L" : " + valuesColor;
-    }
-
-    std::wstring resume_str;
-    if (m_serie.m_resume != m_resume)
-    {
-        for (auto r : m_resume)
-            resume_str += r;
-    }
-    else
-    {
-        resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, keyColor[1] + L'(' + valuesColor + L"Bis" + keyColor[1] + L')' + valuesColor, 5);
-    }
-
-    std::wstring numero_str = L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
-
-    std::wcout << date_str << dossier_str << keyColor[1] + L" : " + valuesColor << titre_str << resume_str << numero_str << std::endl;
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # void Saison::Print()                                                                                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -1287,6 +1242,51 @@ const void Saison::Print_Date_etc()
         date_etc_str += L"\r\n";
         std::wcout << date_etc_str;
     }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::Print_Header()                                                                                                                        #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Saison::Print_Header()
+{
+    wchar_t date_tab[15];
+    std::wcsftime(date_tab, 15, L"%d/%m/%Y", &m_dossier.first);
+    std::wstring date_tab_str = date_tab;
+
+    std::wstring date_str = date_tab_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(6, 4);
+
+    std::wstring dossier_str;
+    if (m_dossier.second != L"")
+        dossier_str = keyColor[0] + m_dossier.second + valuesColor + L' ';
+
+    std::wstring titre_str;
+    if (m_titres.size() != 0)
+    {
+        titre_str = keyColor[0] + m_titres[0] + valuesColor;
+        if (m_titres.size() > 1)
+        {
+            titre_str += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
+        }
+        titre_str += keyColor[1] + L" : " + valuesColor;
+    }
+
+    std::wstring resume_str;
+    if (m_serie.m_resume != m_resume)
+    {
+        for (auto r : m_resume)
+            resume_str += r;
+    }
+    else
+    {
+        resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, keyColor[1] + L'(' + valuesColor + L"Bis" + keyColor[1] + L')' + valuesColor, 5);
+    }
+
+    std::wstring numero_str = L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
+
+    std::wcout << date_str << dossier_str << keyColor[1] + L" : " + valuesColor << titre_str << resume_str << numero_str << std::endl;
 }
 
 // ######################################################################################################################################################
@@ -2105,6 +2105,6 @@ const void Serie::Print_Header()
         if (affichage_note_actif)
             note_str += Calcul_Note_Affichage();
 
-        std::wcout << titres_str << m_annees << sur_str << sj_str << note_str << std::endl;
+        std::wcout << titres_str << /*m_annees << */sur_str << sj_str << note_str << std::endl;
     }
 }

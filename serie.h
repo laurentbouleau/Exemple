@@ -170,11 +170,11 @@ public:
     void initialiser_Resume(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
  
-    void Print_Header();
     void Print();
     void Print_Avec();
     void Print_Chaine();
     const void Print_Date_etc();
+    void Print_Header();
     void Print_Images();
     void Print_Netflix();
     void Print_Note();
@@ -246,6 +246,7 @@ private:
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
+    std::wstring m_annees; // std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
     std::wstring m_audiodescription;
     std::wstring m_chaine;
     std::vector<std::wstring> m_creee_par;
@@ -263,8 +264,6 @@ private:
     std::vector<std::wstring> m_titres;
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
-
-    std::wstring m_annees; // std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
 
     bool affichage_annees_actif = true;
     bool affichage_avec_actif = true;
