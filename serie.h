@@ -234,10 +234,11 @@ private:
 
     const void Print_Saison(Saison saison);
     const void Print_Saisons();
+ 
     const void Print_Chaine();
     const void Print_Creee_par();
     const void Print_En_relation_avec();
-    const void Print_Titre();
+    const void Print_Header();
 
     std::filesystem::path racine;
 

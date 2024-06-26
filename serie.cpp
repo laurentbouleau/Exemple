@@ -1505,7 +1505,6 @@ Serie::Serie(std::filesystem::path racine)
         std::wstring titres = match[1];
         m_titres = Dossier_Titres(titres);
         m_annees = (match[2].matched) ? match[2].str() : L"";
-        //m_annees = ? ? ? _Annees(annees);
 
         m_sur = (match[3].matched) ? match[3].str() : L"";
 
@@ -1772,15 +1771,15 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
 { // Titre
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::vector<std::wstring> titres = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
-    assert((titres.size() != 0));
+    std::vector<std::wstring> contenu = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    assert((contenu.size() != 0));
 
     std::vector<std::wstring> t;
 
 
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     std::wsmatch match;
-    if (std::regex_match(titres[0], match, titre_pattern))
+    if (std::regex_match(contenu[0], match, titre_pattern))
     {
         t.push_back(match[1]);
         if (match.length() > 2)
@@ -1794,7 +1793,7 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     }
     else
     {
-        t.push_back(titres[0]);
+        t.push_back(contenu[0]);
     }
 
  
@@ -1845,13 +1844,13 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
 */
     //???
 
-    titres.erase(titres.begin());
-    if (titres.size() > 0)
+    contenu.erase(contenu.begin());
+    if (contenu.size() > 0)
     {
-        initialiser_Duree(titres[0]);
-        titres.erase(titres.begin());
-        if (titres.size() > 0)
-            m_resume = titres;
+        initialiser_Duree(contenu[0]);
+        contenu.erase(contenu.begin());
+        if (contenu.size() > 0)
+            m_resume = contenu;
     }
 }
 
@@ -1905,18 +1904,18 @@ const std::wstring Serie::Calcul_Note_Affichage()
 
 const std::wstring Serie::xyz_Annees(std::wstring annees)
 {
-    assert(annees.length() > 0 && L"L'année---");
+    assert(annees.length() > 0 && L"L'année---"); // ???
     //std::wstring a;
     std::tm tm;
     tm = saisons[0].m_dossier.first;
-    m_annees = std::to_wstring(1900 + tm.tm_year);
+    std::wstring a = std::to_wstring(1900 + tm.tm_year);
     annees = annees.substr(4);
     if(annees.size() == 1)
-        return m_annees;
+        return a;
     if(annees[0] && (annees[1] != std::wstring::npos && annees[1] == L' '))
-        return m_annees + keyColor[1] + L'-' + valuesColor;
+        return a + keyColor[1] + L'-' + valuesColor;
     tm = saisons.back().m_dossier.first;
-    return m_annees + keyColor[1] + L'-' + valuesColor + std::to_wstring(1900 + tm.tm_year);
+    return a + keyColor[1] + L'-' + valuesColor + std::to_wstring(1900 + tm.tm_year);
 }
 
 // ######################################################################################################################################################
@@ -1927,8 +1926,8 @@ const std::wstring Serie::xyz_Annees(std::wstring annees)
 
 const void Serie::Print()
 {
-    // Titre
-    Print_Titre();
+    // Header
+    Print_Header();
     // Titre Original
     Print_Titre_Original(m_titres_originaux, affichage_titres_originaux_actif, keyColor, valuesColor);
     // Chaîne d'origine
@@ -2058,11 +2057,11 @@ const void Serie::Print_Saisons()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::Print_Titre()                                                                                                                    #
+// # const void Serie::Print_Header()                                                                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_Titre()
+const void Serie::Print_Header()
 {
     if (affichage_titres_actif)
     {
@@ -2075,16 +2074,9 @@ const void Serie::Print_Titre()
         titres_str = keyColor[0] + L"Titre : " + valuesColor + m_titres[0];
         if (m_titres.size() > 1)
             titres_str += keyColor[1] + m_titres[1] + valuesColor + m_titres[2];
-        /*if (m_date_Diffusee_a_partir_de_[0] && Date_Diffusee_a_partir_de[0].tm_year != 0)
-        {
-            wchar_t date_string[22];
-            wcsftime(date_string, 15, L"%Y", &Date_Diffusee_a_partir_de[0]);
-            wstr = date_string;
-            titres_str += keyColor[0] + L" (" + valuesColor + wstr + keyColor[0] + L')' + valuesColor;
-        }*/
         // Année(s)
         if (affichage_annees_actif)
-            annees_str += keyColor[0] + L" (" + valuesColor + xyz_Annees(m_annees) + keyColor[0] + L')' + valuesColor;        
+            m_annees += keyColor[0] + L" (" + valuesColor + xyz_Annees(m_annees) + keyColor[0] + L')' + valuesColor;        
         // sur
         if (affichage_sur_actif && m_sur != L"")
         {
@@ -2113,6 +2105,6 @@ const void Serie::Print_Titre()
         if (affichage_note_actif)
             note_str += Calcul_Note_Affichage();
 
-        std::wcout << titres_str << annees_str <<sur_str << sj_str << note_str << std::endl;
+        std::wcout << titres_str << m_annees << sur_str << sj_str << note_str << std::endl;
     }
 }
