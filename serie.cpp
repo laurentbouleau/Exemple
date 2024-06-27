@@ -729,6 +729,7 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
     auto y = std::stoi(wstr, &pos);
     assert(1582 <= y && L"L'année est inférieur !");
     wstr = wstr.substr(4);
+
     try
     {
         test_date_tire(wstr[0]);
@@ -1905,17 +1906,31 @@ const std::wstring Serie::Calcul_Note_Affichage()
 const std::wstring Serie::xyz_Annees(std::wstring annees)
 {
     assert(annees.length() > 0 && L"L'année---"); // ???
-    //std::wstring a;
+    std::size_t pos = 0;
     std::tm tm;
     tm = saisons[0].m_dossier.first;
-    std::wstring a = std::to_wstring(1900 + tm.tm_year);
+    auto y = std::stoi(annees, &pos);
+    assert(y  == (1900 + tm.tm_year) && L"année != saisons[0].m_dossier.first !!!");
+    std::wstring wstr = annees.substr(0, 4);
     annees = annees.substr(4);
     if(annees.size() == 1)
-        return a;
+        return wstr;
+    try
+    {
+        test_date_tire(annees[0]);
+    }
+    catch (exception_date_tiret e2)
+    {
+        std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
+        exit(1);
+    }
     if(annees[0] && (annees[1] != std::wstring::npos && annees[1] == L' '))
-        return a + keyColor[1] + L'-' + valuesColor;
+        return wstr + keyColor[1] + L'-' + valuesColor;
+    annees = annees.substr(1);
     tm = saisons.back().m_dossier.first;
-    return a + keyColor[1] + L'-' + valuesColor + std::to_wstring(1900 + tm.tm_year);
+    y = std::stoi(annees, &pos);
+    assert(y == (1900 + tm.tm_year) && L"année != saisons.back().m_dossier.first !!!");
+    return wstr + keyColor[1] + L'-' + valuesColor + std::to_wstring(1900 + tm.tm_year);
 }
 
 // ######################################################################################################################################################
