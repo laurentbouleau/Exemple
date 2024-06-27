@@ -230,7 +230,8 @@ public:
 private:
     const std::wstring Calcul_Note_Affichage();
 
-    const std::wstring xyz_Annees(std::wstring annees);
+    //const std::wstring xyz_Annees(std::wstring annees);
+    const std::wstring xyz_Annees();
 
     const void Print_Saison(Saison saison);
     const void Print_Saisons();
