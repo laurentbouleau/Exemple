@@ -2076,7 +2076,6 @@ const void Serie::Print_Header()
         if (m_titres.size() > 1)
             titres_str += keyColor[1] + m_titres[1] + valuesColor + m_titres[2];
         // Année(s)
-//        std::wstring image_str = keyColor + L"Image" + ((image.size() > 1) ? L"s" : L"") + L" : [" + valuesColor;
         if (affichage_annees_actif)
         {
             annees_str = xyz_Annees();
