@@ -1496,6 +1496,8 @@ Serie::Serie(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
+    std::wstring annees;
+
     //std::wregex filename_pattern{ L"(xxxx)__(yyyy)?__(zzzz)?__(tttt)?" };
     //std::wregex filename_pattern{ L"(.+?)(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)?(.+)?" };
 //    std::wregex filename_pattern{ L"(.+?)(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)?(.+)?" };
@@ -1506,6 +1508,10 @@ Serie::Serie(std::filesystem::path racine)
         std::wstring titres = match[1];
         m_titres = Dossier_Titres(titres);
         m_annees = (match[2].matched) ? match[2].str() : L"";
+        std::size_t pos;
+        pos = m_annees.find(L' ');
+        if (pos != std::wstring::npos)
+            m_annees = m_annees.substr(0, pos);
         m_sur = (match[3].matched) ? match[3].str() : L"";
 
         std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
@@ -1904,19 +1910,24 @@ const std::wstring Serie::Calcul_Note_Affichage()
 
 const std::wstring Serie::xyz_Annees(/*std::wstring annees*/)
 {
-    assert(m_annees.length() > 0 && L"L'année---"); // ???
-    std::size_t pos = 0;
+    assert(m_annees.length() > 0 && L"L'année---");// ???
+    assert(m_annees.size() < 10 && L"L'année 2---");// ???
+    std::size_t pos = m_annees.size();
+    std::wstring annees_str, tmp;
+    std::vector<std::wstring> annees_vec;
+ 
+    std::wstringstream ss(m_annees); // ???
+    while (getline(ss, tmp, L'-')) // ???
+        annees_vec.push_back(tmp);
+    bool found = false;
     std::tm tm;
     tm = saisons[0].m_dossier.first;
-    auto y = std::stoi(m_annees, &pos);
+    auto y = std::stoi(annees_vec[0], &pos);
     assert(y == (1900 + tm.tm_year) && L"année != saisons[0].m_dossier.first !!!");
-    bool found = false;
-    std::wstring annees_str;// = m_annees.substr(0, 4);
-    //annees = annees.substr(4);
-    if (!found && (m_annees[4] == std::wstring::npos /*|| (m_annees[5] == L' ' && m_annees[6] != std::wstring::npos)*/))
+    annees_str = annees_vec[0];
+    if (m_annees[4] != L'-')
     {
         found = true;
-        annees_str += m_annees.substr(0, 4);
     }
     if (!found)
     {
@@ -1927,28 +1938,17 @@ const std::wstring Serie::xyz_Annees(/*std::wstring annees*/)
         catch (exception_date_tiret e2)
         {
             std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
-            //exit(1);
         }
-        annees_str += m_annees.substr(0, 4) + keyColor[1] + L'-' + valuesColor;
-        if (!found && (m_annees[5] == std::wstring::npos || (m_annees[5] == L' ' && m_annees[6] != std::wstring::npos)))
-            //return wstr + keyColor[1] + L'-' + valuesColor;
-        {
-            found = true;
-            //annees_str +=
-        }
-        //annees = annees.substr(1);
-        if(!found && std::isdigit(m_annees[5]) && std::isdigit(m_annees[6]) && std::isdigit(m_annees[7]) && std::isdigit(m_annees[8]))
-        {
-            tm = saisons.back().m_dossier.first;
-            y = std::stoi(m_annees.substr(5,9), &pos);
-            assert(y == (1900 + tm.tm_year) && L"année != saisons.back().m_dossier.first !!!");
-            annees_str += m_annees.substr(5, 9);
-            found = true;
-        }
-        assert((m_annees[9] != std::wstring::npos) && L"année... !!!");
-
+        annees_str += keyColor[1] + L'-';
     }
-    //return keyColor[1] +L'(' + + L'-' + valuesColor + std::to_wstring(1900 + tm.tm_year);
+    if (!found && annees_vec.size() == 2)
+    {
+        found = true;
+        tm = saisons.back().m_dossier.first;
+        y = std::stoi(m_annees.substr(5, 9), &pos);
+        assert(y == (1900 + tm.tm_year) && L"année != saisons.back().m_dossier.first !!!");
+        annees_str += valuesColor + annees_vec[1];
+    }
     return keyColor[0] + L" (" + valuesColor + annees_str + keyColor[0] + L')' + valuesColor;
 }
 
