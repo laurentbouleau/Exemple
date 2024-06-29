@@ -1908,7 +1908,7 @@ const std::wstring Serie::Calcul_Note_Affichage()
     return (res.length() > 0) ? L" " + res + valuesColor : L"";
 }
 
-const std::wstring Serie::xyz_Annees(/*std::wstring annees*/)
+const std::wstring Serie::xyz_Annees()
 {
     assert(m_annees.length() > 0 && L"L'année---");// ???
     assert(m_annees.size() < 10 && L"L'année 2---");// ???
