@@ -3,6 +3,7 @@
 
 
 #include "Exemple.h"
+#include "film.h"
 #include "serie.h"
 // C :
 #include <io.h>

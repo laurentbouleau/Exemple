@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 
 #include "Exemple.h"
+#include "film.h"
 #include "film_serie.h"
 #include "serie.h"
 // C :

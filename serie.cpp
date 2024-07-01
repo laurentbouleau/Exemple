@@ -1496,7 +1496,7 @@ Serie::Serie(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
-    std::wstring annees;
+    std::wstring annees; // ???
 
     //std::wregex filename_pattern{ L"(xxxx)__(yyyy)?__(zzzz)?__(tttt)?" };
     //std::wregex filename_pattern{ L"(.+?)(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)?(.+)?" };
