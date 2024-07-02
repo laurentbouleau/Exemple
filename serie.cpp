@@ -241,15 +241,6 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     //episode = std::stoi(match[filename_numero_episode_index]);
     std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
 
-/*    if (t[0] == L"")
-    {
-        m_fichier_pas_zero = false;
-        //m_numero++;
-//        SequenceVisionnage{ info_vis };
-        //InfosVisionnage.push_back();
-//        SequenceVisionnage.push_back({ InfosVisionnage });
-        return;
-    }*/
     m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
 
     size_t pos;// = 0;

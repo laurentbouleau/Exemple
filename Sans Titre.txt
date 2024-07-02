@@ -1,3 +1,64 @@
+    //auto nomDossier = racine./*filename().*/;// wstring();
+
+    bool found = false;
+
+    auto nomDossier = racine;
+    std::size_t pos = 0, pos2 = 0;
+    pos = nomDossier.find_last_of(L"\\");
+    if (pos != std::wstring::npos)
+        exit(1);
+    nomDossier = nomDossier.substr(pos + 1);
+    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
+
+    pos = nomDossier.find(L".[");
+    if (pos == std::wstring::npos)
+    {
+        std::wcout << nomDossier[pos] << std::endl;
+        std::wcout << nomDossier << std::endl;
+        exit(1);
+    }
+    pos2 = nomDossier.find(L")");
+    if (pos2 != std::wstring::npos)
+        exit(1);
+    else if (pos > pos2)
+        exit(1);
+    else
+    {
+        found = true;
+        Serie serie(racine);
+        for (const auto& entry_serie : fs::directory_iterator((serie.getRacine())))
+        {
+            if (entry_serie.is_regular_file())
+            {
+                serie.initialiser_Fichier(entry_serie);
+                continue;
+            }
+            if (fs::is_directory(entry_serie))
+            {
+                Saison saison(entry_serie, serie);
+                for (const auto& entry_saison : fs::directory_iterator(entry_serie))
+                {
+                    if (entry_saison.is_regular_file())
+                    {
+                        saison.initialiser_Fichier(entry_saison);
+                    }
+                }
+                serie.saisons.push_back(saison);
+            }
+        }
+        serie.Print();
+    }
+
+
+    //const std::wstring d_p = L" - ";
+    //pos = titres.find(d_p);
+
+    //if(!found && ())
+
+
+
+
+
 
 ajouter_InfosVisionnage(info_vis)
 creer_Episode(info_vis)
