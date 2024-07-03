@@ -32,6 +32,7 @@
 #include <regex>
 #include <numeric>
 #include <string_view>
+#include <optional>
 
 #include <filesystem> // C++17 standard header file name
 

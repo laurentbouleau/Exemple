@@ -24,5 +24,6 @@
 #include <codecvt>
 //#include <sstream>
 #include <regex>
+#include <optional>
 
 #include <filesystem> // C++17 standard header file name

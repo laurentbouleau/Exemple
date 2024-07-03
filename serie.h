@@ -32,6 +32,7 @@
 #include <regex>
 #include <numeric>
 #include <string_view>
+#include <optional>
 
 #include <filesystem> // C++17 standard header file name
 
@@ -212,6 +213,7 @@ public:
     Serie(std::filesystem::path racine);
  
     std::vector<std::wstring> Dossier_Titres(std::wstring titres);
+
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Creee_par(std::filesystem::path const& cheminFichier);
@@ -228,10 +230,11 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
-    const std::wstring Calcul_Note_Affichage();
+    const std::wstring calculer_Annee_Debut();
+    const std::wstring calculer_Annee_Fin(std::wstring& wstr);
+    const std::wstring calcul_Note_Affichage();
 
-    //const std::wstring xyz_Annees(std::wstring annees);
-    const std::wstring xyz_Annees();
+    const std::wstring format_Annees();
 
     const void Print_Saison(Saison saison);
     const void Print_Saisons();

@@ -26,6 +26,7 @@
 #include <regex>
 #include <numeric>
 #include <string_view>
+#include <optional>
 
 #include <filesystem> // C++17 standard header file name
 
@@ -1490,9 +1491,9 @@ Serie::Serie(std::filesystem::path racine)
     std::wstring annees; // ???
 
     //std::wregex filename_pattern{ L"(xxxx)__(yyyy)?__(zzzz)?__(tttt)?" };
-    //std::wregex filename_pattern{ L"(.+?)(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)?(.+)?" };
-//    std::wregex filename_pattern{ L"(.+?)(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)?(.+)?" };
     std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)\\])?(?:\\.(.+))?" };
+
+//    std::wregex filename_pattern{ L"(.+?)(?:\.\[(\d{4}\-\d{4}\s?|\d{4}\-\s?|\d{4}\s?)?([^\]]*)\])?(?:\.(.+))?" };
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
@@ -1512,6 +1513,89 @@ Serie::Serie(std::filesystem::path racine)
     {
         assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
     }
+}
+
+const std::wstring Serie::calculer_Annee_Debut()
+{
+    std::size_t pos = m_annees.size();
+    std::wstring tmp;
+    std::vector<std::wstring> annees_vec;
+
+    std::wstringstream annees(m_annees); // ???
+    while (getline(annees, tmp, L'-'))
+    {// ???
+        annees_vec.push_back(tmp);
+        break;
+    }
+
+    std::tm tm;
+    tm = saisons[0].m_dossier.first;
+    assert(std::stoi(annees_vec[0], &pos) == (1900 + tm.tm_year) && L"année != saisons[0].m_dossier.first !!!");
+    return std::to_wstring(std::stoi(annees_vec[0]));
+}
+
+const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)
+{
+    std::wstring tmp;
+    std::vector<std::wstring> annees_vec;
+
+    std::wstringstream annees(m_annees); // ???
+    while (getline(annees, tmp, L'-'))
+    {// ???
+        annees_vec.push_back(tmp);
+    }
+
+    std::tm tm;
+    tm = saisons.back().m_dossier.first;
+    return std::to_wstring(std::stoi(annees_vec.back()));
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const std::wstring Serie::calcul_Note_Affichage()                                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const std::wstring Serie::calcul_Note_Affichage()
+{
+    std::wstring res;
+
+    std::vector<double>notes;
+    for (const auto& saison : saisons)
+    {
+        if (saison.m_note >= 0.0)
+        {
+            notes.push_back(saison.m_note);
+        }
+    }
+    if (notes.size() < 1)
+        res = keyColor[0] + L'(' + valuesColor + L"pas de note !" + keyColor[0] + L')';
+    else
+    {
+        double note = std::accumulate(notes.begin(), notes.end(), 0.0) / notes.size();
+        double whole, fractional;
+        fractional = std::modf(note, &whole);
+
+        std::wstring whole_str = wstring_format(L"%.0f", whole);
+        std::wstring fractional_tmp = wstring_format(L"%.2f", fractional);
+        std::wstring sepDecimal = fractional_tmp.substr(1, 1);
+        std::wstring fractional_str;
+        if (ends_with(fractional_tmp, L"00"))
+        {
+            fractional_str = L"";
+        }
+        else if (ends_with(fractional_tmp, L"0"))
+        {
+            fractional_str = fractional_tmp.substr(2, 1);
+        }
+        else
+        {
+            fractional_str = fractional_tmp.substr(2, 2);
+        }
+
+        res = whole_str + keyColor[1] + sepDecimal + valuesColor + fractional_str + keyColor[0] + L"/5";
+    }
+    return (res.length() > 0) ? L" " + res + valuesColor : L"";
 }
 
 // ######################################################################################################################################################
@@ -1612,6 +1696,49 @@ std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
         initialiser_Sous_Genre(m_sous_genre);
         //affichage_sous_genre_actif = true;
     }*/
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const std::wstring Serie::format_Annees()                                                                                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const std::wstring Serie::format_Annees()
+{
+    //assert(m_annees.length() > 0 && L"L'année---");// ???
+    //assert(m_annees.size() < 10 && L"L'année 2---");// ???
+    bool found = false;
+
+    std::wstring annees_str = calculer_Annee_Debut();
+    std::size_t pos = 0;
+    std::wstring wstr = m_annees.substr(4);
+    if (!found && wstr[0] != L'-')
+        found = true;
+    if (!found)
+    {
+        try
+        {
+            test_date_tire(wstr[0]);
+        }
+        catch (exception_date_tiret e2)
+        {
+            std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
+        }
+        annees_str += keyColor[1] + L'-';
+        wstr = wstr.substr(1);
+
+        if (!found && wstr.length() == 0)
+        {
+            found = true;
+        }
+        if (!found)
+        {
+            found = true;
+            annees_str += valuesColor + calculer_Annee_Fin(wstr);
+        }
+    }
+    return keyColor[0] + L" (" + valuesColor + annees_str + keyColor[0] + L')' + valuesColor;
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1851,97 +1978,6 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     }
 }
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # const std::wstring Serie::Calcul_Note_Affichage()                                                                                                  #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-const std::wstring Serie::Calcul_Note_Affichage()
-{
-    std::wstring res;
-
-    std::vector<double>notes;
-    for (const auto& saison : saisons)
-    {
-        if (saison.m_note >= 0.0)
-        {
-            notes.push_back(saison.m_note);
-        }
-    }
-    if (notes.size() < 1)
-        res = keyColor[0] + L'(' + valuesColor + L"pas de note !" + keyColor[0] + L')';
-    else
-    {
-        double note = std::accumulate(notes.begin(), notes.end(), 0.0) / notes.size();
-        double whole, fractional;
-        fractional = std::modf(note, &whole);
-
-        std::wstring whole_str = wstring_format(L"%.0f", whole);
-        std::wstring fractional_tmp = wstring_format(L"%.2f", fractional);
-        std::wstring sepDecimal = fractional_tmp.substr(1, 1);
-        std::wstring fractional_str;
-        if (ends_with(fractional_tmp, L"00"))
-        {
-            fractional_str = L"";
-        }
-        else if (ends_with(fractional_tmp, L"0"))
-        {
-            fractional_str = fractional_tmp.substr(2, 1);
-        }
-        else
-        {
-            fractional_str = fractional_tmp.substr(2, 2);
-        }
-
-        res = whole_str + keyColor[1] + sepDecimal + valuesColor + fractional_str + keyColor[0] + L"/5";
-    }
-    return (res.length() > 0) ? L" " + res + valuesColor : L"";
-}
-
-const std::wstring Serie::xyz_Annees()
-{
-    assert(m_annees.length() > 0 && L"L'année---");// ???
-    assert(m_annees.size() < 10 && L"L'année 2---");// ???
-    std::size_t pos = m_annees.size();
-    std::wstring annees_str, tmp;
-    std::vector<std::wstring> annees_vec;
- 
-    std::wstringstream ss(m_annees); // ???
-    while (getline(ss, tmp, L'-')) // ???
-        annees_vec.push_back(tmp);
-    bool found = false;
-    std::tm tm;
-    tm = saisons[0].m_dossier.first;
-    auto y = std::stoi(annees_vec[0], &pos);
-    assert(y == (1900 + tm.tm_year) && L"année != saisons[0].m_dossier.first !!!");
-    annees_str = annees_vec[0];
-    if (m_annees[4] != L'-')
-    {
-        found = true;
-    }
-    if (!found)
-    {
-        try
-        {
-            test_date_tire(m_annees[4]);
-        }
-        catch (exception_date_tiret e2)
-        {
-            std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
-        }
-        annees_str += keyColor[1] + L'-';
-    }
-    if (!found && annees_vec.size() == 2)
-    {
-        found = true;
-        tm = saisons.back().m_dossier.first;
-        y = std::stoi(m_annees.substr(5, 9), &pos);
-        assert(y == (1900 + tm.tm_year) && L"année != saisons.back().m_dossier.first !!!");
-        annees_str += valuesColor + annees_vec[1];
-    }
-    return keyColor[0] + L" (" + valuesColor + annees_str + keyColor[0] + L')' + valuesColor;
-}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -2069,7 +2105,7 @@ const void Serie::Print_Header()
         // Année(s)
         if (affichage_annees_actif)
         {
-            annees_str = xyz_Annees();
+            annees_str = format_Annees();
         }
         // sur
         if (affichage_sur_actif && m_sur != L"")
@@ -2097,7 +2133,7 @@ const void Serie::Print_Header()
             sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
         // Note
         if (affichage_note_actif)
-            note_str += Calcul_Note_Affichage();
+            note_str += calcul_Note_Affichage();
 
         std::wcout << titres_str << annees_str << sur_str << sj_str << note_str << std::endl;
     }
