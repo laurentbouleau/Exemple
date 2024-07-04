@@ -1515,9 +1515,14 @@ Serie::Serie(std::filesystem::path racine)
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const std::wstring Serie::calculer_Annee_Debut()                                                                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 const std::wstring Serie::calculer_Annee_Debut()
 {
-    std::size_t pos = m_annees.size();
     std::wstring tmp;
     std::vector<std::wstring> annees_vec;
 
@@ -1530,9 +1535,15 @@ const std::wstring Serie::calculer_Annee_Debut()
 
     std::tm tm;
     tm = saisons[0].m_dossier.first;
-    assert(std::stoi(annees_vec[0], &pos) == (1900 + tm.tm_year) && L"année != saisons[0].m_dossier.first !!!");
+    assert(std::stoi(annees_vec[0]) == (1900 + tm.tm_year) && L"année != saisons[0].m_dossier.first !!!");
     return std::to_wstring(std::stoi(annees_vec[0]));
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)                                                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)
 {
@@ -1545,9 +1556,12 @@ const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)
         annees_vec.push_back(tmp);
     }
 
-    std::tm tm;
-    tm = saisons.back().m_dossier.first;
-    return std::to_wstring(std::stoi(annees_vec.back()));
+    std::tm tm, tm2;
+    tm = saisons[0].m_dossier.first;
+    assert((std::stoi(annees_vec.back()) > (1900 + tm.tm_year)) && L"année != saisons.back().m_dossier.first !!!");
+    tm2 = saisons.back().m_dossier.first;
+    assert((std::stoi(annees_vec.back()) == (1900 + tm2.tm_year)) && L"année != saisons.back().m_dossier.first !!!");
+    return annees_vec.back();
 }
 
 // ######################################################################################################################################################
