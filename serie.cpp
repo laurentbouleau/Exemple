@@ -1500,6 +1500,24 @@ Serie::Serie(std::filesystem::path racine)
         std::wstring titres = match[1];
         m_titres = Dossier_Titres(titres);
         m_annees = (match[2].matched) ? match[2].str() : L"";
+
+        if (match[2].matched)
+        {
+            std::wstring annees_str = match[2].str();
+            std::wsmatch dummy;
+            if (std::regex_match(annees_str, dummy, std::wregex(L"\\d{4}\\-\\d{4}\\s")))
+            {
+                m_f_anneesProduction.first = stoi(annees_str);
+                m_f_anneesProduction.second = stoi(annees_str.substr(5));
+            }
+            else
+            {
+                m_f_anneesProduction.first = stoi(annees_str);
+            }
+        }
+
+
+
         std::size_t pos;
         pos = m_annees.find(L' ');
         if (pos != std::wstring::npos)
@@ -1612,6 +1630,17 @@ const std::wstring Serie::calcul_Note_Affichage()
     return (res.length() > 0) ? L" " + res + valuesColor : L"";
 }
 
+void Serie::corriger_Annee_Debut()
+{
+    assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons[0].m_f_anneesDiffusion)) && "Il faut au moins une date de début.");
+
+    if (!m_f_anneesProduction.first || (saisons.size() > 0 && saisons[0].m_f_anneesDiffusion && m_f_anneesProduction.first > saisons[0].m_f_anneesDiffusion))
+        m_f_anneesProduction.first = saisons[0].m_f_anneesDiffusion;
+}
+
+void Serie::corriger_Annee_Fin()
+{}
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)                                                                               #
@@ -1717,7 +1746,7 @@ std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const std::wstring Serie::format_Annees()
+/*const std::wstring Serie::format_Annees()
 {
     //assert(m_annees.length() > 0 && L"L'année---");// ???
     //assert(m_annees.size() < 10 && L"L'année 2---");// ???
@@ -1752,6 +1781,27 @@ const std::wstring Serie::format_Annees()
         }
     }
     return keyColor[0] + L" (" + valuesColor + annees_str + keyColor[0] + L')' + valuesColor;
+}*/
+
+std::wstring Serie::format_Annees()
+{
+    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
+    {
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[1] + L'-' + valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + keyColor[0] + L')' + valuesColor;
+    }
+    else if (m_f_anneesProduction.first)
+    {
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[1] + L')' + valuesColor;
+    }
+    else
+    {
+        std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(anneesDiffusion.first) + keyColor[1] + L'-' + valuesColor + std::to_wstring(anneesDiffusion.second) + keyColor[0] + L')' + valuesColor;
+    }
+}
+
+std::pair<int, int> Serie::calculer_Annees_Diffusion()
+{
 }
 
 // ######################################################################################################################################################

@@ -205,6 +205,8 @@ public:
     std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
 
     int m_numero{ -1 };
+
+    int m_f_anneesDiffusion;
 };
 
 class Serie
@@ -234,7 +236,13 @@ private:
     const std::wstring calculer_Annee_Fin(std::wstring& wstr);
     const std::wstring calcul_Note_Affichage();
 
-    const std::wstring format_Annees();
+    void corriger_Annee_Debut();
+    void corriger_Annee_Fin();
+
+    //const std::wstring format_Annees();
+    std::wstring format_Annees();
+    std::pair<int, int>  calculer_Annees_Diffusion();
+    std::pair<std::optional<int>, std::optional<int>> m_f_anneesProduction;
 
     const void Print_Saison(Saison saison);
     const void Print_Saisons();
