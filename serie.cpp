@@ -503,6 +503,7 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 void SequenceVisionnage::Print()
 {
     ;
+    system("PAUSE");
 }
 
 /*void SequenceVisionnage::Print()
@@ -676,7 +677,7 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 
 void Episode::Print()
 {
-    //Print_Data();
+    //Print_Data(); // ???
     for (auto vis : m_liste_sequence_visionnages)
     {
         vis.Print();
