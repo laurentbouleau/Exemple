@@ -185,15 +185,21 @@ public:
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
-    std::pair<std::tm, std::wstring>m_dossier;
+    std::pair<std::tm, std::wstring>m_date_diffusee_a_partir_de;
+    bool m_disney{ false };
+    int m_f_anneesDiffusion;
+    //std::pair<std::tm, std::wstring>m_dossier;
     //std::vector<Episode> episodes;
     //std::vector<InfosVisionnage>infosvisionnages;
     std::wstring m_chaine;
     std::vector<std::wstring> m_image;
     bool m_netflix{ false };
-    double m_note = -1.0;
+    double m_note{ -1.0 };
+    
     //std::pair<unsigned short int, std::vector<std::wstring>>saison;
     std::vector<std::wstring> m_titres;
+
+
 
     bool affichage_avec_actif = true;
     bool affichage_chaine_actif = true;
@@ -206,7 +212,6 @@ public:
 
     int m_numero{ -1 };
 
-    int m_f_anneesDiffusion;
 };
 
 class Serie
@@ -236,7 +241,7 @@ private:
     const std::wstring calculer_Annee_Fin(std::wstring& wstr);
     const std::wstring calcul_Note_Affichage();
 
-    void corriger_Annee_Debut();
+    const void corriger_Annee_Debut();
     void corriger_Annee_Fin();
 
     //const std::wstring format_Annees();
@@ -258,17 +263,20 @@ private:
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    std::wstring m_annees; // std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
+    //std::wstring m_annees; // std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
+    int m_annees{};
     std::wstring m_audiodescription;
     std::wstring m_chaine;
     std::vector<std::wstring> m_creee_par;
+    bool m_disney{ false };
     std::wstring m_disney_sj;
     std::wstring m_en_relation_avec;
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
     std::vector<std::wstring> m_nationalite;
+    bool m_netflix{ false };
     std::wstring m_netflix_sj;
-    double m_note = 0.0;
+    double m_note{ 0.0 };
     std::wstring m_sj;
     std::wstring m_sous_genre;// {};
     std::wstring m_sur;

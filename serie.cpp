@@ -296,41 +296,41 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     pos = t[0].find(d_p);
     if (!found && pos != std::wstring::npos)
     {
-        m_titres[0] = t[0].substr(0, pos);
-        m_titres[1] = d_p;
-        m_titres[2] = t[0].substr(pos + 3);
+        m_titres.push_back(t[0].substr(0, pos));
+        m_titres.push_back(d_p);
+        m_titres.push_back(t[0].substr(pos + 3));
         found = true;
     }
     const std::wstring d_p2 = L": ";
     pos = t[0].find(d_p2);
     if (!found && pos != std::wstring::npos)
     {
-        m_titres[0] = t[0].substr(0, pos);
-        m_titres[1] = d_p2;
-        m_titres[2] = t[0].substr(pos + 2);
+        m_titres.push_back(t[0].substr(0, pos));
+        m_titres.push_back(d_p2);
+        m_titres.push_back(t[0].substr(pos + 2));
         found = true;
     }
     const std::wstring d_p3 = L"/";
     pos = t[0].find(d_p3);
     if (!found && pos != std::wstring::npos)
     {
-        m_titres[0] = t[0].substr(0, pos);
-        m_titres[1] = d_p3;
-        m_titres[2] = t[0].substr(pos + 1);
+        m_titres.push_back(t[0].substr(0, pos));
+        m_titres.push_back(d_p3);
+        m_titres.push_back(t[0].substr(pos + 1));
         found = true;
     }
     const std::wstring d_p4 = L" - ";
     pos = t[0].find(d_p4);
     if (!found && pos != std::wstring::npos)
     {
-        m_titres[0] = t[0].substr(0, pos);
-        m_titres[1] = d_p4;
-        m_titres[2] = t[0].substr(pos + 3);
+        m_titres.push_back(t[0].substr(0, pos));
+        m_titres.push_back(d_p4);
+        m_titres.push_back(t[0].substr(pos + 3));
         found = true;
     }
     if (!found)
     {
-        m_titres[0] = t[0];
+        m_titres.push_back(t[0]);
         found = true;
     }
     t.erase(t.begin());
@@ -720,8 +720,8 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
     wchar_t sp = L' ', tiret = L'-';
     auto y = std::stoi(wstr, &pos);
     assert(1582 <= y && L"L'année est inférieur !");
+    m_f_anneesDiffusion = y;
     wstr = wstr.substr(4);
-
     try
     {
         test_date_tire(wstr[0]);
@@ -757,8 +757,8 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
     tm.tm_mon = m - 1;
     tm.tm_mday = d;
     wstr = wstr.substr(2);
-    m_dossier.first = tm;
-    m_dossier.second = wstr;
+    m_date_diffusee_a_partir_de.first = tm;
+    m_date_diffusee_a_partir_de.second = wstr;
 }
 
 // ######################################################################################################################################################
@@ -902,43 +902,38 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             if (nomFichier == L"Avec.txt")
             {
                 initialiser_Avec(cheminFichier, m_avec);
-                return;
             }
             // Chaîne d'origine
             if (nomFichier == L"Chaîne d'origine.txt")
             {
                 initialiser_Chaine(cheminFichier);
-                return;
             }
             // DVD
             if (nomFichier == L"DVD.txt")
             {
                 //D_DVD[I] = true;
-                return;
             }
             // Netflix
             if (nomFichier == L"Netflix.txt")
             {
                 initialiser_Netflix(cheminFichier);
-                return;
             }
             // Note
             if (nomFichier == L"Note.txt")
             {
                 initialiser_Note(cheminFichier);
-                return;
             }
             // Titre
             if (nomFichier == L"Titre.txt")
             {
                 initialiser_Titre(cheminFichier);
-                return;
             }
+            return;
         }
         //
-        if (std::regex_match(nomFichier, std::wregex{L"([[:digit:]]{1,2})x(.)+"}))
-        {
-            return;
+        //if (std::regex_match(nomFichier, std::wregex{L"([[:digit:]]{1,2})x(.)+"}))
+        //{
+        //    return;
             //InfosVisionnage info_vis{*this, m_cheminFichier};
             //bool none();
             /*if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
@@ -949,7 +944,20 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             {
                 m_liste_episodes.emplace(std::pair<const int, shared_ptr<Episode>>{ info_vis.m_NumeroEpisode, make_shared<Episode>(info_vis) });
             }*/
+        //}
+        if (std::regex_match(nomFichier, std::wregex{L"([[:digit:]]{1,2})x(.)+"}))
+        {
+            InfosVisionnage info_vis{ *this, cheminFichier };
+            if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
+            {
+                m_liste_episodes[info_vis.m_NumeroEpisode]->ajouter_SequenceVisionnage(info_vis);
+            }
+            else
+            {
+                m_liste_episodes.emplace(std::pair<const int, shared_ptr<Episode>>{ info_vis.m_NumeroEpisode, make_shared<Episode>(info_vis) });
+            }
         }
+
         //
         if (int j = std::stoi(nomFichier))
         {
@@ -1218,12 +1226,12 @@ const void Saison::Print_Date_etc()
     if (affichage_date_etc_actif)
     {
         wchar_t date_string[15];
-        std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_dossier.first);
+        std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_date_diffusee_a_partir_de.first);
         std::wstring date_etc_str;
         date_etc_str = date_string;
         date_etc_str = date_etc_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_etc_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_etc_str.substr(6, 4);
-        if (m_dossier.second != L"")
-            date_etc_str += keyColor[0] + m_dossier.second + valuesColor + L' ';
+        if (m_date_diffusee_a_partir_de.second != L"")
+            date_etc_str += keyColor[0] + m_date_diffusee_a_partir_de.second + valuesColor + L' ';
         date_etc_str += keyColor[0] + m_titres[0] + valuesColor;
         if (m_titres[2] != L"")
             date_etc_str += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
@@ -1246,14 +1254,14 @@ const void Saison::Print_Date_etc()
 void Saison::Print_Header()
 {
     wchar_t date_tab[15];
-    std::wcsftime(date_tab, 15, L"%d/%m/%Y", &m_dossier.first);
+    std::wcsftime(date_tab, 15, L"%d/%m/%Y", &m_date_diffusee_a_partir_de.first);
     std::wstring date_tab_str = date_tab;
 
     std::wstring date_str = date_tab_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(6, 4);
 
     std::wstring dossier_str;
-    if (m_dossier.second != L"")
-        dossier_str = keyColor[0] + m_dossier.second + valuesColor + L' ';
+    if (m_date_diffusee_a_partir_de.second != L"")
+        dossier_str = keyColor[0] + m_date_diffusee_a_partir_de.second + valuesColor + L' ';
 
     std::wstring titre_str;
     if (m_titres.size() != 0)
@@ -1488,19 +1496,17 @@ Serie::Serie(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
-    std::wstring annees; // ???
+    //std::wstring annees; // ???
 
-    //std::wregex filename_pattern{ L"(xxxx)__(yyyy)?__(zzzz)?__(tttt)?" };
     std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)\\])?(?:\\.(.+))?" };
-
-//    std::wregex filename_pattern{ L"(.+?)(?:\.\[(\d{4}\-\d{4}\s?|\d{4}\-\s?|\d{4}\s?)?([^\]]*)\])?(?:\.(.+))?" };
+    //std::wregex filename_pattern{ L"(.+?)(?:\.\[(\d{4}\-\d{4}\s?|\d{4}\-\s?|\d{4}\s?)?([^\]]*)\])?(?:\.(.+))?" };
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
         std::wstring titres = match[1];
         m_titres = Dossier_Titres(titres);
-        m_annees = (match[2].matched) ? match[2].str() : L"";
-
+        //m_annees = (match[2].matched) ? match[2].str() : L"";
+//        m_annees = (match[2].matched) ? match[2] : 0;
         if (match[2].matched)
         {
             std::wstring annees_str = match[2].str();
@@ -1516,12 +1522,6 @@ Serie::Serie(std::filesystem::path racine)
             }
         }
 
-
-
-        std::size_t pos;
-        pos = m_annees.find(L' ');
-        if (pos != std::wstring::npos)
-            m_annees = m_annees.substr(0, pos);
         m_sur = (match[3].matched) ? match[3].str() : L"";
 
         std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
@@ -1539,7 +1539,7 @@ Serie::Serie(std::filesystem::path racine)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const std::wstring Serie::calculer_Annee_Debut()
+/*const std::wstring Serie::calculer_Annee_Debut()
 {
     std::wstring tmp;
     std::vector<std::wstring> annees_vec;
@@ -1555,15 +1555,18 @@ const std::wstring Serie::calculer_Annee_Debut()
     tm = saisons[0].m_dossier.first;
     assert(std::stoi(annees_vec[0]) == (1900 + tm.tm_year) && L"année != saisons[0].m_dossier.first !!!");
     return std::to_wstring(std::stoi(annees_vec[0]));
+}*/
+const std::wstring Serie::calculer_Annee_Debut()
+{
+    return L"aaa";
 }
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)                                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)
+/*const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)
 {
     std::wstring tmp;
     std::vector<std::wstring> annees_vec;
@@ -1580,8 +1583,12 @@ const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)
     tm2 = saisons.back().m_dossier.first;
     assert((std::stoi(annees_vec.back()) == (1900 + tm2.tm_year)) && L"année != saisons.back().m_dossier.first !!!");
     return annees_vec.back();
-}
+}*/
 
+const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)
+{
+    return L"bbb";
+}
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # const std::wstring Serie::calcul_Note_Affichage()                                                                                                  #
@@ -1630,16 +1637,27 @@ const std::wstring Serie::calcul_Note_Affichage()
     return (res.length() > 0) ? L" " + res + valuesColor : L"";
 }
 
-void Serie::corriger_Annee_Debut()
+const void Serie::corriger_Annee_Debut()
 {
-    assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons[0].m_f_anneesDiffusion)) && "Il faut au moins une date de début.");
+    assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons[0].m_f_anneesDiffusion)) && L"Il faut au moins une date de début.");
 
     if (!m_f_anneesProduction.first || (saisons.size() > 0 && saisons[0].m_f_anneesDiffusion && m_f_anneesProduction.first > saisons[0].m_f_anneesDiffusion))
         m_f_anneesProduction.first = saisons[0].m_f_anneesDiffusion;
 }
 
 void Serie::corriger_Annee_Fin()
-{}
+{
+    assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons.back().m_f_anneesDiffusion)) && L"Il faut au moins une date de fin.");
+
+    if (!m_f_anneesProduction.first || (saisons.size() > 0 && saisons.back().m_f_anneesDiffusion && m_f_anneesProduction.first > saisons.back().m_f_anneesDiffusion))
+        m_f_anneesProduction.first = saisons[0].m_f_anneesDiffusion;
+}
+
+std::pair<int, int> Serie::calculer_Annees_Diffusion()
+{
+    //return std::make_pair(saisons[0].m_f_anneesDiffusion, saisons.back().m_f_anneesDiffusion);
+    return make_pair<int, int>(m_f_anneesProduction.first.value_or(0), m_f_anneesProduction.second.value_or(0));
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1783,6 +1801,23 @@ std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
     return keyColor[0] + L" (" + valuesColor + annees_str + keyColor[0] + L')' + valuesColor;
 }*/
 
+/*std::wstring Serie::format_Annees()
+{
+    int i = 1;
+    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
+    {
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[1] + L'-' + valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + keyColor[0] + L')' + valuesColor;
+    }
+    else if (m_f_anneesProduction.first)
+    {
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[0] + L')' + valuesColor;
+    }
+    else
+    {
+        std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(anneesDiffusion.first) + keyColor[1] + L'-' + valuesColor + std::to_wstring(anneesDiffusion.second) + keyColor[0] + L')' + valuesColor;
+    }
+}*/
 std::wstring Serie::format_Annees()
 {
     if (m_f_anneesProduction.first && m_f_anneesProduction.second)
@@ -1791,17 +1826,13 @@ std::wstring Serie::format_Annees()
     }
     else if (m_f_anneesProduction.first)
     {
-        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[1] + L')' + valuesColor;
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[0] + L')' + valuesColor;
     }
     else
     {
         std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
         return keyColor[0] + L" (" + valuesColor + std::to_wstring(anneesDiffusion.first) + keyColor[1] + L'-' + valuesColor + std::to_wstring(anneesDiffusion.second) + keyColor[0] + L')' + valuesColor;
     }
-}
-
-std::pair<int, int> Serie::calculer_Annees_Diffusion()
-{
 }
 
 // ######################################################################################################################################################
@@ -1865,13 +1896,13 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         if (nomFichier == L"Titre.txt")
         {
             initialiser_Titre(cheminFichier, m_titres);
-            return;
         }
         // Titre original
         if (nomFichier == L"Titre original.txt")
         {
             initialiser_Titre_Original(cheminFichier, m_titres_originaux);
         }
+        return;
     }
     else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
         // Image
@@ -1965,9 +1996,10 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     std::vector<std::wstring> t;
 
 
-    std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
+    //std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
+    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s?|\\d{4}\\-\\s?|\\d{4}\\s?)?([^\\]]*)\\])?(?:\\.(.+))?" };
     std::wsmatch match;
-    if (std::regex_match(contenu[0], match, titre_pattern))
+    if (std::regex_match(contenu[0], match, filename_pattern))
     {
         t.push_back(match[1]);
         if (match.length() > 2)
