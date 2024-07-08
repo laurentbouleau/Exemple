@@ -860,20 +860,6 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             return;
         }
         //
-        //if (std::regex_match(nomFichier, std::wregex{L"([[:digit:]]{1,2})x(.)+"}))
-        //{
-        //    return;
-            //InfosVisionnage info_vis{*this, m_cheminFichier};
-            //bool none();
-            /*if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
-            {
-                m_liste_episodes[info_vis.m_NumeroEpisode]->ajouter_SequenceVisionnage(info_vis);
-            }
-            else
-            {
-                m_liste_episodes.emplace(std::pair<const int, shared_ptr<Episode>>{ info_vis.m_NumeroEpisode, make_shared<Episode>(info_vis) });
-            }*/
-        //}
         if (std::regex_match(nomFichier, std::wregex{L"([[:digit:]]{1,2})x(.)+"}))
         {
             InfosVisionnage info_vis{ *this, cheminFichier };
