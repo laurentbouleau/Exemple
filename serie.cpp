@@ -240,105 +240,33 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     }
 
     //episode = std::stoi(match[filename_numero_episode_index]);
-    std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
-
+    std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
+    if (file_content.size() > 0)
+    {
+        std::wsmatch soustitre_match;
+        const std::wregex soustitre_format_rg{ L"(?:(\\d+)\\.)?(.+)(?:\\s?\\:\\s|/|\\s\\-\\s)(.+)" };
+        if (std::regex_match(file_content[0], soustitre_match, soustitre_format_rg))
+        {
+            m_NumeroEpisode = soustitre_match[1].matched ? std::stoi(soustitre_match[1]) : 0;
+            m_titres.push_back(soustitre_match[2]);
+            m_titres.push_back(soustitre_match[3]);
+        }
+        else
+        {
+            m_titres.push_back(file_content[0]);
+        }
+    }
 
-    size_t pos;// = 0;
-    pos = t[0].find(L". ");
-    if (pos == std::wstring::npos || t[0][3] == L'.')
-    {
-        //saison = 0;
-        m_NumeroEpisode = 0;
-    }
-    else
-    {
-        m_NumeroEpisode = std::stoi(t[0]);
-        t[0] = t[0].substr(pos + 2);
-    }
-    // ben non !!!
-    // episode = std::stoi(t[0]);
+    if (file_content.size() > 1)
+        initialiser_Duree(file_content[1]);
 
-    bool found = false;
-
-    /*std::wsmatch soustitre_match;
-    const std::wregex soustitre_format_rg{ L"(.+) \\: (.+)" };
-    if (std::regex_match(titre, soustitre_match, soustitre_format_rg))
+    if (file_content.size() > 2)
     {
-        titre = soustitre_match[1];
-        sous_titre = soustitre_match[2];
-        //sous_titre = keyColor[1] + L"xxx" + valuesColor + soustitre_match[2];
-        found = true;
+        file_content.erase(file_content.begin());  //bof à revoir
+        file_content.erase(file_content.begin()); //bof à revoir
+        m_resume = file_content;
     }
-    const std::wregex soustitre_format_rg2{ L"(.+)\\: (.+)" };
-    if (std::regex_match(titre, soustitre_match, soustitre_format_rg2))
-    {
-        titre = soustitre_match[1];
-        sous_titre = soustitre_match[2];
-        found = true;
-    }
-    const std::wregex soustitre_format_rg3{ L"(.+)\\/(.+)" };
-    if (std::regex_match(titre, soustitre_match, soustitre_format_rg3))
-    {
-        titre = soustitre_match[1];
-        sous_titre = soustitre_match[2];
-        found = true;
-    }
-    const std::wregex soustitre_format_rg4{ L"(.+) \\- (.+)" };
-    if (std::regex_match(titre, soustitre_match, soustitre_format_rg4))
-    {
-        titre = soustitre_match[1];
-        sous_titre = soustitre_match[2];
-        found = true;
-    }*/
-
-    const std::wstring d_p = L" : ";
-    pos = t[0].find(d_p);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(t[0].substr(0, pos));
-        m_titres.push_back(d_p);
-        m_titres.push_back(t[0].substr(pos + 3));
-        found = true;
-    }
-    const std::wstring d_p2 = L": ";
-    pos = t[0].find(d_p2);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(t[0].substr(0, pos));
-        m_titres.push_back(d_p2);
-        m_titres.push_back(t[0].substr(pos + 2));
-        found = true;
-    }
-    const std::wstring d_p3 = L"/";
-    pos = t[0].find(d_p3);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(t[0].substr(0, pos));
-        m_titres.push_back(d_p3);
-        m_titres.push_back(t[0].substr(pos + 1));
-        found = true;
-    }
-    const std::wstring d_p4 = L" - ";
-    pos = t[0].find(d_p4);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(t[0].substr(0, pos));
-        m_titres.push_back(d_p4);
-        m_titres.push_back(t[0].substr(pos + 3));
-        found = true;
-    }
-    if (!found)
-    {
-        m_titres.push_back(t[0]);
-        found = true;
-    }
-    t.erase(t.begin());
-    //m_fichier_pas_zero = true;
-    //m_numero = 1;
-    initialiser_Duree(t[0]);
-    t.erase(t.begin());
-    m_resume = t;
 }
 
 // ######################################################################################################################################################
@@ -503,7 +431,7 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 void SequenceVisionnage::Print()
 {
     ;
-    system("PAUSE");
+    //system("PAUSE");
 }
 
 /*void SequenceVisionnage::Print()
@@ -694,12 +622,12 @@ void Episode::Print()
 {
 }*/
 
-/*bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
+bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 {
     if (episode == 0)
         return false;
     return true;
-}*/
+}
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -963,7 +891,7 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
         if (int j = std::stoi(nomFichier))
         {
             m_numero = j;
-            initialiser_Resume(cheminFichier);
+//            initialiser_Resume(cheminFichier);
             return;
         }
         // Erreur !
@@ -1805,6 +1733,22 @@ std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
 /*std::wstring Serie::format_Annees()
 {
     int i = 1;
+    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
+    {
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[1] + L'-' + valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + keyColor[0] + L')' + valuesColor;
+    }
+    else if (m_f_anneesProduction.first)
+    {
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[0] + L')' + valuesColor;
+    }
+    else
+    {
+        std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
+        return keyColor[0] + L" (" + valuesColor + std::to_wstring(anneesDiffusion.first) + keyColor[1] + L'-' + valuesColor + std::to_wstring(anneesDiffusion.second) + keyColor[0] + L')' + valuesColor;
+    }
+}*/
+/*std::wstring Serie::format_Annees()
+{
     if (m_f_anneesProduction.first && m_f_anneesProduction.second)
     {
         return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[1] + L'-' + valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + keyColor[0] + L')' + valuesColor;

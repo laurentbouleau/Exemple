@@ -141,6 +141,10 @@ struct Episode
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
     void Print();
+
+    bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
+
+//    void Print_Data();
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
 
     int m_numero{ -1 };

@@ -387,7 +387,7 @@ std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier)
 
     std::wstring content = lire_fichierTxt(nomFichier);
 
-    return filter_values(content, { L"6\\+",L"12\\+",L"14\\+" });
+    return filter_values(content, { L"6\\+",L"12\\+",L"14\\+",L"16\\+",L"18\\+" });
 }
 
 // ######################################################################################################################################################
