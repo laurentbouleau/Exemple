@@ -111,6 +111,7 @@ struct SequenceVisionnage
     {};
 
     void Print();
+    //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
@@ -144,7 +145,7 @@ struct Episode
 
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
-//    void Print_Data();
+    void Print_Data();
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
 
     int m_numero{ -1 };

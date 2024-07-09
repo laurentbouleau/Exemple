@@ -1,3 +1,112 @@
+InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier) : m_saison{ saison }
+{
+...
+    std::vector<std::wstring> t = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
+
+    m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
+
+    size_t pos;// = 0;
+    pos = t[0].find(L". ");
+    if (pos == std::wstring::npos || t[0][3] == L'.')
+    {
+        //saison = 0;
+        m_NumeroEpisode = 0;
+    }
+    else
+    {
+        m_NumeroEpisode = std::stoi(t[0]);
+        t[0] = t[0].substr(pos + 2);
+    }
+    // ben non !!!
+    // episode = std::stoi(t[0]);
+
+    bool found = false;
+
+    /*std::wsmatch soustitre_match;
+    const std::wregex soustitre_format_rg{ L"(.+) \\: (.+)" };
+    if (std::regex_match(titre, soustitre_match, soustitre_format_rg))
+    {
+        titre = soustitre_match[1];
+        sous_titre = soustitre_match[2];
+        //sous_titre = keyColor[1] + L"xxx" + valuesColor + soustitre_match[2];
+        found = true;
+    }
+    const std::wregex soustitre_format_rg2{ L"(.+)\\: (.+)" };
+    if (std::regex_match(titre, soustitre_match, soustitre_format_rg2))
+    {
+        titre = soustitre_match[1];
+        sous_titre = soustitre_match[2];
+        found = true;
+    }
+    const std::wregex soustitre_format_rg3{ L"(.+)\\/(.+)" };
+    if (std::regex_match(titre, soustitre_match, soustitre_format_rg3))
+    {
+        titre = soustitre_match[1];
+        sous_titre = soustitre_match[2];
+        found = true;
+    }
+    const std::wregex soustitre_format_rg4{ L"(.+) \\- (.+)" };
+    if (std::regex_match(titre, soustitre_match, soustitre_format_rg4))
+    {
+        titre = soustitre_match[1];
+        sous_titre = soustitre_match[2];
+        found = true;
+    }*/
+
+    const std::wstring d_p = L" : ";
+    pos = t[0].find(d_p);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(t[0].substr(0, pos));
+        m_titres.push_back(d_p);
+        m_titres.push_back(t[0].substr(pos + 3));
+        found = true;
+    }
+    const std::wstring d_p2 = L": ";
+    pos = t[0].find(d_p2);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(t[0].substr(0, pos));
+        m_titres.push_back(d_p2);
+        m_titres.push_back(t[0].substr(pos + 2));
+        found = true;
+    }
+    const std::wstring d_p3 = L"/";
+    pos = t[0].find(d_p3);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(t[0].substr(0, pos));
+        m_titres.push_back(d_p3);
+        m_titres.push_back(t[0].substr(pos + 1));
+        found = true;
+    }
+    const std::wstring d_p4 = L" - ";
+    pos = t[0].find(d_p4);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(t[0].substr(0, pos));
+        m_titres.push_back(d_p4);
+        m_titres.push_back(t[0].substr(pos + 3));
+        found = true;
+    }
+    if (!found)
+    {
+        m_titres.push_back(t[0]);
+        found = true;
+    }
+    t.erase(t.begin());
+    //m_fichier_pas_zero = true;
+    //m_numero = 1;
+    initialiser_Duree(t[0]);
+    t.erase(t.begin());
+    m_resume = t;
+}
+
+
+
+
+
+
     //auto nomDossier = racine./*filename().*/;// wstring();
 
     bool found = false;

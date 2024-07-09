@@ -432,6 +432,7 @@ void SequenceVisionnage::Print()
 {
     ;
     //system("PAUSE");
+    std::wstring wstr = Print_Dates_de_visionnage(m_DatesVisionnage);
 }
 
 /*void SequenceVisionnage::Print()
@@ -475,6 +476,74 @@ void SequenceVisionnage::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
+/*std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
+{
+    const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
+    const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
+    const std::wstring same_date_format = between_parenthesis;
+    const std::wstring prequel_format = between_parenthesis;
+    const std::wstring streaming_format = keyColor[1] + L" : " + valuesColor + L"%s";
+    const std::wstring step_by_step_tag = L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
+
+    std::wstring dates_de_visionnage_wstr = L"";
+
+    std::vector<std::wstring> v_wstr;
+    std::time_t last_date{ 0 };
+    int same_date_counter = 0;
+    for (auto dr : m_DatesVisionnage)
+    {
+        std::time_t time = std::mktime(&dr.date);
+
+        if (last_date != time)
+        {
+            std::tm localtime = *std::localtime(&time);
+            std::wstringstream target_stream;
+            target_stream << std::put_time(&localtime, date_format.c_str());
+            std::wstring date_str = target_stream.str();
+            v_wstr.push_back(date_str);
+            same_date_counter = 0;
+        }
+        else
+        {
+            same_date_counter++;
+            if (same_date_counter == 1)
+            {
+                v_wstr.back() += wstring_format(same_date_format, L"1");
+            }
+            v_wstr.back() += wstring_format(same_date_format, std::to_wstring(same_date_counter + 1).c_str());
+        }
+        last_date = time;
+    }
+
+    for (auto i = 0; i < v_wstr.size(); i++)
+    {
+        if (i != 0)
+            dates_de_visionnage_wstr += L", ";
+        dates_de_visionnage_wstr += v_wstr[i];
+    }
+
+    if (m_DatesVisionnage.size() == 1)
+    {
+        if (m_DatesVisionnage[0].someFlag)
+            dates_de_visionnage_wstr += wstring_format(prequel_format, L"stop ou pas !");
+    }
+    else
+    {
+        if (m_DatesVisionnage.size() > 0)
+        {
+            if (m_DatesVisionnage.back().someFlag)
+            {
+                dates_de_visionnage_wstr += wstring_format(prequel_format, L"à suivre");
+            }
+            dates_de_visionnage_wstr += step_by_step_tag;
+        }
+    }
+
+    if (m_streaming != L"" && dates_de_visionnage_wstr.length() > 0)
+        dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
+    //
+    return dates_de_visionnage_wstr;
+}*/
 std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
 {
     const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
@@ -543,7 +612,6 @@ std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecor
     //
     return dates_de_visionnage_wstr;
 }
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)                                                           #
@@ -605,7 +673,7 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 
 void Episode::Print()
 {
-    //Print_Data(); // ???
+    Print_Data(); // ???
     for (auto vis : m_liste_sequence_visionnages)
     {
         vis.Print();
@@ -618,9 +686,9 @@ void Episode::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void Episode::Print_Data()
+void Episode::Print_Data()
 {
-}*/
+}
 
 bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 {
@@ -871,13 +939,14 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             {
                 m_liste_episodes.emplace(std::pair<const int, shared_ptr<Episode>>{ info_vis.m_NumeroEpisode, make_shared<Episode>(info_vis) });
             }
+            return;
         }
 
         //
         if (int j = std::stoi(nomFichier))
         {
             m_numero = j;
-//            initialiser_Resume(cheminFichier);
+            initialiser_Resume(cheminFichier);
             return;
         }
         // Erreur !
@@ -1048,12 +1117,12 @@ void Saison::Print()
 //    if (std::wcsftime(wstr, 100, L"%A %c", std::localtime(&t)))
 //        std::wcout << wstr << '\n';
 
-    /*std::size_t taille;
+    std::size_t taille;
     taille = std::size(m_liste_episodes);
     for (auto i = 0; i < taille; i++)
     {
         m_liste_episodes[i]->Print();
-    }*/
+    }
     // Note
     Print_Note();    
     // Chaîne
