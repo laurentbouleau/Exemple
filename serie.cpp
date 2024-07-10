@@ -292,116 +292,6 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
     }
 }
 
-/*void InfosVisionnage::Print()
-{
-    std::wstring wstr;
-    bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_NumeroEpisode);
-    if (chiffre_et_point_ou_pas)
-    {
-        wstr = std::to_wstring(m_NumeroSaison) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_NumeroEpisode) + keyColor[1] + L" : " + valuesColor;
-    }
-    wstr += keyColor[1] + m_titre + valuesColor;
-    if (m_deux_points != L"")
-        wstr += m_deux_points + keyColor[1] + m_sous_titre + valuesColor;
-    if (m_numero == 1)
-    {
-        wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(m_duree / 60) + keyColor[1] + m_min + L')' + valuesColor;
-    }
-    else
-    {
-        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(numero++) + keyColor[1] + L']' + valuesColor;
-        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
-        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(1 + saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
-        //numero++;
-        //saison_episode.numero++;
-    }
-    wstr += keyColor[1] + L" : " + valuesColor;
-    wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
-
-    // phrases
-    if (m_numero == 1)//titre != L"")
-    {
-        wstr += L"\r\n" + m_phrases;
-        //saison_episode.numero = 1;
-    }
-    std::wcout << wstr << std::endl;
-}*/
-
-/*std::wstring InfosVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& dates_de_visionnage)
-{
-    const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
-    const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
-    const std::wstring same_date_format = between_parenthesis;
-    const std::wstring prequel_format = between_parenthesis;
-    const std::wstring streaming_format = keyColor[1] + L" : " + valuesColor + L"%s";
-    const std::wstring step_by_step_tag = L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
-
-    std::wstring dates_de_visionnage_wstr = L"";
-
-    std::vector<std::wstring> v_wstr;
-    std::time_t last_date{ 0 };
-    int same_date_counter = 0;
-    for (auto dr : dates_de_visionnage)
-    {
-        std::time_t time = std::mktime(&dr.date);
-
-        if (last_date != time)
-        {
-            std::tm localtime = *std::localtime(&time);
-            std::wstringstream target_stream;
-            target_stream << std::put_time(&localtime, date_format.c_str());
-            std::wstring date_str = target_stream.str();
-            v_wstr.push_back(date_str);
-            same_date_counter = 0;
-        }
-        else
-        {
-            same_date_counter++;
-            if (same_date_counter == 1)
-            {
-                v_wstr.back() += wstring_format(same_date_format, L"1");
-            }
-            v_wstr.back() += wstring_format(same_date_format, std::to_wstring(same_date_counter + 1).c_str());
-        }
-        last_date = time;
-    }
-
-    for (auto i = 0; i < v_wstr.size(); i++)
-    {
-        if (i != 0)
-            dates_de_visionnage_wstr += L", ";
-        dates_de_visionnage_wstr += v_wstr[i];
-    }
-
-    if (dates_de_visionnage.size() == 1)
-    {
-        if (dates_de_visionnage[0].someFlag)
-            dates_de_visionnage_wstr += wstring_format(prequel_format, L"stop ou pas !");
-    }
-    else
-    {
-        if (dates_de_visionnage.size() > 0)
-        {
-            if (dates_de_visionnage.back().someFlag)
-            {
-                dates_de_visionnage_wstr += wstring_format(prequel_format, L"à suivre");
-            }
-            dates_de_visionnage_wstr += step_by_step_tag;
-        }
-    }
-
-    if (m_streaming != L"" && dates_de_visionnage_wstr.length() > 0)
-        dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
-    //
-    return dates_de_visionnage_wstr;
-}*/
-
-/*bool InfosVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
-{
-    if (episode == 0)
-        return false;
-    return true;
-}*/
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -430,45 +320,60 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 
 void SequenceVisionnage::Print()
 {
-    ;
-    //system("PAUSE");
-    std::wstring wstr = Print_Dates_de_visionnage(m_DatesVisionnage);
-}
-
-/*void SequenceVisionnage::Print()
-{
     std::wstring wstr;
-    bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_NumeroEpisod);
+    bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_numero);
     if (chiffre_et_point_ou_pas)
     {
         wstr = std::to_wstring(m_saison) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode) + keyColor[1] + L" : " + valuesColor;
     }
-    wstr += keyColor[1] + m_titre + valuesColor;
-    if (m_deux_points != L"")
-        wstr += m_deux_points + keyColor[1] + m_sous_titre + valuesColor;
+    bool found = false;
+    if (!found && m_titres.size() == 0)
+        found = true;
+    if (!found && m_titres.size() == 1)
+    {
+        found = true;
+        wstr += keyColor[1] + m_titres[0] + valuesColor;
+    }
+    else
+    {
+        found = true;
+        wstr += m_titres[1] + keyColor[1] + m_titres[2] + valuesColor;
+    }
     if (m_numero == 1)
     {
         wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(m_duree_en_seconde / 60) + keyColor[1] + m_min + L')' + valuesColor;
     }
     else
     {
-        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(numero++) + keyColor[1] + L']' + valuesColor;
-        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
+        wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_numero++) + keyColor[1] + L']' + valuesColor;
+        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_saison_episode.m_numero++) + keyColor[1] + L']' + valuesColor;
+//        wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_saison.m_numero++) + keyColor[1] + L']' + valuesColor;
         //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(1 + saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
-        //numero++;
+        m_numero++;
         //saison_episode.numero++;
     }
     wstr += keyColor[1] + L" : " + valuesColor;
-    wstr += Print_Dates_de_visionnage(m_dates);
+    wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
 
-    // phrases
+    // m_resume
     if (m_numero == 1)//titre != L"")
     {
-        wstr += L"\r\n" + m_phrases;
+//        std::wstring resume_str;
+//        wstr += L"\r\n" /* + m_resume*/;
+//        for (auto r : m_resume)
+//            resume_str += r;
+ //       wstr += resume_str;
         //saison_episode.numero = 1;
     }
-    std::wcout << wstr;
-}*/
+    std::wstring resume_str;
+    if (m_resume.size() != 0)
+    {
+        for (auto r : m_resume)
+            resume_str += r;
+    }
+
+    std::wcout << wstr << resume_str << L"\r\n";
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -476,74 +381,6 @@ void SequenceVisionnage::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
-{
-    const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
-    const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
-    const std::wstring same_date_format = between_parenthesis;
-    const std::wstring prequel_format = between_parenthesis;
-    const std::wstring streaming_format = keyColor[1] + L" : " + valuesColor + L"%s";
-    const std::wstring step_by_step_tag = L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
-
-    std::wstring dates_de_visionnage_wstr = L"";
-
-    std::vector<std::wstring> v_wstr;
-    std::time_t last_date{ 0 };
-    int same_date_counter = 0;
-    for (auto dr : m_DatesVisionnage)
-    {
-        std::time_t time = std::mktime(&dr.date);
-
-        if (last_date != time)
-        {
-            std::tm localtime = *std::localtime(&time);
-            std::wstringstream target_stream;
-            target_stream << std::put_time(&localtime, date_format.c_str());
-            std::wstring date_str = target_stream.str();
-            v_wstr.push_back(date_str);
-            same_date_counter = 0;
-        }
-        else
-        {
-            same_date_counter++;
-            if (same_date_counter == 1)
-            {
-                v_wstr.back() += wstring_format(same_date_format, L"1");
-            }
-            v_wstr.back() += wstring_format(same_date_format, std::to_wstring(same_date_counter + 1).c_str());
-        }
-        last_date = time;
-    }
-
-    for (auto i = 0; i < v_wstr.size(); i++)
-    {
-        if (i != 0)
-            dates_de_visionnage_wstr += L", ";
-        dates_de_visionnage_wstr += v_wstr[i];
-    }
-
-    if (m_DatesVisionnage.size() == 1)
-    {
-        if (m_DatesVisionnage[0].someFlag)
-            dates_de_visionnage_wstr += wstring_format(prequel_format, L"stop ou pas !");
-    }
-    else
-    {
-        if (m_DatesVisionnage.size() > 0)
-        {
-            if (m_DatesVisionnage.back().someFlag)
-            {
-                dates_de_visionnage_wstr += wstring_format(prequel_format, L"à suivre");
-            }
-            dates_de_visionnage_wstr += step_by_step_tag;
-        }
-    }
-
-    if (m_streaming != L"" && dates_de_visionnage_wstr.length() > 0)
-        dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
-    //
-    return dates_de_visionnage_wstr;
-}*/
 std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
 {
     const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
@@ -618,7 +455,7 @@ std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecor
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
+bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(int episode)
 {
     if (episode == 0)
         return false;
@@ -673,7 +510,6 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 
 void Episode::Print()
 {
-    Print_Data(); // ???
     for (auto vis : m_liste_sequence_visionnages)
     {
         vis.Print();
@@ -686,9 +522,9 @@ void Episode::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Episode::Print_Data()
-{
-}
+//void Episode::Print_Data()
+//{
+//}
 
 bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 {
@@ -774,108 +610,6 @@ void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
     //m_liste_episodes.insert({ m_numero, seq_vis });
 }
 
-/*void Saison::creer_InfosVisionnage(fs::path const& m_cheminFichier)
-{
-    auto nomFichier = m_cheminFichier.filename().wstring();
-
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    InfosVisionnage infosvisionnage(m_cheminFichier);
-    infosvisionnages.push_back(infosvisionnage);
-    //Episode episode(m_cheminFichier);
-    //episodes.push_back(episode); // Episode
-}*/
-
-/*Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
-{
-    ;
-}*/
-
-//Episode Saison::creer_Episode(SequenceVisionnage const& seq_vis)
-/*Episode Saison::creer_Episode(InfosVisionnage const& seq_vis)
-{
-    //    auto nomFichier = m_cheminFichier.filename().wstring();
-    //m_liste_sequence_visionnages.push_back(seq_vis);
-//    m_liste_episodes.insert({ 2, seq_vis });
-    m_liste_episodes.emplace( 1, seq_vis );
-    //    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-        //Episode episode(cheminFichier);
-    //    SequenceVisionnage(m_cheminFichier);
-        //episodes.push_back(episode); // Episode
-    //    sequencevisionnages.push_back(sequencevisionnage);
-}*/
-
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Saison::creer_SequenceVisionnage(fs::path const& m_cheminFichier)                                                                             #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-//void Saison::creer_SequenceVisionnage(fs::path const& m_cheminFichier)
-//{
-//    auto nomFichier = m_cheminFichier.filename().wstring();
-//    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-//    Episode episode(m_cheminFichier);
-//    episodes.push_back(episode); // Episode
-//}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Saison::initialiser_Dossier(fs::path const& m_cheminFichier)                                                                                  #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/*void Saison::initialiser_Dossier(fs::path const& m_cheminFichier)
-{
-    auto nomDossier = m_cheminFichier.filename().wstring();
-    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
-    assert(nomDossier.length() > 9 && L"Nom de fichier trop court pour avoir au moins une date");
-    std::size_t pos = 0;
-    std::wstring wstr = nomDossier.substr(pos);
-
-    wchar_t sp = L' ', tiret = L'-';
-    //int y;
-    auto y = std::stoi(wstr, &pos);
-    assert(1582 <= y && L"L'année est inférieur !");
-    wstr = wstr.substr(4);
-    try
-    {
-        test_date_tire(wstr[0]);
-    }
-    catch (exception_date_tiret e2)
-    {
-        std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
-        exit(1);
-    }
-    wstr = wstr.substr(1);
-    auto m = std::stoi(wstr, &pos);
-    assert((1 <= m && m <= 12) && L"Le mois invalide !");
-    wstr = wstr.substr(2);
-    try
-    {
-        test_date_tire(wstr[0]);
-    }
-    catch (exception_date_tiret e2)
-    {
-        std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
-        exit(1);
-    }
-    wstr = wstr.substr(1);
-    auto d = std::stoi(wstr, &pos);
-    assert((1 <= d && d <= 31) && L"Le jour invalide !");
-    if (!checkday(m, d, y))
-    {
-        std::wcout << L"Le jour invalide !!!!" << std::endl;
-        exit(1);
-    }
-    std::tm tm;
-    tm.tm_year = y - 1900;
-    tm.tm_mon = m - 1;
-    tm.tm_mday = d;
-    wstr = wstr.substr(2);
-    m_dossier.first = tm;
-    m_dossier.second = wstr;
-}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1117,12 +851,17 @@ void Saison::Print()
 //    if (std::wcsftime(wstr, 100, L"%A %c", std::localtime(&t)))
 //        std::wcout << wstr << '\n';
 
-    std::size_t taille;
+    /*std::size_t taille;
     taille = std::size(m_liste_episodes);
     for (auto i = 0; i < taille; i++)
     {
         m_liste_episodes[i]->Print();
+    }*/
+    for (auto episode : m_liste_episodes)
+    {
+        episode.second->Print();
     }
+
     // Note
     Print_Note();    
     // Chaîne
@@ -1207,7 +946,7 @@ void Saison::Print_Chaine()
 // ???
 const void Saison::Print_Date_etc()
 {
-    if (affichage_date_etc_actif)
+/*    if (affichage_date_etc_actif)
     {
         wchar_t date_string[15];
         std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_date_diffusee_a_partir_de.first);
@@ -1226,7 +965,7 @@ const void Saison::Print_Date_etc()
         date_etc_str += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
         date_etc_str += L"\r\n";
         std::wcout << date_etc_str;
-    }
+    }*/
 }
 
 // ######################################################################################################################################################
@@ -1358,122 +1097,6 @@ void Saison::Print_Note()
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-
-/*const int Serie::afficher_Diffusee(int& I, std::wstring const& d)
-{
-#if	Serie_afficher_Diffusee_ == 1
-    //wcout << B_T << L"const int Serie_afficher_Diffusee(" << I + 1 << L", " << d << L") :" << B_t << endl;
-    B.Ok_T(L"const int Serie_afficher_Diffusee(" + std::to_wstring(I) + L", " + d + L") :");
-#endif
-    if (d == L"")
-    {
-#if	Serie_afficher_Diffusee_ == 1
-        //wcout << L"    " << L"Date_Diffusee_a_partir_de[" << I << L"] = 0 !!!" << endl;
-        B.Ok_W(L"Date_Diffusee_a_partir_de[" + std::to_wstring(I) + L"} = 0 !!!");
-#endif
-        B.Ok_T(L"const int Serie_afficher_Diffusee() : Ok !");
-        return EXIT_SUCCESS;
-    }
-    if (
-        (d[0] == L'1' || d[0] == L'2' || d[0] == L'3') &&
-        std::isdigit(d[1]) &&
-        std::isdigit(d[2]) &&
-        std::isdigit(d[3]))
-    {
-        goto stop;
-    }
-    E.afficher_X(-1, L"", d);
-    return EXIT_FAILURE;
-stop:
-    int year = 0, mon = 0, mday = 0;
-    // %d/%m/%Y
-    std::tm D = { 0 };
-    // year
-    std::wstring x = d.substr(0, 4);
-    year = std::stoi(x);
-    if (
-        (d[0] == L'1' || d[0] == L'2' || d[0] == L'3') &&
-        //(d[1] == L'0' || d[1] == L'1' || d[1] == L'2' || d[1] == L'3' || d[1] == L'4' || d[1] == L'5' || d[1] == L'5' || d[1] == L'6' || d[1] == L'7' || d[1] == L'8' || d[1] == L'9') &&
-        //(d[2] == L'0' || d[2] == L'1' || d[2] == L'2' || d[2] == L'3' || d[2] == L'4' || d[2] == L'5' || d[2] == L'5' || d[2] == L'6' || d[2] == L'7' || d[2] == L'8' || d[2] == L'9') &&
-        //(d[3] == L'0' || d[3] == L'1' || d[3] == L'2' || d[3] == L'3' || d[3] == L'4' || d[3] == L'5' || d[3] == L'5' || d[3] == L'6' || d[3] == L'7' || d[3] == L'8' || d[3] == L'9')
-        std::isdigit(d[1]) &&
-        std::isdigit(d[2]) &&
-        std::isdigit(d[3])
-        )
-    {
-        x = d.substr(0, 4);
-        year = std::stoi(d);
-        if (year <= 1900 || year >= 3001)
-        { // Erreur year
-#if Serie_afficher_Diffusee_ == 1
-            //wcerr << L"    " << L"year=" << year << endl;
-            B.Ok_W(L"year=" + std::to_wstring(year));
-#endif
-            return EXIT_FAILURE;
-        }
-    }
-    else
-    {
-#if Serie_afficher_Diffusee_ == 1
-        //wcout << L"    " << L"year=???" << endl;
-        B.Ok_W(L"year=???");
-#endif
-        return EXIT_FAILURE;
-    }
-    if (
-        (d[5] == L'0' || d[5] == L'1') &&
-        //(d[6] == L'0' || d[6] == L'1' || d[6] == L'2' || d[6] == L'3' || d[6] == L'4' || d[6] == L'5' || d[6] == L'6' || d[6] == L'7' || d[6] == L'8' || d[6] == L'9')
-        std::isdigit(d[6])
-        )
-    {
-        x = d.substr(5, 2);
-        mon = std::stoi(x);
-        if (mon <= 0 || mon >= 13)
-        { // Erreur mon
-#if Serie_afficher_Diffusee_ == 1
-            //wcerr << L"    " << L"mon=" << mon << endl;
-            B.Ok_W(L"mon=" + std::to_wstring(mon));
-#endif
-            return EXIT_FAILURE;
-        }
-    }
-    if (
-        (d[8] == L'0' || d[8] == L'1' || d[8] == L'2' || d[8] == L'3') &&
-        //(d[9] == L'0' || d[9] == L'1' || d[9] == L'2' || d[9] == L'3' || d[9] == L'4' || d[9] == L'5' || d[9] == L'6' || d[9] == L'7' || d[9] == L'8' || d[9] == L'9')
-        std::isdigit(d[9])
-        )
-    {
-        x = d.substr(8, 2);
-        mday = std::stoi(x);
-        if (mday <= 0 || mday >= 32)
-        { // Erreur mday
-#if Serie_afficher_Diffusee_ == 1
-            //wcerr << L"    " << L"mday=" << mday << endl;
-            B.Ok_W(L"mday=" + std::to_wstring(mday));
-#endif
-            return EXIT_FAILURE;
-        }
-    }
-    D.tm_year = year - 1900;
-    D.tm_mon = mon - 1;
-    D.tm_mday = mday;
-#if Serie_afficher_Diffusee_ == 1
-    //wcout << L"    " << L"[" << year << L"/" << mon << L"/" << mday << L"]" << endl;
-    B.Ok_W(L'{' + to_wstring(year) + L'/' + std::to_wstring(mon) + L'/' + to_wstring(mday) + L'}');
-#endif
-    Date_Diffusee_a_partir_de[I] = D;
-    Date_Diffusee_a_partir_de_[I] = true;
-#if	Serie_afficher_Diffusee_ == 1
-    //wcout << B_T << L"const int Serie_afficher_Diffusee(" << I + 1 << L", " << d << L") : Ok !" << B_t << endl;
-    B.Ok_T(L"const int Serie_afficher_Diffusee() : Ok !");
-#endif
-    return EXIT_SUCCESS;
-}
-*/
-
-
-
-
 Serie::Serie(std::filesystem::path racine)
 {
     this->racine = racine;
@@ -1517,62 +1140,6 @@ Serie::Serie(std::filesystem::path racine)
     }
 }
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # const std::wstring Serie::calculer_Annee_Debut()                                                                                                   #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/*const std::wstring Serie::calculer_Annee_Debut()
-{
-    std::wstring tmp;
-    std::vector<std::wstring> annees_vec;
-
-    std::wstringstream annees(m_annees); // ???
-    while (getline(annees, tmp, L'-'))
-    {// ???
-        annees_vec.push_back(tmp);
-        break;
-    }
-
-    std::tm tm;
-    tm = saisons[0].m_dossier.first;
-    assert(std::stoi(annees_vec[0]) == (1900 + tm.tm_year) && L"année != saisons[0].m_dossier.first !!!");
-    return std::to_wstring(std::stoi(annees_vec[0]));
-}*/
-const std::wstring Serie::calculer_Annee_Debut()
-{
-    return L"aaa";
-}
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)                                                                                   #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/*const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)
-{
-    std::wstring tmp;
-    std::vector<std::wstring> annees_vec;
-
-    std::wstringstream annees(m_annees); // ???
-    while (getline(annees, tmp, L'-'))
-    {// ???
-        annees_vec.push_back(tmp);
-    }
-
-    std::tm tm, tm2;
-    tm = saisons[0].m_dossier.first;
-    assert((std::stoi(annees_vec.back()) > (1900 + tm.tm_year)) && L"année != saisons.back().m_dossier.first !!!");
-    tm2 = saisons.back().m_dossier.first;
-    assert((std::stoi(annees_vec.back()) == (1900 + tm2.tm_year)) && L"année != saisons.back().m_dossier.first !!!");
-    return annees_vec.back();
-}*/
-
-const std::wstring Serie::calculer_Annee_Fin(std::wstring& wstr)
-{
-    return L"bbb";
-}
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # const std::wstring Serie::calcul_Note_Affichage()                                                                                                  #
@@ -1621,6 +1188,12 @@ const std::wstring Serie::calcul_Note_Affichage()
     return (res.length() > 0) ? L" " + res + valuesColor : L"";
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Serie::corriger_Annee_Debut()                                                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 const void Serie::corriger_Annee_Debut()
 {
     assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons[0].m_f_anneesDiffusion)) && L"Il faut au moins une date de début.");
@@ -1629,6 +1202,12 @@ const void Serie::corriger_Annee_Debut()
         m_f_anneesProduction.first = saisons[0].m_f_anneesDiffusion;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Serie::corriger_Annee_Fin()                                                                                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 void Serie::corriger_Annee_Fin()
 {
     assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons.back().m_f_anneesDiffusion)) && L"Il faut au moins une date de fin.");
@@ -1636,6 +1215,12 @@ void Serie::corriger_Annee_Fin()
     if (!m_f_anneesProduction.first || (saisons.size() > 0 && saisons.back().m_f_anneesDiffusion && m_f_anneesProduction.first > saisons.back().m_f_anneesDiffusion))
         m_f_anneesProduction.first = saisons[0].m_f_anneesDiffusion;
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Serie::corriger_Annee_Debut()                                                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 std::pair<int, int> Serie::calculer_Annees_Diffusion()
 {
@@ -1691,133 +1276,6 @@ std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
     return m_titres;
 }
 
-    /*int tm_year = 0;// , tm_mon = 0, tm_mday = 0;
-    std::wstring t2;
-    std::size_t idx, idx2 = 0;
-    idx = nomFichier.find(L".[", 0);
-    t2 = nomFichier.substr(0, idx);
-    //i = ::afficher_Titre(t2, titre, affichage_titre_actif);
-    m_titres2 = t2;
-    idx = nomFichier.find_last_of(L"[");
-    idx2 = nomFichier.find_last_of(L"]");
-    if (idx2 - idx - 1 == 0)
-        return;// -1;
-    idx2--;
-    if (!(nomFichier.at(idx2) == L' ' || nomFichier.at(idx2) == L'-' ||
-        nomFichier.at(idx2) == L'0' || nomFichier.at(idx2) == L'1' || nomFichier.at(idx2) == L'2' || nomFichier.at(idx2) == L'3' || nomFichier.at(idx2) == L'4' ||
-        nomFichier.at(idx2) == L'5' || nomFichier.at(idx2) == L'6' || nomFichier.at(idx2) == L'7' || nomFichier.at(idx2) == L'8' || nomFichier.at(idx2) == L'9'))
-    { // Sur
-        std::size_t idx3;
-        idx3 = nomFichier.find_first_of(L" ", idx);
-        idx3++;
-        t2 = nomFichier.substr(idx3, idx2 - idx3 + 1);
-        initialiser_Sur(t2);
-        if (m_sur == t2)
-        {
-            //
-        }
-        else
-        {
-            m_sur = t2;
-        }
-        //if (m_sur == L"Netflix")
-        //    netflix_ok_ou_non = true;
-        idx2 = idx3 - 2;
-    }
-    idx++;
-    if (nomFichier.at(idx2) == L' ' || nomFichier.at(idx2) == L'-' ||
-        nomFichier.at(idx2) == L'0' || nomFichier.at(idx2) == L'1' || nomFichier.at(idx2) == L'2' || nomFichier.at(idx2) == L'3' || nomFichier.at(idx2) == L'4' ||
-        nomFichier.at(idx2) == L'5' || nomFichier.at(idx2) == L'6' || nomFichier.at(idx2) == L'7' || nomFichier.at(idx2) == L'8' || nomFichier.at(idx2) == L'9')
-    { // Date
-        t2 = nomFichier.substr(idx, idx2 - idx + 1);
-        //i = afficher_Date(t2);
-    }
-    idx = nomFichier.find(L"].");
-    if (idx != std::wstring::npos)
-    { // Sous_Genre
-        idx += 2;
-        m_sous_genre = nomFichier.substr(idx);
-        //wstring sous_genre = L"";
-        initialiser_Sous_Genre(m_sous_genre);
-        //affichage_sous_genre_actif = true;
-    }*/
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # const std::wstring Serie::format_Annees()                                                                                                          #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/*const std::wstring Serie::format_Annees()
-{
-    //assert(m_annees.length() > 0 && L"L'année---");// ???
-    //assert(m_annees.size() < 10 && L"L'année 2---");// ???
-    bool found = false;
-
-    std::wstring annees_str = calculer_Annee_Debut();
-    std::size_t pos = 0;
-    std::wstring wstr = m_annees.substr(4);
-    if (!found && wstr[0] != L'-')
-        found = true;
-    if (!found)
-    {
-        try
-        {
-            test_date_tire(wstr[0]);
-        }
-        catch (exception_date_tiret e2)
-        {
-            std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
-        }
-        annees_str += keyColor[1] + L'-';
-        wstr = wstr.substr(1);
-
-        if (!found && wstr.length() == 0)
-        {
-            found = true;
-        }
-        if (!found)
-        {
-            found = true;
-            annees_str += valuesColor + calculer_Annee_Fin(wstr);
-        }
-    }
-    return keyColor[0] + L" (" + valuesColor + annees_str + keyColor[0] + L')' + valuesColor;
-}*/
-
-/*std::wstring Serie::format_Annees()
-{
-    int i = 1;
-    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
-    {
-        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[1] + L'-' + valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + keyColor[0] + L')' + valuesColor;
-    }
-    else if (m_f_anneesProduction.first)
-    {
-        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[0] + L')' + valuesColor;
-    }
-    else
-    {
-        std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
-        return keyColor[0] + L" (" + valuesColor + std::to_wstring(anneesDiffusion.first) + keyColor[1] + L'-' + valuesColor + std::to_wstring(anneesDiffusion.second) + keyColor[0] + L')' + valuesColor;
-    }
-}*/
-/*std::wstring Serie::format_Annees()
-{
-    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
-    {
-        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[1] + L'-' + valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + keyColor[0] + L')' + valuesColor;
-    }
-    else if (m_f_anneesProduction.first)
-    {
-        return keyColor[0] + L" (" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[0] + L')' + valuesColor;
-    }
-    else
-    {
-        std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
-        return keyColor[0] + L" (" + valuesColor + std::to_wstring(anneesDiffusion.first) + keyColor[1] + L'-' + valuesColor + std::to_wstring(anneesDiffusion.second) + keyColor[0] + L')' + valuesColor;
-    }
-}*/
 std::wstring Serie::format_Annees()
 {
     if (m_f_anneesProduction.first && m_f_anneesProduction.second)
@@ -2016,53 +1474,6 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
         t.push_back(contenu[0]);
     }
 
- 
-    /*if (m_titres.size() == 1 && t.size() == 1 && m_titres == t)
-    {
-        found = true;
-    }*/
-/*    if (m_titres[0] == t[0])
-        assert(m_titres[0] == t[0] && L"Erreur : m_titre[0] != t[0] !!!");
-    bool found = false;
-    if (!found && m_titres[0].size() == t[0].size())
-    {
-        int j = 0;
-        for (int i = 0; i < m_titres.size(); i++)
-        {
-            if (m_titres[i] != t[i])
-            {
-                j++;
-                m_titres[i] = t[i];
-            }
-
-        }
-        try
-        {
-            if (j > 2)
-                ;
-            else
-            {
-                throw 505;
-            }
-        }
-        catch (...)
-        {
-            std::wcout << L"Erreur : j > 4" << std::endl;
-        }
-        if (m_titres.size() == 1 && t.size() == 1)
-        {
-            //m_titres[0] = t[0];
-            //throw wstring(L"ERREUR : m_titres[0] par de... !");
-            found = true;
-        }
-    }
-    if (!found && m_titres.size() == 3 && m_titres[0].length() == t[0].length() && m_titres[2].length() == t[2].length())
-    {
-        m_titres[1] = t[1];
-        found = true;
-    }
-*/
-    //???
 
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
@@ -2073,7 +1484,6 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
             m_resume = contenu;
     }
 }
-
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

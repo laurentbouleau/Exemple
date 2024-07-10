@@ -91,8 +91,9 @@ struct InfosVisionnage
     //std::wstring m_sous_titre;
     std::vector<std::wstring> m_titres;
 //    unsigned short int m_numero{ 1 };
+
+    int m_numero{ -1 };
     long m_duree{ -1 };
-    //std::wstring m_phrases{ L"" };
     std::vector<std::wstring> m_resume;
 
 private:
@@ -102,18 +103,15 @@ private:
 
 struct SequenceVisionnage
 {
-    //SequenceVisionnage(const Episode& episode) :m_episode{ episode } {};
-    //SequenceVisionnage(const SequenceVisionnage& sep) = default;
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
-        m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
+        m_episode{ m_episode }, m_titres{info_vis.m_titres}, m_streaming{info_vis.m_streaming},
         m_duree_en_seconde{ info_vis.m_duree * 60 }, m_resume{ info_vis.m_resume },
         m_DatesVisionnage{ info_vis.m_DatesVisionnage }
     {};
 
     void Print();
-    //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
-    bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
+    bool Print_Titre_chiffre_et_point_ou_pas(int episode);
 
     std::wstring m_min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
@@ -126,12 +124,16 @@ struct SequenceVisionnage
     //std::wstring m_sous_titre;
     std::vector<std::wstring> m_titres;
     long m_duree_en_seconde{ -1 };
-    //std::wstring m_phrases{ L"" };
-    std::vector<std::wstring> m_resume;
+    std::vector<std::wstring> m_resume{};
     std::vector<DateRecord> m_DatesVisionnage{};
 
+    int m_saison{ -1 };
+    int m_episode{ -1 };
+    int m_numero{ -1 };
+    long m_duree{ -1 };
+    
 private:
-    const Episode& m_episode;
+    //const Episode& m_episode;
 };
 
 struct Episode
@@ -145,12 +147,11 @@ struct Episode
 
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
-    void Print_Data();
+    //void Print_Data();
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
 
     int m_numero{ -1 };
     long m_duree{ -1 };
-    //std::wstring m_phrases{ L"" };
     std::vector<std::wstring> m_resume;
 };
 
