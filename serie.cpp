@@ -324,8 +324,10 @@ void SequenceVisionnage::Print()
     bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_numero);
     if (chiffre_et_point_ou_pas)
     {
-        wstr = std::to_wstring(m_saison) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode) + keyColor[1] + L" : " + valuesColor;
+        //wstr = std::to_wstring(m_saison) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode) + keyColor[1] + L" : " + valuesColor;
+        wstr = std::to_wstring(m_episode.m_saison.m_numero) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode.m_numero) + keyColor[1] + L" : " + valuesColor;
     }
+
     bool found = false;
     if (!found && m_titres.size() == 0)
         found = true;
@@ -337,8 +339,9 @@ void SequenceVisionnage::Print()
     else
     {
         found = true;
-        wstr += m_titres[1] + keyColor[1] + m_titres[2] + valuesColor;
+        wstr += m_titres[0] + keyColor[1] + m_titres[1] + valuesColor;
     }
+
     if (m_numero == 1)
     {
         wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(m_duree_en_seconde / 60) + keyColor[1] + m_min + L')' + valuesColor;
@@ -347,7 +350,7 @@ void SequenceVisionnage::Print()
     {
         wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_numero++) + keyColor[1] + L']' + valuesColor;
         //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_saison_episode.m_numero++) + keyColor[1] + L']' + valuesColor;
-//        wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_saison.m_numero++) + keyColor[1] + L']' + valuesColor;
+        //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_saison.m_numero++) + keyColor[1] + L']' + valuesColor;
         //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(1 + saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
         m_numero++;
         //saison_episode.numero++;
@@ -355,21 +358,19 @@ void SequenceVisionnage::Print()
     wstr += keyColor[1] + L" : " + valuesColor;
     wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
 
-    // m_resume
-    if (m_numero == 1)//titre != L"")
+    std::wstring resume_str;
+    if (m_numero == 1 && m_resume.size() != 0)//titre != L"")
     {
 //        std::wstring resume_str;
 //        wstr += L"\r\n" /* + m_resume*/;
 //        for (auto r : m_resume)
 //            resume_str += r;
  //       wstr += resume_str;
-        //saison_episode.numero = 1;
-    }
-    std::wstring resume_str;
-    if (m_resume.size() != 0)
-    {
+        resume_str += L"\r\n";
         for (auto r : m_resume)
             resume_str += r;
+        //saison_episode.numero = 1;
+        m_numero = 1;
     }
 
     std::wcout << wstr << resume_str << L"\r\n";
@@ -515,6 +516,24 @@ void Episode::Print()
         vis.Print();
     }
 }
+
+// ===> Ici !!!
+/*void Episode::Print()
+{
+    bool first = true;
+    for (auto vis : m_liste_sequence_visionnages)
+    {
+        if (first)
+        {
+            PrintFirstSequenceVisionnage(vis);
+        }
+        else
+        {
+            PrintSequenceVisionnage(vis);
+        }
+        first = false;
+    }
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

@@ -104,7 +104,7 @@ private:
 struct SequenceVisionnage
 {
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
-        m_episode{ m_episode }, m_titres{info_vis.m_titres}, m_streaming{info_vis.m_streaming},
+        m_episode{ episode }, m_titres{info_vis.m_titres}, m_streaming{info_vis.m_streaming},
         m_duree_en_seconde{ info_vis.m_duree * 60 }, m_resume{ info_vis.m_resume },
         m_DatesVisionnage{ info_vis.m_DatesVisionnage }
     {};
@@ -127,19 +127,18 @@ struct SequenceVisionnage
     std::vector<std::wstring> m_resume{};
     std::vector<DateRecord> m_DatesVisionnage{};
 
-    int m_saison{ -1 };
-    int m_episode{ -1 };
     int m_numero{ -1 };
     long m_duree{ -1 };
     
 private:
-    //const Episode& m_episode;
+    const Episode& m_episode;
 };
 
 struct Episode
 {
     const Saison& m_saison;
-    Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } {};
+    //Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } {};
+    Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } { ajouter_SequenceVisionnage(info_vis); };
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
