@@ -239,7 +239,6 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         m_streaming = match[filename_stream_index];
     }
 
-    //episode = std::stoi(match[filename_numero_episode_index]);
     std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
     if (file_content.size() > 0)
@@ -321,11 +320,13 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 void SequenceVisionnage::Print()
 {
     std::wstring wstr;
+    std::wstring chiffre_et_point_ou_pas_str{};
+    std::wstring duree_str;
     bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_numero);
     if (chiffre_et_point_ou_pas)
     {
-        //wstr = std::to_wstring(m_saison) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode) + keyColor[1] + L" : " + valuesColor;
-        wstr = std::to_wstring(m_episode.m_saison.m_numero) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode.m_numero) + keyColor[1] + L" : " + valuesColor;
+        //chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode.m_numero) + keyColor[1] + L" : " + valuesColor;
+        chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode.m_numero) + keyColor[1] + L" : " + valuesColor;
     }
 
     bool found = false;
@@ -334,26 +335,27 @@ void SequenceVisionnage::Print()
     if (!found && m_titres.size() == 1)
     {
         found = true;
-        wstr += keyColor[1] + m_titres[0] + valuesColor;
+        wstr = keyColor[1] + m_titres[0] + valuesColor;
     }
     else
     {
         found = true;
-        wstr += m_titres[0] + keyColor[1] + m_titres[1] + valuesColor;
+        wstr = keyColor[1] + m_titres[0] + keyColor[0] + m_titres[1] + keyColor[1] + m_titres[1] + valuesColor;
     }
 
-    if (m_numero == 1)
+    if (m_numero == 1) // ???
     {
-        wstr += keyColor[1] + L" (" + valuesColor + std::to_wstring(m_duree_en_seconde / 60) + keyColor[1] + m_min + L')' + valuesColor;
+        duree_str += keyColor[1] + L" (" + valuesColor + std::to_wstring(m_duree_en_seconde / 60) + keyColor[1] + m_min + L')' + valuesColor;
     }
     else
     {
-        wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_numero++) + keyColor[1] + L']' + valuesColor;
+        //duree_str += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_numero++) + keyColor[1] + L']' + valuesColor;
+        duree_str += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L']' + valuesColor;
         //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_saison_episode.m_numero++) + keyColor[1] + L']' + valuesColor;
         //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_saison.m_numero++) + keyColor[1] + L']' + valuesColor;
         //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(1 + saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
-        m_numero++;
-        //saison_episode.numero++;
+//        m_numero++;
+        //m_NumeroSaison++;
     }
     wstr += keyColor[1] + L" : " + valuesColor;
     wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
@@ -370,10 +372,10 @@ void SequenceVisionnage::Print()
         for (auto r : m_resume)
             resume_str += r;
         //saison_episode.numero = 1;
-        m_numero = 1;
+//        m_numero = 1;
     }
-
-    std::wcout << wstr << resume_str << L"\r\n";
+m_numero++;
+    std::wcout << chiffre_et_point_ou_pas_str << wstr << duree_str << resume_str << L"\r\n";
 }
 
 // ######################################################################################################################################################
@@ -1122,10 +1124,7 @@ Serie::Serie(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
-    //std::wstring annees; // ???
-
     std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)\\])?(?:\\.(.+))?" };
-    //std::wregex filename_pattern{ L"(.+?)(?:\.\[(\d{4}\-\d{4}\s?|\d{4}\-\s?|\d{4}\s?)?([^\]]*)\])?(?:\.(.+))?" };
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
     {

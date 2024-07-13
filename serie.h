@@ -81,8 +81,8 @@ struct InfosVisionnage
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    unsigned short int m_NumeroSaison{};
-    unsigned short int m_NumeroEpisode{}; 
+    /*unsigned short*/ int m_NumeroSaison{};
+    /*unsigned short*/ int m_NumeroEpisode{};
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
  //   bool m_fichier_pas_zero{ false };
@@ -92,8 +92,9 @@ struct InfosVisionnage
     std::vector<std::wstring> m_titres;
 //    unsigned short int m_numero{ 1 };
 
-    int m_numero{ -1 };
-    long m_duree{ -1 };
+    int m_numero{ 1 };
+    //long m_duree{ -1 };
+    long m_duree{ 0 };
     std::vector<std::wstring> m_resume;
 
 private:
@@ -116,6 +117,13 @@ struct SequenceVisionnage
     std::wstring m_min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+
+
+    /*unsigned short*/ int m_NumeroSaison{};
+    /*unsigned short*/ int m_NumeroEpisode{};
+
+
+
 
     std::wstring m_streaming{ L"" };
     //bool m_fichier_pas_zero{ false };
