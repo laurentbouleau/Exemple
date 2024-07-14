@@ -250,8 +250,8 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
-    const std::wstring calculer_Annee_Debut();
-    const std::wstring calculer_Annee_Fin(std::wstring& wstr);
+    //const std::wstring calculer_Annee_Debut();
+    //const std::wstring calculer_Annee_Fin(std::wstring& wstr);
     const std::wstring calcul_Note_Affichage();
 
     const void corriger_Annee_Debut();
