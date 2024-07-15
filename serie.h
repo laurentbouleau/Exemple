@@ -183,6 +183,8 @@ public:
     void initialiser_Note(std::filesystem::path const& cheminFichier);
     void initialiser_Resume(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
+
+    void UneFonctionDeLaClasseSequenceVisionnage(...);
  
     void Print();
     void Print_Avec();

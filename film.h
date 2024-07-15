@@ -51,6 +51,13 @@ public:
     std::vector<std::wstring> Dossier_Titres(std::wstring titres);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
+    void initialiser_Date_de_reprise(std::filesystem::path const& cheminFichier);
+    void initialiser_Date_de_sortie(std::filesystem::path const& cheminFichier);
+    void initialiser_De(std::filesystem::path const& cheminFichier);
+    void initialiser_Distributeur(std::filesystem::path const& cheminFichier);
+    void initialiser_Par(std::filesystem::path const& cheminFichier);
+    void initialiser_Note(std::filesystem::path const& cheminFichier);
+    void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_titre);
 
     const void Print();
@@ -61,7 +68,16 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
+ 
+    void Print_Avec();
+    const void Print_Date_de_Reprise();
+    const void Print_Date_de_Sortie();
+    const void Print_De();
+    const void Print_Distributeur();
     const void Print_Header();
+    const void Print_Par();
+    const std::wstring Print_Note();
+    const void Print_Soundtracks();
 
     std::filesystem::path racine;
 
@@ -69,14 +85,21 @@ private:
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     std::wstring m_audiodescription;
+    std::vector<std::pair<std::wstring, std::wstring>> m_avec;
+    std::tm m_date, m_date_de_reprise, m_date_de_sortie;
+    std::vector<std::wstring> m_de;
     bool m_disney{ false };
     std::wstring m_disney_sj;
+    std::wstring m_distributeur;
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
+    std::vector<std::wstring> m_par;
     std::vector<std::wstring> m_nationalite;
     bool m_netflix{ false };
     std::wstring m_netflix_sj;
+    double m_note = 0.0;
     std::wstring m_sj;
+    std::vector<std::pair<std::wstring, std::wstring>> m_soundtrack;
     std::wstring m_sous_genre;// {};
     std::wstring m_sur;
 
@@ -85,15 +108,22 @@ private:
     std::vector<std::wstring> m_titres_originaux;
 
     bool affichage_audiodescription_actif = true;
+    bool affichage_avec_actif = true;
+    bool affichage_date_de_reprise_actif = true;
+    bool affichage_date_de_sortie_actif = true;
+    bool affichage_de_actif = true;
     bool affichage_disney_sj_actif = true;
+    bool affichage_distributeur_actif = true;
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
     bool affichage_nationalite_actif = true;
     bool affichage_netflix_sj_actif = true;
     bool affichage_note_actif = true;
+    bool affichage_par_actif = true;
     bool affichage_resume_actif = true;
     bool affichage_sj_actif = true;
     bool affichage_sous_genre_actif = true;
+    bool affichage_soundtraks_actif = true;
     bool affichage_sur_actif = true;
     bool affichage_titres_actif = true;
     bool affichage_titres_originaux_actif = true;

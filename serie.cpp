@@ -292,6 +292,14 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 }
 
 
+/*void SequenceVisionnage::UneFonctionDeLaClasseSequenceVisionnage(...)
+{
+    
+    auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
+    auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
+    auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
+}*/
+
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 

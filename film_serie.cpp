@@ -163,14 +163,6 @@ const std::vector<std::wstring> Sous_Genre
     L"Mini-série"
 };
 
-const std::vector<std::wstring> Soundtrack
-{
-    L"Compositeur",
-    L"Compositeur (chansons du film)",
-    L"Montage musical",
-    L"Superviseur musical"
-};
-
 const std::vector<std::wstring> Sur
 {
     L"Apple TV+",
