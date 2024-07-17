@@ -629,73 +629,47 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
     assert(nomDossier.length() > 3 && L"Nom de fichier trop court pour avoir au moins une date");
 
-    wchar_t sp = L' ', tiret = L'-';
     //std::wregex filename_pattern{ L"(\\d{4})(?:-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?" };
     std::wregex filename_pattern{ L"(\\d{4})(?:\\-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?" };
     std::wsmatch match;
-    bool found = false;
-
+    std::tm tm;
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
         std::wstring year = match[1];
         auto y = std::stoi(year);
         assert(1582 <= y && L"L'année est inférieur !");
         auto m = 0, d = 0;
-
-        // L"(\\d{4})(?:-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?
+        tm.tm_year = y - 1900;
         if (match[2].matched)
         {
-            std::wstring wstr = match[2].str();
-            std::wsmatch dummy;
-            if (std::regex_match(wstr, dummy, std::wregex(L"(?:-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?")))
+            std::wstring mon = match[2];
+            auto m = std::stoi(mon);
+            assert((1 <= m && m <= 12) && L"Le mois invalide !");
+            tm.tm_mon = m - 1;
+
+            if (match[3].matched)
             {
-                ;
+                std::wstring mday = match[3];
+                auto d = std::stoi(mday);
+                assert((1 <= d && d <= 31) && L"Le jour invalide !");
+                if (!checkday(m, d, y))
+                {
+                    std::wcout << L"Le jour invalide !!!" << std::endl;
+                    exit(1);
+                }
+                tm.tm_mday = d;
             }
-            else
-            {
-                ;
-            }
-
-
         }
-        else
-        {
-            m = 0;
-            d = 0;
-        }
-
-/*        assert(L'-' != match[2] && L"L'-' est inférieur !");
-
-        std::wstring mon = match[2];
-        auto m = std::stoi(mon);
-        assert((1 <= m && m <= 12) && L"Le mois invalide !");
-
-        assert(L'-' != match[4] && L"L'-' est inférieur !");
-
-        std::wstring mday = match[5];
-        auto d = std::stoi(mday);
-        assert((1 <= d && d <= 31) && L"Le jour invalide !");
-        if (!checkday(m, d, y))
-        {
-            std::wcout << L"Le jour invalide !!!" << std::endl;
-            exit(1);
-        }
-        */
-
-
-        std::tm tm;
-        tm.tm_year = y - 1900;
-        tm.tm_mon = m - 1;
-        tm.tm_mday = d;
-        std::wstring wstr = match[6];
-        m_date_diffusee_a_partir_de.first = tm;
-        m_date_diffusee_a_partir_de.second = wstr;
-
     }
     else
     {
         assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
     }
+    if (match[4].matched)
+    {
+        m_date_diffusee_a_partir_de.second = match[4];
+    }
+    m_date_diffusee_a_partir_de.first = tm;
 }
 
 // ######################################################################################################################################################
