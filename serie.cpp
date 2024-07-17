@@ -571,7 +571,7 @@ bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ serie }
+/*Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{serie}
 {
     auto nomDossier = cheminFichier.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
@@ -611,7 +611,7 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
     assert((1 <= d && d <= 31) && L"Le jour invalide !");
     if (!checkday(m, d, y))
     {
-        std::wcout << L"Le jour invalide !!!!" << std::endl;
+        std::wcout << L"Le jour invalide !!!" << std::endl;
         exit(1);
     }
     std::tm tm;
@@ -621,6 +621,81 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
     wstr = wstr.substr(2);
     m_date_diffusee_a_partir_de.first = tm;
     m_date_diffusee_a_partir_de.second = wstr;
+}*/
+
+Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ serie }
+{
+    auto nomDossier = cheminFichier.filename().wstring();
+    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
+    assert(nomDossier.length() > 3 && L"Nom de fichier trop court pour avoir au moins une date");
+
+    wchar_t sp = L' ', tiret = L'-';
+    //std::wregex filename_pattern{ L"(\\d{4})(?:-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?" };
+    std::wregex filename_pattern{ L"(\\d{4})(?:\\-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?" };
+    std::wsmatch match;
+    bool found = false;
+
+    if (std::regex_match(nomDossier, match, filename_pattern))
+    {
+        std::wstring year = match[1];
+        auto y = std::stoi(year);
+        assert(1582 <= y && L"L'année est inférieur !");
+        auto m = 0, d = 0;
+
+        // L"(\\d{4})(?:-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?
+        if (match[2].matched)
+        {
+            std::wstring wstr = match[2].str();
+            std::wsmatch dummy;
+            if (std::regex_match(wstr, dummy, std::wregex(L"(?:-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?")))
+            {
+                ;
+            }
+            else
+            {
+                ;
+            }
+
+
+        }
+        else
+        {
+            m = 0;
+            d = 0;
+        }
+
+/*        assert(L'-' != match[2] && L"L'-' est inférieur !");
+
+        std::wstring mon = match[2];
+        auto m = std::stoi(mon);
+        assert((1 <= m && m <= 12) && L"Le mois invalide !");
+
+        assert(L'-' != match[4] && L"L'-' est inférieur !");
+
+        std::wstring mday = match[5];
+        auto d = std::stoi(mday);
+        assert((1 <= d && d <= 31) && L"Le jour invalide !");
+        if (!checkday(m, d, y))
+        {
+            std::wcout << L"Le jour invalide !!!" << std::endl;
+            exit(1);
+        }
+        */
+
+
+        std::tm tm;
+        tm.tm_year = y - 1900;
+        tm.tm_mon = m - 1;
+        tm.tm_mday = d;
+        std::wstring wstr = match[6];
+        m_date_diffusee_a_partir_de.first = tm;
+        m_date_diffusee_a_partir_de.second = wstr;
+
+    }
+    else
+    {
+        assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
+    }
 }
 
 // ######################################################################################################################################################
