@@ -75,14 +75,16 @@ struct InfosVisionnage
     //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     //bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
+    void Une_Fonction_De_La_Classe_InfosVisionnage(...);
+
     std::filesystem::path m_cheminFichier;
 
     std::wstring m_min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    /*unsigned short*/ int m_NumeroSaison{};
-    /*unsigned short*/ int m_NumeroEpisode{};
+    unsigned short int m_NumeroSaison{};
+    unsigned short int m_NumeroEpisode{};
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
  //   bool m_fichier_pas_zero{ false };
@@ -92,7 +94,7 @@ struct InfosVisionnage
     std::vector<std::wstring> m_titres;
 //    unsigned short int m_numero{ 1 };
 
-    int m_numero{ 1 };
+    int m_numero{ -1 };
     //long m_duree{ -1 };
     long m_duree{ 0 };
     std::vector<std::wstring> m_resume;
@@ -110,6 +112,8 @@ struct SequenceVisionnage
         m_DatesVisionnage{ info_vis.m_DatesVisionnage }
     {};
 
+    void Une_Fonction_De_La_Classe_SequenceVisionnage(...);
+    
     void Print();
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     bool Print_Titre_chiffre_et_point_ou_pas(int episode);
@@ -150,6 +154,8 @@ struct Episode
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
+    void GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis);
+
     void Print();
 
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
@@ -160,6 +166,8 @@ struct Episode
     int m_numero{ -1 };
     long m_duree{ -1 };
     std::vector<std::wstring> m_resume;
+
+    int lInfoQuiMInteresse;
 };
 
 struct Saison
@@ -184,8 +192,6 @@ public:
     void initialiser_Resume(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    void UneFonctionDeLaClasseSequenceVisionnage(...);
- 
     void Print();
     void Print_Avec();
     void Print_Chaine();
@@ -202,7 +208,7 @@ public:
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
     std::pair<std::tm, std::wstring>m_date_diffusee_a_partir_de;
     bool m_disney{ false };
-    int m_f_anneesDiffusion;
+    int m_f_anneesDiffusion{0};
     //std::pair<std::tm, std::wstring>m_dossier;
     //std::vector<Episode> episodes;
     //std::vector<InfosVisionnage>infosvisionnages;
@@ -226,7 +232,7 @@ public:
     std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
 
     int m_numero{ -1 };
-
+    int lInfoQuiMInteresse{};
 };
 
 class Serie
@@ -250,6 +256,8 @@ public:
     std::filesystem::path getFileName() { return racine.filename(); };
 
     std::vector<std::wstring> m_resume;
+
+    int lInfoQuiMInteresse{};
 
 private:
     //const std::wstring calculer_Annee_Debut();
@@ -299,6 +307,7 @@ private:
     std::vector<std::wstring> m_titres;
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
+
 
     bool affichage_annees_actif = true;
     bool affichage_avec_actif = true;

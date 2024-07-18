@@ -291,14 +291,19 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # InfosVisionnage::initialiser_Duree(std::wstring& m)                                                                                                #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
-/*void SequenceVisionnage::UneFonctionDeLaClasseSequenceVisionnage(...)
+void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)
 {
-    
-    auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
-    auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
-    auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
-}*/
+    //...
+    auto uneInfoDeLaSaison = m_saison.lInfoQuiMInteresse;
+    auto NumeroSaison = m_saison.m_numero;
+    //...
+}
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -318,6 +323,20 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 // ######################################################################################################################################################
 
 // Ok !!!
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)                                                                         #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
+{
+
+    auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
+    auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
+    auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -513,6 +532,14 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
     m_liste_sequence_visionnages.push_back(SequenceVisionnage(*this, info_vis));
 }
 
+
+void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
+{
+    //...
+}
+
+
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Episode::Print()                                                                                                                              #
@@ -543,6 +570,15 @@ void Episode::Print()
         }
         first = false;
     }
+}
+
+void Episode::PrintFirstSequenceVisionnage(vis)
+{
+
+}
+void Episode::PrintSequenceVisionnage(vis)
+{
+
 }*/
 
 // ######################################################################################################################################################
@@ -638,7 +674,7 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
         std::wstring year = match[1];
         auto y = std::stoi(year);
         assert(1582 <= y && L"L'année est inférieur !");
-        auto m = 0, d = 0;
+        auto m = 0;
         tm.tm_year = y - 1900;
         if (match[2].matched)
         {
@@ -1055,11 +1091,25 @@ const void Saison::Print_Date_etc()
 void Saison::Print_Header()
 {
     wchar_t date_tab[15];
-    std::wcsftime(date_tab, 15, L"%d/%m/%Y", &m_date_diffusee_a_partir_de.first);
-    std::wstring date_tab_str = date_tab;
-
-    std::wstring date_str = date_tab_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(6, 4);
-
+    std::wstring date_str{};
+    if (m_date_diffusee_a_partir_de.first.tm_mday == -858993460 && m_date_diffusee_a_partir_de.first.tm_mon == -858993460)
+    {
+        std::wcsftime(date_tab, 15, L"%Y", &m_date_diffusee_a_partir_de.first);
+        std::wstring date_tab_str = date_tab;
+        date_str = date_tab_str;
+    }
+    else if (m_date_diffusee_a_partir_de.first.tm_mday == -858993460)
+    {
+        std::wcsftime(date_tab, 15, L"%m/%Y", &m_date_diffusee_a_partir_de.first);
+        std::wstring date_tab_str = date_tab;
+        date_str = date_tab_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(3, 4);
+    }
+    else
+    {
+        std::wcsftime(date_tab, 15, L"%d/%m/%Y", &m_date_diffusee_a_partir_de.first);
+        std::wstring date_tab_str = date_tab;
+        date_str = date_tab_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(6, 4);
+    }
     std::wstring dossier_str;
     if (m_date_diffusee_a_partir_de.second != L"")
         dossier_str = keyColor[0] + m_date_diffusee_a_partir_de.second + valuesColor + L' ';
@@ -1745,11 +1795,14 @@ const void Serie::Print_Saisons()
 {
     if (affichage_saisons_actif)
     {
-        std::size_t taille;
-        taille = std::size(saisons);
+        /*std::size_t taille = std::size(saisons);
         for (int i = 0; i < taille; i++)
         {
             Print_Saison(saisons[i]);
+        }*/
+        for (auto s : saisons)
+        {
+            Print_Saison(s);
         }
     }
 }
