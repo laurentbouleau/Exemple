@@ -668,7 +668,7 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
     //std::wregex filename_pattern{ L"(\\d{4})(?:-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?" };
     std::wregex filename_pattern{ L"(\\d{4})(?:\\-(\\d{2})(?:-(\\d{2}))?)?(?:\\s(.+))?" };
     std::wsmatch match;
-    std::tm tm;
+    std::tm tm{ -1, -1, -1, -1, -1, -1, -1, -1, -1 };
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
         std::wstring year = match[1];
@@ -1092,13 +1092,13 @@ void Saison::Print_Header()
 {
     wchar_t date_tab[15];
     std::wstring date_str{};
-    if (m_date_diffusee_a_partir_de.first.tm_mday == -858993460 && m_date_diffusee_a_partir_de.first.tm_mon == -858993460)
+    if (m_date_diffusee_a_partir_de.first.tm_mday == -1 && m_date_diffusee_a_partir_de.first.tm_mon == -1)
     {
         std::wcsftime(date_tab, 15, L"%Y", &m_date_diffusee_a_partir_de.first);
         std::wstring date_tab_str = date_tab;
         date_str = date_tab_str;
     }
-    else if (m_date_diffusee_a_partir_de.first.tm_mday == -858993460)
+    else if (m_date_diffusee_a_partir_de.first.tm_mday == -1)
     {
         std::wcsftime(date_tab, 15, L"%m/%Y", &m_date_diffusee_a_partir_de.first);
         std::wstring date_tab_str = date_tab;
