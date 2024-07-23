@@ -241,7 +241,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
     std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
-    if (file_content.size() > 0)
+    /*if (file_content.size() > 0)
     {
         std::wsmatch soustitre_match;
         const std::wregex soustitre_format_rg{ L"(?:(\\d+)\\.)?(.+)(?:\\s?\\:\\s|/|\\s\\-\\s)(.+)" };
@@ -255,15 +255,63 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         {
             m_titres.push_back(file_content[0]);
         }
+    }*/
+
+    if (file_content.size() > 0)
+    {
+        std::size_t pos = 0;
+        //if (m_NumeroEpisode != 0)
+        if(m_numero == 0)
+        {
+            //file_content =
+            std::wcout << L"m_numero=" << m_numero << std::endl;
+
+        }
+        
+        const std::wstring d_p = L" : ";
+        pos = file_content[0].find(d_p);
+        bool found = false;
+        if (!found && pos != std::wstring::npos)
+        {
+            m_titres.push_back(file_content[0].substr(0, pos));
+            m_titres.push_back(d_p);
+            m_titres.push_back(file_content[0].substr(pos + 3));
+            found = true;
+        }
+        const std::wstring d_p2 = L": ";
+        pos = file_content[0].find(d_p2);
+        if (!found && pos != std::wstring::npos)
+        {
+            m_titres.push_back(file_content[0].substr(0, pos));
+            m_titres.push_back(d_p2);
+            m_titres.push_back(file_content[0].substr(pos + 2));
+            found = true;
+        }
+        const std::wstring d_p3 = L"/";
+        pos = file_content[0].find(d_p3);
+        if (!found && pos != std::wstring::npos)
+        {
+            m_titres.push_back(file_content[0].substr(0, pos));
+            m_titres.push_back(d_p3);
+            m_titres.push_back(file_content[0].substr(pos + 1));
+            found = true;
+        }
+        if (!found)
+        {
+            m_titres.push_back(file_content[0]);
+            found = true;
+        }
     }
+
 
     if (file_content.size() > 1)
         initialiser_Duree(file_content[1]);
 
     if (file_content.size() > 2)
     {
-        file_content.erase(file_content.begin());  //bof à revoir
-        file_content.erase(file_content.begin()); //bof à revoir
+        //file_content.erase(file_content.begin());  //bof à revoir
+        //file_content.erase(file_content.begin()); //bof à revoir
+        file_content.erase(file_content.begin(), file_content.begin() + 0);
         m_resume = file_content;
     }
 }
@@ -367,7 +415,12 @@ void SequenceVisionnage::Print()
     else
     {
         found = true;
-        wstr = keyColor[1] + m_titres[0] + keyColor[0] + m_titres[1] + keyColor[1] + m_titres[1] + valuesColor;
+//        wstr = keyColor[1] + m_titres[0] + keyColor[0] + m_titres[1] + keyColor[1] + m_titres[1] + valuesColor;
+
+
+        wstr = keyColor[1] + m_titres[0] + valuesColor + m_titres[1] + keyColor[1] + m_titres[2] + valuesColor;
+
+
     }
 
     if (m_numero == 1) // ???
@@ -606,58 +659,6 @@ bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
 // # Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ serie }                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
-
-/*Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{serie}
-{
-    auto nomDossier = cheminFichier.filename().wstring();
-    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
-    assert(nomDossier.length() > 3 && L"Nom de fichier trop court pour avoir au moins une date");
-    std::size_t pos = 0;
-    std::wstring wstr = nomDossier.substr(pos);
-
-    wchar_t sp = L' ', tiret = L'-';
-    auto y = std::stoi(wstr, &pos);
-    assert(1582 <= y && L"L'année est inférieur !");
-    m_f_anneesDiffusion = y;
-    wstr = wstr.substr(4);
-    try
-    {
-        test_date_tire(wstr[0]);
-    }
-    catch (exception_date_tiret e2)
-    {
-        std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
-        exit(1);
-    }
-    wstr = wstr.substr(1);
-    auto m = std::stoi(wstr, &pos);
-    assert((1 <= m && m <= 12) && L"Le mois invalide !");
-    wstr = wstr.substr(2);
-    try
-    {
-        test_date_tire(wstr[0]);
-    }
-    catch (exception_date_tiret e2)
-    {
-        std::wcout << L"Exception a été capturée : " << e2.get_message() << std::endl;
-        exit(1);
-    }
-    wstr = wstr.substr(1);
-    auto d = std::stoi(wstr, &pos);
-    assert((1 <= d && d <= 31) && L"Le jour invalide !");
-    if (!checkday(m, d, y))
-    {
-        std::wcout << L"Le jour invalide !!!" << std::endl;
-        exit(1);
-    }
-    std::tm tm;
-    tm.tm_year = y - 1900;
-    tm.tm_mon = m - 1;
-    tm.tm_mday = d;
-    wstr = wstr.substr(2);
-    m_date_diffusee_a_partir_de.first = tm;
-    m_date_diffusee_a_partir_de.second = wstr;
-}*/
 
 Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ serie }
 {
@@ -1740,7 +1741,7 @@ const void Serie::Print_Header()
             annees_str = format_Annees();
         }
         // sur
-        if (affichage_sur_actif && m_sur != L"")
+        /*if (affichage_sur_actif && m_sur != L"")
         {
             sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
             // Disney+ SJ
@@ -1759,6 +1760,30 @@ const void Serie::Print_Header()
             // Netflix SJ
             if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
                 sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
+        }*/
+        if (affichage_sur_actif && m_sur != L"" && m_sur != L"Disney+" && m_sur != L"Netflix")
+        {
+            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[0] + L')' + valuesColor;
+        }
+        if (affichage_sur_actif && (m_sur == L"Disney+" || m_sur == L"Netflix"))
+        {
+            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
+                sur_str += m_disney_sj;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+                sur_str += m_netflix_sj;
+            sur_str += keyColor[0] + L')' + valuesColor;
+        }
+        else
+        {
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + m_disney_sj + keyColor[0] + L')' + valuesColor;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + m_netflix_sj + keyColor[0] + L')' + valuesColor;
         }
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)

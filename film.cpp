@@ -110,7 +110,7 @@ Film::Film(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
-    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)\\])?(?:\\.(.+))?" };
+    std::wregex filename_pattern{ L"(.+?)(?:\\.\\((\\d{4}\\-\\d{2}\\-\\d{2}\\s)?([^\\)]*)\\))?(?:\\.(.+))?" };
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
@@ -145,7 +145,7 @@ Film::Film(std::filesystem::path racine)
 std::vector<std::wstring> Film::Dossier_Titres(std::wstring titres)
 {
     assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    size_t pos = 0;
+    std::size_t pos = 0;
     const std::wstring d_p = L" - ";
     pos = titres.find(d_p);
     bool found = false;
@@ -556,7 +556,7 @@ void Film::Print_Avec()
 {
     if (affichage_avec_actif && m_avec.size())
     {
-        std::wstring avec_str = keyColor[1] + L"Avec : " + valuesColor;
+        std::wstring avec_str = keyColor[0] + L"Avec : " + valuesColor;
         bool found = false;
         for (auto&& [nom, role] : m_avec)
         {
@@ -589,6 +589,12 @@ void Film::Print_Avec()
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_Date_de_Reprise()                                                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 const void Film::Print_Date_de_Reprise()
 {
     if (affichage_date_de_reprise_actif && m_date_de_reprise.tm_year != 0)
@@ -602,12 +608,6 @@ const void Film::Print_Date_de_Reprise()
         std::wcout << keyColor[0] + L"Date de reprise : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4) + L"\r\n";
     }
 }
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # const void Film::Print_Date_de_Reprise()                                                                                                           #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
 
 const void Film::Print_Date_de_Sortie()
 {
