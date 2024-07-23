@@ -311,7 +311,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     {
         //file_content.erase(file_content.begin());  //bof à revoir
         //file_content.erase(file_content.begin()); //bof à revoir
-        file_content.erase(file_content.begin(), file_content.begin() + 0);
+        file_content.erase(file_content.begin(), file_content.begin() + 1);
         m_resume = file_content;
     }
 }
