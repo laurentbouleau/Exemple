@@ -315,6 +315,7 @@ private:
     bool affichage_chaine_actif = true;
     bool affichage_creee_par_actif = true;
     bool affichage_disney_sj_actif = true;
+    bool affichage_duree_actif = true;
     bool affichage_episode_titre_actif = true;
     bool affichage_en_relation_avec_actif = true;
     bool affichage_image_actif = true;

@@ -55,6 +55,7 @@ public:
     void initialiser_Date_de_sortie(std::filesystem::path const& cheminFichier);
     void initialiser_De(std::filesystem::path const& cheminFichier);
     void initialiser_Distributeur(std::filesystem::path const& cheminFichier);
+    void initialiser_Duree(std::wstring& hm);
     void initialiser_Par(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
@@ -88,7 +89,7 @@ private:
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
-    std::tm m_date, m_date_de_reprise, m_date_de_sortie;
+    std::tm m_date{0}, m_date_de_reprise{0}, m_date_de_sortie{0};
     std::vector<std::wstring> m_de;
     bool m_disney{ false };
     std::wstring m_disney_sj;
@@ -116,6 +117,7 @@ private:
     bool affichage_de_actif = true;
     bool affichage_disney_sj_actif = true;
     bool affichage_distributeur_actif = true;
+    bool affichage_duree_actif = true;
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
     bool affichage_nationalite_actif = true;

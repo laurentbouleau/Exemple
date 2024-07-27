@@ -384,6 +384,8 @@ void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
     auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
     auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
     auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
+
+    //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
 }
 
 // ######################################################################################################################################################
@@ -1226,7 +1228,7 @@ void Saison::Print_Note()
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-Serie::Serie(std::filesystem::path racine)
+/*Serie::Serie(std::filesystem::path racine)
 {
     this->racine = racine;
     auto nomDossier = racine.filename().wstring();
@@ -1265,8 +1267,45 @@ Serie::Serie(std::filesystem::path racine)
     {
         assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
     }
-}
+}*/
+Serie::Serie(std::filesystem::path racine)
+{
+    this->racine = racine;
+    auto nomDossier = racine.filename().wstring();
+    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
+
+    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" };
+    std::wsmatch match;
+    if (std::regex_match(nomDossier, match, filename_pattern))
+    {
+        std::wstring titres = match[1];
+        m_titres = Dossier_Titres(titres);
+        if (match[2].matched)
+        {
+            std::wstring annees_str = match[2].str();
+            std::wsmatch dummy;
+            if (std::regex_match(annees_str, dummy, std::wregex(L"\\d{4}\\-\\d{4}\\s?")))
+            {
+                m_f_anneesProduction.first = stoi(annees_str);
+                m_f_anneesProduction.second = stoi(annees_str.substr(5));
+            }
+            else
+            {
+                m_f_anneesProduction.first = stoi(annees_str);
+            }
+        }
+
+        m_sur = (match[3].matched) ? match[3].str() : L"";
+
+        std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
+        m_sous_genre = sous_genre;
+    }
+    else
+    {
+        assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
+    }
+}
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # const std::wstring Serie::calcul_Note_Affichage()                                                                                                  #
@@ -1601,7 +1640,6 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
         t.push_back(contenu[0]);
     }
 
-
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
     {
@@ -1730,6 +1768,7 @@ const void Serie::Print_Header()
         std::wstring annees_str;
         std::wstring sur_str;
         std::wstring sj_str;
+        std::wstring duree_str;
         std::wstring note_str;
 
         titres_str = keyColor[0] + L"Titre : " + valuesColor + m_titres[0];
@@ -1788,11 +1827,16 @@ const void Serie::Print_Header()
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
             sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
+        // Durée
+        if (affichage_duree_actif)
+        {
+            duree_str = L' ' + std::to_wstring(m_duree/60) + keyColor[0] + L"min " + valuesColor;
+        }
         // Note
         if (affichage_note_actif)
             note_str += calcul_Note_Affichage();
 
-        std::wcout << titres_str << annees_str << sur_str << sj_str << note_str << std::endl;
+        std::wcout << titres_str << annees_str << sur_str << sj_str << duree_str << note_str << std::endl;
     }
 }
 
@@ -1825,9 +1869,13 @@ const void Serie::Print_Saisons()
         {
             Print_Saison(saisons[i]);
         }*/
-        for (auto s : saisons)
+        /*for (auto s : saisons)
         {
             Print_Saison(s);
+        }*/
+        for (auto saison : saisons)
+        {
+            Print_Saison(saison);
         }
     }
 }

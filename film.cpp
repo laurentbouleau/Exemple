@@ -129,12 +129,12 @@ Film::Film(std::filesystem::path racine)
             {
                 m_f_anneesProduction.first = stoi(annees_str);
             }
-        }
+        }*/
 
         m_sur = (match[3].matched) ? match[3].str() : L"";
 
         std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
-        m_sous_genre = sous_genre;*/
+        m_sous_genre = sous_genre;
     }
     else
     {
@@ -402,6 +402,33 @@ void Film::initialiser_Distributeur(fs::path const& cheminFichier)
     assert((m_distributeur.size() != 0));
 }
 
+void Film::initialiser_Duree(std::wstring& m)
+{
+
+    //const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
+
+
+    //const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
+    //const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(h|H)(.+)([[:digit:]]+)\\s?(min|MIN|Min)" };
+    //const std::wregex duree_format_rg{ L"([[:digit:]])\\s?(h|H)([[:digit:]]+)\\s?(min|MIN|Min)" };
+    //const std::wregex duree_format_rg{ L"([01234])\\s?(h|H)$" };
+    const std::wregex duree_format_rg{ L"([01234])?" };
+    std::wsmatch match;
+
+    if (std::regex_match(m, match, duree_format_rg))
+    {
+        auto duree_en_heure = std::stoi(match[1]);
+        //auto duree_en_minute = std::stoi(match[2]);
+        //m_duree = duree_en_heure * 60 * 60 + duree_en_minute * 60;
+        m_duree = duree_en_heure * 60 * 60;
+    }
+    else
+    {
+        throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
+    }
+
+}
+
 void Film::initialiser_Par(fs::path const& cheminFichier)
 { // Par
     auto nomFichier = cheminFichier.wstring();
@@ -512,7 +539,7 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
     {
-        //initialiser_Duree(contenu[0]);
+        initialiser_Duree(contenu[0]);
         contenu.erase(contenu.begin());
 
         contenu.erase(contenu.begin());
@@ -666,15 +693,16 @@ const void Film::Print_Header()
         std::wstring annees_str;
         std::wstring sur_str;
         std::wstring sj_str;
+        std::wstring duree_str;
         std::wstring note_str;
 
         titres_str = keyColor[0] + L"Titre : " + valuesColor + m_titres[0];
         if (m_titres.size() > 1)
             titres_str += keyColor[1] + m_titres[1] + valuesColor + m_titres[2];
-        // Année(s)
-        /*if (affichage_annees_actif)
+        // Date
+        /*if (affichage_date_actif)
         {
-            annees_str = format_Annees();
+            date_str = format_Annees();
         }*/
         // sur
         if (affichage_sur_actif && m_sur != L"")
@@ -700,11 +728,16 @@ const void Film::Print_Header()
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
             sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
+        // Durée
+        if (affichage_duree_actif)
+        {
+            duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + keyColor[0] + L"h" + valuesColor + L' ' + std::to_wstring(m_duree / 60) + keyColor[0] + L"min " + valuesColor;
+        }
         // Note
         if (affichage_note_actif)
             note_str += Print_Note();
 
-        std::wcout << titres_str << annees_str << sur_str << sj_str << note_str << std::endl;
+        std::wcout << titres_str << annees_str << sur_str << sj_str << duree_str << note_str << std::endl;
     }
 }
 
