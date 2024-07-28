@@ -123,8 +123,8 @@ struct SequenceVisionnage
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
 
-    /*unsigned short*/ int m_NumeroSaison{};
-    /*unsigned short*/ int m_NumeroEpisode{};
+    unsigned short int m_NumeroSaison{};
+    unsigned short int m_NumeroEpisode{};
 
 
 

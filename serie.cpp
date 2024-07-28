@@ -311,7 +311,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     {
         //file_content.erase(file_content.begin());  //bof à revoir
         //file_content.erase(file_content.begin()); //bof à revoir
-        file_content.erase(file_content.begin(), file_content.begin() + 1);
+        file_content.erase(file_content.begin(), file_content.begin() + 2);
         m_resume = file_content;
     }
 }
@@ -1780,26 +1780,6 @@ const void Serie::Print_Header()
             annees_str = format_Annees();
         }
         // sur
-        /*if (affichage_sur_actif && m_sur != L"")
-        {
-            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += m_disney_sj;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += m_netflix_sj;
-            sur_str += keyColor[0] + L')' + valuesColor;
-        }
-        else
-        {
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + m_disney_sj + keyColor[0] + L')' + valuesColor;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
-        }*/
         if (affichage_sur_actif && m_sur != L"" && m_sur != L"Disney+" && m_sur != L"Netflix")
         {
             sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[0] + L')' + valuesColor;

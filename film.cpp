@@ -404,23 +404,14 @@ void Film::initialiser_Distributeur(fs::path const& cheminFichier)
 
 void Film::initialiser_Duree(std::wstring& m)
 {
-
-    //const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
-
-
-    //const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
-    //const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(h|H)(.+)([[:digit:]]+)\\s?(min|MIN|Min)" };
-    //const std::wregex duree_format_rg{ L"([[:digit:]])\\s?(h|H)([[:digit:]]+)\\s?(min|MIN|Min)" };
-    //const std::wregex duree_format_rg{ L"([01234])\\s?(h|H)$" };
-    const std::wregex duree_format_rg{ L"([01234])?" };
+    const std::wregex duree_format_rg{ L"^(?:(\\d+)(?:h|H))?\\s?(?:(\\d+)(?:min|MIN))?$" };
     std::wsmatch match;
 
     if (std::regex_match(m, match, duree_format_rg))
     {
         auto duree_en_heure = std::stoi(match[1]);
-        //auto duree_en_minute = std::stoi(match[2]);
-        //m_duree = duree_en_heure * 60 * 60 + duree_en_minute * 60;
-        m_duree = duree_en_heure * 60 * 60;
+        auto duree_en_minute = std::stoi(match[2]);
+        m_duree = duree_en_heure * 60 * 60 + duree_en_minute * 60;
     }
     else
     {
@@ -494,27 +485,6 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
 
     std::vector<std::wstring> t;
 
-
-    //std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
-    /*std::wregex filename_pattern{L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s?|\\d{4}\\-\\s?|\\d{4}\\s?)?([^\\]]*)\\])?(?:\\.(.+))?"};
-    std::wsmatch match;
-    if (std::regex_match(contenu[0], match, filename_pattern))
-    {
-        t.push_back(match[1]);
-        if (match.length() > 2)
-        {
-            t.push_back(match[2]);
-        }
-        if (match.length() > 3)
-        {
-            t.push_back(match[3]);
-        }
-    }
-    else
-    {
-        t.push_back(contenu[0]);
-    }*/
-
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     //std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s?|\\d{4}\\-\\s?|\\d{4}\\s?)?([^\\]]*)\\])?(?:\\.(.+))?" };
     std::wsmatch match;
@@ -540,7 +510,7 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
     if (contenu.size() > 0)
     {
         initialiser_Duree(contenu[0]);
-        contenu.erase(contenu.begin());
+        //contenu.erase(contenu.begin());
 
         contenu.erase(contenu.begin());
         if (contenu.size() > 0)
@@ -705,7 +675,7 @@ const void Film::Print_Header()
             date_str = format_Annees();
         }*/
         // sur
-        if (affichage_sur_actif && m_sur != L"")
+        /*if (affichage_sur_actif && m_sur != L"")
         {
             sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
             // Disney+ SJ
@@ -724,6 +694,30 @@ const void Film::Print_Header()
             // Netflix SJ
             if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
                 sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
+        }*/
+        if (affichage_sur_actif && m_sur != L"" && m_sur != L"Disney+" && m_sur != L"Netflix")
+        {
+            sur_str += keyColor[0] + L" (" + keyColor[1] + L"en salle " + valuesColor + m_sur + keyColor[0] + L')' + valuesColor;
+        }
+        if (affichage_sur_actif && (m_sur == L"Disney+" || m_sur == L"Netflix"))
+        {
+            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
+                sur_str += m_disney_sj;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+                sur_str += m_netflix_sj;
+            sur_str += keyColor[0] + L')' + valuesColor;
+        }
+        else
+        {
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + m_disney_sj + keyColor[0] + L')' + valuesColor;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + m_netflix_sj + keyColor[0] + L')' + valuesColor;
         }
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
