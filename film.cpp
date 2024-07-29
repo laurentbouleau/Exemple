@@ -409,9 +409,10 @@ void Film::initialiser_Duree(std::wstring& m)
 
     if (std::regex_match(m, match, duree_format_rg))
     {
-        auto duree_en_heure = std::stoi(match[1]);
-        auto duree_en_minute = std::stoi(match[2]);
-        m_duree = duree_en_heure * 60 * 60 + duree_en_minute * 60;
+        //auto duree_en_heure = std::stoi(match[1]);
+        //auto duree_en_minute = std::stoi(match[2]);
+        //m_duree = duree_en_heure * 60 * 60 + duree_en_minute * 60;
+        m_duree = (match[1].matched ? std::stoi(match[1]) : 0) * 60 * 60 + (match[2].matched ? std::stoi(match[2]) : 0) * 60;
     }
     else
     {
@@ -725,7 +726,8 @@ const void Film::Print_Header()
         // Durée
         if (affichage_duree_actif)
         {
-            duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + keyColor[0] + L"h" + valuesColor + L' ' + std::to_wstring(m_duree / 60) + keyColor[0] + L"min " + valuesColor;
+            //duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + keyColor[0] + L"h" + valuesColor + L' ' + std::to_wstring(m_duree / 60) + keyColor[0] + L"min " + valuesColor;
+            duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + keyColor[0] + L"h" + valuesColor + L' ' + std::to_wstring((m_duree - ((m_duree / (60 * 60)) * 60 * 60)) / 60) + keyColor[0] + L"min " + valuesColor;
         }
         // Note
         if (affichage_note_actif)
