@@ -384,8 +384,11 @@ void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
     auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
     auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
     auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
-
-    //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
+}
+const Episode* SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
+{
+    auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
+    return *NumeroSequenceVisionnage;
 }
 
 // ######################################################################################################################################################
@@ -591,6 +594,7 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
 {
     //...
+    //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
 }
 
 
@@ -601,16 +605,16 @@ void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Episode::Print()
+/*void Episode::Print()
 {
     for (auto vis : m_liste_sequence_visionnages)
     {
         vis.Print();
     }
-}
+}*/
 
 // ===> Ici !!!
-/*void Episode::Print()
+void Episode::Print()
 {
     bool first = true;
     for (auto vis : m_liste_sequence_visionnages)
@@ -627,14 +631,15 @@ void Episode::Print()
     }
 }
 
-void Episode::PrintFirstSequenceVisionnage(vis)
+void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
 {
+    // ???
+}
+void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
+{
+    // ???
 
 }
-void Episode::PrintSequenceVisionnage(vis)
-{
-
-}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -968,12 +973,6 @@ void Saison::Print()
 //    if (std::wcsftime(wstr, 100, L"%A %c", std::localtime(&t)))
 //        std::wcout << wstr << '\n';
 
-    /*std::size_t taille;
-    taille = std::size(m_liste_episodes);
-    for (auto i = 0; i < taille; i++)
-    {
-        m_liste_episodes[i]->Print();
-    }*/
     for (auto episode : m_liste_episodes)
     {
         episode.second->Print();
@@ -1228,46 +1227,12 @@ void Saison::Print_Note()
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-/*Serie::Serie(std::filesystem::path racine)
-{
-    this->racine = racine;
-    auto nomDossier = racine.filename().wstring();
-    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # Serie::Serie(std::filesystem::path racine)                                                                                                         #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
-    //std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s)?([^\\]]*)\\])?(?:\\.(.+))?" };
-    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\s|\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" };
-    std::wsmatch match;
-    if (std::regex_match(nomDossier, match, filename_pattern))
-    {
-        std::wstring titres = match[1];
-        m_titres = Dossier_Titres(titres);
-        //m_annees = (match[2].matched) ? match[2].str() : L"";
-//        m_annees = (match[2].matched) ? match[2] : 0;
-        if (match[2].matched)
-        {
-            std::wstring annees_str = match[2].str();
-            std::wsmatch dummy;
-            if (std::regex_match(annees_str, dummy, std::wregex(L"\\d{4}\\-\\d{4}\\s")))
-            {
-                m_f_anneesProduction.first = stoi(annees_str);
-                m_f_anneesProduction.second = stoi(annees_str.substr(5));
-            }
-            else
-            {
-                m_f_anneesProduction.first = stoi(annees_str);
-            }
-        }
-
-        m_sur = (match[3].matched) ? match[3].str() : L"";
-
-        std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
-        m_sous_genre = sous_genre;
-    }
-    else
-    {
-        assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
-    }
-}*/
 Serie::Serie(std::filesystem::path racine)
 {
     this->racine = racine;

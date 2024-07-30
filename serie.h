@@ -113,7 +113,8 @@ struct SequenceVisionnage
     {};
 
     void Une_Fonction_De_La_Classe_SequenceVisionnage(...);
-    
+    const Episode* Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
+
     void Print();
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     bool Print_Titre_chiffre_et_point_ou_pas(int episode);
@@ -141,7 +142,7 @@ struct SequenceVisionnage
 
     int m_numero{ -1 };
     long m_duree{ -1 };
-    
+
 private:
     const Episode& m_episode;
 };
@@ -160,6 +161,9 @@ struct Episode
 
     bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
+    void PrintFirstSequenceVisionnage(const SequenceVisionnage& vis);
+    void PrintSequenceVisionnage(const SequenceVisionnage& vis);
+
     //void Print_Data();
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
 
@@ -168,6 +172,7 @@ struct Episode
     std::vector<std::wstring> m_resume;
 
     int lInfoQuiMInteresse;
+
 };
 
 struct Saison
