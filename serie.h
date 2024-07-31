@@ -102,7 +102,6 @@ struct SequenceVisionnage
     {};
 
     void Une_Fonction_De_La_Classe_SequenceVisionnage(...);
-    const Episode* Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
 
     void Print();
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
@@ -134,6 +133,7 @@ struct SequenceVisionnage
 
 private:
     const Episode& m_episode;
+    const Episode* Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
 };
 
 struct Episode

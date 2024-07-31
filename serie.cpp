@@ -386,11 +386,11 @@ void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
     auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
     auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
 }
-/*const Episode* SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
+const Episode* SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
 {
     auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
     return *NumeroSequenceVisionnage;
-}*/
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
