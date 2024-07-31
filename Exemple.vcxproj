@@ -142,6 +142,7 @@
     <ClCompile Include="film_serie.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="serie.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exemple.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="film_serie.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="serie.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

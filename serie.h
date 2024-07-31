@@ -2,11 +2,6 @@
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #define _CRT_SECURE_NO_WARNINGS
 
-//#define TXT_                             0
-//#define JGP_                             1
-//#define PNG_                             2
-//#define WEBP_                            3
-
 #include "Exemple.h"
 #include "film_serie.h"
 
@@ -41,12 +36,6 @@ extern const std::vector<std::wstring> Sur;
 extern const std::vector<std::wstring> Sous_Genre;
 extern const std::vector<std::wstring> Nationalite;
 
-/*const std::vector<std::wstring> min =
-{
-    L"min",
-    L"Min",
-    L"MIN"
-};*/
 
 template<typename ... Args>
 std::wstring wstring_format(const std::wstring& format, Args ... args)

@@ -2,11 +2,7 @@
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #define _CRT_SECURE_NO_WARNINGS
 
-//#define TXT_                             0
-//#define JGP_                             1
-//#define PNG_                             2
-//#define WEBP_                            3
-
+#include "utils.h"
 #include "Exemple.h"
 #include "film_serie.h"
 
