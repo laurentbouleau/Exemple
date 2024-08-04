@@ -133,8 +133,7 @@ struct SequenceVisionnage
 
 private:
     const Episode& m_episode;
-    const Episode* Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
-};
+ };
 
 struct Episode
 {
@@ -143,6 +142,9 @@ struct Episode
     Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } { ajouter_SequenceVisionnage(info_vis); };
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
+    
+    void Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
+    /*unsigned short*/ int m_episode{};
 
     void GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis);
 
