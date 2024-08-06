@@ -69,6 +69,7 @@ extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<s
 //extern void initialiser_Sous_Genre(std::wstring& m_s_g);
 extern bool initialiser_Sous_Genre(std::wstring& m_s_g);
 extern void initialiser_Sur(std::wstring& m_s);
+extern std::vector<std::wstring> xyz_Titre(std::wstring& file_content);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
@@ -261,13 +262,22 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     if (file_content.size() > 0)
     {
         std::size_t pos = 0;
-        //if (m_NumeroEpisode != 0)
         if(m_numero == 0)
         {
             //file_content =
-            std::wcout << L"m_numero=" << m_numero << std::endl;
+            //std::wcout << L"m_numero=" << m_numero << std::endl;
 
         }
+        else
+        {
+
+        }
+        //const std::wstring d_p0{ L". " };
+        //pos = file_content[0].find(d_p0);
+        //if(pos == std::wstring::npos)
+        //    file_content[0] = file_content[0].substr(pos + 2);
+
+        //if (m_NumeroEpisode != 0)
         
         const std::wstring d_p = L" : ";
         pos = file_content[0].find(d_p);
@@ -302,6 +312,8 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
             m_titres.push_back(file_content[0]);
             found = true;
         }
+        //m_titres = ::initialiser_Titre(file_content[0]);
+
     }
 
 
@@ -752,6 +764,11 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
         }
         if (!(std::isdigit(nomFichier[0])))
         {
+            // AD
+            if (nomFichier == L"AD.txt")
+            {
+                initialiser_Audiodescription(cheminFichier, m_audiodescription);
+            }
             // Avec
             if (nomFichier == L"Avec.txt")
             {
@@ -904,7 +921,7 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
     std::vector<std::wstring> titre = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((titre.size() != 0));
 
-    std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
+    /*std::wregex titre_pattern{L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)"};
     std::wsmatch match;
     if (std::regex_match(titre[0], match, titre_pattern))
     {
@@ -921,7 +938,10 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
     else
     {
         m_titres.push_back(titre[0]);
-    }
+    }*/
+
+    m_titres = ::xyz_Titre(titre[0]);
+
 }
 
 // ######################################################################################################################################################
@@ -987,6 +1007,8 @@ void Saison::Print()
     Print_Netflix();
     // Images(s)
     Print_Images();
+    // AD
+    Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[1], valuesColor);
     // Avec
     Print_Avec();
     // Saison ok !
@@ -1587,7 +1609,7 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     std::vector<std::wstring> t;
 
     //std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
-    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s?|\\d{4}\\-\\s?|\\d{4}\\s?)?([^\\]]*)\\])?(?:\\.(.+))?" };
+/*    std::wregex filename_pattern{L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s?|\\d{4}\\-\\s?|\\d{4}\\s?)?([^\\]]*)\\])?(?:\\.(.+))?"};
     std::wsmatch match;
     if (std::regex_match(contenu[0], match, filename_pattern))
     {
@@ -1604,8 +1626,10 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     else
     {
         t.push_back(contenu[0]);
-    }
+    }*/
 
+    /*----------------------------------*/
+    m_titres = ::xyz_Titre(contenu[0]);
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
     {

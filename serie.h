@@ -201,6 +201,7 @@ public:
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
+    std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
     std::pair<std::tm, std::wstring>m_date_diffusee_a_partir_de;
     bool m_disney{ false };
@@ -217,7 +218,7 @@ public:
     std::vector<std::wstring> m_titres;
 
 
-
+    bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_chaine_actif = true;
     bool affichage_date_etc_actif = true;
@@ -306,8 +307,8 @@ private:
 
 
     bool affichage_annees_actif = true;
-    bool affichage_avec_actif = true;
     bool affichage_audiodescription_actif = true;
+    bool affichage_avec_actif = true;
     bool affichage_chaine_actif = true;
     bool affichage_creee_par_actif = true;
     bool affichage_disney_sj_actif = true;

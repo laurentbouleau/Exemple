@@ -71,6 +71,7 @@ extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<s
 //extern void initialiser_Sous_Genre(std::wstring& m_s_g);
 extern bool initialiser_Sous_Genre(std::wstring& m_s_g);
 extern void initialiser_Sur(std::wstring& m_s);
+extern std::vector<std::wstring> xyz_Titre(std::wstring& file_content);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
@@ -146,7 +147,7 @@ Film::Film(std::filesystem::path racine)
 std::vector<std::wstring> Film::Dossier_Titres(std::wstring titres)
 {
     assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    std::size_t pos = 0;
+    /*std::size_t pos = 0;
     const std::wstring d_p = L" - ";
     pos = titres.find(d_p);
     bool found = false;
@@ -179,7 +180,8 @@ std::vector<std::wstring> Film::Dossier_Titres(std::wstring titres)
     {
         m_titres.push_back(titres);
         //found = true;
-    }
+    }*/
+    m_titres = ::xyz_Titre(titres);
     return m_titres;
 }
 
