@@ -261,73 +261,27 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
     if (file_content.size() > 0)
     {
+        if (file_content[0] == L"")
+            return;
         std::size_t pos = 0;
-        if(m_numero == 0)
+        if (m_NumeroEpisode != 0)
         {
-            //file_content =
-            //std::wcout << L"m_numero=" << m_numero << std::endl;
-
+            pos = file_content[0].find(L". ");
+            file_content[0] = file_content[0].substr(pos + 2);
         }
-        else
-        {
-
-        }
-        //const std::wstring d_p0{ L". " };
-        //pos = file_content[0].find(d_p0);
-        //if(pos == std::wstring::npos)
-        //    file_content[0] = file_content[0].substr(pos + 2);
-
-        //if (m_NumeroEpisode != 0)
-        
-        const std::wstring d_p = L" : ";
-        pos = file_content[0].find(d_p);
-        bool found = false;
-        if (!found && pos != std::wstring::npos)
-        {
-            m_titres.push_back(file_content[0].substr(0, pos));
-            m_titres.push_back(d_p);
-            m_titres.push_back(file_content[0].substr(pos + 3));
-            found = true;
-        }
-        const std::wstring d_p2 = L": ";
-        pos = file_content[0].find(d_p2);
-        if (!found && pos != std::wstring::npos)
-        {
-            m_titres.push_back(file_content[0].substr(0, pos));
-            m_titres.push_back(d_p2);
-            m_titres.push_back(file_content[0].substr(pos + 2));
-            found = true;
-        }
-        const std::wstring d_p3 = L"/";
-        pos = file_content[0].find(d_p3);
-        if (!found && pos != std::wstring::npos)
-        {
-            m_titres.push_back(file_content[0].substr(0, pos));
-            m_titres.push_back(d_p3);
-            m_titres.push_back(file_content[0].substr(pos + 1));
-            found = true;
-        }
-        if (!found)
-        {
-            m_titres.push_back(file_content[0]);
-            found = true;
-        }
-        //m_titres = ::initialiser_Titre(file_content[0]);
-
+        m_titres = ::xyz_Titre(file_content[0]);
     }
-
 
     if (file_content.size() > 1)
         initialiser_Duree(file_content[1]);
 
     if (file_content.size() > 2)
     {
-        //file_content.erase(file_content.begin());  //bof à revoir
-        //file_content.erase(file_content.begin()); //bof à revoir
         file_content.erase(file_content.begin(), file_content.begin() + 2);
         m_resume = file_content;
     }
 }
+
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1004,12 +958,12 @@ void Saison::Print()
     Print_Chaine();
     // Netflix
     Print_Netflix();
-    // Images(s)
-    Print_Images();
     // AD
     Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[1], valuesColor);
     // Avec
     Print_Avec();
+    // Images(s)
+    Print_Images();
     // Saison ok !
     std::wcout << L"\r\n";
 }

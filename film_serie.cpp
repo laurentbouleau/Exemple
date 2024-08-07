@@ -311,11 +311,11 @@ void initialiser_Sur(std::wstring& m_s)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> initialiser_Titre(std::wstring>& file_content)                                                                           #
+// # std::vector<std::wstring> xyzr_Titre(std::wstring>& titre)                                                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::vector<std::wstring> xyz_Titre(std::wstring& file_content)
+std::vector<std::wstring> xyz_Titre(std::wstring& titre)
 { // Titre 
     /*auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
@@ -341,59 +341,60 @@ std::vector<std::wstring> xyz_Titre(std::wstring& file_content)
         m_titre_original.push_back(titre);
     }*/
     //assert((file_content.size() != 0));
-    assert(file_content.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-
+    assert(titre.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
+    std::wstring& t = titre;
+    
     std::vector<std::wstring> titres;
     std::size_t pos = 0;
-    const std::wstring d_p = L" : ";
-    pos = file_content.find(d_p);
     bool found = false;
+    const std::wstring d_p = L" : ";
+    pos = t.find(d_p);
     if (!found && pos != std::wstring::npos)
     {
-        titres.push_back(file_content.substr(0, pos));
+        titres.push_back(t.substr(0, pos));
         titres.push_back(d_p);
-        titres.push_back(file_content.substr(pos + 3));
+        titres.push_back(t.substr(pos + 3));
         found = true;
     }
     const std::wstring d_p2 = L": ";
-    pos = file_content.find(d_p2);
+    pos = titre.find(d_p2);
     if (!found && pos != std::wstring::npos)
     {
-        titres.push_back(file_content.substr(0, pos));
+        titres.push_back(t.substr(0, pos));
         titres.push_back(d_p2);
-        titres.push_back(file_content.substr(pos + 2));
+        titres.push_back(t.substr(pos + 2));
         found = true;
     }
     const std::wstring d_p3 = L"/";
-    pos = file_content.find(d_p3);
+    pos = t.find(d_p3);
     if (!found && pos != std::wstring::npos)
     {
-        titres.push_back(file_content.substr(0, pos));
+        titres.push_back(t.substr(0, pos));
         titres.push_back(d_p3);
-        titres.push_back(file_content.substr(pos + 1));
+        titres.push_back(t.substr(pos + 1));
         found = true;
     }
     const std::wstring d_p4 = L" - ";
-    pos = file_content.find(d_p4);
+    pos = t.find(d_p4);
     if (!found && pos != std::wstring::npos)
     {
-        titres.push_back(file_content.substr(0, pos));
+        titres.push_back(t.substr(0, pos));
         titres.push_back(d_p4);
-        titres.push_back(file_content.substr(pos + 3));
+        titres.push_back(t.substr(pos + 3));
         found = true;
     }
     const std::wstring d_p5 = L"- ";
-    pos = file_content.find(d_p5);
+    pos = t.find(d_p5);
     if (!found && pos != std::wstring::npos)
     {
-        titres.push_back(file_content.substr(0, pos));
+        titres.push_back(t.substr(0, pos));
         titres.push_back(d_p5);
-        titres.push_back(file_content.substr(pos + 2));
+        titres.push_back(t.substr(pos + 2));
         found = true;
     }
     if (!found)
     {
-        titres.push_back(file_content);
+        titres.push_back(t);
         found = true;
     }
     return titres;
@@ -412,7 +413,7 @@ void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::
     std::wstring titre = lire_fichierTxt(cheminFichier.wstring());
     assert((titre.size() != 0));
 
-    std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
+    /*std::wregex titre_pattern{L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)"};
     std::wsmatch match;
     if (std::regex_match(titre, match, titre_pattern))
     {
@@ -429,7 +430,9 @@ void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::
     else
     {
         m_titre_original.push_back(titre);
-    }
+    }*/
+    m_titre_original = ::xyz_Titre(titre);
+
 }
 
 // ######################################################################################################################################################

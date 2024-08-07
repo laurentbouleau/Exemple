@@ -487,7 +487,7 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
     std::vector<std::wstring> contenu = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((contenu.size() != 0));
 
-    std::vector<std::wstring> t;
+/*    std::vector<std::wstring> t;
 
     std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
     //std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s?|\\d{4}\\-\\s?|\\d{4}\\s?)?([^\\]]*)\\])?(?:\\.(.+))?" };
@@ -507,8 +507,9 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
     else
     {
         t.push_back(contenu[0]);
-    }
+    }*/
 
+    m_titres = ::xyz_Titre(contenu[0]);
 
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
