@@ -243,21 +243,6 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
     std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
-    /*if (file_content.size() > 0)
-    {
-        std::wsmatch soustitre_match;
-        const std::wregex soustitre_format_rg{ L"(?:(\\d+)\\.)?(.+)(?:\\s?\\:\\s|/|\\s\\-\\s)(.+)" };
-        if (std::regex_match(file_content[0], soustitre_match, soustitre_format_rg))
-        {
-            m_NumeroEpisode = soustitre_match[1].matched ? std::stoi(soustitre_match[1]) : 0;
-            m_titres.push_back(soustitre_match[2]);
-            m_titres.push_back(soustitre_match[3]);
-        }
-        else
-        {
-            m_titres.push_back(file_content[0]);
-        }
-    }*/
 
     if (file_content.size() > 0)
     {

@@ -317,30 +317,6 @@ void initialiser_Sur(std::wstring& m_s)
 
 std::vector<std::wstring> xyz_Titre(std::wstring& titre)
 { // Titre 
-    /*auto nomFichier = cheminFichier.wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::wstring titre = lire_fichierTxt(cheminFichier.wstring());
-    assert((titre.size() != 0));
-
-    std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
-    std::wsmatch match;
-    if (std::regex_match(titre, match, titre_pattern))
-    {
-        m_titre_original.push_back(match[1]);
-        if (match.length() > 2)
-        {
-            m_titre_original.push_back(match[2]);
-        }
-        if (match.length() > 3)
-        {
-            m_titre_original.push_back(match[3]);
-        }
-    }
-    else
-    {
-        m_titre_original.push_back(titre);
-    }*/
-    //assert((file_content.size() != 0));
     assert(titre.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
     std::wstring& t = titre;
     
