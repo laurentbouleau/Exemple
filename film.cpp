@@ -71,8 +71,9 @@ extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<s
 //extern void initialiser_Sous_Genre(std::wstring& m_s_g);
 extern bool initialiser_Sous_Genre(std::wstring& m_s_g);
 extern void initialiser_Sur(std::wstring& m_s);
-extern std::vector<std::wstring> xyz_Titre(std::wstring& file_content);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
+
+extern std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
 extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
 extern std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
@@ -135,7 +136,7 @@ Film::Film(std::filesystem::path racine)
 
         m_sur = (match[3].matched) ? match[3].str() : L"";
 
-        std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
+        const std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
         m_sous_genre = sous_genre;
     }
     else
@@ -144,7 +145,7 @@ Film::Film(std::filesystem::path racine)
     }
 }
 
-std::vector<std::wstring> Film::Dossier_Titres(std::wstring titres)
+std::vector<std::wstring> Film::Dossier_Titres(std::wstring& titres)
 {
     assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
     /*std::size_t pos = 0;
@@ -181,8 +182,8 @@ std::vector<std::wstring> Film::Dossier_Titres(std::wstring titres)
         m_titres.push_back(titres);
         //found = true;
     }*/
-    m_titres = ::xyz_Titre(titres);
-    return m_titres;
+    const std::vector<std::wstring> t = ::extraire_Titres_Depuis_UneLigne(titres);
+    return t;
 }
 
 void Film::initialiser_Fichier(fs::path const& cheminFichier)
@@ -220,7 +221,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         if (nomFichier == L"Disney+.txt")
         {
             m_disney_sj = recuperer_Disney_SJ(cheminFichier);
-            return;
+            //return;
         }
         // Distributeur
         if (nomFichier == L"Distributeur.txt")
@@ -509,7 +510,7 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
         t.push_back(contenu[0]);
     }*/
 
-    m_titres = ::xyz_Titre(contenu[0]);
+    m_titres = ::extraire_Titres_Depuis_UneLigne(contenu[0]);
 
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)

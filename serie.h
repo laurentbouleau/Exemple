@@ -237,7 +237,7 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
  
-    std::vector<std::wstring> Dossier_Titres(std::wstring titres);
+    std::vector<std::wstring> Dossier_Titres(std::wstring& titres);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);

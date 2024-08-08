@@ -311,11 +311,11 @@ void initialiser_Sur(std::wstring& m_s)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> xyzr_Titre(std::wstring>& titre)                                                                                         #
+// # std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring>& titre)                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::vector<std::wstring> xyz_Titre(std::wstring& titre)
+std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& titre)
 { // Titre 
     assert(titre.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
     std::wstring& t = titre;
@@ -407,7 +407,7 @@ void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::
     {
         m_titre_original.push_back(titre);
     }*/
-    m_titre_original = ::xyz_Titre(titre);
+    m_titre_original = ::extraire_Titres_Depuis_UneLigne(titre);
 
 }
 

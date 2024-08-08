@@ -69,8 +69,9 @@ extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<s
 //extern void initialiser_Sous_Genre(std::wstring& m_s_g);
 extern bool initialiser_Sous_Genre(std::wstring& m_s_g);
 extern void initialiser_Sur(std::wstring& m_s);
-extern std::vector<std::wstring> xyz_Titre(std::wstring& file_content);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
+
+extern std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
 extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
 extern std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
@@ -254,7 +255,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
             pos = file_content[0].find(L". ");
             file_content[0] = file_content[0].substr(pos + 2);
         }
-        m_titres = ::xyz_Titre(file_content[0]);
+        m_titres = ::extraire_Titres_Depuis_UneLigne(file_content[0]);
     }
 
     if (file_content.size() > 1)
@@ -879,7 +880,7 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
         m_titres.push_back(titre[0]);
     }*/
 
-    m_titres = ::xyz_Titre(titre[0]);
+    m_titres = ::extraire_Titres_Depuis_UneLigne(titre[0]);
 }
 
 // ######################################################################################################################################################
@@ -1322,11 +1323,11 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)                                                                               #
+// # std::vector<std::wstring> Serie::Dossier_Titres(std::wstring& titres)                                                                              #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 /// ???
-std::vector<std::wstring> Serie::Dossier_Titres(std::wstring titres)
+std::vector<std::wstring> Serie::Dossier_Titres(std::wstring& titres)
 {
     //bool found = (titres2==m_titres); !!!
     //assert(titres2==m_titre && "Le contenu du fichier ne correspond pas au nom du répertoire");
@@ -1544,7 +1545,7 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     assert((contenu.size() != 0));
 
 
-    std::vector<std::wstring> t;
+    //std::vector<std::wstring> t;
 
     //std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
 /*    std::wregex filename_pattern{L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s?|\\d{4}\\-\\s?|\\d{4}\\s?)?([^\\]]*)\\])?(?:\\.(.+))?"};
@@ -1567,7 +1568,7 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     }*/
 
     /*----------------------------------*/
-    m_titres = ::xyz_Titre(contenu[0]);
+    m_titres = ::extraire_Titres_Depuis_UneLigne(contenu[0]);
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
     {
