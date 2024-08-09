@@ -246,6 +246,8 @@ public:
     void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_titre);
 
+    void abc_titres(std::vector<std::wstring>& titres);
+
     const void Print();
 
     std::vector<Saison>saisons{};

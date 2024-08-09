@@ -62,6 +62,8 @@ extern bool checkyear(int y);
 extern bool checkmonth(int m);
 extern bool checkday(int m, int d, int y);
 
+extern void abc_Titres(std::vector<std::wstring>& m_titres, std::vector<std::wstring>& titres);
+
 extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
 extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
 //extern const void initialiser_Chaine(fs::path const& cheminFichier, std::wstring& m_chaine);
@@ -509,8 +511,34 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
     {
         t.push_back(contenu[0]);
     }*/
+    std::vector<std::wstring>titres = ::extraire_Titres_Depuis_UneLigne(contenu[0]);
 
-    m_titres = ::extraire_Titres_Depuis_UneLigne(contenu[0]);
+/*    bool found = false;
+    if (m_titres == titres)
+        found = true;
+    else
+    {
+        if (titres.size() == m_titres.size())
+        {
+            if (titres.size() == 1 && m_titre.size() == 1)
+            {
+                m_titres = titres;
+                found = true;
+            }
+            if (titres.size() == 3 && m_titre.size() == 3 && titres[0] == m_titres[0] && titres[1] != m_titres[1] && titres[2] == m_titres[2])
+            {
+                m_titres[1] = titres[1];
+                found = true;
+            }
+            if (titres.size() == 3 && m_titre.size() == 3 && (titres[0] != m_titres[0] || titres[1] != m_titres[1] || titres[2] != m_titres[2]))
+            {
+                m_titres = titres;
+                found = true;
+            }
+        }
+    }*/
+
+    abc_Titres(m_titres, titres);
 
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
