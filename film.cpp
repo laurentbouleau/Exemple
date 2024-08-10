@@ -70,9 +70,8 @@ extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pai
 extern void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
 extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-//extern void initialiser_Sous_Genre(std::wstring& m_s_g);
-extern bool initialiser_Sous_Genre(std::wstring& m_s_g);
-extern void initialiser_Sur(std::wstring& m_s);
+
+//extern void initialiser_Sur(std::wstring& m_s);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 extern std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
@@ -511,7 +510,7 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
     {
         t.push_back(contenu[0]);
     }*/
-    std::vector<std::wstring>titres = ::extraire_Titres_Depuis_UneLigne(contenu[0]);
+    std::vector<std::wstring>titres = /*::*/extraire_Titres_Depuis_UneLigne(contenu[0]);
 
 /*    bool found = false;
     if (m_titres == titres)

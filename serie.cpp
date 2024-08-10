@@ -68,8 +68,7 @@ extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pai
 extern void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
 extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-//extern void initialiser_Sous_Genre(std::wstring& m_s_g);
-extern bool initialiser_Sous_Genre(std::wstring& m_s_g);
+
 extern void initialiser_Sur(std::wstring& m_s);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
@@ -247,10 +246,8 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
 
-    if (file_content.size() > 0)
+    if (file_content.size() > 0 && file_content[0] != L"")
     {
-        if (file_content[0] == L"")
-            return;
         std::size_t pos = 0;
         if (m_NumeroEpisode != 0)
         {
@@ -1185,7 +1182,6 @@ void Saison::Print_Note()
         note_str += L"\r\n";
         std::wcout << note_str;
     }
-
 }
 
 // ######################################################################################################################################################
@@ -1576,8 +1572,7 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     }*/
 
     /*----------------------------------*/
-    std::vector<std::wstring>titres = ::extraire_Titres_Depuis_UneLigne(contenu[0]);
-
+    std::vector<std::wstring>titres = /*::*/extraire_Titres_Depuis_UneLigne(contenu[0]);
     /*bool found = false;
     if (m_titres == titres)
         found = true;
