@@ -190,6 +190,7 @@ void abc_Titres(std::vector<std::wstring>& m_titres, std::vector<std::wstring>& 
     {
         if (titres.size() == m_titres.size())
         {
+            //double titres_ration{ 80.0 };
             if (titres.size() == 1 && m_titres.size() == 1)
             {
                 m_titres = titres;
