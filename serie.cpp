@@ -60,6 +60,8 @@ extern bool checkyear(int y);
 extern bool checkmonth(int m);
 extern bool checkday(int m, int d, int y);
 
+void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor);
+
 extern void abc_Titres(std::vector<std::wstring>& m_titres, std::vector<std::wstring>& titres);
 
 extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
@@ -78,7 +80,6 @@ extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
 extern std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
 extern std::wstring recuperer_SJ(fs::path const& cheminFichier);
 
-extern void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
@@ -944,7 +945,7 @@ void Saison::Print()
     // Netflix
     Print_Netflix();
     // AD
-    Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[1], valuesColor);
+    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, keyColor[1], valuesColor);
     // Avec
     Print_Avec();
     // Images(s)
@@ -1626,7 +1627,8 @@ const void Serie::Print()
     // Chaîne d'origine
     Print_Chaine();
     // AD
-    Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
+    //Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
+    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
     // Creee par
     Print_Creee_par();
     // Genre(s)

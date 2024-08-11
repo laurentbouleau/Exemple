@@ -49,7 +49,7 @@ extern const std::vector<std::wstring> Sous_Genre;
 
 extern std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
 
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
+/*extern */const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
 extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
 extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
 //extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
@@ -62,6 +62,7 @@ extern bool checkyear(int y);
 extern bool checkmonth(int m);
 extern bool checkday(int m, int d, int y);
 
+void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void abc_Titres(std::vector<std::wstring>& m_titres, std::vector<std::wstring>& titres);
 
 extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
@@ -564,7 +565,8 @@ const void Film::Print()
     // Distributeur
     Print_Distributeur();
     // AD
-    Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
+    //Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
+    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
     // De
     Print_De();
     // Par

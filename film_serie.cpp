@@ -524,12 +524,11 @@ std::wstring recuperer_SJ(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif,                                   #
-// #                                  std::wstring& keyColor, std::wstring& valuesColor)                                                                #
+// # void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor)           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor)
+/*void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor)
 {
     if (affichage_audiodescription_actif && m_audiodescription.size() > 0)
     {
@@ -540,6 +539,14 @@ void Print_Audiodescription(const std::wstring& m_audiodescription, bool afficha
         //Console_Lire(hOut, audiodescription_str, 0);// , 0);
         //Console_Lire(hOut, audiodescription_str, 0, L' ');
         std::wcout << audiodescription_str;// << std::endl;
+    }
+}*/
+void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor)
+{
+    if (actif && valeur.size() > 0)
+    {
+        std::wstring valeur_str = keyColor + cle + L" : " + valuesColor + valeur + L"\r\n";
+        std::wcout << valeur_str;// << std::endl;
     }
 }
 
