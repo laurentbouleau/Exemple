@@ -109,6 +109,12 @@ const std::vector<std::wstring> Soundtrack
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # Film::Film(std::filesystem::path racine)                                                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 Film::Film(std::filesystem::path racine)
 {
     this->racine = racine;
@@ -146,6 +152,12 @@ Film::Film(std::filesystem::path racine)
         assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
     }
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::vector<std::wstring> Film::Dossier_Titres(std::wstring& titres)                                                                               #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 std::vector<std::wstring> Film::Dossier_Titres(std::wstring& titres)
 {
@@ -188,6 +200,12 @@ std::vector<std::wstring> Film::Dossier_Titres(std::wstring& titres)
     return t;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Fichier(fs::path const& cheminFichier)                                                                                      #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 void Film::initialiser_Fichier(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.filename().wstring();
@@ -223,7 +241,6 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         if (nomFichier == L"Disney+.txt")
         {
             m_disney_sj = recuperer_Disney_SJ(cheminFichier);
-            //return;
         }
         // Distributeur
         if (nomFichier == L"Distributeur.txt")
@@ -234,6 +251,11 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         if (nomFichier == L"Genre.txt")
         {
             initialiser_Genre(cheminFichier, m_genre, ::Genre);
+        }
+        // Making-of
+        if (nomFichier == L"Making-of.txt")
+        {
+            initialiser_Making_of(cheminFichier);
         }
         // Nationalité
         if (nomFichier == L"Nationalité.txt")
@@ -294,6 +316,12 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Date_de_reprise(fs::path const& cheminFichier)                                                                              #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 void Film::initialiser_Date_de_reprise(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.wstring();
@@ -342,6 +370,12 @@ void Film::initialiser_Date_de_reprise(fs::path const& cheminFichier)
     wstr = wstr.substr(2);
     m_date_de_reprise = tm;
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Date_de_sortie(std::filesystem::path const& cheminFichier)                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 void Film::initialiser_Date_de_sortie(std::filesystem::path const& cheminFichier)
 {
@@ -392,6 +426,12 @@ void Film::initialiser_Date_de_sortie(std::filesystem::path const& cheminFichier
     m_date_de_sortie = tm;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_De(fs::path const& cheminFichier)                                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 void Film::initialiser_De(fs::path const& cheminFichier)
 { // De
     auto nomFichier = cheminFichier.wstring();
@@ -399,6 +439,12 @@ void Film::initialiser_De(fs::path const& cheminFichier)
     m_de = lire_fichierTxt(nomFichier, { L"\n", L", " });
     assert((m_de.size() != 0));
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Distributeur(fs::path const& cheminFichier)                                                                                 #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 void Film::initialiser_Distributeur(fs::path const& cheminFichier)
 {
@@ -408,24 +454,36 @@ void Film::initialiser_Distributeur(fs::path const& cheminFichier)
     assert((m_distributeur.size() != 0));
 }
 
-void Film::initialiser_Duree(std::wstring& m)
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Duree(std::wstring& m)                                                                                                      #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+long Film::initialiser_Duree(std::wstring& m)
 {
     const std::wregex duree_format_rg{ L"^(?:(\\d+)(?:h|H))?\\s?(?:(\\d+)(?:min|MIN))?$" };
     std::wsmatch match;
-
+    long duree{ -1 };
     if (std::regex_match(m, match, duree_format_rg))
     {
         //auto duree_en_heure = std::stoi(match[1]);
         //auto duree_en_minute = std::stoi(match[2]);
         //m_duree = duree_en_heure * 60 * 60 + duree_en_minute * 60;
-        m_duree = (match[1].matched ? std::stoi(match[1]) : 0) * 60 * 60 + (match[2].matched ? std::stoi(match[2]) : 0) * 60;
+        duree = (match[1].matched ? std::stoi(match[1]) : 0) * 60 * 60 + (match[2].matched ? std::stoi(match[2]) : 0) * 60;
     }
     else
     {
         throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
     }
-
+    return duree;
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Par(fs::path const& cheminFichier)                                                                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 void Film::initialiser_Par(fs::path const& cheminFichier)
 { // Par
@@ -434,6 +492,31 @@ void Film::initialiser_Par(fs::path const& cheminFichier)
     m_par = lire_fichierTxt(nomFichier, { L"\n", L", " });
     assert((m_par.size() != 0));
 }
+
+void Film::initialiser_Making_of(std::filesystem::path const& cheminFichier)
+{
+    auto nomFichier = cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::vector<std::wstring> contenu = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    assert((contenu.size() != 0));
+    if (contenu.size() > 0)
+    {
+        m_making_of_duree = initialiser_Duree(contenu[0]);
+        contenu.erase(contenu.begin());
+        if (contenu.size() > 0)
+        {
+            m_making_of_resume = contenu;
+            m_making_of = true;
+        }
+    }
+
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Note(fs::path const& cheminFichier)                                                                                         #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 void Film::initialiser_Note(fs::path const& cheminFichier)
 { // 0...5 ou -1
@@ -475,6 +558,12 @@ void Film::initialiser_Note(fs::path const& cheminFichier)
     return;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Soundtrack(fs::path const& cheminFichier)                                                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.wstring();
@@ -482,6 +571,12 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
     m_soundtrack = lire_paireCleValeur_depuisFichierTxt(nomFichier, L" : ");
     assert((m_soundtrack.size() != 0));
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre)                                                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre)
 { // Titre
@@ -511,7 +606,7 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
     {
         t.push_back(contenu[0]);
     }*/
-    std::vector<std::wstring>titres = /*::*/extraire_Titres_Depuis_UneLigne(contenu[0]);
+    std::vector<std::wstring>titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
 
 /*    bool found = false;
     if (m_titres == titres)
@@ -543,14 +638,18 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
     {
-        initialiser_Duree(contenu[0]);
-        //contenu.erase(contenu.begin());
-
+        m_duree = initialiser_Duree(contenu[0]);
         contenu.erase(contenu.begin());
         if (contenu.size() > 0)
             m_resume = contenu;
     }
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print()                                                                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 const void Film::Print()
 {
@@ -565,7 +664,6 @@ const void Film::Print()
     // Distributeur
     Print_Distributeur();
     // AD
-    //Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
     Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
     // De
     Print_De();
@@ -581,8 +679,16 @@ const void Film::Print()
     Print_Soundtracks();
     // Image(s)
     Print_Images(m_image, affichage_image_actif, keyColor[0], valuesColor);
+    // Making-of
+    Print_Making_of();
     std::wcout << L"\r\n";
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::Print_Avec()                                                                                                                            #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 void Film::Print_Avec()
 {
@@ -641,6 +747,12 @@ const void Film::Print_Date_de_Reprise()
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_Date_de_Sortie()                                                                                                            #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 const void Film::Print_Date_de_Sortie()
 {
     if (affichage_date_de_sortie_actif && m_date_de_sortie.tm_year != 0)
@@ -655,6 +767,11 @@ const void Film::Print_Date_de_Sortie()
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_De()                                                                                                                        #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 const void Film::Print_De()
 {
@@ -677,6 +794,12 @@ const void Film::Print_De()
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_Distributeur()                                                                                                              #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 const void Film::Print_Distributeur()
 {
     if (affichage_distributeur_actif && m_distributeur.size() > 0)
@@ -689,6 +812,12 @@ const void Film::Print_Distributeur()
         std::wcout << distributeur_str;
     }
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_Header()                                                                                                                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 const void Film::Print_Header()
 {
@@ -760,7 +889,6 @@ const void Film::Print_Header()
         // Durée
         if (affichage_duree_actif)
         {
-            //duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + keyColor[0] + L"h" + valuesColor + L' ' + std::to_wstring(m_duree / 60) + keyColor[0] + L"min " + valuesColor;
             duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + keyColor[0] + L"h" + valuesColor + L' ' + std::to_wstring((m_duree - ((m_duree / (60 * 60)) * 60 * 60)) / 60) + keyColor[0] + L"min " + valuesColor;
         }
         // Note
@@ -770,6 +898,41 @@ const void Film::Print_Header()
         std::wcout << titres_str << annees_str << sur_str << sj_str << duree_str << note_str << std::endl;
     }
 }
+
+const void Film::Print_Making_of()
+{
+    if (affichage_making_of_actif)
+    {
+        std::wstring making_of_str = keyColor[0] + L"Making of" + valuesColor;
+        std::wstring duree_str;
+        std::wstring resume_str;
+        //if (m_making_of_duree != -1)
+        //    making_of_str += L' ' + keyColor[1];
+        if (affichage_duree_actif)
+        {
+            duree_str = keyColor[1] + L" (" +
+                std::to_wstring(m_making_of_duree / (60 * 60)) + keyColor[1] + L"h" + valuesColor + L' ' + std::to_wstring((m_making_of_duree - ((m_making_of_duree / (60 * 60)) * 60 * 60)) / 60) + keyColor[1] + L"min " + valuesColor +
+                keyColor[1] + L')' + valuesColor;
+        }
+        if(m_making_of)
+        {
+            making_of_str += L"\r\n";
+            for (auto r : m_making_of_resume)
+            {
+                resume_str += r + L"\r\n";
+            }
+
+        }
+
+        std::wcout << making_of_str << duree_str << resume_str;
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const std::wstring Film::Print_Note()                                                                                                              #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 const std::wstring Film::Print_Note()
 {
@@ -803,6 +966,11 @@ const std::wstring Film::Print_Note()
     return L"";
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_Par()                                                                                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 const void Film::Print_Par()
 {
@@ -824,6 +992,12 @@ const void Film::Print_Par()
         std::wcout << par_str;
     }
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_Soundtracks()                                                                                                               #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 const void Film::Print_Soundtracks()
 {

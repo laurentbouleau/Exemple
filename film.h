@@ -51,8 +51,9 @@ public:
     void initialiser_Date_de_sortie(std::filesystem::path const& cheminFichier);
     void initialiser_De(std::filesystem::path const& cheminFichier);
     void initialiser_Distributeur(std::filesystem::path const& cheminFichier);
-    void initialiser_Duree(std::wstring& hm);
+    long initialiser_Duree(std::wstring& hm);
     void initialiser_Par(std::filesystem::path const& cheminFichier);
+    void initialiser_Making_of(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_titre);
@@ -65,19 +66,18 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
- 
     void Print_Avec();
     const void Print_Date_de_Reprise();
     const void Print_Date_de_Sortie();
     const void Print_De();
     const void Print_Distributeur();
     const void Print_Header();
+    const void Print_Making_of();
     const void Print_Par();
     const std::wstring Print_Note();
     const void Print_Soundtracks();
 
     std::filesystem::path racine;
-
 
     std::wstring min = L"min";
     std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
@@ -85,7 +85,7 @@ private:
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
-    std::tm m_date{0}, m_date_de_reprise{0}, m_date_de_sortie{0};
+    std::tm m_date{ 0 }, m_date_de_reprise{ 0 }, m_date_de_sortie{ 0 };
     std::vector<std::wstring> m_de;
     bool m_disney{ false };
     std::wstring m_disney_sj;
@@ -93,6 +93,9 @@ private:
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
     std::vector<std::wstring> m_par;
+    bool m_making_of{ false };
+    long m_making_of_duree{ -1 };
+    std::vector<std::wstring> m_making_of_resume;
     std::vector<std::wstring> m_nationalite;
     bool m_netflix{ false };
     std::wstring m_netflix_sj;
@@ -104,6 +107,7 @@ private:
 
     std::vector<std::wstring> m_titres;
     long m_duree{ -1 };
+    //std::vector<std::wstring> m_resume{};
     std::vector<std::wstring> m_titres_originaux;
 
     bool affichage_audiodescription_actif = true;
@@ -116,6 +120,7 @@ private:
     bool affichage_duree_actif = true;
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
+    bool affichage_making_of_actif = true;
     bool affichage_nationalite_actif = true;
     bool affichage_netflix_sj_actif = true;
     bool affichage_note_actif = true;
