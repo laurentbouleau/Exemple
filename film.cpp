@@ -467,9 +467,6 @@ long Film::initialiser_Duree(std::wstring& m)
     long duree{ -1 };
     if (std::regex_match(m, match, duree_format_rg))
     {
-        //auto duree_en_heure = std::stoi(match[1]);
-        //auto duree_en_minute = std::stoi(match[2]);
-        //m_duree = duree_en_heure * 60 * 60 + duree_en_minute * 60;
         duree = (match[1].matched ? std::stoi(match[1]) : 0) * 60 * 60 + (match[2].matched ? std::stoi(match[2]) : 0) * 60;
     }
     else
@@ -905,8 +902,6 @@ const void Film::Print_Making_of()
         std::wstring making_of_str = keyColor[0] + L"Making of" + valuesColor + L' ';
         std::wstring duree_str;
         std::wstring resume_str;
-        //if (m_making_of_duree != -1)
-        //    making_of_str += L' ' + keyColor[1];
         if (affichage_duree_actif)
         {
             duree_str = keyColor[0] + L"(" + valuesColor +
@@ -920,9 +915,7 @@ const void Film::Print_Making_of()
             {
                 resume_str += r + L"\r\n";
             }
-
         }
-
         std::wcout << making_of_str << duree_str << resume_str;
     }
 }
