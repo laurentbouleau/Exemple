@@ -509,7 +509,6 @@ void Film::initialiser_Making_of(std::filesystem::path const& cheminFichier)
             m_making_of = true;
         }
     }
-
 }
 
 // ######################################################################################################################################################
@@ -903,20 +902,20 @@ const void Film::Print_Making_of()
 {
     if (affichage_making_of_actif)
     {
-        std::wstring making_of_str = keyColor[0] + L"Making of" + valuesColor;
+        std::wstring making_of_str = keyColor[0] + L"Making of" + valuesColor + L' ';
         std::wstring duree_str;
         std::wstring resume_str;
         //if (m_making_of_duree != -1)
         //    making_of_str += L' ' + keyColor[1];
         if (affichage_duree_actif)
         {
-            duree_str = keyColor[1] + L" (" +
-                std::to_wstring(m_making_of_duree / (60 * 60)) + keyColor[1] + L"h" + valuesColor + L' ' + std::to_wstring((m_making_of_duree - ((m_making_of_duree / (60 * 60)) * 60 * 60)) / 60) + keyColor[1] + L"min " + valuesColor +
-                keyColor[1] + L')' + valuesColor;
+            duree_str = keyColor[0] + L"(" + valuesColor +
+                std::to_wstring(m_making_of_duree / (60 * 60)) + keyColor[1] + L"h" + valuesColor + L' ' + std::to_wstring((m_making_of_duree - ((m_making_of_duree / (60 * 60)) * 60 * 60)) / 60) + keyColor[1] + L"min" + valuesColor +
+                keyColor[0] + L") " + valuesColor;
         }
         if(m_making_of)
         {
-            making_of_str += L"\r\n";
+            duree_str += keyColor[0] + L':' + valuesColor + L"\r\n";
             for (auto r : m_making_of_resume)
             {
                 resume_str += r + L"\r\n";
