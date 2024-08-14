@@ -79,9 +79,9 @@ private:
 
     std::filesystem::path racine;
 
-    std::wstring min = L"min";
-    std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    std::wstring m_min = L"min";
+    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;

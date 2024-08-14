@@ -69,8 +69,8 @@ struct InfosVisionnage
     std::filesystem::path m_cheminFichier;
 
     std::wstring m_min = L"min";
-    std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     unsigned short int m_NumeroSaison{};
     unsigned short int m_NumeroEpisode{};
@@ -108,8 +108,8 @@ struct SequenceVisionnage
     bool Print_Titre_chiffre_et_point_ou_pas(int episode);
 
     std::wstring m_min = L"min";
-    std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
 
     unsigned short int m_NumeroSaison{};
@@ -170,7 +170,6 @@ struct Saison
 {
 public:
     const Serie& m_serie;
-    std::vector<std::wstring> m_resume;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
     void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
@@ -197,9 +196,9 @@ public:
     void Print_Netflix();
     void Print_Note();
 
-    std::wstring min = L"min";
-    std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    std::wstring m_min = L"min";
+    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
@@ -216,6 +215,7 @@ public:
     
     //std::pair<unsigned short int, std::vector<std::wstring>>saison;
     std::vector<std::wstring> m_titres;
+    std::vector<std::wstring> m_resume;
 
 
     bool affichage_audiodescription_actif = true;
@@ -281,9 +281,9 @@ private:
 
     std::filesystem::path racine;
 
-    std::wstring min = L"min";
-    std::vector<std::wstring>keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    std::wstring m_min = L"min";
+    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     //std::wstring m_annees; // std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
     int m_annees{};

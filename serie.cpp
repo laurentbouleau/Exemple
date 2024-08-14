@@ -359,7 +359,7 @@ void SequenceVisionnage::Print()
     if (chiffre_et_point_ou_pas)
     {
         //chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode.m_numero) + keyColor[1] + L" : " + valuesColor;
-        chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode.m_numero) + keyColor[1] + L" : " + valuesColor;
+        chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
     }
 
     bool found = false;
@@ -368,34 +368,29 @@ void SequenceVisionnage::Print()
     if (!found && m_titres.size() == 1)
     {
         found = true;
-        wstr = keyColor[1] + m_titres[0] + valuesColor;
+        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor;
     }
     else
     {
         found = true;
-//        wstr = keyColor[1] + m_titres[0] + keyColor[0] + m_titres[1] + keyColor[1] + m_titres[1] + valuesColor;
-
-
-        wstr = keyColor[1] + m_titres[0] + valuesColor + m_titres[1] + keyColor[1] + m_titres[2] + valuesColor;
-
-
+        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
     }
 
     if (m_numero == 1) // ???
     {
-        duree_str += keyColor[1] + L" (" + valuesColor + std::to_wstring(m_duree_en_seconde / 60) + keyColor[1] + m_min + L')' + valuesColor;
+        duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_duree_en_seconde / 60) + m_keyColor[1] + m_min + L')' + m_valuesColor;
     }
     else
     {
         //duree_str += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_numero++) + keyColor[1] + L']' + valuesColor;
-        duree_str += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L']' + valuesColor;
+        duree_str += m_keyColor[1] + L" [" + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L']' + m_valuesColor;
         //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_saison_episode.m_numero++) + keyColor[1] + L']' + valuesColor;
         //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(m_saison.m_numero++) + keyColor[1] + L']' + valuesColor;
         //wstr += keyColor[1] + L" [" + valuesColor + std::to_wstring(1 + saison_episode.numero++) + keyColor[1] + L']' + valuesColor;
 //        m_numero++;
         //m_NumeroSaison++;
     }
-    wstr += keyColor[1] + L" : " + valuesColor;
+    wstr += m_keyColor[1] + L" : " + m_valuesColor;
     wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
 
     std::wstring resume_str;
@@ -424,12 +419,12 @@ m_numero++;
 
 std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
 {
-    const std::wstring date_format = L"%d" + keyColor[1] + L"/" + valuesColor + L"%m" + keyColor[1] + L"/" + valuesColor + L"%Y";
-    const std::wstring between_parenthesis = keyColor[1] + L"(" + valuesColor + L"%s" + keyColor[1] + L")" + valuesColor;
+    const std::wstring date_format = L"%d" + m_keyColor[1] + L"/" + m_valuesColor + L"%m" + m_keyColor[1] + L"/" + m_valuesColor + L"%Y";
+    const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;
     const std::wstring same_date_format = between_parenthesis;
     const std::wstring prequel_format = between_parenthesis;
-    const std::wstring streaming_format = keyColor[1] + L" : " + valuesColor + L"%s";
-    const std::wstring step_by_step_tag = L' ' + keyColor[1] + L'[' + valuesColor + L"pas-à-pas" + keyColor[1] + L']' + valuesColor;
+    const std::wstring streaming_format = m_keyColor[1] + L" : " + m_valuesColor + L"%s";
+    const std::wstring step_by_step_tag = L' ' + m_keyColor[1] + L'[' + m_valuesColor + L"pas-à-pas" + m_keyColor[1] + L']' + m_valuesColor;
 
     std::wstring dates_de_visionnage_wstr = L"";
 
@@ -945,7 +940,7 @@ void Saison::Print()
     // Netflix
     Print_Netflix();
     // AD
-    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, keyColor[1], valuesColor);
+    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, m_keyColor[1], m_valuesColor);
     // Avec
     Print_Avec();
     // Images(s)
@@ -964,7 +959,7 @@ void Saison::Print_Avec()
 {
     if (affichage_avec_actif && m_avec.size())
     {
-        std::wstring avec_str = keyColor[1] + L"Avec : " + valuesColor;
+        std::wstring avec_str = m_keyColor[1] + L"Avec : " + m_valuesColor;
         bool found = false;
         for (auto&& [nom, role] : m_avec)
         {
@@ -975,20 +970,20 @@ void Saison::Print_Avec()
             }
             if (nom != L"" && role != L"")
             {
-                avec_str += nom + L' ' + keyColor[1] + L'(' + valuesColor + role + keyColor[1] + L')' + valuesColor;
+                avec_str += nom + L' ' + m_keyColor[1] + L'(' + m_valuesColor + role + m_keyColor[1] + L')' + m_valuesColor;
             }
             else if (nom == L"" && role != L"")
             {
-                avec_str += keyColor[1] + L'(' + valuesColor + role + keyColor[1] + L')' + valuesColor;
+                avec_str += m_keyColor[1] + L'(' + m_valuesColor + role + m_keyColor[1] + L')' + m_valuesColor;
             }
             else
             {
                 avec_str += nom;
             }
             if (m_avec.back().first != nom)
-                avec_str += keyColor[1] + L", " + valuesColor;
+                avec_str += m_keyColor[1] + L", " + m_valuesColor;
             else
-                avec_str += keyColor[1] + L'.' + valuesColor;
+                avec_str += m_keyColor[1] + L'.' + m_valuesColor;
         }
         if (found)
             avec_str += L"...";
@@ -1007,7 +1002,7 @@ void Saison::Print_Chaine()
 {
     if (affichage_chaine_actif && m_chaine.size() > 0)
     {
-        std::wstring chaine_str = keyColor[1] + L"Chaîne d'origine : " + valuesColor + m_chaine + L"\r\n";
+        std::wstring chaine_str = m_keyColor[1] + L"Chaîne d'origine : " + m_valuesColor + m_chaine + L"\r\n";
         //PrintStringW(m_hOut, creee_par_str, 0);
         //PrintStringW(HANDLE hOut, creee_par_str);
         //Console_Lire(chaine_str, 0, 0);
@@ -1066,27 +1061,27 @@ void Saison::Print_Header()
     {
         std::wcsftime(date_tab, 15, L"%m/%Y", &m_date_diffusee_a_partir_de.first);
         std::wstring date_tab_str = date_tab;
-        date_str = date_tab_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(3, 4);
+        date_str = date_tab_str.substr(0, 2) + m_keyColor[1] + L'/' + m_valuesColor + date_tab_str.substr(3, 4);
     }
     else
     {
         std::wcsftime(date_tab, 15, L"%d/%m/%Y", &m_date_diffusee_a_partir_de.first);
         std::wstring date_tab_str = date_tab;
-        date_str = date_tab_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_tab_str.substr(6, 4);
+        date_str = date_tab_str.substr(0, 2) + m_keyColor[1] + L'/' + m_valuesColor + date_tab_str.substr(3, 2) + m_keyColor[1] + L'/' + m_valuesColor + date_tab_str.substr(6, 4);
     }
     std::wstring dossier_str;
     if (m_date_diffusee_a_partir_de.second != L"")
-        dossier_str = keyColor[0] + m_date_diffusee_a_partir_de.second + valuesColor + L' ';
+        dossier_str = m_keyColor[0] + m_date_diffusee_a_partir_de.second + m_valuesColor + L' ';
 
     std::wstring titre_str;
     if (m_titres.size() != 0)
     {
-        titre_str = keyColor[0] + m_titres[0] + valuesColor;
+        titre_str = m_keyColor[0] + m_titres[0] + m_valuesColor;
         if (m_titres.size() > 1)
         {
-            titre_str += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
+            titre_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_keyColor[0] + m_titres[2] + m_valuesColor;
         }
-        titre_str += keyColor[1] + L" : " + valuesColor;
+        titre_str += m_keyColor[1] + L" : " + m_valuesColor;
     }
 
     std::wstring resume_str;
@@ -1097,12 +1092,12 @@ void Saison::Print_Header()
     }
     else
     {
-        resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, keyColor[1] + L'(' + valuesColor + L"Bis" + keyColor[1] + L')' + valuesColor, 5);
+        resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, m_keyColor[1] + L'(' + m_valuesColor + L"Bis" + m_keyColor[1] + L')' + m_valuesColor, 5);
     }
 
-    std::wstring numero_str = L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
+    std::wstring numero_str = L' ' + m_keyColor[1] + L'(' + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
 
-    std::wcout << date_str << dossier_str << keyColor[1] + L" : " + valuesColor << titre_str << resume_str << numero_str << std::endl;
+    std::wcout << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << std::endl;
 }
 
 // ######################################################################################################################################################
@@ -1115,18 +1110,18 @@ void Saison::Print_Images()
 {
     if (affichage_image_actif && m_image.size() > 0 )
     {
-        std::wstring image_str = keyColor[1] + L"Image" + ((m_image.size() > 1) ? L"s" : L"") + L" : [" + valuesColor;
+        std::wstring image_str = m_keyColor[1] + L"Image" + ((m_image.size() > 1) ? L"s" : L"") + L" : [" + m_valuesColor;
         bool first = true;
         for (auto&& i : m_image)
         {
             if (!first)
             {
-                image_str += keyColor[1] + L"], [" + valuesColor;
+                image_str += m_keyColor[1] + L"], [" + m_valuesColor;
             }
             image_str += i;
             first = false;
         }
-        image_str += keyColor[1] + L']' + valuesColor + L"\r\n";
+        image_str += m_keyColor[1] + L']' + m_valuesColor + L"\r\n";
         //PrintStringW(m_hOut, image_str, x1);
         //Console_Lire(image_str, x1, 0);
         //Console_Lire(hOut, image_str, 0);// , 0);
@@ -1145,7 +1140,7 @@ void Saison::Print_Netflix()
 {
     if (affichage_netflix_actif && m_netflix)
     {
-        std::wstring netflix_str = keyColor[1] + L'(' + valuesColor + L"Netflix" + keyColor[1] + L')' + valuesColor;
+        std::wstring netflix_str = m_keyColor[1] + L'(' + m_valuesColor + L"Netflix" + m_keyColor[1] + L')' + m_valuesColor;
         netflix_str += L"\r\n";
         std::wcout << netflix_str;
     }
@@ -1164,21 +1159,21 @@ void Saison::Print_Note()
         std::wstring note_str;
         if (m_note == -1.0)
         {
-            note_str = keyColor[1] + L'(' + valuesColor + L"Pas de note !" + keyColor[1] + L')' + valuesColor;
+            note_str = m_keyColor[1] + L'(' + m_valuesColor + L"Pas de note !" + m_keyColor[1] + L')' + m_valuesColor;
         }
         else if (m_note == 0 || m_note == 1 || m_note == 2 || m_note == 3 || m_note == 4 || m_note == 5)
         {
-            note_str += keyColor[1] + L"Note : " + valuesColor;
+            note_str += m_keyColor[1] + L"Note : " + m_valuesColor;
             note_str += std::to_wstring(static_cast<int>(std::floor(m_note)));
-            note_str += keyColor[1] + L"/5" + valuesColor;
+            note_str += m_keyColor[1] + L"/5" + m_valuesColor;
         }
         else
         {
-            note_str += keyColor[1] + L"Note : " + valuesColor;
+            note_str += m_keyColor[1] + L"Note : " + m_valuesColor;
             std::wstring wstr = std::to_wstring(m_note);
-            wstr = wstr[0] + keyColor[1] + wstr[1] + valuesColor + wstr[2];
+            wstr = wstr[0] + m_keyColor[1] + wstr[1] + m_valuesColor + wstr[2];
             note_str += wstr;
-            note_str += keyColor[1] + L"/5" + valuesColor;
+            note_str += m_keyColor[1] + L"/5" + m_valuesColor;
         }
         note_str += L"\r\n";
         std::wcout << note_str;
@@ -1251,7 +1246,7 @@ const std::wstring Serie::calcul_Note_Affichage()
         }
     }
     if (notes.size() < 1)
-        res = keyColor[0] + L'(' + valuesColor + L"pas de note !" + keyColor[0] + L')';
+        res = m_keyColor[0] + L'(' + m_valuesColor + L"pas de note !" + m_keyColor[0] + L')';
     else
     {
         double note = std::accumulate(notes.begin(), notes.end(), 0.0) / notes.size();
@@ -1275,9 +1270,9 @@ const std::wstring Serie::calcul_Note_Affichage()
             fractional_str = fractional_tmp.substr(2, 2);
         }
 
-        res = whole_str + keyColor[1] + sepDecimal + valuesColor + fractional_str + keyColor[0] + L"/5";
+        res = whole_str + m_keyColor[1] + sepDecimal + m_valuesColor + fractional_str + m_keyColor[0] + L"/5";
     }
-    return (res.length() > 0) ? L" " + res + valuesColor : L"";
+    return (res.length() > 0) ? L" " + res + m_valuesColor : L"";
 }
 
 // ######################################################################################################################################################
@@ -1372,16 +1367,16 @@ std::wstring Serie::format_Annees()
 {
     if (m_f_anneesProduction.first && m_f_anneesProduction.second)
     {
-        return keyColor[0] + L" [" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[1] + L'-' + valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + keyColor[0] + L']' + valuesColor;
+        return m_keyColor[0] + L" [" + m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + m_keyColor[0] + L']' + m_valuesColor;
     }
     else if (m_f_anneesProduction.first)
     {
-        return keyColor[0] + L" [" + valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + keyColor[0] + L']' + valuesColor;
+        return m_keyColor[0] + L" [" + m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[0] + L']' + m_valuesColor;
     }
     else
     {
         std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
-        return keyColor[0] + L" [" + valuesColor + std::to_wstring(anneesDiffusion.first) + keyColor[1] + L'-' + valuesColor + std::to_wstring(anneesDiffusion.second) + keyColor[0] + L']' + valuesColor;
+        return m_keyColor[0] + L" [" + m_valuesColor + std::to_wstring(anneesDiffusion.first) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(anneesDiffusion.second) + m_keyColor[0] + L']' + m_valuesColor;
     }
 }
 
@@ -1573,7 +1568,7 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     }*/
 
     /*----------------------------------*/
-    std::vector<std::wstring>titres = /*::*/extraire_Titres_Depuis_UneLigne(contenu[0]);
+    std::vector<std::wstring>titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
     /*bool found = false;
     if (m_titres == titres)
         found = true;
@@ -1623,22 +1618,22 @@ const void Serie::Print()
     // Header
     Print_Header();
     // Titre Original
-    Print_Titre_Original(m_titres_originaux, affichage_titres_originaux_actif, keyColor, valuesColor);
+    Print_Titre_Original(m_titres_originaux, affichage_titres_originaux_actif, m_keyColor, m_valuesColor);
     // Chaîne d'origine
     Print_Chaine();
     // AD
     //Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
-    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
+    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, m_keyColor[0], m_valuesColor);
     // Creee par
     Print_Creee_par();
     // Genre(s)
-    Print_Genres(m_genre, affichage_genres_actif, m_sous_genre, affichage_sous_genre_actif, keyColor[0], valuesColor);
+    Print_Genres(m_genre, affichage_genres_actif, m_sous_genre, affichage_sous_genre_actif, m_keyColor[0], m_valuesColor);
     // En relation avec
     Print_En_relation_avec();
     // Nationalité(s)
-    Print_Nationalites(m_nationalite, affichage_nationalite_actif, keyColor[0], valuesColor);
+    Print_Nationalites(m_nationalite, affichage_nationalite_actif, m_keyColor[0], m_valuesColor);
     // Image(s)
-    Print_Images(m_image, affichage_image_actif, keyColor[0], valuesColor);
+    Print_Images(m_image, affichage_image_actif, m_keyColor[0], m_valuesColor);
     // Phrases
     Print_Resume(m_resume, affichage_resume_actif);
     std::wcout << L"\r\n";
@@ -1656,7 +1651,7 @@ const void Serie::Print_Chaine()
 {
     if (affichage_chaine_actif && m_chaine.size() > 0)
     {
-        std::wstring chaine_str = keyColor[0] + L"Chaîne d'origine : " + valuesColor;
+        std::wstring chaine_str = m_keyColor[0] + L"Chaîne d'origine : " + m_valuesColor;
         chaine_str += m_chaine + L"\r\n";
         //PrintStringW(m_hOut, creee_par_str, 0);
         //PrintStringW(HANDLE hOut, creee_par_str);
@@ -1676,13 +1671,13 @@ const void Serie::Print_Creee_par()
 {
     if (affichage_creee_par_actif && m_creee_par.size() > 0)
     {
-        std::wstring creee_par_str = keyColor[0] + L"Créée" + ((m_creee_par.size() > 1) ? L"s" : L"") + L" par : " + valuesColor;
+        std::wstring creee_par_str = m_keyColor[0] + L"Créée" + ((m_creee_par.size() > 1) ? L"s" : L"") + L" par : " + m_valuesColor;
         bool first = true;
         for (auto&& c : m_creee_par)
         {
             if (!first)
             {
-                creee_par_str += keyColor[0] + L", " + valuesColor;
+                creee_par_str += m_keyColor[0] + L", " + m_valuesColor;
             }
             creee_par_str += c;
             first = false;
@@ -1707,7 +1702,7 @@ const void Serie::Print_En_relation_avec()
 {
     if (affichage_en_relation_avec_actif && m_en_relation_avec.size() > 0)
     {
-        std::wstring en_relation_avec_str = keyColor[0] + L"En relation avec : " + valuesColor;
+        std::wstring en_relation_avec_str = m_keyColor[0] + L"En relation avec : " + m_valuesColor;
         en_relation_avec_str += m_en_relation_avec + L"\r\n";
         //PrintStringW(m_hOut, creee_par_str, 0);
         //PrintStringW(HANDLE hOut, creee_par_str);
@@ -1734,9 +1729,9 @@ const void Serie::Print_Header()
         std::wstring duree_str;
         std::wstring note_str;
 
-        titres_str = keyColor[0] + L"Titre : " + valuesColor + m_titres[0];
+        titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
         if (m_titres.size() > 1)
-            titres_str += keyColor[1] + m_titres[1] + valuesColor + m_titres[2];
+            titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
         // Année(s)
         if (affichage_annees_actif)
         {
@@ -1745,35 +1740,35 @@ const void Serie::Print_Header()
         // sur
         if (affichage_sur_actif && m_sur != L"" && m_sur != L"Disney+" && m_sur != L"Netflix")
         {
-            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[0] + L')' + valuesColor;
+            sur_str += m_keyColor[0] + L" (" + m_keyColor[1] + L"sur " + m_valuesColor + m_sur + m_keyColor[0] + L')' + m_valuesColor;
         }
         if (affichage_sur_actif && (m_sur == L"Disney+" || m_sur == L"Netflix"))
         {
-            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
+            sur_str += m_keyColor[0] + L" (" + m_keyColor[1] + L"sur " + m_valuesColor + m_sur + m_keyColor[1] + L" : " + m_valuesColor;
             // Disney+ SJ
             if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
                 sur_str += m_disney_sj;
             // Netflix SJ
             if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
                 sur_str += m_netflix_sj;
-            sur_str += keyColor[0] + L')' + valuesColor;
+            sur_str += m_keyColor[0] + L')' + m_valuesColor;
         }
         else
         {
             // Disney+ SJ
             if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + m_disney_sj + keyColor[0] + L')' + valuesColor;
+                sur_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
             // Netflix SJ
             if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + m_netflix_sj + keyColor[0] + L')' + valuesColor;
+                sur_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
         }
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
-            sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + m_sj + keyColor[0] + L')' + valuesColor;
+            sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"SJ" + m_keyColor[1] + L" : " + m_valuesColor + m_sj + m_keyColor[0] + L')' + m_valuesColor;
         // Durée
         if (affichage_duree_actif)
         {
-            duree_str = L' ' + std::to_wstring(m_duree/60) + keyColor[0] + L"min " + valuesColor;
+            duree_str = L' ' + std::to_wstring(m_duree/60) + m_keyColor[0] + L"min " + m_valuesColor;
         }
         // Note
         if (affichage_note_actif)
@@ -1807,15 +1802,6 @@ const void Serie::Print_Saisons()
 {
     if (affichage_saisons_actif)
     {
-        /*std::size_t taille = std::size(saisons);
-        for (int i = 0; i < taille; i++)
-        {
-            Print_Saison(saisons[i]);
-        }*/
-        /*for (auto s : saisons)
-        {
-            Print_Saison(s);
-        }*/
         for (auto saison : saisons)
         {
             Print_Saison(saison);
