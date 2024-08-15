@@ -1269,6 +1269,7 @@ Serie::Serie(std::filesystem::path racine)
         assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
     }
 }
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # const std::wstring Serie::calcul_Note_Affichage()                                                                                                  #
