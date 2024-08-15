@@ -182,6 +182,8 @@ public:
     //void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
 
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
+    long initialiser_Duree(std::wstring& m);
+    void initialiser_Hors_Saison(std::filesystem::path const& cheminFichier);
     void initialiser_Netflix(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);
     void initialiser_Resume(std::filesystem::path const& cheminFichier);
@@ -209,6 +211,10 @@ public:
     //std::vector<Episode> episodes;
     //std::vector<InfosVisionnage>infosvisionnages;
     std::wstring m_chaine;
+    bool m_hors_saison{ false };
+    //long m_hors_saison_duree{ -1 };
+    //std::vector<std::wstring> m_hors_saison_resume;
+
     std::vector<std::wstring> m_image;
     bool m_netflix{ false };
     double m_note{ -1.0 };

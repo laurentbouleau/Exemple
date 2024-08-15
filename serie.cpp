@@ -719,6 +719,11 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             {
                 //D_DVD[I] = true;
             }
+            // Hors saison
+            if (nomFichier == L"Hors saison.txt")
+            {
+                initialiser_Hors_Saison(cheminFichier);
+            }
             // Netflix
             if (nomFichier == L"Netflix.txt")
             {
@@ -792,6 +797,40 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
      m_chaine = lire_fichierTxt(cheminFichier.wstring());
      assert((m_chaine.size() != 0));
  }
+
+ /*long Saison::initialiser_Duree(std::wstring& m)
+ {
+     const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
+
+     std::wsmatch match;
+
+     if (std::regex_match(m, match, duree_format_rg))
+     {
+         auto duree_en_minute = std::stoi(match[1]);
+         return duree_en_minute * 60;
+     }
+     return { -1 };
+ }*/
+
+ void Saison::initialiser_Hors_Saison(std::filesystem::path const& cheminFichier)
+ { // Hors Saison
+     auto nomFichier = cheminFichier.filename().wstring();
+     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+     m_hors_saison = true;
+     /*std::vector<std::wstring>hors_saison = lire_fichierTxt(cheminFichier.wstring(), {L"\n"});
+     assert((hors_saison.size() != 0));
+     std::vector<std::wstring>m_hors_saison = ::extraire_Titres_Depuis_UneLigne(hors_saison[0]);
+     hors_saison.erase(hors_saison.begin());
+     if (hors_saison.size() > 0)
+     {
+         m_hors_saison_duree = initialiser_Duree(hors_saison[0]);
+         hors_saison.erase(hors_saison.begin());
+     }
+     if (hors_saison.size() > 0)
+         m_hors_saison_resume = hors_saison;
+         */
+ }
+
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -875,7 +914,7 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
         m_titres.push_back(titre[0]);
     }*/
 
-    m_titres = ::extraire_Titres_Depuis_UneLigne(titre[0]);
+    m_titres = extraire_Titres_Depuis_UneLigne(titre[0]);
 }
 
 // ######################################################################################################################################################
@@ -1049,6 +1088,9 @@ const void Saison::Print_Date_etc()
 
 void Saison::Print_Header()
 {
+    std::wstring hors_saison_str;
+    if (m_hors_saison)
+        hors_saison_str += m_keyColor[1] + L"Hors Saison : " + m_valuesColor;
     wchar_t date_tab[15];
     std::wstring date_str{};
     if (m_date_diffusee_a_partir_de.first.tm_mday == -1 && m_date_diffusee_a_partir_de.first.tm_mon == -1)
@@ -1097,7 +1139,7 @@ void Saison::Print_Header()
 
     std::wstring numero_str = L' ' + m_keyColor[1] + L'(' + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
 
-    std::wcout << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << std::endl;
+    std::wcout << hors_saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << std::endl;
 }
 
 // ######################################################################################################################################################
@@ -1217,8 +1259,8 @@ Serie::Serie(std::filesystem::path racine)
             }
         }
 
-        m_sur = (match[3].matched) ? match[3].str() : L"";
-
+        std::wstring sur = (match[3].matched) ? match[3].str() : L"";
+        m_sur = sur;;
         std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
         m_sous_genre = sous_genre;
     }
