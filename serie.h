@@ -182,7 +182,7 @@ public:
     //void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
 
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
-    long initialiser_Duree(std::wstring& m);
+    //long initialiser_Duree(std::wstring& m);
     void initialiser_Hors_Saison(std::filesystem::path const& cheminFichier);
     void initialiser_Netflix(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);
@@ -252,7 +252,7 @@ public:
     void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_titre);
 
-    void abc_titres(std::vector<std::wstring>& titres);
+    //void abc_titres(std::vector<std::wstring>& titres);
 
     const void Print();
 

@@ -543,6 +543,7 @@ void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
 {
     //...
     //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
+    auto NumeroSequenceVisionnage = /*m_episode.*/GetNumeroSequenceVisionnage(sev_vis); // ??? #804
 }
 
 
@@ -766,7 +767,6 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
         // Erreur !
         if (nomFichier != L"")
         {
-            //E.afficher_X(-1, nomFichier, L'{' + t + L".txt} !!!");
             std::wcout << L'{' << cheminFichier << L'}' << std::endl;
             return;
         }
@@ -1238,7 +1238,7 @@ Serie::Serie(std::filesystem::path racine)
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
 
-    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" };
+    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" }; // Marches pas !!!
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
@@ -1259,8 +1259,8 @@ Serie::Serie(std::filesystem::path racine)
             }
         }
 
-        std::wstring sur = (match[3].matched) ? match[3].str() : L"";
-        m_sur = sur;;
+        std::wstring sur = (match[3].matched) ? match[3].str() : L""; //void initialiser_Sur(std::wstring& m_s)
+        m_sur = sur;
         std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
         m_sous_genre = sous_genre;
     }
