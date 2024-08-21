@@ -122,6 +122,7 @@ Film::Film(std::filesystem::path racine)
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
     std::wregex filename_pattern{ L"(.+?)(?:\\.\\((\\d{4}\\-\\d{2}\\-\\d{2}\\s)?([^\\)]*)\\))?(?:\\.(.+))?" };
+    //std::wregex filename_pattern{ L"(.+?)(?:\\.\\((\\d{4}\\-\\d{2}\\-\\d{2}\\s?)?([^\\)]*)\\))?(?:\\.(.+))?$" };
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
     {

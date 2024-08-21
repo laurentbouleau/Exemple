@@ -247,14 +247,18 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
 
-    if (file_content.size() > 0 && file_content[0] != L"")
+    if (file_content.size() > 0 /* && file_content[0] != L""*/)
     {
-        std::size_t pos = 0;
+       std::size_t pos;
         if (m_NumeroEpisode != 0)
         {
             pos = file_content[0].find(L". ");
             file_content[0] = file_content[0].substr(pos + 2);
         }
+        //std::size_t pos = file_content[0].find(c_separateur_numero_titre_dans_ligne_de_fichier);
+        //auto ligne_titres = (pos != std::wstring::npos) ? file_content[0].substr(pos + c_separateur_numero_titre_dans_ligne_de_fichier.length()) : L"";
+        //m_titres = ::extraire_Titres_Depuis_UneLigne(ligne_titres);
+
         m_titres = ::extraire_Titres_Depuis_UneLigne(file_content[0]);
     }
 
@@ -543,7 +547,7 @@ void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
 {
     //...
     //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
-    auto NumeroSequenceVisionnage = /*m_episode.*/GetNumeroSequenceVisionnage(sev_vis); // ??? #804
+    //auto NumeroSequenceVisionnage = /*m_episode.*/GetNumeroSequenceVisionnage(sev_vis); // ??? #804
 }
 
 
