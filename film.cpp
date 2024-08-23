@@ -121,32 +121,24 @@ Film::Film(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
-    std::wregex filename_pattern{ L"(.+?)(?:\\.\\((\\d{4}\\-\\d{2}\\-\\d{2}\\s)?([^\\)]*)\\))?(?:\\.(.+))?" };
-    //std::wregex filename_pattern{ L"(.+?)(?:\\.\\((\\d{4}\\-\\d{2}\\-\\d{2}\\s?)?([^\\)]*)\\))?(?:\\.(.+))?$" };
+    std::wregex filename_pattern{ L"(.+?)(?:\\.\\((\\d{4}\\-\\d{2}\\-\\d{2}\\s?)?([^\\)]*)\\))?(?:\\.(.+))?$" };
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
         std::wstring titres = match[1];
         m_titres = Dossier_Titres(titres);
-        /*if (match[2].matched)
+
+        if (match[2].matched)
         {
-            std::wstring annees_str = match[2].str();
-            std::wsmatch dummy;
-            if (std::regex_match(annees_str, dummy, std::wregex(L"\\d{4}\\-\\d{4}\\s")))
-            {
-                m_f_anneesProduction.first = stoi(annees_str);
-                m_f_anneesProduction.second = stoi(annees_str.substr(5));
-            }
-            else
-            {
-                m_f_anneesProduction.first = stoi(annees_str);
-            }
-        }*/
-
+            std::wstring wstr = match[2].str();
+            m_date_du_film.tm_year = stoi(wstr) - 1900;
+            wstr = wstr.substr(5);
+            m_date_du_film.tm_mon = stoi(wstr) - 1;
+            wstr = wstr.substr(3);
+            m_date_du_film.tm_mday = stoi(wstr);
+        }
         m_sur = (match[3].matched) ? match[3].str() : L"";
-
-        const std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
-        m_sous_genre = sous_genre;
+        m_sous_genre = (match[4].matched) ? match[4].str() : L"";
     }
     else
     {
@@ -820,7 +812,7 @@ const void Film::Print_Header()
     if (affichage_titres_actif)
     {
         std::wstring titres_str;
-        std::wstring annees_str;
+        std::wstring date_du_film_str;
         std::wstring sur_str;
         std::wstring sj_str;
         std::wstring duree_str;
@@ -829,11 +821,14 @@ const void Film::Print_Header()
         titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
         if (m_titres.size() > 1)
             titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
-        // Date
-        /*if (affichage_date_actif)
+        // Date du film
+        if (affichage_date_du_film_actif)
         {
-            date_str = format_Annees();
-        }*/
+            wchar_t date_string[15];
+            wcsftime(date_string, 15, L"%d/%m/%Y", &m_date_du_film);
+            date_du_film_str = date_string;
+            date_du_film_str = m_keyColor[0] + L" (" + m_valuesColor + date_du_film_str.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + date_du_film_str.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + date_du_film_str.substr(6, 4) + m_keyColor[0] + L')' + m_valuesColor;
+        }
         // sur
         /*if (affichage_sur_actif && m_sur != L"")
         {
@@ -891,7 +886,7 @@ const void Film::Print_Header()
         if (affichage_note_actif)
             note_str += Print_Note();
 
-        std::wcout << titres_str << annees_str << sur_str << sj_str << duree_str << note_str << std::endl;
+        std::wcout << titres_str << date_du_film_str << sur_str << sj_str << duree_str << note_str << std::endl;
     }
 }
 

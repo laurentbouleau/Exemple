@@ -85,7 +85,7 @@ private:
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
-    std::tm m_date{ 0 }, m_date_de_reprise{ 0 }, m_date_de_sortie{ 0 };
+    std::tm m_date_du_film{ 0 }, m_date_de_reprise{ 0 }, m_date_de_sortie{ 0 };
     std::vector<std::wstring> m_de;
     bool m_disney{ false };
     std::wstring m_disney_sj;
@@ -105,6 +105,8 @@ private:
     std::wstring m_sous_genre;// {};
     std::wstring m_sur;
 
+    std::wstring date;
+
     std::vector<std::wstring> m_titres;
     long m_duree{ -1 };
     //std::vector<std::wstring> m_resume{};
@@ -114,6 +116,7 @@ private:
     bool affichage_avec_actif = true;
     bool affichage_date_de_reprise_actif = true;
     bool affichage_date_de_sortie_actif = true;
+    bool affichage_date_du_film_actif = true;
     bool affichage_de_actif = true;
     bool affichage_disney_sj_actif = true;
     bool affichage_distributeur_actif = true;
