@@ -105,8 +105,6 @@ private:
     std::wstring m_sous_genre;// {};
     std::wstring m_sur;
 
-    std::wstring date;
-
     std::vector<std::wstring> m_titres;
     long m_duree{ -1 };
     //std::vector<std::wstring> m_resume{};
