@@ -73,6 +73,7 @@ extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::ws
 extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
 
 //extern void initialiser_Sur(std::wstring& m_s);
+extern std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 extern std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
@@ -126,7 +127,7 @@ Film::Film(std::filesystem::path racine)
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
         std::wstring titres = match[1];
-        m_titres = Dossier_Titres(titres);
+        m_titres = initialiser_Titres(titres);
 
         if (match[2].matched)
         {
@@ -144,53 +145,6 @@ Film::Film(std::filesystem::path racine)
     {
         assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
     }
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # std::vector<std::wstring> Film::Dossier_Titres(std::wstring& titres)                                                                               #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-std::vector<std::wstring> Film::Dossier_Titres(std::wstring& titres)
-{
-    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    /*std::size_t pos = 0;
-    const std::wstring d_p = L" - ";
-    pos = titres.find(d_p);
-    bool found = false;
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(titres.substr(0, pos));
-        m_titres.push_back(d_p);
-        m_titres.push_back(titres.substr(pos + 3));
-        found = true;
-    }
-    const std::wstring d_p2 = L"- ";
-    pos = titres.find(d_p2);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(titres.substr(0, pos));
-        m_titres.push_back(d_p2);
-        m_titres.push_back(titres.substr(pos + 2));
-        found = true;
-    }
-    const std::wstring d_p3 = L"-";
-    pos = titres.find(d_p3);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(titres.substr(0, pos));
-        m_titres.push_back(d_p3);
-        m_titres.push_back(titres.substr(pos + 1));
-        found = true;
-    }
-    if (!found)
-    {
-        m_titres.push_back(titres);
-        //found = true;
-    }*/
-    const std::vector<std::wstring> t = ::extraire_Titres_Depuis_UneLigne(titres);
-    return t;
 }
 
 // ######################################################################################################################################################
@@ -560,6 +514,19 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
     m_soundtrack = lire_paireCleValeur_depuisFichierTxt(nomFichier, L" : ");
     assert((m_soundtrack.size() != 0));
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::vector<std::wstring> Film::initialiser_Titres(std::wstring& titres)                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+/*td::vector<std::wstring> Film::initialiser_Titres(std::wstring& titres)
+{
+    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
+    const std::vector<std::wstring> t = ::extraire_Titres_Depuis_UneLigne(titres);
+    return t;
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

@@ -408,6 +408,20 @@ std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& titre)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # std::vector<std::wstring> initialiser_Titres(std::wstring& titres)                                                                                 #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::vector<std::wstring> initialiser_Titres(std::wstring& titres)
+{
+    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
+    const std::vector<std::wstring> t = ::extraire_Titres_Depuis_UneLigne(titres);
+    return t;
+}
+
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################

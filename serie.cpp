@@ -72,6 +72,7 @@ extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::ws
 extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
 
 extern void initialiser_Sur(std::wstring& m_s);
+//extern std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 extern std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
@@ -1242,12 +1243,14 @@ Serie::Serie(std::filesystem::path racine)
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
 
-    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" }; // Marches pas !!!
+    //std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" }; // Marches pas !!!
+//    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" };
+    std::wregex filename_pattern{ L"^(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})([^\\]]*)\\])(?:\\.(.+))?$|^(.+)(?:\\.(.+))$" };
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
         std::wstring titres = match[1];
-        m_titres = Dossier_Titres(titres);
+        m_titres = initialiser_Titres(titres);
         if (match[2].matched)
         {
             std::wstring annees_str = match[2].str();
@@ -1263,10 +1266,12 @@ Serie::Serie(std::filesystem::path racine)
             }
         }
 
-        std::wstring sur = (match[3].matched) ? match[3].str() : L""; //void initialiser_Sur(std::wstring& m_s)
-        m_sur = sur;
-        std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
-        m_sous_genre = sous_genre;
+        //std::wstring sur = (match[3].matched) ? match[3].str() : L""; //void initialiser_Sur(std::wstring& m_s)
+        //m_sur = sur;
+        //std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
+        //m_sous_genre = sous_genre;
+        m_sur = (match[3].matched) ? match[3].str() : L"";
+        m_sous_genre = (match[4].matched) ? match[4].str() : L"";
     }
     else
     {
@@ -1360,54 +1365,6 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion()
 {
     //return std::make_pair(saisons[0].m_f_anneesDiffusion, saisons.back().m_f_anneesDiffusion);
     return make_pair<int, int>(m_f_anneesProduction.first.value_or(0), m_f_anneesProduction.second.value_or(0));
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # std::vector<std::wstring> Serie::Dossier_Titres(std::wstring& titres)                                                                              #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-/// ???
-std::vector<std::wstring> Serie::Dossier_Titres(std::wstring& titres)
-{
-    //bool found = (titres2==m_titres); !!!
-    //assert(titres2==m_titre && "Le contenu du fichier ne correspond pas au nom du répertoire");
-    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    size_t pos = 0;
-    const std::wstring d_p = L" - ";
-    pos = titres.find(d_p);
-    bool found = false;
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(titres.substr(0, pos));
-        m_titres.push_back(d_p);
-        m_titres.push_back(titres.substr(pos + 3));
-        found = true;
-    }
-    const std::wstring d_p2 = L"- ";
-    pos = titres.find(d_p2);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(titres.substr(0, pos));
-        m_titres.push_back(d_p2);
-        m_titres.push_back(titres.substr(pos + 2));
-        found = true;
-    }
-    const std::wstring d_p3 = L"-";
-    pos = titres.find(d_p3);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(titres.substr(0, pos));
-        m_titres.push_back(d_p3);
-        m_titres.push_back(titres.substr(pos + 1));
-        found = true;
-    }
-    if (!found)
-    {
-        m_titres.push_back(titres);
-        //found = true;
-    }
-    return m_titres;
 }
 
 std::wstring Serie::format_Annees()
@@ -1577,6 +1534,53 @@ void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
 
 }*/
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::vector<std::wstring> Serie::initialiser_Titres(std::wstring& titres)                                                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+/// ???
+std::vector<std::wstring> Serie::initialiser_Titres(std::wstring& titres)
+{
+    //bool found = (titres2==m_titres); !!!
+    //assert(titres2==m_titre && "Le contenu du fichier ne correspond pas au nom du répertoire");
+    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
+    size_t pos = 0;
+    const std::wstring d_p = L" - ";
+    pos = titres.find(d_p);
+    bool found = false;
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(titres.substr(0, pos));
+        m_titres.push_back(d_p);
+        m_titres.push_back(titres.substr(pos + 3));
+        found = true;
+    }
+    const std::wstring d_p2 = L"- ";
+    pos = titres.find(d_p2);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(titres.substr(0, pos));
+        m_titres.push_back(d_p2);
+        m_titres.push_back(titres.substr(pos + 2));
+        found = true;
+    }
+    const std::wstring d_p3 = L"-";
+    pos = titres.find(d_p3);
+    if (!found && pos != std::wstring::npos)
+    {
+        m_titres.push_back(titres.substr(0, pos));
+        m_titres.push_back(d_p3);
+        m_titres.push_back(titres.substr(pos + 1));
+        found = true;
+    }
+    if (!found)
+    {
+        m_titres.push_back(titres);
+        //found = true;
+    }
+    return m_titres;
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

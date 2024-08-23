@@ -243,13 +243,13 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
  
-    std::vector<std::wstring> Dossier_Titres(std::wstring& titres);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Creee_par(std::filesystem::path const& cheminFichier);
     void initialiser_Duree(std::wstring& m);
     void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
+    std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
     void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_titre);
 
     //void abc_titres(std::vector<std::wstring>& titres);
