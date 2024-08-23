@@ -1242,7 +1242,6 @@ Serie::Serie(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
-
     //std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" }; // Marches pas !!!
 //    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" };
     std::wregex filename_pattern{ L"^(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})([^\\]]*)\\])(?:\\.(.+))?$|^(.+)(?:\\.(.+))$" };
@@ -1266,10 +1265,6 @@ Serie::Serie(std::filesystem::path racine)
             }
         }
 
-        //std::wstring sur = (match[3].matched) ? match[3].str() : L""; //void initialiser_Sur(std::wstring& m_s)
-        //m_sur = sur;
-        //std::wstring sous_genre = (match[4].matched) ? match[4].str() : L"";
-        //m_sous_genre = sous_genre;
         m_sur = (match[3].matched) ? match[3].str() : L"";
         m_sous_genre = (match[4].matched) ? match[4].str() : L"";
     }
