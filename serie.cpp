@@ -62,8 +62,6 @@ extern bool checkday(int m, int d, int y);
 
 void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor);
 
-extern void abc_Titres(std::vector<std::wstring>& m_titres, std::vector<std::wstring>& titres);
-
 extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
 extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
 //extern const void initialiser_Chaine(fs::path const& cheminFichier, std::wstring& m_chaine);
