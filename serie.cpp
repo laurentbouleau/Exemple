@@ -77,6 +77,8 @@ extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vecto
 
 extern std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
+extern std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
+
 extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
 extern std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
 extern std::wstring recuperer_SJ(fs::path const& cheminFichier);
@@ -1614,7 +1616,7 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     }*/
 
     /*----------------------------------*/
-    std::vector<std::wstring>titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
+    std::vector<std::wstring>nouveaux_titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
     /*bool found = false;
     if (m_titres == titres)
         found = true;
@@ -1640,8 +1642,8 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
         }
     }*/
 
-    abc_Titres(m_titres, titres);
-
+    //abc_Titres(m_titres, titres);
+    m_titres = fusionner_Titres(m_titres, nouveaux_titres);
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
     {

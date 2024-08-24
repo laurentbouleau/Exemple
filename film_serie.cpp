@@ -179,35 +179,43 @@ const std::vector<std::wstring> Sur
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-void abc_Titres(std::vector<std::wstring>& m_titres, std::vector<std::wstring>& titres)
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)
 {
-    assert(m_titres.size() < 4 && L"???");
-    assert(titres.size() < 4 && L"???");
+    assert(nouveaux_titres.size() < 4 && L"???");
+    assert(vieux_titres.size() < 4 && L"???");
     bool found = false;
-    if (m_titres == titres)
+    if (nouveaux_titres == vieux_titres)
         found = true;
     else
     {
-        if (titres.size() == m_titres.size())
+        if (vieux_titres.size() == nouveaux_titres.size())
         {
             //double titres_ration{ 80.0 };
-            if (titres.size() == 1 && m_titres.size() == 1)
+            if (vieux_titres.size() == 1 && nouveaux_titres.size() == 1)
             {
-                m_titres = titres;
+                nouveaux_titres = vieux_titres;
                 found = true;
             }
-            if (titres.size() == 3 && m_titres.size() == 3 && titres[0] == m_titres[0] && titres[1] != m_titres[1] && titres[2] == m_titres[2])
+            if (vieux_titres.size() == 3 && nouveaux_titres.size() == 3 && vieux_titres[0] == nouveaux_titres[0] && vieux_titres[1] != nouveaux_titres[1] && vieux_titres[2] == nouveaux_titres[2])
             {
-                m_titres[1] = titres[1];
+                nouveaux_titres[1] = vieux_titres[1];
                 found = true;
             }
-            if (titres.size() == 3 && m_titres.size() == 3 && (titres[0] != m_titres[0] || titres[1] != m_titres[1] || titres[2] != m_titres[2]))
+            if (vieux_titres.size() == 3 && nouveaux_titres.size() == 3 && (vieux_titres[0] != nouveaux_titres[0] || vieux_titres[1] != nouveaux_titres[1] || vieux_titres[2] != nouveaux_titres[2]))
             {
-                m_titres = titres;
+                nouveaux_titres = vieux_titres;
                 found = true;
             }
         }
     }
+    return nouveaux_titres;
+
 }
 
 // ######################################################################################################################################################
@@ -408,11 +416,11 @@ std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& titre)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> initialiser_Titres(std::wstring& titres)                                                                                 #
+// # std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres)                                                  #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::vector<std::wstring> initialiser_Titres(std::wstring& titres)
+std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres)
 {
     assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
     const std::vector<std::wstring> t = ::extraire_Titres_Depuis_UneLigne(titres);

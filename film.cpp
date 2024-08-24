@@ -63,7 +63,8 @@ extern bool checkmonth(int m);
 extern bool checkday(int m, int d, int y);
 
 void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void abc_Titres(std::vector<std::wstring>& m_titres, std::vector<std::wstring>& titres);
+
+//extern void abc_Titres(std::vector<std::wstring>& m_titres, std::vector<std::wstring>& titres);
 
 extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
 extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
@@ -71,18 +72,18 @@ extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pai
 extern void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
 extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-
-//extern void initialiser_Sur(std::wstring& m_s);
-extern std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
 extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
+//extern void initialiser_Sur(std::wstring& m_s);
+extern std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
 extern std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
+
+extern std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
 
 extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
 extern std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
 extern std::wstring recuperer_SJ(fs::path const& cheminFichier);
 
-extern void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
 extern void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
@@ -127,16 +128,16 @@ Film::Film(std::filesystem::path racine)
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
         std::wstring titres = match[1];
-        m_titres = initialiser_Titres(titres);
+        m_titres = extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(titres);
 
         if (match[2].matched)
         {
             std::wstring wstr = match[2].str();
-            m_date_du_film.tm_year = stoi(wstr) - 1900;
+            m_date_en_salle_ou_sur.tm_year = stoi(wstr) - 1900;
             wstr = wstr.substr(5);
-            m_date_du_film.tm_mon = stoi(wstr) - 1;
+            m_date_en_salle_ou_sur.tm_mon = stoi(wstr) - 1;
             wstr = wstr.substr(3);
-            m_date_du_film.tm_mday = stoi(wstr);
+            m_date_en_salle_ou_sur.tm_mday = stoi(wstr);
         }
         m_sur = (match[3].matched) ? match[3].str() : L"";
         m_sous_genre = (match[4].matched) ? match[4].str() : L"";
@@ -437,6 +438,12 @@ void Film::initialiser_Par(fs::path const& cheminFichier)
     assert((m_par.size() != 0));
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Film::initialiser_Making_of(std::filesystem::path const& cheminFichier)                                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 void Film::initialiser_Making_of(std::filesystem::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.wstring();
@@ -541,55 +548,9 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
     std::vector<std::wstring> contenu = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((contenu.size() != 0));
 
-/*    std::vector<std::wstring> t;
+    std::vector<std::wstring>nouveaux_titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
 
-    std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
-    //std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s?|\\d{4}\\-\\s?|\\d{4}\\s?)?([^\\]]*)\\])?(?:\\.(.+))?" };
-    std::wsmatch match;
-    if (std::regex_match(contenu[0], match, titre_pattern))
-    {
-        t.push_back(match[1]);
-        if (match.length() > 2)
-        {
-            t.push_back(match[2]);
-        }
-        if (match.length() > 3)
-        {
-            t.push_back(match[3]);
-        }
-    }
-    else
-    {
-        t.push_back(contenu[0]);
-    }*/
-    std::vector<std::wstring>titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
-
-/*    bool found = false;
-    if (m_titres == titres)
-        found = true;
-    else
-    {
-        if (titres.size() == m_titres.size())
-        {
-            if (titres.size() == 1 && m_titre.size() == 1)
-            {
-                m_titres = titres;
-                found = true;
-            }
-            if (titres.size() == 3 && m_titre.size() == 3 && titres[0] == m_titres[0] && titres[1] != m_titres[1] && titres[2] == m_titres[2])
-            {
-                m_titres[1] = titres[1];
-                found = true;
-            }
-            if (titres.size() == 3 && m_titre.size() == 3 && (titres[0] != m_titres[0] || titres[1] != m_titres[1] || titres[2] != m_titres[2]))
-            {
-                m_titres = titres;
-                found = true;
-            }
-        }
-    }*/
-
-    abc_Titres(m_titres, titres);
+    m_titres = fusionner_Titres(m_titres, nouveaux_titres);
 
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
@@ -779,8 +740,8 @@ const void Film::Print_Header()
     if (affichage_titres_actif)
     {
         std::wstring titres_str;
-        std::wstring date_du_film_str;
-        std::wstring sur_str;
+        std::wstring date_en_salle_ou_sur_str;
+        std::wstring x_sj_str;
         std::wstring sj_str;
         std::wstring duree_str;
         std::wstring note_str;
@@ -789,57 +750,46 @@ const void Film::Print_Header()
         if (m_titres.size() > 1)
             titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
         // Date du film
-        if (affichage_date_du_film_actif)
+        if (affichage_date_en_salle_ou_sur_actif)
         {
             wchar_t date_string[15];
-            wcsftime(date_string, 15, L"%d/%m/%Y", &m_date_du_film);
-            date_du_film_str = date_string;
-            date_du_film_str = m_keyColor[0] + L" (" + m_valuesColor + date_du_film_str.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + date_du_film_str.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + date_du_film_str.substr(6, 4) + m_keyColor[0] + L')' + m_valuesColor;
+            wcsftime(date_string, 15, L"%d/%m/%Y", &m_date_en_salle_ou_sur);
+            date_en_salle_ou_sur_str = date_string;
+            date_en_salle_ou_sur_str = m_keyColor[0] + L" (" + m_valuesColor +
+                date_en_salle_ou_sur_str.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor +
+                date_en_salle_ou_sur_str.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor +
+                date_en_salle_ou_sur_str.substr(6, 4); //+ m_valuesColor;
+            if (affichage_sur_actif && m_sur == L"")
+            {
+                date_en_salle_ou_sur_str += m_keyColor[1] + L" en salle" + m_valuesColor;
+            }
+            else if (affichage_sur_actif && (m_sur == L"Disney+" || m_sur == L"Netflix"))
+            {
+                date_en_salle_ou_sur_str += m_keyColor[1] + L" sur " + m_valuesColor;
+                if (m_sur == L"Disney+")
+                {
+                    date_en_salle_ou_sur_str += L"Disney+ " + m_keyColor[1] + L": " + m_valuesColor + m_disney_sj;
+                }
+                else
+                {
+                    date_en_salle_ou_sur_str += L"Netflix " + m_keyColor[1] + L": " + m_valuesColor + m_netflix_sj;
+                }
+            }
+            else 
+            {
+                date_en_salle_ou_sur_str += m_sur;
+            }
+            date_en_salle_ou_sur_str += m_keyColor[0] + L')' + m_valuesColor;
         }
-        // sur
-        /*if (affichage_sur_actif && m_sur != L"")
-        {
-            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + m_sur + keyColor[1] + L" : " + valuesColor;
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += m_disney_sj;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += m_netflix_sj;
-            sur_str += keyColor[0] + L')' + valuesColor;
-        }
-        else
-        {
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + m_disney_sj + keyColor[0] + L')' + valuesColor;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + m_netflix_sj + keyColor[0] + L')' + valuesColor;
-        }*/
-        if (affichage_sur_actif && m_sur != L"" && m_sur != L"Disney+" && m_sur != L"Netflix")
-        {
-            sur_str += m_keyColor[0] + L" (" + m_keyColor[1] + L"en salle " + m_valuesColor + m_sur + m_keyColor[0] + L')' + m_valuesColor;
-        }
-        if (affichage_sur_actif && (m_sur == L"Disney+" || m_sur == L"Netflix"))
-        {
-            sur_str += m_keyColor[0] + L" (" + m_keyColor[1] + L"sur " + m_valuesColor + m_sur + m_keyColor[1] + L" : " + m_valuesColor;
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += m_disney_sj;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += m_netflix_sj;
-            sur_str += m_keyColor[0] + L')' + m_valuesColor;
-        }
-        else
+        // x signalétique jeunesse
+        if (affichage_x_sj_actif && m_sur == L"")
         {
             // Disney+ SJ
             if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
+                x_sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
             // Netflix SJ
             if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
+                x_sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
         }
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
@@ -853,7 +803,7 @@ const void Film::Print_Header()
         if (affichage_note_actif)
             note_str += Print_Note();
 
-        std::wcout << titres_str << date_du_film_str << sur_str << sj_str << duree_str << note_str << std::endl;
+        std::wcout << titres_str << date_en_salle_ou_sur_str << x_sj_str << sj_str << duree_str << note_str << std::endl;
     }
 }
 
@@ -865,7 +815,7 @@ const void Film::Print_Header()
 
 const void Film::Print_Making_of()
 {
-    if (affichage_making_of_actif)
+    if (affichage_making_of_actif && m_making_of)
     {
         std::wstring making_of_str = m_keyColor[0] + L"Making of" + m_valuesColor + L' ';
         std::wstring duree_str;
