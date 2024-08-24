@@ -215,7 +215,6 @@ std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titr
         }
     }
     return nouveaux_titres;
-
 }
 
 // ######################################################################################################################################################
