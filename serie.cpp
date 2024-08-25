@@ -1539,53 +1539,6 @@ void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> Serie::initialiser_Titres(std::wstring& titres)                                                                          #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-/// ???
-/*std::vector<std::wstring> Serie::initialiser_Titres(std::wstring& titres)
-{
-    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    size_t pos = 0;
-    const std::wstring d_p = L" - ";
-    pos = titres.find(d_p);
-    bool found = false;
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(titres.substr(0, pos));
-        m_titres.push_back(d_p);
-        m_titres.push_back(titres.substr(pos + 3));
-        found = true;
-    }
-    const std::wstring d_p2 = L"- ";
-    pos = titres.find(d_p2);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(titres.substr(0, pos));
-        m_titres.push_back(d_p2);
-        m_titres.push_back(titres.substr(pos + 2));
-        found = true;
-    }
-    const std::wstring d_p3 = L"-";
-    pos = titres.find(d_p3);
-    if (!found && pos != std::wstring::npos)
-    {
-        m_titres.push_back(titres.substr(0, pos));
-        m_titres.push_back(d_p3);
-        m_titres.push_back(titres.substr(pos + 1));
-        found = true;
-    }
-    if (!found)
-    {
-        m_titres.push_back(titres);
-        //found = true;
-    }
-
-    return m_titres;
-}*/
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # Serie::void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre)                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -1729,6 +1682,7 @@ const void Serie::Print_Header()
         std::wstring titres_str;
         std::wstring annees_str;
         std::wstring sur_str;
+        std::wstring x_sj_str;
         std::wstring sj_str;
         std::wstring duree_str;
         std::wstring note_str;
@@ -1742,7 +1696,7 @@ const void Serie::Print_Header()
             annees_str = format_Annees();
         }
         // sur
-        if (affichage_sur_actif && m_sur != L"" && m_sur != L"Disney+" && m_sur != L"Netflix")
+/*        if (affichage_sur_actif && m_sur != L"" && m_sur != L"Disney+" && m_sur != L"Netflix")
         {
             sur_str += m_keyColor[0] + L" (" + m_keyColor[1] + L"sur " + m_valuesColor + m_sur + m_keyColor[0] + L')' + m_valuesColor;
         }
@@ -1765,6 +1719,37 @@ const void Serie::Print_Header()
             // Netflix SJ
             if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
                 sur_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
+        }*/
+        if (affichage_sur_actif)
+        {
+            //sur_str += m_keyColor[0] + L" [" + m_valuesColor;
+            if (m_sur == L"Disney+" || m_sur == L"Netflix")
+            {
+                sur_str += m_keyColor[0] + L" [" + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor;
+                if (m_sur == L"Disney+")
+                {
+                    sur_str += L"Disney+ " + m_keyColor[1] + L": " + m_valuesColor + m_disney_sj;
+                }
+                else
+                {
+                    sur_str += L"Netflix " + m_keyColor[1] + L": " + m_valuesColor + m_netflix_sj;
+                }
+                sur_str += m_keyColor[0] + L']' + m_valuesColor;
+            }
+            else
+            {
+                sur_str += m_keyColor[0] + L" [" + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + m_sur + m_keyColor[0] + L']' + m_valuesColor;
+            }
+        }
+        // x signalétique jeunesse
+        if (affichage_x_sj_actif && m_sur == L"")
+        {
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
+                x_sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
+                x_sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
         }
         // La signalétique jeunesse
         if (affichage_sj_actif && m_sj.length() != 0)
@@ -1778,7 +1763,7 @@ const void Serie::Print_Header()
         if (affichage_note_actif)
             note_str += calcul_Note_Affichage();
 
-        std::wcout << titres_str << annees_str << sur_str << sj_str << duree_str << note_str << std::endl;
+        std::wcout << titres_str << annees_str << sur_str << x_sj_str << sj_str << duree_str << note_str << std::endl;
     }
 }
 

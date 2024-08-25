@@ -747,7 +747,7 @@ const void Film::Print_Header()
         titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
         if (m_titres.size() > 1)
             titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
-        // Date du film
+        // Date en salle ou sur
         if (affichage_date_en_salle_ou_sur_actif)
         {
             wchar_t date_string[15];
@@ -756,7 +756,7 @@ const void Film::Print_Header()
             date_en_salle_ou_sur_str = m_keyColor[0] + L" (" + m_valuesColor +
                 date_en_salle_ou_sur_str.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor +
                 date_en_salle_ou_sur_str.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor +
-                date_en_salle_ou_sur_str.substr(6, 4); //+ m_valuesColor;
+                date_en_salle_ou_sur_str.substr(6, 4);
             if (affichage_sur_actif && m_sur == L"")
             {
                 date_en_salle_ou_sur_str += m_keyColor[1] + L" en salle" + m_valuesColor;

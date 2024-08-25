@@ -338,5 +338,6 @@ private:
     bool affichage_sur_actif = true;
     bool affichage_titres_actif = true;
     bool affichage_titres_originaux_actif = true;
+    bool affichage_x_sj_actif = true;
 };
 
