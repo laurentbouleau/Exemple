@@ -1696,33 +1696,8 @@ const void Serie::Print_Header()
             annees_str = format_Annees();
         }
         // sur
-/*        if (affichage_sur_actif && m_sur != L"" && m_sur != L"Disney+" && m_sur != L"Netflix")
-        {
-            sur_str += m_keyColor[0] + L" (" + m_keyColor[1] + L"sur " + m_valuesColor + m_sur + m_keyColor[0] + L')' + m_valuesColor;
-        }
-        if (affichage_sur_actif && (m_sur == L"Disney+" || m_sur == L"Netflix"))
-        {
-            sur_str += m_keyColor[0] + L" (" + m_keyColor[1] + L"sur " + m_valuesColor + m_sur + m_keyColor[1] + L" : " + m_valuesColor;
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += m_disney_sj;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += m_netflix_sj;
-            sur_str += m_keyColor[0] + L')' + m_valuesColor;
-        }
-        else
-        {
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                sur_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                sur_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
-        }*/
         if (affichage_sur_actif)
         {
-            //sur_str += m_keyColor[0] + L" [" + m_valuesColor;
             if (m_sur == L"Disney+" || m_sur == L"Netflix")
             {
                 sur_str += m_keyColor[0] + L" [" + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor;
