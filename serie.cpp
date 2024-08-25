@@ -46,46 +46,47 @@ extern const std::vector<std::wstring> Genre;
 extern const std::vector<std::wstring> Nationalite;
 extern const std::vector<std::wstring> Sous_Genre;
 
-extern std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
+std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
 
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
-extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
+const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
+const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
+const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
 //extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
-extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
+const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
-extern void test_date_tire(wchar_t d);
-extern void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t);
-extern bool checkyear(int y);
-extern bool checkmonth(int m);
-extern bool checkday(int m, int d, int y);
+void test_date_tire(wchar_t d);
+void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t);
+bool checkyear(int y);
+bool checkmonth(int m);
+bool checkday(int m, int d, int y);
 
 void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor);
 
-extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
-extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
+void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
+void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
 //extern const void initialiser_Chaine(fs::path const& cheminFichier, std::wstring& m_chaine);
-extern void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
-extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
-extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
+void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
+void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
+void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
 
-extern void initialiser_Sur(std::wstring& m_s);
+void initialiser_Sur(std::wstring& m_s);
 //extern std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
-extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
+void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
-extern std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
+std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
+std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
-extern std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
+std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
 
-extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
-extern std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
-extern std::wstring recuperer_SJ(fs::path const& cheminFichier);
+std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
+std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
+std::wstring recuperer_SJ(fs::path const& cheminFichier);
 
-extern void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void Print_Resume(const std::vector<wstring>& m_resume, bool affichage_resume_actif);
-extern void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
+void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
+void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
+void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
+void Print_Resume(const std::vector<wstring>& m_resume, bool affichage_resume_actif);
+void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -1249,7 +1250,8 @@ Serie::Serie(std::filesystem::path racine)
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
         std::wstring titres = match[1];
-        m_titres = initialiser_Titres(titres);
+        //m_titres = initialiser_Titres(titres);
+        m_titres = extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(titres);
         if (match[2].matched)
         {
             std::wstring annees_str = match[2].str();
@@ -1352,7 +1354,7 @@ void Serie::corriger_Annee_Fin()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::corriger_Annee_Debut()                                                                                                           #
+// # std::pair<int, int> Serie::calculer_Annees_Diffusion()                                                                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -1361,6 +1363,12 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion()
     //return std::make_pair(saisons[0].m_f_anneesDiffusion, saisons.back().m_f_anneesDiffusion);
     return make_pair<int, int>(m_f_anneesProduction.first.value_or(0), m_f_anneesProduction.second.value_or(0));
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring Serie::format_Annees()                                                                                                                #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 std::wstring Serie::format_Annees()
 {
@@ -1535,10 +1543,8 @@ void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 /// ???
-std::vector<std::wstring> Serie::initialiser_Titres(std::wstring& titres)
+/*std::vector<std::wstring> Serie::initialiser_Titres(std::wstring& titres)
 {
-    //bool found = (titres2==m_titres); !!!
-    //assert(titres2==m_titre && "Le contenu du fichier ne correspond pas au nom du répertoire");
     assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
     size_t pos = 0;
     const std::wstring d_p = L" - ";
@@ -1574,8 +1580,9 @@ std::vector<std::wstring> Serie::initialiser_Titres(std::wstring& titres)
         m_titres.push_back(titres);
         //found = true;
     }
+
     return m_titres;
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1590,57 +1597,8 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     std::vector<std::wstring> contenu = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((contenu.size() != 0));
 
-
-    //std::vector<std::wstring> t;
-
-    //std::wregex titre_pattern{ L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)" };
-/*    std::wregex filename_pattern{L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s?|\\d{4}\\-\\s?|\\d{4}\\s?)?([^\\]]*)\\])?(?:\\.(.+))?"};
-    std::wsmatch match;
-    if (std::regex_match(contenu[0], match, filename_pattern))
-    {
-        t.push_back(match[1]);
-        if (match.length() > 2)
-        {
-            t.push_back(match[2]);
-        }
-        if (match.length() > 3)
-        {
-            t.push_back(match[3]);
-        }
-    }
-    else
-    {
-        t.push_back(contenu[0]);
-    }*/
-
-    /*----------------------------------*/
     std::vector<std::wstring>nouveaux_titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
-    /*bool found = false;
-    if (m_titres == titres)
-        found = true;
-    else
-    {
-        if (titres.size() == m_titres.size())
-        {
-            if (titres.size() == 1 && m_titres.size() == 1)
-            {
-                m_titres = titres;
-                found = true;
-            }
-            if (titres.size() == 3 && m_titres.size() == 3 && titres[0] == m_titres[0] && titres[1] != m_titres[1] && titres[2] == m_titres[2])
-            {
-                m_titres[1] = titres[1];
-                found = true;
-            }
-            if (titres.size() == 3 && m_titres.size() == 3 && (titres[0] != m_titres[0] || titres[1] != m_titres[1] || titres[2] != m_titres[2]))
-            {
-                m_titres = titres;
-                found = true;
-            }
-        }
-    }*/
 
-    //abc_Titres(m_titres, titres);
     m_titres = fusionner_Titres(m_titres, nouveaux_titres);
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)

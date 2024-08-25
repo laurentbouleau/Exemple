@@ -47,48 +47,46 @@ extern const std::vector<std::wstring> Genre;
 extern const std::vector<std::wstring> Nationalite;
 extern const std::vector<std::wstring> Sous_Genre;
 
-extern std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
+std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
 
-/*extern */const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
-extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
+const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
+const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
+const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
 //extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
-extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
+const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
-extern void test_date_tire(wchar_t d);
-extern void test_date_tiret_sp_etc(wchar_t d);
-extern void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t);
-extern bool checkyear(int y);
-extern bool checkmonth(int m);
-extern bool checkday(int m, int d, int y);
+void test_date_tire(wchar_t d);
+void test_date_tiret_sp_etc(wchar_t d);
+void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t);
+bool checkyear(int y);
+bool checkmonth(int m);
+bool checkday(int m, int d, int y);
 
 void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor);
 
-//extern void abc_Titres(std::vector<std::wstring>& m_titres, std::vector<std::wstring>& titres);
-
-extern void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
-extern void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
+void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
+void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
 //extern const void initialiser_Chaine(fs::path const& cheminFichier, std::wstring& m_chaine);
-extern void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
-extern void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
-extern void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-extern void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
+void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
+void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
+void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
+void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 
 //extern void initialiser_Sur(std::wstring& m_s);
-extern std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
-extern std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
+std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
+std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
-extern std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
+std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
 
-extern std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
-extern std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
-extern std::wstring recuperer_SJ(fs::path const& cheminFichier);
+std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
+std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
+std::wstring recuperer_SJ(fs::path const& cheminFichier);
 
-extern void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
-extern void Print_Resume(const std::vector<wstring>& m_resume, bool affichage_resume_actif);
-extern void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
+void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
+void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
+void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
+void Print_Resume(const std::vector<wstring>& m_resume, bool affichage_resume_actif);
+void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
 
 const std::vector<std::wstring> Soundtrack
