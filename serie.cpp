@@ -76,7 +76,7 @@ void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
 std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
-std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
+std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
 
 std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
 std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
@@ -1278,11 +1278,11 @@ Serie::Serie(std::filesystem::path racine)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const std::wstring Serie::calcul_Note_Affichage()                                                                                                  #
+// # std::wstring Serie::calcul_Note_Affichage() const                                                                                                  #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const std::wstring Serie::calcul_Note_Affichage()
+std::wstring Serie::calcul_Note_Affichage() const
 {
     std::wstring res;
 
@@ -1326,11 +1326,11 @@ const std::wstring Serie::calcul_Note_Affichage()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::corriger_Annee_Debut()                                                                                                           #
+// # void Serie::corriger_Annee_Debut() const                                                                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::corriger_Annee_Debut()
+void Serie::corriger_Annee_Debut() const
 {
     assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons[0].m_f_anneesDiffusion)) && L"Il faut au moins une date de début.");
 
@@ -1340,11 +1340,11 @@ const void Serie::corriger_Annee_Debut()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::corriger_Annee_Fin()                                                                                                                   #
+// # void Serie::corriger_Annee_Fin() const                                                                                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::corriger_Annee_Fin()
+void Serie::corriger_Annee_Fin() const
 {
     assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons.back().m_f_anneesDiffusion)) && L"Il faut au moins une date de fin.");
 
@@ -1354,11 +1354,11 @@ void Serie::corriger_Annee_Fin()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::pair<int, int> Serie::calculer_Annees_Diffusion()                                                                                             #
+// # std::pair<int, int> Serie::calculer_Annees_Diffusion() const                                                                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::pair<int, int> Serie::calculer_Annees_Diffusion()
+std::pair<int, int> Serie::calculer_Annees_Diffusion() const
 {
     //return std::make_pair(saisons[0].m_f_anneesDiffusion, saisons.back().m_f_anneesDiffusion);
     return make_pair<int, int>(m_f_anneesProduction.first.value_or(0), m_f_anneesProduction.second.value_or(0));
@@ -1366,11 +1366,11 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::wstring Serie::format_Annees()                                                                                                                #
+// # std::wstring Serie::format_Annees() const                                                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring Serie::format_Annees()
+std::wstring Serie::format_Annees() const
 {
     if (m_f_anneesProduction.first && m_f_anneesProduction.second)
     {
@@ -1539,11 +1539,11 @@ void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # Serie::void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre)                                            #
+// # Serie::void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& titre)                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre)
+void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& titre)
 { // Titre
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
@@ -1671,11 +1671,11 @@ const void Serie::Print_En_relation_avec()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::Print_Header()                                                                                                                   #
+// # void Serie::Print_Header() const                                                                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_Header()
+void Serie::Print_Header() const
 {
     if (affichage_titres_actif)
     {

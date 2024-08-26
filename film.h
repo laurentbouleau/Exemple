@@ -56,7 +56,7 @@ public:
     void initialiser_Making_of(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
-    void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_titre);
+    void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& titre);
 
     const void Print();
 
@@ -71,10 +71,10 @@ private:
     const void Print_Date_de_Sortie();
     const void Print_De();
     const void Print_Distributeur();
-    const void Print_Header();
+    void Print_Header() const;
     const void Print_Making_of();
     const void Print_Par();
-    const std::wstring Print_Note();
+    std::wstring Print_Note() const;
     const void Print_Soundtracks();
 
     std::filesystem::path racine;
@@ -85,7 +85,7 @@ private:
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
-    std::tm m_date_en_salle_ou_sur{ 0 }, m_date_de_reprise{ 0 }, m_date_de_sortie{ 0 };
+    std::tm m_date{ 0 }, m_date_de_reprise{ 0 }, m_date_de_sortie{ 0 };
     std::vector<std::wstring> m_de;
     bool m_disney{ false };
     std::wstring m_disney_sj;

@@ -33,12 +33,12 @@ namespace fs = std::filesystem;
 //extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
 //extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
 //extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
-extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
-extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
+//extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
+//extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
+//extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
 //extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
-extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
-extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
+//extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
+//extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -181,11 +181,11 @@ const std::vector<std::wstring> Sur
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)                    #
+// # std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)              #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)
+/*std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)
 {
     assert(nouveaux_titres.size() < 4 && L"???");
     assert(vieux_titres.size() < 4 && L"???");
@@ -215,6 +215,31 @@ std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titr
         }
     }
     return nouveaux_titres;
+}*/
+std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)
+{
+    assert(nouveaux_titres.size() < 4 && L"???");
+    assert(vieux_titres.size() < 4 && L"???");
+
+    std::vector<std::wstring> resultat = nouveaux_titres;
+
+    if (vieux_titres.size() == nouveaux_titres.size())
+    {
+        //double titres_ration{ 80.0 };
+        if (vieux_titres.size() == 1 && nouveaux_titres.size() == 1)
+        {
+            resultat = vieux_titres;
+        }
+        if (vieux_titres.size() == 3 && nouveaux_titres.size() == 3 && vieux_titres[0] == nouveaux_titres[0] && vieux_titres[1] != nouveaux_titres[1] && vieux_titres[2] == nouveaux_titres[2])
+        {
+            resultat[1] = vieux_titres[1];
+        }
+        if (vieux_titres.size() == 3 && nouveaux_titres.size() == 3 && (vieux_titres[0] != nouveaux_titres[0] || vieux_titres[1] != nouveaux_titres[1] || vieux_titres[2] != nouveaux_titres[2]))
+        {
+            resultat = vieux_titres;
+        }
+    }
+    return resultat;
 }
 
 // ######################################################################################################################################################

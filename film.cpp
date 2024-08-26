@@ -76,7 +76,7 @@ void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
 std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
-std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
+std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
 
 std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
 std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
@@ -115,7 +115,7 @@ const std::vector<std::wstring> Soundtrack
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-Film::Film(std::filesystem::path racine)
+/*Film::Film(std::filesystem::path racine)
 {
     this->racine = racine;
     auto nomDossier = racine.filename().wstring();
@@ -144,8 +144,39 @@ Film::Film(std::filesystem::path racine)
     {
         assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
     }
-}
+}*/
 
+Film::Film(std::filesystem::path racine)
+{
+    this->racine = racine;
+    auto nomDossier = racine.filename().wstring();
+    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
+
+    std::wregex filename_pattern{ L"(.+?)(?:\\.\\((?:(\\d{4})\\-(\\d{2})\\-(\\d{2})\\)))?(?:\\.(.+))?$" };
+    std::wsmatch match;
+    if (std::regex_match(nomDossier, match, filename_pattern))
+    {
+        std::wstring part_1 = match[1];
+        m_titres = extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(part_1);
+        if (match[2].matched)
+        {
+            std::wstring annees_str = match[2].str();
+            std::wstring mois_str = match[3].str();
+            std::wstring jours_str = match[4].str();
+            m_date.tm_year = stoi(annees_str) - 1900;  //beurk!!
+            m_date.tm_mon = stoi(mois_str) - 1;           //beurk!!
+            m_date.tm_mday = stoi(jours_str);
+        }
+
+        m_sur = (match[5].matched) ? match[5].str() : L"";
+
+        m_sous_genre = (match[6].matched) ? match[6].str() : L"";
+    }
+    else
+    {
+        assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
+    }
+}
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Film::initialiser_Fichier(fs::path const& cheminFichier)                                                                                      #
@@ -535,11 +566,11 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre)                                                    #
+// # void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& titre)                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre)
+void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& titre)
 { // Titre
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
@@ -729,11 +760,11 @@ const void Film::Print_Distributeur()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Header()                                                                                                                    #
+// # void Film::Print_Header() const                                                                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Header()
+void Film::Print_Header() const
 {
     if (affichage_titres_actif)
     {
@@ -751,7 +782,7 @@ const void Film::Print_Header()
         if (affichage_date_en_salle_ou_sur_actif)
         {
             wchar_t date_string[15];
-            wcsftime(date_string, 15, L"%d/%m/%Y", &m_date_en_salle_ou_sur);
+            wcsftime(date_string, 15, L"%d/%m/%Y", &m_date);
             date_en_salle_ou_sur_str = date_string;
             date_en_salle_ou_sur_str = m_keyColor[0] + L" (" + m_valuesColor +
                 date_en_salle_ou_sur_str.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor +
@@ -838,11 +869,11 @@ const void Film::Print_Making_of()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const std::wstring Film::Print_Note()                                                                                                              #
+// # std::wstring Film::Print_Note() const                                                                                                              #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const std::wstring Film::Print_Note()
+std::wstring Film::Print_Note() const
 {
     if (affichage_note_actif)
     {

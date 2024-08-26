@@ -250,7 +250,7 @@ public:
     void initialiser_Duree(std::wstring& m);
     void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
     //std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
-    void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_titre);
+    void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& titre);
 
     //void abc_titres(std::vector<std::wstring>& titres);
 
@@ -267,14 +267,14 @@ public:
 private:
     //const std::wstring calculer_Annee_Debut();
     //const std::wstring calculer_Annee_Fin(std::wstring& wstr);
-    const std::wstring calcul_Note_Affichage();
+    std::wstring calcul_Note_Affichage() const;
 
-    const void corriger_Annee_Debut();
-    void corriger_Annee_Fin();
+    void corriger_Annee_Debut() const;
+    void corriger_Annee_Fin() const;
 
     //const std::wstring format_Annees();
-    std::wstring format_Annees();
-    std::pair<int, int>  calculer_Annees_Diffusion();
+    std::wstring format_Annees() const;
+    std::pair<int, int> calculer_Annees_Diffusion() const;
     std::pair<std::optional<int>, std::optional<int>> m_f_anneesProduction;
 
     const void Print_Saison(Saison saison);
@@ -283,7 +283,7 @@ private:
     const void Print_Chaine();
     const void Print_Creee_par();
     const void Print_En_relation_avec();
-    const void Print_Header();
+    void Print_Header() const;
 
     std::filesystem::path racine;
 
