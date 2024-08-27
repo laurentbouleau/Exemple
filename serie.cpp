@@ -77,7 +77,8 @@ std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichi
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
 std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
-std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres);
+//std::vector<std::wstring> fusionner_Titres(std::vector<std::wstring>& vieux_titres, const std::vector<std::wstring>& nouveaux_titres);
+std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouveaux_titres, const std::vector<std::wstring>& vieux_titres);
 
 std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
 std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
@@ -1551,9 +1552,9 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::ws
     std::vector<std::wstring> contenu = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((contenu.size() != 0));
 
-    std::vector<std::wstring>nouveaux_titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
+    std::vector<std::wstring>titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
 
-    m_titres = fusionner_Titres(m_titres, nouveaux_titres);
+    m_titres = fusionner_Titres(m_titres, titres);
     contenu.erase(contenu.begin());
     if (contenu.size() > 0)
     {

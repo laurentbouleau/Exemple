@@ -181,7 +181,7 @@ const std::vector<std::wstring> Sur
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)              #
+// # std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouveaux_titres, std::vector<std::wstring>& vieux_titres)              #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -216,7 +216,7 @@ const std::vector<std::wstring> Sur
     }
     return nouveaux_titres;
 }*/
-std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)
+std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouveaux_titres, const std::vector<std::wstring>& vieux_titres)
 {
     assert(nouveaux_titres.size() < 4 && L"???");
     assert(vieux_titres.size() < 4 && L"???");
@@ -239,6 +239,7 @@ std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieu
             resultat = vieux_titres;
         }
     }
+
     return resultat;
 }
 
@@ -448,27 +449,16 @@ std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& ligne)
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres)
 {
     assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    const std::vector<std::wstring> t = ::extraire_Titres_Depuis_UneLigne(titres);
+    const std::vector<std::wstring> t = extraire_Titres_Depuis_UneLigne(titres);
     return t;
 }
 
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)                                        #
+// # std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& titre_original)                     #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)
-{ // Titre Original
-    auto nomFichier = cheminFichier.wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::wstring titre = lire_fichierTxt(cheminFichier.wstring());
-    assert((titre.size() != 0));
-
-    m_titre_original = ::extraire_Titres_Depuis_UneLigne(titre);
-
-}*/
 std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& titre_original)
 { // Titre Original
     auto nomFichier = cheminFichier.wstring();
@@ -476,7 +466,7 @@ std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichi
     std::wstring titre = lire_fichierTxt(cheminFichier.wstring());
     assert((titre.size() != 0));
 
-    return titre_original = ::extraire_Titres_Depuis_UneLigne(titre);
+    return titre_original = extraire_Titres_Depuis_UneLigne(titre);
 }
 
 // ######################################################################################################################################################
