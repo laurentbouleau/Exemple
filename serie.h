@@ -269,8 +269,8 @@ private:
     //const std::wstring calculer_Annee_Fin(std::wstring& wstr);
     std::wstring calcul_Note_Affichage() const;
 
-    void corriger_Annee_Debut() const;
-    void corriger_Annee_Fin() const;
+    const void corriger_Annee_Debut();// const;
+    const void corriger_Annee_Fin();
 
     //const std::wstring format_Annees();
     std::wstring format_Annees() const;

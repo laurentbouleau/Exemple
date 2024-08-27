@@ -71,7 +71,8 @@ void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wst
 
 void initialiser_Sur(std::wstring& m_s);
 //extern std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
-void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
+//void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
+std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& titre_original);
 
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
 std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
@@ -283,8 +284,8 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
 void InfosVisionnage::initialiser_Duree(std::wstring& m)
 {
-    const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
-
+    //const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
+    const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)\\s*" };
     std::wsmatch match;
 
     if (std::regex_match(m, match, duree_format_rg))
@@ -1326,11 +1327,11 @@ std::wstring Serie::calcul_Note_Affichage() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::corriger_Annee_Debut() const                                                                                                           #
+// # const void Serie::corriger_Annee_Debut()                                                                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::corriger_Annee_Debut() const
+const void Serie::corriger_Annee_Debut()
 {
     assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons[0].m_f_anneesDiffusion)) && L"Il faut au moins une date de début.");
 
@@ -1340,11 +1341,11 @@ void Serie::corriger_Annee_Debut() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::corriger_Annee_Fin() const                                                                                                             #
+// # const void Serie::corriger_Annee_Fin()                                                                                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::corriger_Annee_Fin() const
+const void Serie::corriger_Annee_Fin()
 {
     assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons.back().m_f_anneesDiffusion)) && L"Il faut au moins une date de fin.");
 
@@ -1452,7 +1453,7 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         // Titre original
         if (nomFichier == L"Titre original.txt")
         {
-            initialiser_Titre_Original(cheminFichier, m_titres_originaux);
+            m_titres_originaux = initialiser_Titre_Original(cheminFichier, m_titres_originaux);
         }
         return;
     }
@@ -1539,11 +1540,11 @@ void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # Serie::void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& titre)                                            #
+// # Serie::void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& titre)
+void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)
 { // Titre
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");

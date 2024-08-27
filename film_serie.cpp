@@ -373,16 +373,17 @@ void initialiser_Sur(std::wstring& m_s)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring>& titre)                                                                    #
+// # std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring>& ligne)                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& titre)
-{ // Titre 
-    assert(titre.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    std::wstring& t = titre;
+std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& ligne)
+{ // Titres
+    assert(ligne.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
+    std::wstring& t = ligne;
     
     std::vector<std::wstring> titres;
+    
     std::size_t pos = 0;
     bool found = false;
     const std::wstring d_p = L" : ";
@@ -395,7 +396,7 @@ std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& titre)
         found = true;
     }
     const std::wstring d_p2 = L": ";
-    pos = titre.find(d_p2);
+    pos = t.find(d_p2);
     if (!found && pos != std::wstring::npos)
     {
         titres.push_back(t.substr(0, pos));
@@ -458,33 +459,24 @@ std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std:
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)
+/*void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)
 { // Titre Original
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     std::wstring titre = lire_fichierTxt(cheminFichier.wstring());
     assert((titre.size() != 0));
 
-    /*std::wregex titre_pattern{L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)"};
-    std::wsmatch match;
-    if (std::regex_match(titre, match, titre_pattern))
-    {
-        m_titre_original.push_back(match[1]);
-        if (match.length() > 2)
-        {
-            m_titre_original.push_back(match[2]);
-        }
-        if (match.length() > 3)
-        {
-            m_titre_original.push_back(match[3]);
-        }
-    }
-    else
-    {
-        m_titre_original.push_back(titre);
-    }*/
     m_titre_original = ::extraire_Titres_Depuis_UneLigne(titre);
 
+}*/
+std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& titre_original)
+{ // Titre Original
+    auto nomFichier = cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::wstring titre = lire_fichierTxt(cheminFichier.wstring());
+    assert((titre.size() != 0));
+
+    return titre_original = ::extraire_Titres_Depuis_UneLigne(titre);
 }
 
 // ######################################################################################################################################################

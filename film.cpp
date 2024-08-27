@@ -70,7 +70,8 @@ void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::
 void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
 void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
+//void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
+std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& titre_original);
 
 //extern void initialiser_Sur(std::wstring& m_s);
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
@@ -272,7 +273,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         // Titre original
         if (nomFichier == L"Titre original.txt")
         {
-            initialiser_Titre_Original(cheminFichier, m_titres_originaux);
+            m_titres_originaux = initialiser_Titre_Original(cheminFichier, m_titres_originaux);
         }
         // xxxx-yy-zz
         //if (nomFichier != L"")
@@ -566,11 +567,11 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& titre)                                                      #
+// # void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& titre)
+void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)
 { // Titre
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
