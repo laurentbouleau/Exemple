@@ -3,7 +3,6 @@
 #include "utils.h"
 #include "Exemple.h"
 #include "film.h"
-#include "film_serie.h"
 #include "serie.h"
 // C :
 #include <io.h>
@@ -29,16 +28,6 @@
 
 using namespace std;
 namespace fs = std::filesystem;
-
-//extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
-//extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
-//extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
-//extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
-//extern const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
-//extern const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
-//extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
-//extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
-//extern const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
@@ -185,37 +174,6 @@ const std::vector<std::wstring> Sur
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& vieux_titres, std::vector<std::wstring>& nouveaux_titres)
-{
-    assert(nouveaux_titres.size() < 4 && L"???");
-    assert(vieux_titres.size() < 4 && L"???");
-    bool found = false;
-    if (nouveaux_titres == vieux_titres)
-        found = true;
-    else
-    {
-        if (vieux_titres.size() == nouveaux_titres.size())
-        {
-            //double titres_ration{ 80.0 };
-            if (vieux_titres.size() == 1 && nouveaux_titres.size() == 1)
-            {
-                nouveaux_titres = vieux_titres;
-                found = true;
-            }
-            if (vieux_titres.size() == 3 && nouveaux_titres.size() == 3 && vieux_titres[0] == nouveaux_titres[0] && vieux_titres[1] != nouveaux_titres[1] && vieux_titres[2] == nouveaux_titres[2])
-            {
-                nouveaux_titres[1] = vieux_titres[1];
-                found = true;
-            }
-            if (vieux_titres.size() == 3 && nouveaux_titres.size() == 3 && (vieux_titres[0] != nouveaux_titres[0] || vieux_titres[1] != nouveaux_titres[1] || vieux_titres[2] != nouveaux_titres[2]))
-            {
-                nouveaux_titres = vieux_titres;
-                found = true;
-            }
-        }
-    }
-    return nouveaux_titres;
-}*/
 std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouveaux_titres, const std::vector<std::wstring>& vieux_titres)
 {
     assert(nouveaux_titres.size() < 4 && L"???");
@@ -555,19 +513,6 @@ std::wstring recuperer_SJ(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void Print_Audiodescription(const std::wstring& m_audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor)
-{
-    if (affichage_audiodescription_actif && m_audiodescription.size() > 0)
-    {
-        std::wstring audiodescription_str = keyColor + L"Audiodescription : " + valuesColor + m_audiodescription + L"\r\n";
-        //PrintStringW(m_hOut, creee_par_str, 0);
-        //PrintStringW(HANDLE hOut, creee_par_str);
-        //Console_Lire(audiodescription_str, 0, 0);
-        //Console_Lire(hOut, audiodescription_str, 0);// , 0);
-        //Console_Lire(hOut, audiodescription_str, 0, L' ');
-        std::wcout << audiodescription_str;// << std::endl;
-    }
-}*/
 void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& m_valuesColor)
 {
     if (actif && valeur.size() > 0)

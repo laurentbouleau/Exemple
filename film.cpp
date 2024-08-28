@@ -3,7 +3,6 @@
 #include "utils.h"
 #include "Exemple.h"
 #include "film.h"
-#include "film_serie.h"
 #include "serie.h"
 
 // C :
@@ -46,14 +45,6 @@ extern const std::vector<std::wstring> Audiodescription;
 extern const std::vector<std::wstring> Genre;
 extern const std::vector<std::wstring> Nationalite;
 extern const std::vector<std::wstring> Sous_Genre;
-
-std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
-
-const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
-const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
-const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
-//extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
-const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
 
 void test_date_tire(wchar_t d);
 void test_date_tiret_sp_etc(wchar_t d);

@@ -2,7 +2,6 @@
 
 #include "utils.h"
 #include "Exemple.h"
-#include "film_serie.h"
 #include "serie.h"
 
 // C :
@@ -46,21 +45,11 @@ extern const std::vector<std::wstring> Genre;
 extern const std::vector<std::wstring> Nationalite;
 extern const std::vector<std::wstring> Sous_Genre;
 
-std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
-
-const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
-const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool found);
-const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
-//extern const std::wstring lire_et_decouper_fichierTxt(std::wstring const& nomFichier);
-const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
-
 void test_date_tire(wchar_t d);
 void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t);
 bool checkyear(int y);
 bool checkmonth(int m);
 bool checkday(int m, int d, int y);
-
-void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor);
 
 void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
 void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
@@ -70,8 +59,6 @@ void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>&
 void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
 
 void initialiser_Sur(std::wstring& m_s);
-//extern std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
-//void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original);
 std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& titre_original);
 
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
@@ -84,6 +71,7 @@ std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
 std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
 std::wstring recuperer_SJ(fs::path const& cheminFichier);
 
+void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor);
 void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
 void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
 void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
@@ -251,7 +239,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
 
-    if (file_content.size() > 0 /* && file_content[0] != L""*/)
+    if (file_content.size() > 0 && file_content[0] != L"")
     {
        std::size_t pos;
         if (m_NumeroEpisode != 0)
@@ -333,11 +321,6 @@ void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)
 
 // Ok !!!
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)                                                                         #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
 
 void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
 {
@@ -345,11 +328,6 @@ void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
     auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
     auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
     auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
-}
-void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
-{
-    //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
-    //return NumeroSequenceVisionnage;
 }
 
 // ######################################################################################################################################################
@@ -554,7 +532,17 @@ void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
     //auto NumeroSequenceVisionnage = /*m_episode.*/GetNumeroSequenceVisionnage(sev_vis); // ??? #804
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)                                                                                #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
+void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
+{
+    //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
+    //return NumeroSequenceVisionnage;
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1252,7 +1240,6 @@ Serie::Serie(std::filesystem::path racine)
     if (std::regex_match(nomDossier, match, filename_pattern))
     {
         std::wstring titres = match[1];
-        //m_titres = initialiser_Titres(titres);
         m_titres = extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(titres);
         if (match[2].matched)
         {
@@ -1533,11 +1520,6 @@ void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
     m_en_relation_avec = lire_fichierTxt(cheminFichier.wstring());
     assert((m_en_relation_avec.size() != 0));
 }
-
-/*void Serie::abc_Titres(std::vector<std::wstring>& titres)
-{
-
-}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

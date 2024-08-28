@@ -221,7 +221,7 @@ const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, 
 
     if (contenuFichier == u8"")
     {
-        //throw std::runtime_error("Le fichier '" + wstr_to_u8(nomFichier) + "' est vide.");
+//        throw std::runtime_error("Le fichier '" + wstr_to_u8(nomFichier) + "' est vide.");
         return { L"" };
     }
 
