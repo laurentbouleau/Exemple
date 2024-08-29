@@ -2,9 +2,7 @@
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 
 #include "utils.h"
-#include "Exemple.h"
-#include "film.h"
-#include "serie.h"
+
 // C :
 #include <io.h>
 #include <fcntl.h>

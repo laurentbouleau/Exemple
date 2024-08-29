@@ -1,9 +1,7 @@
 ﻿#include "pch.h"
 
-#include "utils.h"
-#include "Exemple.h"
-#include "film.h"
-#include "serie.h"
+#include "film_serie.h"
+
 // C :
 #include <io.h>
 #include <fcntl.h>

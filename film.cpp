@@ -1,9 +1,6 @@
 #include "pch.h"
 
-#include "utils.h"
-#include "Exemple.h"
-#include "film.h"
-#include "serie.h"
+#include "film_serie.h"
 
 // C :
 #include <io.h>
@@ -39,54 +36,13 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-using DateVisionnage = DateRecord;
-
-extern const std::vector<std::wstring> Audiodescription;
-extern const std::vector<std::wstring> Genre;
-extern const std::vector<std::wstring> Nationalite;
-extern const std::vector<std::wstring> Sous_Genre;
-
-void test_date_tire(wchar_t d);
-void test_date_tiret_sp_etc(wchar_t d);
-void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t);
-bool checkyear(int y);
-bool checkmonth(int m);
-bool checkday(int m, int d, int y);
-
-void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad);
-void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
-//extern const void initialiser_Chaine(fs::path const& cheminFichier, std::wstring& m_chaine);
-void initialiser_Genre(fs::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
-void initialiser_Image(fs::path const& cheminFichier, std::vector<std::wstring>& m_images);
-void initialiser_Nationalite(fs::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& titre_original);
-
-//extern void initialiser_Sur(std::wstring& m_s);
-std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
-std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
-
-std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouveaux_titres, const std::vector<std::wstring>& vieux_titres);
-
-std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier);
-std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier);
-std::wstring recuperer_SJ(fs::path const& cheminFichier);
-
-void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& valuesColor);
-void Print_Images(const std::vector<std::wstring>& m_image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& valuesColor);
-void Print_Genres(const std::vector<std::wstring>& m_genres, bool affichage_genres_actif, const std::wstring& m_sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& valuesColor);
-void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& valuesColor);
-void Print_Resume(const std::vector<wstring>& m_resume, bool affichage_resume_actif);
-void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
-
-
-const std::vector<std::wstring> Soundtrack
+/*const std::vector<std::wstring> Soundtrack
 {
     L"Compositeur",
     L"Compositeur (chansons du film)",
     L"Montage musical",
     L"Superviseur musical"
-};
-
+};*/
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################

@@ -3,7 +3,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Exemple.h"
-#include "film_serie.h"
 
 // C :
 #include <io.h>
