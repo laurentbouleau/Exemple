@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "utils.h"
 #include "film_serie.h"
 
 // C :
@@ -178,7 +179,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         // Making-of
         if (nomFichier == L"Making-of.txt")
         {
-            //initialiser_Making_of(cheminFichier);
+            initialiser_Making_of(cheminFichier);
         }
         // Nationalité
         if (nomFichier == L"Nationalité.txt")
@@ -213,7 +214,6 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         // Titre
         if (nomFichier == L"Titre.txt")
         {
-            //initialiser_Titre(cheminFichier, m_titres);
             initialiser_Titre(cheminFichier);
         }
         // Titre original
@@ -225,8 +225,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         //if (nomFichier != L"")
         if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]])(.+)" }))
         {
-            //E.afficher_X(-1, nomFichier, L'{' + t + L".txt} !!!");
-            std::wcout << L'{' << cheminFichier << L'}' << std::endl;
+            std::wcout << L"{[" << cheminFichier << L"]}" << std::endl;
         }
     }
     else if (nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
@@ -398,7 +397,7 @@ void Film::initialiser_Par(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void Film::initialiser_Making_of(std::filesystem::path const& cheminFichier)
+void Film::initialiser_Making_of(std::filesystem::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
@@ -406,7 +405,7 @@ void Film::initialiser_Par(fs::path const& cheminFichier)
     assert((contenu.size() != 0));
     if (contenu.size() > 0)
     {
-        m_making_of_duree = initialiser_Duree(contenu[0]);
+        m_making_of_duree = extraire_Duree_DepuisUneLigneDUnFichier(contenu[0]).value();
         contenu.erase(contenu.begin());
         if (contenu.size() > 0)
         {
@@ -415,7 +414,7 @@ void Film::initialiser_Par(fs::path const& cheminFichier)
         }
     }
 }
-*/
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Film::initialiser_Note(fs::path const& cheminFichier)                                                                                         #
@@ -478,44 +477,10 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> Film::initialiser_Titres(std::wstring& titres)                                                                           #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/*td::vector<std::wstring> Film::initialiser_Titres(std::wstring& titres)
-{
-    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    const std::vector<std::wstring> t = ::extraire_Titres_Depuis_UneLigne(titres);
-    return t;
-}*/
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)
-{ // Titre
-    auto nomFichier = cheminFichier.wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::vector<std::wstring> contenu = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
-    assert((contenu.size() != 0));
-
-    //std::vector<std::wstring>nouveaux_titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
-    std::vector<std::wstring>titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
-
-    m_titres = fusionner_Titres(m_titres, titres);
-
-    contenu.erase(contenu.begin());
-    if (contenu.size() > 0)
-    {
-        m_duree = initialiser_Duree(contenu[0]);
-        contenu.erase(contenu.begin());
-        if (contenu.size() > 0)
-            m_resume = contenu;
-    }
-}*/
 void Film::initialiser_Titre(fs::path const& cheminFichier)
 {
 

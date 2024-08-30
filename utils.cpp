@@ -1,5 +1,6 @@
 #include "pch.h"
 
+//#include "Exemple.h"
 #include "utils.h"
 
 // C :
@@ -327,7 +328,7 @@ inline std::wstring space(int i, wchar_t espace)
     return wstr;
 }
 
-void Console_Lire(HANDLE hOut, const std::wstring& wstr, int taille_indentation, wchar_t caractere_indentation = L' ')
+/*void Console_Lire(HANDLE hOut, const std::wstring& wstr, int taille_indentation, wchar_t caractere_indentation = L' ')
 {
     DWORD numberOfBytesWritten = 0;
 
@@ -343,7 +344,7 @@ void Console_Lire(HANDLE hOut, const std::wstring& wstr, int taille_indentation,
 
     res = WriteFile(hOut, &wstr[0], (DWORD)(wstr.size() * sizeof(wchar_t)), &numberOfBytesWritten, NULL);
     assert(res == TRUE);
-}
+}*/
 
 void test_date_tire(wchar_t d)
 {
