@@ -33,6 +33,10 @@ extern const std::vector<std::wstring> Sur;
 extern const std::vector<std::wstring> Sous_Genre;
 extern const std::vector<std::wstring> Nationalite;
 
+std::optional<long> extraire_Duree_DepuisUneLigneDUnFichier(const std::wstring& ligne);
+std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstring>> extraire_Informations_DepuisLeContenuDUnFichier(std::filesystem::path const& cheminFichier);
+
+
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
 std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
@@ -267,10 +271,8 @@ public:
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Creee_par(std::filesystem::path const& cheminFichier);
-    void initialiser_Duree(std::wstring& m);
     void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
-    //std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
-    void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& titre);
+    void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
     //void abc_titres(std::vector<std::wstring>& titres);
 

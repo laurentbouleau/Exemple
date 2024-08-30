@@ -35,6 +35,9 @@ extern const std::vector<std::wstring> Nationalite;
 
 struct DateRecord;
 
+std::optional<long> extraire_Duree_DepuisUneLigneDUnFichier(const std::wstring& ligne);
+std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstring>> extraire_Informations_DepuisLeContenuDUnFichier(std::filesystem::path const& cheminFichier);
+
 void test_date_tiret_sp_etc(wchar_t d);
 void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t);
 void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t);
@@ -79,12 +82,12 @@ public:
     void initialiser_Date_de_sortie(std::filesystem::path const& cheminFichier);
     void initialiser_De(std::filesystem::path const& cheminFichier);
     void initialiser_Distributeur(std::filesystem::path const& cheminFichier);
-    long initialiser_Duree(std::wstring& hm);
+
     void initialiser_Par(std::filesystem::path const& cheminFichier);
     void initialiser_Making_of(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
-    void initialiser_Titre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& titre);
+    void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
     const void Print();
 

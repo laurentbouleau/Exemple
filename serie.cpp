@@ -851,25 +851,6 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
     std::vector<std::wstring> titre = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((titre.size() != 0));
 
-    /*std::wregex titre_pattern{L"(.+?)(\\s:\\s|:\\s|/|\\s-\\s)(.+)"};
-    std::wsmatch match;
-    if (std::regex_match(titre[0], match, titre_pattern))
-    {
-        m_titres.push_back(match[1]);
-        if (match.length() > 2)
-        {
-            m_titres.push_back(match[2]);
-        }
-        if (match.length() > 3)
-        {
-            m_titres.push_back(match[3]);
-        }
-    }
-    else
-    {
-        m_titres.push_back(titre[0]);
-    }*/
-
     m_titres = extraire_Titres_Depuis_UneLigne(titre[0]);
 }
 
@@ -1396,7 +1377,7 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         // Titre
         if (nomFichier == L"Titre.txt")
         {
-            initialiser_Titre(cheminFichier, m_titres);
+            initialiser_Titre(cheminFichier);
         }
         // Titre original
         if (nomFichier == L"Titre original.txt")
@@ -1446,29 +1427,6 @@ void Serie::initialiser_Creee_par(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # Serie::initialiser_Duree(std::wstring& m)                                                                                                          #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void Serie::initialiser_Duree(std::wstring& m)
-{
-    const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
-
-    std::wsmatch match;
-
-    if (std::regex_match(m, match, duree_format_rg))
-    {
-        auto duree_en_minute = std::stoi(match[1]);
-        m_duree = duree_en_minute * 60;
-    }
-    else
-    {
-        throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
-    }
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)                                                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -1483,30 +1441,19 @@ void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # Serie::void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)                                            #
+// # Serie::void Serie::initialiser_Titre(fs::path const& cheminFichier                                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)
-{ // Titre
-    auto nomFichier = cheminFichier.wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::vector<std::wstring> contenu = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
-    assert((contenu.size() != 0));
+void Serie::initialiser_Titre(fs::path const& cheminFichier)
+{
 
-    std::vector<std::wstring>titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
+    auto res = extraire_Informations_DepuisLeContenuDUnFichier(cheminFichier);
 
-    m_titres = fusionner_Titres(m_titres, titres);
-    contenu.erase(contenu.begin());
-    if (contenu.size() > 0)
-    {
-        initialiser_Duree(contenu[0]);
-        contenu.erase(contenu.begin());
-        if (contenu.size() > 0)
-            m_resume = contenu;
-    }
+    m_titres = fusionner_Titres(m_titres, std::get<0>(res));
+    m_duree = std::get<1>(res) ? std::get<1>(res).value() : -1;
+    m_resume = std::get<2>(res);
 }
-
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

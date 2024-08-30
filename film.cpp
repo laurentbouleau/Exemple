@@ -178,7 +178,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         // Making-of
         if (nomFichier == L"Making-of.txt")
         {
-            initialiser_Making_of(cheminFichier);
+            //initialiser_Making_of(cheminFichier);
         }
         // Nationalité
         if (nomFichier == L"Nationalité.txt")
@@ -213,7 +213,8 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         // Titre
         if (nomFichier == L"Titre.txt")
         {
-            initialiser_Titre(cheminFichier, m_titres);
+            //initialiser_Titre(cheminFichier, m_titres);
+            initialiser_Titre(cheminFichier);
         }
         // Titre original
         if (nomFichier == L"Titre original.txt")
@@ -379,28 +380,6 @@ void Film::initialiser_Distributeur(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Film::initialiser_Duree(std::wstring& m)                                                                                                      #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-long Film::initialiser_Duree(std::wstring& m)
-{
-    const std::wregex duree_format_rg{ L"^(?:(\\d+)(?:h|H))?\\s?(?:(\\d+)(?:min|MIN))?$" };
-    std::wsmatch match;
-    long duree{ -1 };
-    if (std::regex_match(m, match, duree_format_rg))
-    {
-        duree = (match[1].matched ? std::stoi(match[1]) : 0) * 60 * 60 + (match[2].matched ? std::stoi(match[2]) : 0) * 60;
-    }
-    else
-    {
-        throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
-    }
-    return duree;
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # void Film::initialiser_Par(fs::path const& cheminFichier)                                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -419,7 +398,7 @@ void Film::initialiser_Par(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::initialiser_Making_of(std::filesystem::path const& cheminFichier)
+/*void Film::initialiser_Making_of(std::filesystem::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
@@ -436,7 +415,7 @@ void Film::initialiser_Making_of(std::filesystem::path const& cheminFichier)
         }
     }
 }
-
+*/
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Film::initialiser_Note(fs::path const& cheminFichier)                                                                                         #
@@ -516,7 +495,7 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)
+/*void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wstring>& ligne)
 { // Titre
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
@@ -536,6 +515,15 @@ void Film::initialiser_Titre(fs::path const& cheminFichier, std::vector<std::wst
         if (contenu.size() > 0)
             m_resume = contenu;
     }
+}*/
+void Film::initialiser_Titre(fs::path const& cheminFichier)
+{
+
+    auto res = extraire_Informations_DepuisLeContenuDUnFichier(cheminFichier);
+
+    m_titres = fusionner_Titres(m_titres, std::get<0>(res));
+    m_duree = std::get<1>(res) ? std::get<1>(res).value() : -1;
+    m_resume = std::get<2>(res);
 }
 
 // ######################################################################################################################################################

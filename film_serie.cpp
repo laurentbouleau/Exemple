@@ -164,6 +164,56 @@ const std::vector<std::wstring> Sur
 };
 
 // ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::optional<long> extraire_Duree_DepuisUneLigneDUnFichier(const std::wstring& ligne)                                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::optional<long> extraire_Duree_DepuisUneLigneDUnFichier(const std::wstring& ligne)
+{
+    const std::wregex duree_format_rg{ L"^(?:(\\d+)\\s?(?:h|H)\\s?)?(?:(\\d+)\\s?(?:min|MIN)\\s?)?$" };
+    std::wsmatch match;
+    std::optional<long>  duree;
+    if (std::regex_match(ligne, match, duree_format_rg))
+    {
+        duree = (match[1].matched ? std::stoi(match[1]) : 0) * 60 * 60 + (match[2].matched ? std::stoi(match[2]) : 0) * 60;
+    }
+    else
+    {
+        throw std::invalid_argument("'" + std::string{ ligne.begin(),ligne.end() } + "' n'est pas un format de durée valide.");
+    }
+    return duree;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstring>>                                                              #
+// #                       extraire_Informations_DepuisLeContenuDUnFichier(std::filesystem::path const& cheminFichier)                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstring>> extraire_Informations_DepuisLeContenuDUnFichier(std::filesystem::path const& cheminFichier)
+{
+    auto nomFichier = cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::vector<std::wstring> contenu = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    assert((contenu.size() != 0));
+
+    std::vector<std::wstring>nouveaux_titres = extraire_Titres_Depuis_UneLigne(contenu[0]);
+
+    std::optional<long> duree;
+
+    contenu.erase(contenu.begin());
+    if (contenu.size() > 0)
+    {
+        duree = extraire_Duree_DepuisUneLigneDUnFichier(contenu[0]);
+        contenu.erase(contenu.begin());
+    }
+
+    return { nouveaux_titres , duree , contenu };
+}
+
+// ######################################################################################################################################################
 // ######################################################################################################################################################
 
 // ######################################################################################################################################################
