@@ -1397,7 +1397,7 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         // Titre original
         if (nomFichier == L"Titre original.txt")
         {
-            m_titres_originaux = initialiser_Titre_Original(cheminFichier, m_titres_originaux);
+            initialiser_Titre_Original(cheminFichier, m_titres_originaux);
         }
         return;
     }

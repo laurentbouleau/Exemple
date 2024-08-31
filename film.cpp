@@ -219,7 +219,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         // Titre original
         if (nomFichier == L"Titre original.txt")
         {
-            m_titres_originaux = initialiser_Titre_Original(cheminFichier, m_titres_originaux);
+            initialiser_Titre_Original(cheminFichier, m_titres_originaux);
         }
         // xxxx-yy-zz
         //if (nomFichier != L"")
@@ -483,7 +483,6 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
 
 void Film::initialiser_Titre(fs::path const& cheminFichier)
 {
-
     auto res = extraire_Informations_DepuisLeContenuDUnFichier(cheminFichier);
 
     m_titres = fusionner_Titres(m_titres, std::get<0>(res));

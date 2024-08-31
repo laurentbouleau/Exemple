@@ -461,20 +461,19 @@ std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std:
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& titre_original)                     #
+// # void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::vector<std::wstring> initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& titre_original)
+void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)
 { // Titre Original
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     std::wstring titre = lire_fichierTxt(cheminFichier.wstring());
     assert((titre.size() != 0));
 
-    return titre_original = extraire_Titres_Depuis_UneLigne(titre);
+    m_titre_original = extraire_Titres_Depuis_UneLigne(titre);
 }
-
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
