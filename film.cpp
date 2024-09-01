@@ -252,7 +252,6 @@ Film::Film(std::filesystem::path racine)
     this->racine = racine;
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
-    //std::wregex filename_pattern{ L"(.+?)(?:\\.\\((?:(\\d{4})\\-(\\d{2})\\-(\\d{2})\\)))?(?:\\.(.+))?$" };
     std::wregex filename_pattern{ L"(.+?)(?:\\.\\((?:(\\d{4})\\-(\\d{2})\\-(\\d{2})\\s*([^\\)]*))\\))?(?:\\.(.+))?$" };
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
@@ -378,11 +377,10 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
         //if (nomFichier != L"")
         if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]])(.+)" }))
         {
-            std::wcout << L"{[" << cheminFichier << L"]}" << std::endl;
+            //std::wcout << L"{[" << cheminFichier << L"]}" << std::endl;
         }
     }
     else if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{4})\\-.+" }))
-    // xxxx-yy-ww
     {
         //InfosVisionnage_film info_vis{ cheminFichier };
         return;
@@ -394,7 +392,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else
     {
-        std::wcout << L'{' << cheminFichier << L'}' << std::endl;
+        //std::wcout << L'{' << cheminFichier << L'}' << std::endl;
     }
 }
 

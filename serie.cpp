@@ -1174,8 +1174,6 @@ Serie::Serie(std::filesystem::path racine)
     auto nomDossier = racine.filename().wstring();
     assert(nomDossier.length() > 0 && L"Nom de dossier vide");
 
-    //std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" }; // Marches pas !!!
-//    std::wregex filename_pattern{ L"(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})?([^\\]]*)\\])?(?:\\.(.+))?" };
     std::wregex filename_pattern{ L"^(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})([^\\]]*)\\])(?:\\.(.+))?$|^(.+)(?:\\.(.+))$" };
     std::wsmatch match;
     if (std::regex_match(nomDossier, match, filename_pattern))
