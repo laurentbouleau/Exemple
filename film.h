@@ -34,6 +34,22 @@ extern const std::vector<std::wstring> Sous_Genre;
 extern const std::vector<std::wstring> Nationalite;
 
 struct DateRecord;
+struct InfosVisionnage_film;
+
+struct InfosVisionnage_film
+{
+    InfosVisionnage_film(std::filesystem::path const& m_cheminFichier);
+    std::filesystem::path m_cheminFichier;
+
+    //InfosVisionnage_f info_vis{ cheminFichier };
+
+    std::wstring m_min = L"min";
+    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+
+    std::vector<DateRecord> m_DatesVisionnage{ 0 };
+    std::wstring m_streaming{ L"" };
+};
 
 class Film
 {
@@ -47,7 +63,6 @@ public:
     void initialiser_Date_de_sortie(std::filesystem::path const& cheminFichier);
     void initialiser_De(std::filesystem::path const& cheminFichier);
     void initialiser_Distributeur(std::filesystem::path const& cheminFichier);
-
     void initialiser_Par(std::filesystem::path const& cheminFichier);
     void initialiser_Making_of(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);
@@ -81,7 +96,9 @@ private:
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
-    std::tm m_date{ 0 }, m_date_de_reprise{ 0 }, m_date_de_sortie{ 0 };
+    std::tm m_date{0}, m_date_de_reprise{0}, m_date_de_sortie{0};
+
+
     std::vector<std::wstring> m_de;
     bool m_disney{ false };
     std::wstring m_disney_sj;

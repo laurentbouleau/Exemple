@@ -60,9 +60,9 @@ struct InfosVisionnage
     //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     //bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
-    void Une_Fonction_De_La_Classe_InfosVisionnage(...);
-
     std::filesystem::path m_cheminFichier;
+
+    void Une_Fonction_De_La_Classe_InfosVisionnage(...);
 
     std::wstring m_min = L"min";
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)

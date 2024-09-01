@@ -1462,9 +1462,7 @@ void Serie::initialiser_En_relation_avec(fs::path const& cheminFichier)
 
 void Serie::initialiser_Titre(fs::path const& cheminFichier)
 {
-
     auto res = extraire_Informations_DepuisLeContenuDUnFichier(cheminFichier);
-
     m_titres = fusionner_Titres(m_titres, std::get<0>(res));
     m_duree = std::get<1>(res) ? std::get<1>(res).value() : -1;
     m_resume = std::get<2>(res);

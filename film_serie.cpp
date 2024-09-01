@@ -180,7 +180,7 @@ std::optional<long> extraire_Duree_DepuisUneLigneDUnFichier(const std::wstring& 
     }
     else
     {
-        throw std::invalid_argument("'" + std::string{ ligne.begin(),ligne.end() } + "' n'est pas un format de durée valide.");
+        throw std::invalid_argument("'" + std::string{ ligne.begin(), ligne.end() } + "' n'est pas un format de durée valide.");
     }
     return duree;
 }
@@ -214,7 +214,111 @@ std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstr
 }
 
 // ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring>& ligne)                                                                    #
+// #                                                                                                                                                    #
 // ######################################################################################################################################################
+
+std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& ligne)
+{ // Titres
+    assert(ligne.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
+    std::wstring& t = ligne;
+
+    std::vector<std::wstring> titres;
+
+    std::size_t pos = 0;
+    bool found = false;
+    const std::wstring d_p = L" : ";
+    pos = t.find(d_p);
+    if (!found && pos != std::wstring::npos)
+    {
+        titres.push_back(t.substr(0, pos));
+        titres.push_back(d_p);
+        titres.push_back(t.substr(pos + 3));
+        found = true;
+    }
+    const std::wstring d_p2 = L": ";
+    pos = t.find(d_p2);
+    if (!found && pos != std::wstring::npos)
+    {
+        titres.push_back(t.substr(0, pos));
+        titres.push_back(d_p2);
+        titres.push_back(t.substr(pos + 2));
+        found = true;
+    }
+    const std::wstring d_p3 = L"/";
+    pos = t.find(d_p3);
+    if (!found && pos != std::wstring::npos)
+    {
+        titres.push_back(t.substr(0, pos));
+        titres.push_back(d_p3);
+        titres.push_back(t.substr(pos + 1));
+        found = true;
+    }
+    const std::wstring d_p4 = L" - ";
+    pos = t.find(d_p4);
+    if (!found && pos != std::wstring::npos)
+    {
+        titres.push_back(t.substr(0, pos));
+        titres.push_back(d_p4);
+        titres.push_back(t.substr(pos + 3));
+        found = true;
+    }
+    const std::wstring d_p5 = L"- ";
+    pos = t.find(d_p5);
+    if (!found && pos != std::wstring::npos)
+    {
+        titres.push_back(t.substr(0, pos));
+        titres.push_back(d_p5);
+        titres.push_back(t.substr(pos + 2));
+        found = true;
+    }
+    if (!found)
+    {
+        titres.push_back(t);
+        found = true;
+    }
+    return titres;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres)                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres)
+{
+    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
+    const std::vector<std::wstring> t = extraire_Titres_Depuis_UneLigne(titres);
+    return t;
+}
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring filter_values(std::wstring const& content, std::vector<std::wstring> const& values)                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring filter_values(std::wstring const& content, std::vector<std::wstring> const& values)
+{
+    std::wstring pattern;
+    for (const auto value : values)
+    {
+        if (pattern.length() > 0) { pattern += L"|"; }
+        pattern += value;
+    }
+    std::wregex value_pattern{ L"(" + pattern + L")" };
+    std::wsmatch match;
+    if (std::regex_match(content, match, value_pattern))
+    {
+        return match[1];
+    }
+    return L"";
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -248,6 +352,9 @@ std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouv
 
     return resultat;
 }
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -380,87 +487,6 @@ void initialiser_Sur(std::wstring& m_s)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring>& ligne)                                                                    #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& ligne)
-{ // Titres
-    assert(ligne.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    std::wstring& t = ligne;
-    
-    std::vector<std::wstring> titres;
-    
-    std::size_t pos = 0;
-    bool found = false;
-    const std::wstring d_p = L" : ";
-    pos = t.find(d_p);
-    if (!found && pos != std::wstring::npos)
-    {
-        titres.push_back(t.substr(0, pos));
-        titres.push_back(d_p);
-        titres.push_back(t.substr(pos + 3));
-        found = true;
-    }
-    const std::wstring d_p2 = L": ";
-    pos = t.find(d_p2);
-    if (!found && pos != std::wstring::npos)
-    {
-        titres.push_back(t.substr(0, pos));
-        titres.push_back(d_p2);
-        titres.push_back(t.substr(pos + 2));
-        found = true;
-    }
-    const std::wstring d_p3 = L"/";
-    pos = t.find(d_p3);
-    if (!found && pos != std::wstring::npos)
-    {
-        titres.push_back(t.substr(0, pos));
-        titres.push_back(d_p3);
-        titres.push_back(t.substr(pos + 1));
-        found = true;
-    }
-    const std::wstring d_p4 = L" - ";
-    pos = t.find(d_p4);
-    if (!found && pos != std::wstring::npos)
-    {
-        titres.push_back(t.substr(0, pos));
-        titres.push_back(d_p4);
-        titres.push_back(t.substr(pos + 3));
-        found = true;
-    }
-    const std::wstring d_p5 = L"- ";
-    pos = t.find(d_p5);
-    if (!found && pos != std::wstring::npos)
-    {
-        titres.push_back(t.substr(0, pos));
-        titres.push_back(d_p5);
-        titres.push_back(t.substr(pos + 2));
-        found = true;
-    }
-    if (!found)
-    {
-        titres.push_back(t);
-        found = true;
-    }
-    return titres;
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres)                                                  #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres)
-{
-    assert(titres.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
-    const std::vector<std::wstring> t = extraire_Titres_Depuis_UneLigne(titres);
-    return t;
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -474,31 +500,9 @@ void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::
 
     m_titre_original = extraire_Titres_Depuis_UneLigne(titre);
 }
-// ######################################################################################################################################################
-// ######################################################################################################################################################
 
 // ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # std::wstring filter_values(std::wstring const& content, std::vector<std::wstring> const& values)                                                   #
-// #                                                                                                                                                    #
 // ######################################################################################################################################################
-
-std::wstring filter_values(std::wstring const& content, std::vector<std::wstring> const& values)
-{
-    std::wstring pattern;
-    for (const auto value : values)
-    {
-        if (pattern.length() > 0) { pattern += L"|"; }
-        pattern += value;
-    }
-    std::wregex value_pattern{ L"(" + pattern + L")" };
-    std::wsmatch match;
-    if (std::regex_match(content, match, value_pattern))
-    {
-        return match[1];
-    }
-    return L"";
-}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -631,23 +635,6 @@ void Print_Images(const std::vector<std::wstring>& image, bool affichage_image_a
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif)                                                          #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif)
-{
-    if (affichage_resume_actif && m_resume.size() > 0)
-    {
-        std::wstring resume_str = L"";
-        for (auto&& r : m_resume)
-            resume_str += r + L"\r\n";
-        std::wcout << resume_str;
-    }
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # const void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif                                    #                                                                                                    #
 // #                        std::wstring& keyColor, std::wstring& m_valuesColor)                                                                        #
 // #                                                                                                                                                    #
@@ -671,6 +658,23 @@ void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool af
         }
         nationalite_str += L"\r\n";
         std::wcout << nationalite_str;
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif)                                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif)
+{
+    if (affichage_resume_actif && m_resume.size() > 0)
+    {
+        std::wstring resume_str = L"";
+        for (auto&& r : m_resume)
+            resume_str += r + L"\r\n";
+        std::wcout << resume_str;
     }
 }
 
