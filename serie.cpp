@@ -431,6 +431,7 @@ std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecor
     //
     return dates_de_visionnage_wstr;
 }
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)                                                           #

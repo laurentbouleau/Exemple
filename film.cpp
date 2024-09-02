@@ -67,7 +67,6 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
     const int dates_date_month_day_month_index = dates_date_year_month_day_day_index + 1;
     const int dates_date_month_day_day_index = dates_date_month_day_month_index + 1;
     const int dates_date_day_day_index = dates_date_month_day_day_index + 1;
-    //const int dates_fucking_someFlag_index = dates_date_day_day_index + 2;
     const int dates_someFlag_index = dates_date_day_day_index + 2;
 
     const int dates_full_match_index_f = 0;
@@ -77,25 +76,22 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
     const int dates_date_month_day_month_index_f = dates_date_year_month_day_day_index + 1;
     const int dates_date_month_day_day_index_f = dates_date_month_day_month_index + 1;
     const int dates_date_day_day_index_f = dates_date_month_day_day_index + 1;
-    //const int dates_fucking_someFlag_index = dates_date_day_day_index + 2;
     const int dates_someFlag_index_f = dates_date_day_day_index + 2;
 
-    //const std::wregex filename_format_rg{ numero_saison_format + sep_numero_saison + numero_episode_format + sep_episode_saison + L"(" + dates_format + L"+)" + stream_format };
     const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
 
     const int filename_full_match_index = 0;
-    const int filename_numero_saison_index = filename_full_match_index + 1;
-    const int filename_numero_episode_index = filename_numero_saison_index + 1;
-    const int filename_dates_index = filename_numero_episode_index + 1;
+    //const int filename_numero_saison_index = filename_full_match_index + 1;
+    //const int filename_numero_episode_index = filename_numero_saison_index + 1;
+    //const int filename_dates_index = filename_numero_episode_index + 1;
+    const int filename_dates_index = 0;
     const int filename_date_year_month_day_year_index = filename_dates_index + 2;
     const int filename_date_year_month_day_month_index = filename_date_year_month_day_year_index + 1;
     const int filename_date_year_month_day_day_index = filename_date_year_month_day_month_index + 1;
     const int filename_date_month_day_month_index = filename_date_year_month_day_day_index + 1;
     const int filename_date_month_day_day_index = filename_date_month_day_month_index + 1;
     const int filename_date_day_day_index = filename_date_month_day_day_index + 1;
-    //const int filename_fucking_someFlag_index = filename_date_day_day_index + 2;
     const int filename_someFlag_index = filename_date_day_day_index + 2;
-    //const int filename_stream_index = filename_fucking_someFlag_index + 2;
     const int filename_stream_index = filename_someFlag_index + 2;
 
 
@@ -107,15 +103,15 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
     auto stem = m_cheminFichier.stem().wstring();
     // prefixe ???
     //assert((stem.length() > (9 + std::to_wstring(prefixe).length() + sep_numero_saison.length())) && L"Nom de fichier Episode trop court pour avoir au moins une date");
-    assert((stem.length() > 9) && L"Nom de fichier Episode trop court pour avoir au moins une date");
+//    assert((stem.length() > 9) && L"Nom de fichier Episode trop court pour avoir au moins une date");
 
-    assert(std::isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
+//    assert(std::isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
     //m_NumeroSaison = std::stoi(stem);
     //assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");
     //
     //assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");// saison == m_NumeroSaison
     //
-    assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
+//    assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
     //assert(((fucking_x >= prefixe)) && L"saison.first != x"); // prefixe ???
     assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
 
@@ -125,7 +121,6 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
     std::wsmatch match;
     auto str = stem;
     //Exemple assez complexe de nom de fichier
-    //str = L"1x01.2024-02-01_2024-02-02_02-03_0405 Netflix";
     std::regex_match(str, match, filename_format_rg);
 
     std::wsmatch dates_match;
@@ -197,6 +192,12 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
     {
         m_streaming = match[filename_stream_index];
     }
+}
+
+void InfosVisionnage_film::Print()
+{
+    //std::wcout << m_DatesVisionnage[0] << std::endl;
+    std::wcout << m_streaming << std::endl;
 }
 
 // ######################################################################################################################################################
@@ -289,102 +290,113 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     auto nomImage = cheminFichier.extension().wstring();
     if (nomImage == L".txt")
     {
-        // AD
-        if (nomFichier == L"AD.txt")
+        if (nomFichier == L"_you_.txt")
         {
-            initialiser_Audiodescription(cheminFichier, m_audiodescription);
+            return;
         }
-        // Avec
-        if (nomFichier == L"Avec.txt")
+        if (!(std::isdigit(nomFichier[0])))
         {
-            initialiser_Avec(cheminFichier, m_avec);
+            // AD
+            if (nomFichier == L"AD.txt")
+            {
+                initialiser_Audiodescription(cheminFichier, m_audiodescription);
+            }
+            // Avec
+            if (nomFichier == L"Avec.txt")
+            {
+                initialiser_Avec(cheminFichier, m_avec);
+            }
+            // Date de reprisé
+            if (nomFichier == L"Date de reprise.txt")
+            {
+                initialiser_Date_de_reprise(cheminFichier); // ???
+            }
+            // Date de sortie
+            if (nomFichier == L"Date de sortie.txt")
+            {
+                initialiser_Date_de_sortie(cheminFichier);// ???
+            }
+            // De
+            if (nomFichier == L"De.txt")
+            {
+                initialiser_De(cheminFichier);
+            }
+            // Disney+ SJ
+            if (nomFichier == L"Disney+.txt")
+            {
+                m_disney_sj = recuperer_Disney_SJ(cheminFichier);
+            }
+            // Distributeur
+            if (nomFichier == L"Distributeur.txt")
+            {
+                initialiser_Distributeur(cheminFichier);
+            }
+            // Genre
+            if (nomFichier == L"Genre.txt")
+            {
+                initialiser_Genre(cheminFichier, m_genre, ::Genre);
+            }
+            // Making-of
+            if (nomFichier == L"Making-of.txt")
+            {
+                initialiser_Making_of(cheminFichier);
+            }
+            // Nationalité
+            if (nomFichier == L"Nationalité.txt")
+            {
+                initialiser_Nationalite(cheminFichier, m_nationalite, ::Nationalite);
+            }
+            // Netflix
+            if (nomFichier == L"Netflix.txt")
+            {
+                m_netflix_sj = recuperer_Netflix_SJ(cheminFichier);
+            }
+            // Note
+            if (nomFichier == L"Note.txt")
+            {
+                initialiser_Note(cheminFichier);
+            }
+            // Par
+            if (nomFichier == L"Par.txt")
+            {
+                initialiser_Par(cheminFichier);
+            }
+            // SJ
+            if (nomFichier == L"SJ.txt")
+            {
+                m_sj = recuperer_SJ(cheminFichier);
+            }
+            // Soundtrack
+            if (nomFichier == L"Soundtrack.txt")
+            {
+                initialiser_Soundtrack(cheminFichier);
+            }
+            // Titre
+            if (nomFichier == L"Titre.txt")
+            {
+                initialiser_Titre(cheminFichier);
+            }
+            // Titre original
+            if (nomFichier == L"Titre original.txt")
+            {
+                initialiser_Titre_Original(cheminFichier, m_titres_originaux);
+            }
+
         }
-        // Date de reprisé
-        if (nomFichier == L"Date de reprise.txt")
+        //
+        if (std::regex_match(nomFichier, std::wregex{ L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$" }))
         {
-            initialiser_Date_de_reprise(cheminFichier); // ???
-        }
-        // Date de sortie
-        if (nomFichier == L"Date de sortie.txt")
-        {
-            initialiser_Date_de_sortie(cheminFichier);// ???
-        }
-        // De
-        if (nomFichier == L"De.txt")
-        {
-            initialiser_De(cheminFichier);
-        }
-        // Disney+ SJ
-        if (nomFichier == L"Disney+.txt")
-        {
-            m_disney_sj = recuperer_Disney_SJ(cheminFichier);
-        }
-        // Distributeur
-        if (nomFichier == L"Distributeur.txt")
-        {
-            initialiser_Distributeur(cheminFichier);
-        }
-        // Genre
-        if (nomFichier == L"Genre.txt")
-        {
-            initialiser_Genre(cheminFichier, m_genre, ::Genre);
-        }
-        // Making-of
-        if (nomFichier == L"Making-of.txt")
-        {
-            initialiser_Making_of(cheminFichier);
-        }
-        // Nationalité
-        if (nomFichier == L"Nationalité.txt")
-        {
-            initialiser_Nationalite(cheminFichier, m_nationalite, ::Nationalite);
-        }
-        // Netflix
-        if (nomFichier == L"Netflix.txt")
-        {
-            m_netflix_sj = recuperer_Netflix_SJ(cheminFichier);
-        }
-        // Note
-        if (nomFichier == L"Note.txt")
-        {
-            initialiser_Note(cheminFichier);
-        }
-        // Par
-        if (nomFichier == L"Par.txt")
-        {
-            initialiser_Par(cheminFichier);
-        }
-        // SJ
-        if (nomFichier == L"SJ.txt")
-        {
-            m_sj = recuperer_SJ(cheminFichier);
-        }
-        // Soundtrack
-        if (nomFichier == L"Soundtrack.txt")
-        {
-            initialiser_Soundtrack(cheminFichier);
-        }
-        // Titre
-        if (nomFichier == L"Titre.txt")
-        {
-            initialiser_Titre(cheminFichier);
-        }
-        // Titre original
-        if (nomFichier == L"Titre original.txt")
-        {
-            initialiser_Titre_Original(cheminFichier, m_titres_originaux);
+            InfosVisionnage_film info_vis{ cheminFichier };
+
+            return;
         }
         //if (nomFichier != L"")
-        if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]])(.+)" }))
-        {
+        //if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]])(.+)" }))
+        //{
             //std::wcout << L"{[" << cheminFichier << L"]}" << std::endl;
-        }
+        //}
     }
-    else if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{4})\\-.+" }))
-    {
-        //InfosVisionnage_film info_vis{ cheminFichier };
-        return;
-    }
+    //else if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{4})\\-.+" }))
     else if (nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
     // Image
     {
@@ -676,6 +688,8 @@ const void Film::Print()
     Print_Nationalites(m_nationalite, affichage_nationalite_actif, m_keyColor[0], m_valuesColor);
     // Resume
     Print_Resume(m_resume, affichage_resume_actif);
+    // Dates
+    Print_Dates();
     // Avec
     Print_Avec();
     // Soundtracks
@@ -729,6 +743,27 @@ void Film::Print_Avec()
         std::wcout << avec_str;
     }
 }
+
+const void Film::Print_Date(InfosVisionnage_film date)
+{
+    if (affichage_film_actif)
+    {
+        date.Print();
+    }
+}
+
+
+const void Film::Print_Dates()
+{
+    if (affichage_dates_actif)
+    {
+        for (auto d : dates)
+        {
+            Print_Date(d);
+        }
+    }
+}
+
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

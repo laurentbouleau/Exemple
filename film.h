@@ -43,6 +43,8 @@ struct InfosVisionnage_film
 
     //InfosVisionnage_f info_vis{ cheminFichier };
 
+    void Print();
+    
     std::wstring m_min = L"min";
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
@@ -77,6 +79,10 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
+    const void Print_Date(InfosVisionnage_film date);
+    const void Print_Dates();
+
+
     void Print_Avec();
     const void Print_Date_de_Reprise();
     const void Print_Date_de_Sortie();
@@ -88,6 +94,7 @@ private:
     std::wstring Print_Note() const;
     const void Print_Soundtracks();
 
+    std::vector<InfosVisionnage_film>dates{};
     std::filesystem::path racine;
 
     std::wstring m_min = L"min";
@@ -125,6 +132,7 @@ private:
 
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
+    bool affichage_dates_actif = true;
     bool affichage_date_de_reprise_actif = true;
     bool affichage_date_de_sortie_actif = true;
     bool affichage_date_en_salle_ou_sur_actif = true;
@@ -132,6 +140,7 @@ private:
     bool affichage_disney_sj_actif = true;
     bool affichage_distributeur_actif = true;
     bool affichage_duree_actif = true;
+    bool affichage_film_actif = true;
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
     bool affichage_making_of_actif = true;
