@@ -188,11 +188,11 @@ std::optional<long> extraire_Duree_DepuisUneLigneDUnFichier(const std::wstring& 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstring>>                                                              #
-// #                       extraire_Informations_DepuisLeContenuDUnFichier(std::filesystem::path const& cheminFichier)                                  #
+// #                       extraire_Informations_DepuisLeContenuDUnFichier(fs::path const& cheminFichier)                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstring>> extraire_Informations_DepuisLeContenuDUnFichier(std::filesystem::path const& cheminFichier)
+std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstring>> extraire_Informations_DepuisLeContenuDUnFichier(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
@@ -279,6 +279,16 @@ std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& ligne)
         found = true;
     }
     return titres;
+}
+
+std::vector<std::wstring> extraire_Titres_Depuis_UnFichier(fs::path const& cheminFichier)
+{
+    auto nomFichier = cheminFichier.wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::wstring titres = lire_fichierTxt(cheminFichier.wstring());
+    assert((titres.size() != 0));
+
+    return extraire_Titres_Depuis_UneLigne(titres);
 }
 
 // ######################################################################################################################################################
@@ -483,22 +493,6 @@ void initialiser_Sur(std::wstring& m_s)
     {
         sur = true;
     }
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)                                        #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void initialiser_Titre_Original(fs::path const& cheminFichier, std::vector<std::wstring>& m_titre_original)
-{ // Titre Original
-    auto nomFichier = cheminFichier.wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::wstring titre = lire_fichierTxt(cheminFichier.wstring());
-    assert((titre.size() != 0));
-
-    m_titre_original = extraire_Titres_Depuis_UneLigne(titre);
 }
 
 // ######################################################################################################################################################

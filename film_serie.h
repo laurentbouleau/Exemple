@@ -29,6 +29,7 @@
 std::optional<long> extraire_Duree_DepuisUneLigneDUnFichier(const std::wstring& ligne);
 std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstring>> extraire_Informations_DepuisLeContenuDUnFichier(std::filesystem::path const& cheminFichier);
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
+std::vector<std::wstring> extraire_Titres_Depuis_UnFichier(std::filesystem::path const& cheminFichier);
 std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
 
 std::wstring filter_values(std::wstring const& content, std::vector<std::wstring> const& values);
@@ -39,7 +40,6 @@ void initialiser_Avec(std::filesystem::path const& cheminFichier, std::vector<st
 void initialiser_Genre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 void initialiser_Image(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_images);
 void initialiser_Nationalite(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
-void initialiser_Titre_Original(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& titre_original);
 
 std::wstring recuperer_Disney_SJ(std::filesystem::path const& cheminFichier);
 std::wstring recuperer_Netflix_SJ(std::filesystem::path const& cheminFichier);
