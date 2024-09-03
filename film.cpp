@@ -538,9 +538,9 @@ void Film::initialiser_De(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::initialiser_Distributeur(fs::path const& m_cheminFichier)
+void Film::initialiser_Distributeur(fs::path const& cheminFichier)
 {
-    auto nomFichier = m_cheminFichier.wstring();
+    auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_distributeur = lire_fichierTxt(nomFichier);
     assert((m_distributeur.size() != 0));
