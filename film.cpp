@@ -47,8 +47,15 @@ using DateVisionnage = DateRecord;
     L"Superviseur musical"
 };*/
 
+/*std::wstring InfosVisionnage_film::xxx(std::wstring c_filenameFormat)
+{
+    //std::wstring c_filenameFormat{ L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$" };
+    return c_filenameFormat = L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$";
+}*/
+
 InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
 {
+
     //const std::wstring numero_saison_format = L"([[:digit:]]{1,2})"; // saison
     //const std::wstring sep_numero_saison = L"x"; // x
     //const std::wstring numero_episode_format = L"([[:digit:]]{1,3})"; // episode
@@ -192,14 +199,94 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
     {
         m_streaming = match[filename_stream_index];
     }
+    std::pair<std::vector<DateRecord>, std::wstring>ajouter_InfosVisionnage_film(std::vector<DateRecord>&m_DatesVisionnage, std::wstring & m_streaming);
 }
 
-void InfosVisionnage_film::Print()
+std::pair<std::vector<DateRecord>, std::wstring> InfosVisionnage_film::ajouter_InfosVisionnage_film(std::vector<DateRecord>& m_DatesVisionnage, std::wstring& m_streaming)
+{
+    return { m_DatesVisionnage,m_streaming };
+}
+
+/*void InfosVisionnage_film::Print()
 {
     //std::wcout << m_DatesVisionnage[0] << std::endl;
     std::wcout << m_streaming << std::endl;
-}
+}*/
+void InfosVisionnage_film::Print()
+{
+    std::wstring wstr;
+    wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
 
+    std::wcout << wstr << L"\r\n";
+}
+std::wstring InfosVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
+{
+    const std::wstring date_format = L"%d" + m_keyColor[1] + L"/" + m_valuesColor + L"%m" + m_keyColor[1] + L"/" + m_valuesColor + L"%Y";
+    const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;
+    const std::wstring same_date_format = between_parenthesis;
+    const std::wstring prequel_format = between_parenthesis;
+    const std::wstring streaming_format = m_keyColor[1] + L" : " + m_valuesColor + L"%s";
+    const std::wstring step_by_step_tag = L' ' + m_keyColor[1] + L'[' + m_valuesColor + L"pas-à-pas" + m_keyColor[1] + L']' + m_valuesColor;
+
+    std::wstring dates_de_visionnage_wstr = L"";
+
+    std::vector<std::wstring> v_wstr;
+    std::time_t last_date{ 0 };
+    int same_date_counter = 0;
+    for (auto dr : m_DatesVisionnage)
+    {
+        std::time_t time = std::mktime(&dr.date);
+
+        if (last_date != time)
+        {
+            std::tm localtime = *std::localtime(&time);
+            std::wstringstream target_stream;
+            target_stream << std::put_time(&localtime, date_format.c_str());
+            std::wstring date_str = target_stream.str();
+            v_wstr.push_back(date_str);
+            same_date_counter = 0;
+        }
+        else
+        {
+            same_date_counter++;
+            if (same_date_counter == 1)
+            {
+                v_wstr.back() += wstring_format(same_date_format, L"1");
+            }
+            v_wstr.back() += wstring_format(same_date_format, std::to_wstring(same_date_counter + 1).c_str());
+        }
+        last_date = time;
+    }
+
+    for (auto i = 0; i < v_wstr.size(); i++)
+    {
+        if (i != 0)
+            dates_de_visionnage_wstr += L", ";
+        dates_de_visionnage_wstr += v_wstr[i];
+    }
+
+    if (m_DatesVisionnage.size() == 1)
+    {
+        if (m_DatesVisionnage[0].someFlag)
+            dates_de_visionnage_wstr += wstring_format(prequel_format, L"stop ou pas !");
+    }
+    else
+    {
+        if (m_DatesVisionnage.size() > 0)
+        {
+            if (m_DatesVisionnage.back().someFlag)
+            {
+                dates_de_visionnage_wstr += wstring_format(prequel_format, L"à suivre");
+            }
+            dates_de_visionnage_wstr += step_by_step_tag;
+        }
+    }
+
+    if (m_streaming != L"" && dates_de_visionnage_wstr.length() > 0)
+        dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
+    //
+    return dates_de_visionnage_wstr;
+}
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
@@ -287,127 +374,94 @@ Film::Film(std::filesystem::path racine)
 void Film::initialiser_Fichier(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.filename().wstring();
-    auto nomImage = cheminFichier.extension().wstring();
-    if (nomImage == L".txt")
+    auto extensionFichier = cheminFichier.extension().wstring();
+
+    if (nomFichier == L"AD.txt")
     {
-        if (nomFichier == L"_you_.txt")
-        {
-            return;
-        }
-        if (!(std::isdigit(nomFichier[0])))
-        {
-            // AD
-            if (nomFichier == L"AD.txt")
-            {
-                initialiser_Audiodescription(cheminFichier, m_audiodescription);
-            }
-            // Avec
-            if (nomFichier == L"Avec.txt")
-            {
-                initialiser_Avec(cheminFichier, m_avec);
-            }
-            // Date de reprisé
-            if (nomFichier == L"Date de reprise.txt")
-            {
-                initialiser_Date_de_reprise(cheminFichier); // ???
-            }
-            // Date de sortie
-            if (nomFichier == L"Date de sortie.txt")
-            {
-                initialiser_Date_de_sortie(cheminFichier);// ???
-            }
-            // De
-            if (nomFichier == L"De.txt")
-            {
-                initialiser_De(cheminFichier);
-            }
-            // Disney+ SJ
-            if (nomFichier == L"Disney+.txt")
-            {
-                m_disney_sj = recuperer_Disney_SJ(cheminFichier);
-            }
-            // Distributeur
-            if (nomFichier == L"Distributeur.txt")
-            {
-                initialiser_Distributeur(cheminFichier);
-            }
-            // Genre
-            if (nomFichier == L"Genre.txt")
-            {
-                initialiser_Genre(cheminFichier, m_genre, ::Genre);
-            }
-            // Making-of
-            if (nomFichier == L"Making-of.txt")
-            {
-                initialiser_Making_of(cheminFichier);
-            }
-            // Nationalité
-            if (nomFichier == L"Nationalité.txt")
-            {
-                initialiser_Nationalite(cheminFichier, m_nationalite, ::Nationalite);
-            }
-            // Netflix
-            if (nomFichier == L"Netflix.txt")
-            {
-                m_netflix_sj = recuperer_Netflix_SJ(cheminFichier);
-            }
-            // Note
-            if (nomFichier == L"Note.txt")
-            {
-                initialiser_Note(cheminFichier);
-            }
-            // Par
-            if (nomFichier == L"Par.txt")
-            {
-                initialiser_Par(cheminFichier);
-            }
-            // SJ
-            if (nomFichier == L"SJ.txt")
-            {
-                m_sj = recuperer_SJ(cheminFichier);
-            }
-            // Soundtrack
-            if (nomFichier == L"Soundtrack.txt")
-            {
-                initialiser_Soundtrack(cheminFichier);
-            }
-            // Titre
-            if (nomFichier == L"Titre.txt")
-            {
-                initialiser_Titre(cheminFichier);
-            }
-            // Titre original
-            if (nomFichier == L"Titre original.txt")
-            {
-                m_titres_originaux = extraire_Titres_Depuis_UnFichier(cheminFichier);
-            }
-
-        }
-        //
-        if (std::regex_match(nomFichier, std::wregex{ L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$" }))
-        {
-            InfosVisionnage_film info_vis{ cheminFichier };
-
-            return;
-        }
-        //if (nomFichier != L"")
-        //if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]])(.+)" }))
-        //{
-            //std::wcout << L"{[" << cheminFichier << L"]}" << std::endl;
-        //}
+        initialiser_Audiodescription(cheminFichier, m_audiodescription);
     }
-    //else if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{4})\\-.+" }))
-    else if (nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
-    // Image
+    else if (nomFichier == L"Avec.txt")
+    {
+        initialiser_Avec(cheminFichier, m_avec);
+    }
+    else if (nomFichier == L"Date de reprise.txt")
+    {
+        initialiser_Date_de_reprise(cheminFichier); // ???
+    }
+    else if (nomFichier == L"Date de sortie.txt")
+    {
+        initialiser_Date_de_sortie(cheminFichier);// ???
+    }
+    else if (nomFichier == L"De.txt")
+    {
+        initialiser_De(cheminFichier);
+    }
+    else if (nomFichier == L"Disney+.txt")
+    {
+        m_disney_sj = recuperer_Disney_SJ(cheminFichier);
+    }
+    else if (nomFichier == L"Distributeur.txt")
+    {
+        initialiser_Distributeur(cheminFichier);
+    }
+    else if (nomFichier == L"Genre.txt")
+    {
+        initialiser_Genre(cheminFichier, m_genre, ::Genre);
+    }
+    else if (nomFichier == L"Making-of.txt")
+    {
+        initialiser_Making_of(cheminFichier);
+    }
+    else if (nomFichier == L"Nationalité.txt")
+    {
+        initialiser_Nationalite(cheminFichier, m_nationalite, ::Nationalite);
+    }
+    else if (nomFichier == L"Netflix.txt")
+    {
+        m_netflix_sj = recuperer_Netflix_SJ(cheminFichier);
+    }
+    else if (nomFichier == L"Note.txt")
+    {
+        initialiser_Note(cheminFichier);
+    }
+    else if (nomFichier == L"Par.txt")
+    {
+        initialiser_Par(cheminFichier);
+    }
+    else if (nomFichier == L"SJ.txt")
+    {
+        m_sj = recuperer_SJ(cheminFichier);
+    }
+    else if (nomFichier == L"Soundtrack.txt")
+    {
+        initialiser_Soundtrack(cheminFichier);
+    }
+    else if (nomFichier == L"Titre.txt")
+    {
+        initialiser_Titre(cheminFichier);
+    }
+    else if (nomFichier == L"Titre original.txt")
+    {
+        m_titres_originaux = extraire_Titres_Depuis_UnFichier(cheminFichier);
+    }
+    else if (nomFichier == L"_you_.txt")
+    {
+    }
+    //else if (std::regex_match(nomFichier, std::wregex{ InfosVisionnage_film::c_filenameFormat }))
+    else if (std::regex_match(nomFichier, std::wregex{ L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$" }))
+    {
+        InfosVisionnage_film info_vis{ cheminFichier };
+        m_visionnages.push_back(info_vis);
+    }
+    else if (extensionFichier == L".jpg" || extensionFichier == L".png" || extensionFichier == L".webp")
     {
         initialiser_Image(cheminFichier, m_image);
     }
     else
     {
-        //std::wcout << L'{' << cheminFichier << L'}' << std::endl;
+        assert(false && L"fichier inconnue");
     }
 }
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Film::initialiser_Date_de_reprise(fs::path const& cheminFichier)                                                                              #
@@ -744,9 +798,10 @@ void Film::Print_Avec()
     }
 }
 
+//const void Film::Print_Dates_Streaming(InfosVisionnage_film dates_streaming)
 const void Film::Print_Date(InfosVisionnage_film date)
 {
-    if (affichage_film_actif)
+    if (affichage_dates_streaming_actif)
     {
         date.Print();
     }
@@ -756,10 +811,12 @@ const void Film::Print_Dates()
 {
     if (affichage_dates_actif)
     {
-        for (auto d : dates)
+        /*for (auto d : dates)
         {
             Print_Date(d);
-        }
+        }*/
+        //dates.Print();
+        //InfosVisionnage_film.Print();
     }
 }
 

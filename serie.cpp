@@ -281,7 +281,6 @@ void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)
 
 // Ok !!!
 
-
 void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
 {
 

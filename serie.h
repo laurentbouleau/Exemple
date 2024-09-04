@@ -178,7 +178,6 @@ public:
     //void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
 
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
-    //long initialiser_Duree(std::wstring& m);
     void initialiser_Hors_Saison(std::filesystem::path const& cheminFichier);
     void initialiser_Netflix(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);

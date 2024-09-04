@@ -40,11 +40,15 @@ struct InfosVisionnage_film
 {
     InfosVisionnage_film(std::filesystem::path const& m_cheminFichier);
     std::filesystem::path m_cheminFichier;
-
+    //std::wstring xxx(std::wstring c_filenameFormat);
+ 
     //InfosVisionnage_f info_vis{ cheminFichier };
+    std::pair<std::vector<DateRecord>, std::wstring> ajouter_InfosVisionnage_film(std::vector<DateRecord>& m_DatesVisionnage, std::wstring & m_streaming);
 
     void Print();
-    
+    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
+    //std::wstring c_filenameFormat = L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$";
+
     std::wstring m_min = L"min";
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
@@ -130,6 +134,12 @@ private:
     //std::vector<std::wstring> m_resume{};
     std::vector<std::wstring> m_titres_originaux;
 
+    //std::vector<std::vector<std::tm, std::wstring>> m_visionnages{};
+    //std::map<int, std::shared_ptr<InfosVisionnage_film>> m_visionnages;
+    
+    //std::vector<std::pair<std::vector<DateRecord>, std::wstring>> m_visionnages;
+    std::vector<InfosVisionnage_film> m_visionnages;
+
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_dates_actif = true;
@@ -140,7 +150,9 @@ private:
     bool affichage_disney_sj_actif = true;
     bool affichage_distributeur_actif = true;
     bool affichage_duree_actif = true;
-    bool affichage_film_actif = true;
+
+    bool affichage_dates_streaming_actif = true;
+
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
     bool affichage_making_of_actif = true;
