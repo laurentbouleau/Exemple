@@ -850,10 +850,7 @@ const void Film::Print_Dates()
         std::wcout << L"\r\n";
         for (auto visionnage : m_visionnages)
         {
-            std::wcout << visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage); //<< L"\r\n";
-            std::wstring streaming_str{ L"" };
-            streaming_str = visionnage.m_streaming;
-            std::wcout << streaming_str << L"\r\n";
+            std::wcout << visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage) << L"\r\n";
         }
         std::wcout << L"\r\n";
     }
