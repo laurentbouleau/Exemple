@@ -45,8 +45,8 @@ struct InfosVisionnage_film
     //InfosVisionnage_f info_vis{ cheminFichier };
     std::pair<std::vector<DateRecord>, std::wstring> ajouter_InfosVisionnage_film(std::vector<DateRecord>& m_DatesVisionnage, std::wstring & m_streaming);
 
-    void Print();
-    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
+    //void Print();
+    //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
     //std::wstring c_filenameFormat = L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$";
 
     std::wstring m_min = L"min";
@@ -83,7 +83,7 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
-    const void Print_Date(InfosVisionnage_film date);
+    //const void Print_Date(InfosVisionnage_film date);
     const void Print_Dates();
 
 
@@ -101,6 +101,7 @@ private:
     std::vector<InfosVisionnage_film>dates{};
     std::filesystem::path racine;
 
+    std::wstring m_h = L"h";
     std::wstring m_min = L"min";
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc

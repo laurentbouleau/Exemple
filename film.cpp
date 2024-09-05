@@ -186,7 +186,6 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
             assert(true && L"format de date d'épisode inconnu.");
         }
 
-        //if (dates_match[dates_fucking_someFlag_index].matched)
         if (dates_match[dates_someFlag_index].matched)
         {
             m_DatesVisionnage.back().someFlag = true;
@@ -199,27 +198,26 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
     {
         m_streaming = match[filename_stream_index];
     }
-    std::pair<std::vector<DateRecord>, std::wstring>ajouter_InfosVisionnage_film(std::vector<DateRecord>&m_DatesVisionnage, std::wstring & m_streaming);
-}
+ }
 
-std::pair<std::vector<DateRecord>, std::wstring> InfosVisionnage_film::ajouter_InfosVisionnage_film(std::vector<DateRecord>& m_DatesVisionnage, std::wstring& m_streaming)
+/*std::pair<std::vector<DateRecord>, std::wstring> InfosVisionnage_film::ajouter_InfosVisionnage_film(std::vector<DateRecord>& m_DatesVisionnage, std::wstring& m_streaming)
 {
     return { m_DatesVisionnage,m_streaming };
-}
+}*/
 
 /*void InfosVisionnage_film::Print()
 {
     //std::wcout << m_DatesVisionnage[0] << std::endl;
     std::wcout << m_streaming << std::endl;
 }*/
-void InfosVisionnage_film::Print()
+/*void InfosVisionnage_film::Print()
 {
     std::wstring wstr;
     wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
 
     std::wcout << wstr << L"\r\n";
-}
-std::wstring InfosVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
+}*/
+/*std::wstring InfosVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
 {
     const std::wstring date_format = L"%d" + m_keyColor[1] + L"/" + m_valuesColor + L"%m" + m_keyColor[1] + L"/" + m_valuesColor + L"%Y";
     const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;
@@ -286,7 +284,7 @@ std::wstring InfosVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRec
         dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
     //
     return dates_de_visionnage_wstr;
-}
+}*/
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
@@ -799,24 +797,28 @@ void Film::Print_Avec()
 }
 
 //const void Film::Print_Dates_Streaming(InfosVisionnage_film dates_streaming)
-const void Film::Print_Date(InfosVisionnage_film date)
+/*const void Film::Print_Date(InfosVisionnage_film date)
 {
     if (affichage_dates_streaming_actif)
     {
         date.Print();
     }
-}
+}*/
 
 const void Film::Print_Dates()
 {
     if (affichage_dates_actif)
     {
-        /*for (auto d : dates)
+        for (auto visionnage : m_visionnages)
         {
-            Print_Date(d);
-        }*/
-        //dates.Print();
-        //InfosVisionnage_film.Print();
+            std::wstring DatesVisionnage_str{};
+            /*for (auto d : visionnage.m_DatesVisionnage)
+            {
+                std::wcout << d.dr.tm_year.first.
+            }*/
+            std::wstring streaming_str{ L"" };
+            std::wcout << visionnage.m_streaming << L"\r\n";
+        }
     }
 }
 
