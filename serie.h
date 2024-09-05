@@ -140,7 +140,7 @@ struct Episode
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
     
     void Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
-    /*unsigned short*/ int m_episode{};
+    int m_episode{};
 
     void GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis);
 

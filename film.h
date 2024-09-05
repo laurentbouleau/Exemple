@@ -2,6 +2,8 @@
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #define _CRT_SECURE_NO_WARNINGS
 
+//#include "film_.h"
+
 // C :
 #include <io.h>
 #include <fcntl.h>
@@ -35,21 +37,31 @@ extern const std::vector<std::wstring> Nationalite;
 
 struct DateRecord;
 struct InfosVisionnage_film;
+struct PrintSequenceVisionnage;
 
 struct InfosVisionnage_film
 {
     InfosVisionnage_film(std::filesystem::path const& m_cheminFichier);
     std::filesystem::path m_cheminFichier;
-    //std::wstring xxx(std::wstring c_filenameFormat);
- 
-    //InfosVisionnage_f info_vis{ cheminFichier };
-    std::pair<std::vector<DateRecord>, std::wstring> ajouter_InfosVisionnage_film(std::vector<DateRecord>& m_DatesVisionnage, std::wstring & m_streaming);
 
-    //void Print();
-    //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
+    static const std::wstring c_filenameFormat;
+
+    //std::wstring m_min = L"min";
+    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+
+    std::vector<DateRecord> m_DatesVisionnage{ 0 };
+    std::wstring m_streaming{ L"" };
+
+    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
+};
+
+struct SequenceVisionnage_film
+{
+    void Print();
+    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
     //std::wstring c_filenameFormat = L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$";
 
-    std::wstring m_min = L"min";
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
@@ -61,8 +73,6 @@ class Film
 {
 public:
     Film(std::filesystem::path racine);
-
-    //std::vector<std::wstring> initialiser_Titres(std::wstring& titres);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Date_de_reprise(std::filesystem::path const& cheminFichier);
@@ -83,11 +93,10 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
-    //const void Print_Date(InfosVisionnage_film date);
-    const void Print_Dates();
 
 
     void Print_Avec();
+    const void Print_Dates();
     const void Print_Date_de_Reprise();
     const void Print_Date_de_Sortie();
     const void Print_De();
@@ -109,8 +118,6 @@ private:
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
     std::tm m_date{0}, m_date_de_reprise{0}, m_date_de_sortie{0};
-
-
     std::vector<std::wstring> m_de;
     bool m_disney{ false };
     std::wstring m_disney_sj;
@@ -132,18 +139,12 @@ private:
 
     std::vector<std::wstring> m_titres;
     long m_duree{ -1 };
-    //std::vector<std::wstring> m_resume{};
     std::vector<std::wstring> m_titres_originaux;
 
-    //std::vector<std::vector<std::tm, std::wstring>> m_visionnages{};
-    //std::map<int, std::shared_ptr<InfosVisionnage_film>> m_visionnages;
-    
-    //std::vector<std::pair<std::vector<DateRecord>, std::wstring>> m_visionnages;
     std::vector<InfosVisionnage_film> m_visionnages;
 
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
-    bool affichage_dates_actif = true;
     bool affichage_date_de_reprise_actif = true;
     bool affichage_date_de_sortie_actif = true;
     bool affichage_date_en_salle_ou_sur_actif = true;
@@ -151,9 +152,6 @@ private:
     bool affichage_disney_sj_actif = true;
     bool affichage_distributeur_actif = true;
     bool affichage_duree_actif = true;
-
-    bool affichage_dates_streaming_actif = true;
-
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
     bool affichage_making_of_actif = true;
@@ -168,5 +166,6 @@ private:
     bool affichage_sur_actif = true;
     bool affichage_titres_actif = true;
     bool affichage_titres_originaux_actif = true;
+    bool affichage_visionnages_actif = true;
     bool affichage_x_sj_actif = true;
 };
