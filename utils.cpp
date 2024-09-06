@@ -39,6 +39,12 @@ namespace fs = std::filesystem;
 
 using DateVisionnage = DateRecord;
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace)                                            #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace)
 {
     std::size_t pos = 0;
@@ -51,6 +57,12 @@ std::wstring replace_all(std::wstring subject, const std::wstring& search, const
     return subject;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # static inline void rtrim(std::wstring& s)                                                                                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 static inline void rtrim(std::wstring& s)
 {
     s.erase(find_if(s.rbegin(), s.rend(), [](int ch)
@@ -59,15 +71,27 @@ static inline void rtrim(std::wstring& s)
         }).base(), s.end());
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::string wstr_to_u8(std::wstring uneWString)                                                                                                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 std::string wstr_to_u8(std::wstring uneWString)
 {
     return std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(uneWString);
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier,                       #
+// #                                                                                              std::wstring separeteur)                              #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur)
 {
     std::string contenuFichier{ u8"" };
-    //std::string ligneCourante{ u8"" };
     std::vector<std::pair<std::wstring, std::wstring>> clevaleurs;
 
     ifstream fichier{ nomFichier };
@@ -76,10 +100,6 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
         throw std::runtime_error("Fichier impossible à ouvrir.");
     }
 
-    /*while (getline(fichier, ligneCourante, u8'\n'))
-    {
-        contenuFichier += ligneCourante + u8'\n';
-    }*/
     contenuFichier = std::string(istreambuf_iterator<char>{fichier}, {});
 
     if (contenuFichier == u8"")
@@ -98,7 +118,6 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
         return clevaleurs;
 
     std::size_t pos2 = 0;
-    //while (pos = converti.find(L"\r\n"))
     while (pos = converti.find(L"\n"))
     {
         if (converti[0] != converti.length())
@@ -145,6 +164,12 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
     }
     return clevaleurs;
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs)                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs)
 {
@@ -202,6 +227,12 @@ const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, 
     return retVal;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool f)                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool f)
 {
     std::string contenuFichier{ u8"" };
@@ -257,6 +288,12 @@ const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, 
     return retVal;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const std::wstring lire_fichierTxt(std::wstring const& nomFichier)                                                                                 #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 const std::wstring lire_fichierTxt(std::wstring const& nomFichier)
 {
     std::string contenuFichier{ u8"" };
@@ -270,54 +307,12 @@ const std::wstring lire_fichierTxt(std::wstring const& nomFichier)
     return converti;
 }
 
-/*std::vector<std::wstring> lire_et_decouper_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs)
-{
-    //...
-    std::string contenuFichier{ u8"" };
 
-    auto contenu_fichier = lire_fichierTxt(nomFichier);
-
-    std::vector<std::wstring> retVal{};
-
-    bool found = false;
-
-    do
-    {
-        found = false;
-        size_t pos_found = std::string::npos;
-        std::wstring sep_found = L"";
-
-        for (auto&& sep : separeteurs)
-        {
-            std::size_t pos = converti.find(sep);
-            if (pos != std::wstring::npos && (!found || pos_found > pos))
-            {
-                pos_found = pos;
-                found = true;
-                sep_found = sep;
-            }
-        }
-
-        if (found)
-        {
-            retVal.push_back(converti.substr(0, pos_found));
-            converti = converti.substr(pos_found + sep_found.length());
-        }
-    } while (found);
-
-    if (converti.length() > 0)
-    {
-        rtrim(converti);
-        retVal.push_back(converti);
-    }
-    return retVal;
-}*/
-
-
-/*std::wstring lire_fichierTxt(std::wstring const& nomFichier)
-{
-    return lire_fichierTxt(nomFichier, {})[0];
-}*/
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # inline std::wstring space(int i, wchar_t espace)                                                                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 inline std::wstring space(int i, wchar_t espace)
 {
@@ -346,6 +341,12 @@ inline std::wstring space(int i, wchar_t espace)
     assert(res == TRUE);
 }*/
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void test_date_tire(wchar_t d)                                                                                                                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 void test_date_tire(wchar_t d)
 {
     if (d != L'-')
@@ -354,6 +355,12 @@ void test_date_tire(wchar_t d)
     }
     return;
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void test_date_tiret_sp_etc(wchar_t d)                                                                                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 void test_date_tiret_sp_etc(wchar_t d)
 {
@@ -364,6 +371,12 @@ void test_date_tiret_sp_etc(wchar_t d)
     return;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t)                                                                                            #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t)
 {
     if (sp != L' ' && t)
@@ -373,15 +386,33 @@ void test_sp_et_npos_ou_pas_isblank(wchar_t sp, bool t)
     return;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # bool checkyear(int y)                                                                                                                              #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 bool checkyear(int y)
 {
     return 1582 <= y;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # bool checkmonth(int m)                                                                                                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 bool checkmonth(int m)
 {
     return (1 <= m && m <= 12);
 }
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # bool checkday(int m, int d, int y)                                                                                                                 #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 bool checkday(int m, int d, int y)
 {
