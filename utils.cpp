@@ -110,7 +110,7 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
     wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convertiseur;
     std::wstring converti = convertiseur.from_bytes(contenuFichier);
     rtrim(converti);
-    converti += L"\r\n";
+    converti += L'\n';/*L"\r\n"*/;
 
     std::size_t pos = converti.length();
 
@@ -118,7 +118,7 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
         return clevaleurs;
 
     std::size_t pos2 = 0;
-    while (pos = converti.find(L"\n"))
+    while (pos = converti.find(L"\n"/*L"\r\n"*/))
     {
         if (converti[0] != converti.length())
         {
