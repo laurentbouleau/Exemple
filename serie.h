@@ -116,9 +116,6 @@ struct SequenceVisionnage
 
     std::wstring m_streaming{ L"" };
     //bool m_fichier_pas_zero{ false };
-    //std::wstring m_titre;
-    //std::wstring m_deux_points;
-    //std::wstring m_sous_titre;
     std::vector<std::wstring> m_titres;
     long m_duree_en_seconde{ -1 };
     std::vector<std::wstring> m_resume{};

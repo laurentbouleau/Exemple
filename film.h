@@ -37,7 +37,6 @@ extern const std::vector<std::wstring> Nationalite;
 
 struct DateRecord;
 struct InfosVisionnage_film;
-struct PrintSequenceVisionnage;
 
 struct InfosVisionnage_film
 {
@@ -54,19 +53,6 @@ struct InfosVisionnage_film
     std::wstring m_streaming{ L"" };
 
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
-};
-
-struct SequenceVisionnage_film
-{
-    void Print();
-    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
-    //std::wstring c_filenameFormat = L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$";
-
-    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
-
-    std::vector<DateRecord> m_DatesVisionnage{ 0 };
-    std::wstring m_streaming{ L"" };
 };
 
 class Film

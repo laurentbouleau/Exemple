@@ -64,12 +64,6 @@ const std::wstring InfosVisionnage_film::c_filenameFormat = L"^(\\d{4}\\-\\d{2}\
 
 InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
 {
-
-    //const std::wstring numero_saison_format = L"([[:digit:]]{1,2})"; // saison
-    //const std::wstring sep_numero_saison = L"x"; // x
-    //const std::wstring numero_episode_format = L"([[:digit:]]{1,3})"; // episode
-    //const std::wstring sep_episode_saison = L"\\."; //.
-
     const std::wstring date_year_month_day_format = L"([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_month_day_format = L"([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_day_format = L"([[:digit:]]{2})";
@@ -97,9 +91,6 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
     const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
 
     const int filename_full_match_index = 0;
-    //const int filename_numero_saison_index = filename_full_match_index + 1;
-    //const int filename_numero_episode_index = filename_numero_saison_index + 1;
-    //const int filename_dates_index = filename_numero_episode_index + 1;
     const int filename_dates_index = 0;
     const int filename_date_year_month_day_year_index = filename_dates_index + 2;
     const int filename_date_year_month_day_month_index = filename_date_year_month_day_year_index + 1;
@@ -111,28 +102,13 @@ InfosVisionnage_film::InfosVisionnage_film(fs::path const& m_cheminFichier)
     const int filename_stream_index = filename_someFlag_index + 2;
 
 
-    //auto nomFichier = m_cheminFichier.filename().wstring();
-    auto nomFichier = m_cheminFichier./*filename().*/wstring();
+    auto nomFichier = m_cheminFichier.wstring();
 
     assert(nomFichier.length() > 0 && L"Nom de fichier Episode vide");
 
     auto stem = m_cheminFichier.stem().wstring();
     // prefixe ???
-    //assert((stem.length() > (9 + std::to_wstring(prefixe).length() + sep_numero_saison.length())) && L"Nom de fichier Episode trop court pour avoir au moins une date");
-//    assert((stem.length() > 9) && L"Nom de fichier Episode trop court pour avoir au moins une date");
-
-//    assert(std::isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
-    //m_NumeroSaison = std::stoi(stem);
-    //assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");
-    //
-    //assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");// saison == m_NumeroSaison
-    //
-//    assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
-    //assert(((fucking_x >= prefixe)) && L"saison.first != x"); // prefixe ???
     assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
-
-    //std::vector<DateRecord> dates_de_diffusion;
-    //std::wstring streaming = L"";
 
     std::wsmatch match;
     auto str = stem;
@@ -283,86 +259,6 @@ std::wstring InfosVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRec
     //
     return dates_de_visionnage_wstr;
 
-}
-
-// ######################################################################################################################################################
-// ######################################################################################################################################################
-
-void SequenceVisionnage_film::Print()
-{
-    std::wstring wstr;
-    wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
-
-    std::wcout << wstr << L"\r\n";
-}
-
-std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
-{
-    const std::wstring date_format = L"%d" + m_keyColor[1] + L"/" + m_valuesColor + L"%m" + m_keyColor[1] + L"/" + m_valuesColor + L"%Y";
-    const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;
-    const std::wstring same_date_format = between_parenthesis;
-    const std::wstring prequel_format = between_parenthesis;
-    const std::wstring streaming_format = m_keyColor[1] + L" : " + m_valuesColor + L"%s";
-    const std::wstring step_by_step_tag = L' ' + m_keyColor[1] + L'[' + m_valuesColor + L"pas-à-pas" + m_keyColor[1] + L']' + m_valuesColor;
-
-    std::wstring dates_de_visionnage_wstr = L"";
-
-    std::vector<std::wstring> v_wstr;
-    std::time_t last_date{ 0 };
-    int same_date_counter = 0;
-    for (auto dr : m_DatesVisionnage)
-    {
-        std::time_t time = std::mktime(&dr.date);
-
-        if (last_date != time)
-        {
-            std::tm localtime = *std::localtime(&time);
-            std::wstringstream target_stream;
-            target_stream << std::put_time(&localtime, date_format.c_str());
-            std::wstring date_str = target_stream.str();
-            v_wstr.push_back(date_str);
-            same_date_counter = 0;
-        }
-        else
-        {
-            same_date_counter++;
-            if (same_date_counter == 1)
-            {
-                v_wstr.back() += wstring_format(same_date_format, L"1");
-            }
-            v_wstr.back() += wstring_format(same_date_format, std::to_wstring(same_date_counter + 1).c_str());
-        }
-        last_date = time;
-    }
-
-    for (auto i = 0; i < v_wstr.size(); i++)
-    {
-        if (i != 0)
-            dates_de_visionnage_wstr += L", ";
-        dates_de_visionnage_wstr += v_wstr[i];
-    }
-
-    if (m_DatesVisionnage.size() == 1)
-    {
-        if (m_DatesVisionnage[0].someFlag)
-            dates_de_visionnage_wstr += wstring_format(prequel_format, L"stop ou pas !");
-    }
-    else
-    {
-        if (m_DatesVisionnage.size() > 0)
-        {
-            if (m_DatesVisionnage.back().someFlag)
-            {
-                dates_de_visionnage_wstr += wstring_format(prequel_format, L"à suivre");
-            }
-            dates_de_visionnage_wstr += step_by_step_tag;
-        }
-    }
-
-    if (m_streaming != L"" && dates_de_visionnage_wstr.length() > 0)
-        dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
-    //
-    return dates_de_visionnage_wstr;
 }
 
 // ######################################################################################################################################################
@@ -847,12 +743,13 @@ const void Film::Print_Dates()
 {
     if (affichage_visionnages_actif)
     {
-        std::wcout << L"\r\n";
+        std::wstring dates_str = L"\r\n";
         for (auto visionnage : m_visionnages)
         {
-            std::wcout << visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage) << L"\r\n";
+            dates_str += visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage) + L"\r\n";
         }
-        std::wcout << L"\r\n";
+        dates_str += L"\r\n";
+        std::wcout << dates_str;
     }
 }
 
