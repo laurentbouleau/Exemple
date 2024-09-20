@@ -197,7 +197,8 @@ std::wstring InfosVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRec
     const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;
     const std::wstring same_date_format = between_parenthesis;
     const std::wstring prequel_format = between_parenthesis;
-    const std::wstring streaming_format = m_keyColor[1] + L" : " + m_valuesColor + L"%s";
+    //const std::wstring streaming_format = m_keyColor[1] + L" : " + m_valuesColor + L"%s";
+    const std::wstring streaming_format = m_keyColor[1] + L" :" + m_valuesColor + L"%s";
     const std::wstring step_by_step_tag = L' ' + m_keyColor[1] + L'[' + m_valuesColor + L"pas-à-pas" + m_keyColor[1] + L']' + m_valuesColor;
 
     std::wstring dates_de_visionnage_wstr = L"";
