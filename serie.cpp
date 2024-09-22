@@ -182,7 +182,6 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
             assert(true && L"format de date d'épisode inconnu.");
         }
 
-        //if (dates_match[dates_fucking_someFlag_index].matched)
         if (dates_match[dates_someFlag_index].matched)
         {
             m_DatesVisionnage.back().someFlag = true;
@@ -671,6 +670,13 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             {
                 initialiser_Chaine(cheminFichier);
             }
+
+            // Disney+
+            if (nomFichier == L"Disney+.txt")
+            {
+                std::wcout << L"Disney+.txt" << L"\r\n";
+            }
+
             // DVD
             if (nomFichier == L"DVD.txt")
             {
@@ -1360,7 +1366,7 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         // Disney+ SJ
         if (nomFichier == L"Disney+.txt")
         {
-            m_disney_sj = recuperer_Disney_SJ(cheminFichier);
+            m_disney_sj = recuperer_Disney_SJ(cheminFichier, m_catalogue);
         }
         // En relation avec
         if (nomFichier == L"En relation avec.txt")
@@ -1380,7 +1386,7 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         // Netflix
         if (nomFichier == L"Netflix.txt")
         {
-            m_netflix_sj = recuperer_Netflix_SJ(cheminFichier);
+            m_netflix_sj = recuperer_Netflix_SJ(cheminFichier, m_catalogue);
         }
         // SJ
         if (nomFichier == L"SJ.txt")
@@ -1493,7 +1499,9 @@ const void Serie::Print()
     Print_Nationalites(m_nationalite, affichage_nationalite_actif, m_keyColor[0], m_valuesColor);
     // Image(s)
     Print_Images(m_image, affichage_image_actif, m_keyColor[0], m_valuesColor);
-    // Phrases
+    // Catalogue
+    Print_Catalogue(m_sur, m_catalogue, affichage_catalogue_actif, m_keyColor[0], m_valuesColor);
+    // Resume
     Print_Resume(m_resume, affichage_resume_actif);
     std::wcout << L"\r\n";
     // Saison(s)

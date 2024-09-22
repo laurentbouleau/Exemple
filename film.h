@@ -103,9 +103,10 @@ private:
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
+    std::vector<std::wstring> m_catalogue;
     std::tm m_date{0}, m_date_de_reprise{0}, m_date_de_sortie{0};
     std::vector<std::wstring> m_de;
-    bool m_disney{ false };
+    //bool m_disney{ false };
     std::wstring m_disney_sj;
     std::wstring m_distributeur;
     std::vector<std::wstring> m_genre;
@@ -115,12 +116,12 @@ private:
     long m_making_of_duree{ -1 };
     std::vector<std::wstring> m_making_of_resume;
     std::vector<std::wstring> m_nationalite;
-    bool m_netflix{ false };
+    //bool m_netflix{ false };
     std::wstring m_netflix_sj;
     double m_note = 0.0;
     std::wstring m_sj;
     std::vector<std::pair<std::wstring, std::wstring>> m_soundtrack;
-    std::wstring m_sous_genre;// {};
+    std::wstring m_sous_genre;
     std::wstring m_sur;
 
     std::vector<std::wstring> m_titres;
@@ -131,6 +132,7 @@ private:
 
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
+    bool affichage_catalogue_actif = true;
     bool affichage_date_de_reprise_actif = true;
     bool affichage_date_de_sortie_actif = true;
     bool affichage_date_en_salle_ou_sur_actif = true;

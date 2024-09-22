@@ -153,15 +153,23 @@ const std::vector<std::wstring> Sous_Genre
 
 const std::vector<std::wstring> Sur
 {
-    L"Apple TV+",
     L"Amazon Prime Video",
+    L"Arte",
+    L"Apple TV+",
+    L"Canal+",
     L"Crunchyroll",
     L"Disney+",
     L"DVD",
+    L"Max",
     L"Netflix",
+    L"Paramount+",
     L"SⱯLTO",
+    L"TF1+",
     L"VOD"
 };
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -281,6 +289,12 @@ std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& ligne)
     return titres;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::vector<std::wstring> extraire_Titres_Depuis_UnFichier(fs::path const& cheminFichier)                                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 std::vector<std::wstring> extraire_Titres_Depuis_UnFichier(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.wstring();
@@ -345,7 +359,7 @@ std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouv
 
     if (vieux_titres.size() == nouveaux_titres.size())
     {
-        //double titres_ration{ 80.0 };
+        // double titres_ration{ 80.0 }; ???
         if (vieux_titres.size() == 1 && nouveaux_titres.size() == 1)
         {
             resultat = vieux_titres;
@@ -482,14 +496,14 @@ bool initialiser_Sous_Genre(std::wstring& m_s_g)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void initialiser_Sur(std::wstring& m_s)                                                                                                            #
+// # void initialiser_Sur(std::wstring& m_sur)                                                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void initialiser_Sur(std::wstring& m_s)
+void initialiser_Sur(std::wstring& m_sur)
 { // Sur
     bool sur = false;
-    if (std::find(::Sur.begin(), ::Sur.end(), m_s) != ::Sur.end())
+    if (std::find(::Sur.begin(), ::Sur.end(), m_sur) != ::Sur.end())
     {
         sur = true;
     }
@@ -500,33 +514,57 @@ void initialiser_Sur(std::wstring& m_s)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier)                                                                                    #
+// # std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier, std::vector<std::wstring>& m_catalogue)                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier)
+std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier, std::vector<std::wstring>& m_catalogue)
 { // Disney+ SJ
     auto nomFichier = cheminFichier.wstring();
-
     std::wstring content = lire_fichierTxt(nomFichier);
+
+    auto stem = cheminFichier.stem().wstring();
+    m_catalogue.push_back(stem);
 
     return filter_values(content, { L"6\\+",L"12\\+",L"14\\+",L"16\\+",L"18\\+" });
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier)                                                                                   #
+// # std::wstring recuperer_Max_SJ(fs::path const& cheminFichier, std::vector<std::wstring>& m_catalogue)                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier)
+std::wstring recuperer_Max_SJ(fs::path const& cheminFichier, std::vector<std::wstring>& m_catalogue)
+{ // Max SJ
+    auto nomFichier = cheminFichier.wstring();
+    std::wstring content = lire_fichierTxt(nomFichier);
+
+    auto stem = cheminFichier.stem().wstring();
+    m_catalogue.push_back(stem);
+
+    return filter_values(content, { L"\\-12" });
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier, std::vector<std::wstring>& m_catalogue)                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier, std::vector<std::wstring>& m_catalogue)
 { // Netflix SJ
     auto nomFichier = cheminFichier.wstring();
-
     std::wstring content = lire_fichierTxt(nomFichier);
+
+    auto stem = cheminFichier.stem().wstring();
+    m_catalogue.push_back(stem);
 
     return filter_values(content, { L"7\\+",L"10\\+",L"13\\+", L"16\\+", L"18\\+", L"Tous publics" });
 }
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -551,6 +589,55 @@ std::wstring recuperer_SJ(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_catalogue, bool affichage_catalogue_actif,                             #
+// #                      std::wstring& keyColor, std::wstring& m_valuesColor)                                                                          #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_catalogue, bool affichage_catalogue_actif, std::wstring& keyColor, std::wstring& m_valuesColor)
+{
+    // Sur == m_sur ???
+    bool found = false;
+    std::wstring sur = L"";
+    if (affichage_catalogue_actif)
+    {
+        for (auto/*&*/ c : m_catalogue)
+        {
+            if (m_sur == c)
+            {
+                found = true;
+                sur = m_sur;
+                break;
+            }
+        }
+        std::wstring sur_str;
+        for (auto c : m_catalogue)
+        {
+            if (c == sur)
+            {
+                continue;
+            }
+            else
+            {
+                sur_str += keyColor + c + L" : " + m_valuesColor + L"Oui" + keyColor + L" !" + m_valuesColor + L"\r\n";
+            }
+        }
+        std::wcout << sur_str;
+        /*if (!m_netflix_ok_ou_non)
+        {
+            std::wcout << keyColor << L"Netflix : " << m_valuesColor << L"Oui" << keyColor << L" !" << m_valuesColor << L"\r\n";
+            //found = true;
+        }
+        if (!m_disney_ok_ou_non)
+        {
+            std::wcout << keyColor << L"Disney : " << m_valuesColor << L"Oui" << keyColor << L" !" << m_valuesColor << L"\r\n";
+            //found = true;
+        }*/
+    }
+}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -668,7 +755,7 @@ void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resu
         std::wstring resume_str = L"";
         for (auto&& r : m_resume)
             resume_str += r + L"\r\n";
-        std::wcout << resume_str;
+        std::wcout << L"\r\n" + resume_str;
     }
 }
 

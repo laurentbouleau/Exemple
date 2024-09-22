@@ -291,9 +291,7 @@ Film::Film(std::filesystem::path racine)
             m_date.tm_mon = stoi(mois_str) - 1;           //beurk!!
             m_date.tm_mday = stoi(jours_str);
         }
-
         m_sur = (match[5].matched) ? match[5].str() : L"";
-
         m_sous_genre = (match[6].matched) ? match[6].str() : L"";
     }
     else
@@ -335,7 +333,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else if (nomFichier == L"Disney+.txt")
     {
-        m_disney_sj = recuperer_Disney_SJ(cheminFichier);
+        m_disney_sj = recuperer_Disney_SJ(cheminFichier, m_catalogue);
     }
     else if (nomFichier == L"Distributeur.txt")
     {
@@ -355,7 +353,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else if (nomFichier == L"Netflix.txt")
     {
-        m_netflix_sj = recuperer_Netflix_SJ(cheminFichier);
+        m_netflix_sj = recuperer_Netflix_SJ(cheminFichier, m_catalogue);
     }
     else if (nomFichier == L"Note.txt")
     {
@@ -644,7 +642,6 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
 void Film::initialiser_Titre(fs::path const& cheminFichier)
 {
     auto res = extraire_Informations_DepuisLeContenuDUnFichier(cheminFichier);
-
     m_titres = fusionner_Titres(m_titres, std::get<0>(res));
     m_duree = std::get<1>(res) ? std::get<1>(res).value() : -1;
     m_resume = std::get<2>(res);
@@ -676,6 +673,8 @@ const void Film::Print()
     Print_Par();
     // Nationalité(s)
     Print_Nationalites(m_nationalite, affichage_nationalite_actif, m_keyColor[0], m_valuesColor);
+    // Catalogue
+    Print_Catalogue(m_sur, m_catalogue, affichage_catalogue_actif, m_keyColor[0], m_valuesColor);
     // Resume
     Print_Resume(m_resume, affichage_resume_actif);
     // Dates
@@ -966,7 +965,6 @@ std::wstring Film::Print_Note() const
             else
             {
                 if (m_note == 0 || m_note == 1 || m_note == 2 || m_note == 3 || m_note == 4 || m_note == 5)
-                    //note_str += L' ' + std::to_wstring(note);
                     note_str = L' ' + std::to_wstring(static_cast<int>(std::floor(m_note)));
                 else
                 {

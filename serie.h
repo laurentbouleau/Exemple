@@ -86,7 +86,6 @@ struct InfosVisionnage
 
 private:
     void initialiser_Duree(std::wstring& m);
-
 };
 
 struct SequenceVisionnage
@@ -131,7 +130,6 @@ private:
 struct Episode
 {
     const Saison& m_saison;
-    //Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } {};
     Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } { ajouter_SequenceVisionnage(info_vis); };
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
@@ -215,7 +213,6 @@ public:
     std::vector<std::wstring> m_titres;
     std::vector<std::wstring> m_resume;
 
-
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_chaine_actif = true;
@@ -235,14 +232,11 @@ class Serie
 public:
     Serie(std::filesystem::path racine);
  
-
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Creee_par(std::filesystem::path const& cheminFichier);
     void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
-
-    //void abc_titres(std::vector<std::wstring>& titres);
 
     const void Print();
 
@@ -284,15 +278,16 @@ private:
     //std::wstring m_annees; // std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
     int m_annees{};
     std::wstring m_audiodescription;
+    std::vector<std::wstring> m_catalogue;
     std::wstring m_chaine;
     std::vector<std::wstring> m_creee_par;
-    bool m_disney{ false };
+    //bool m_disney{ false };
     std::wstring m_disney_sj;
     std::wstring m_en_relation_avec;
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
     std::vector<std::wstring> m_nationalite;
-    bool m_netflix{ false };
+    //bool m_netflix{ false };
     std::wstring m_netflix_sj;
     double m_note{ 0.0 };
     std::wstring m_sj;
@@ -303,11 +298,11 @@ private:
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
 
-
     bool affichage_annees_actif = true;
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_chaine_actif = true;
+    bool affichage_catalogue_actif = true;
     bool affichage_creee_par_actif = true;
     bool affichage_disney_sj_actif = true;
     bool affichage_duree_actif = true;
