@@ -600,7 +600,6 @@ std::wstring recuperer_SJ(fs::path const& cheminFichier)
 void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_catalogue, bool affichage_catalogue_actif, std::wstring& keyColor, std::wstring& m_valuesColor)
 {
     // Sur == m_sur ???
-    bool found = false;
     std::wstring sur = L"";
     if (affichage_catalogue_actif)
     {
@@ -608,7 +607,6 @@ void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_cata
         {
             if (m_sur == c)
             {
-                found = true;
                 sur = m_sur;
                 break;
             }
