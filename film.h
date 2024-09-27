@@ -79,8 +79,6 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
-
-
     void Print_Avec();
     const void Print_Dates();
     const void Print_Date_de_Reprise();

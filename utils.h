@@ -34,6 +34,10 @@ std::wstring replace_all(std::wstring subject, const std::wstring& search, const
 static inline void rtrim(std::wstring& s);
 std::string wstr_to_u8(std::wstring uneWString);
 const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur);
+
+const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt2(std::wstring const& nomFichier, std::wstring separeteur);
+
+
 const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs);
 const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs, bool f);
 const std::wstring lire_fichierTxt(std::wstring const& nomFichier);
