@@ -671,6 +671,8 @@ const void Film::Print()
     Print_De();
     // Par
     Print_Par();
+    // Avec etc
+    Print_Avec_etc();
     // Nationalité(s)
     Print_Nationalites(m_nationalite, affichage_nationalite_actif, m_keyColor[0], m_valuesColor);
     // Catalogue
@@ -692,11 +694,11 @@ const void Film::Print()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Film::Print_Avec()                                                                                                                            #
+// # const void Film::Print_Avec()                                                                                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::Print_Avec()
+const void Film::Print_Avec()
 {
     if (affichage_avec_actif && m_avec.size())
     {
@@ -728,6 +730,34 @@ void Film::Print_Avec()
         }
         if (found)
             avec_str += L"...";
+        avec_str += L"\r\n";
+        std::wcout << avec_str;
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_Avec_etc()                                                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Film::Print_Avec_etc()
+{
+    if (affichage_avec_etc_actif && m_avec.size())
+    {
+        std::wstring avec_str = m_keyColor[0] + L"Avec : " + m_valuesColor;
+        int i = 0;
+        for (auto&& [nom, role] : m_avec)
+        {
+            if (nom == L"…" || nom == L"..." || nom == L".")
+                break;
+            if (i < m_avec.size() && nom != L"")
+                avec_str += nom;
+            i++;
+            if (i > 2)
+                break;
+            avec_str += m_keyColor[0] + L", " + m_valuesColor;
+        }
         avec_str += L"\r\n";
         std::wcout << avec_str;
     }

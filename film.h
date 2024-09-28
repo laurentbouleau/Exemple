@@ -79,7 +79,8 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
-    void Print_Avec();
+    const void Print_Avec();
+    const void Print_Avec_etc();
     const void Print_Dates();
     const void Print_Date_de_Reprise();
     const void Print_Date_de_Sortie();
@@ -130,6 +131,7 @@ private:
 
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
+    bool affichage_avec_etc_actif = true;
     bool affichage_catalogue_actif = true;
     bool affichage_date_de_reprise_actif = true;
     bool affichage_date_de_sortie_actif = true;
