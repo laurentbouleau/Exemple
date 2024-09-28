@@ -749,7 +749,7 @@ const void Film::Print_Avec_etc()
         int i = 0;
         for (auto&& [nom, role] : m_avec)
         {
-            if (nom == L"…" || nom == L"..." || nom == L".")
+            if (nom == L"…" || nom == L"...")
                 break;
             if (i < m_avec.size() && nom != L"")
                 avec_str += nom;
