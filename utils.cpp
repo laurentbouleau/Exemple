@@ -197,24 +197,24 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
     {
         if(converti[0] != converti.length())
         {
-            if (converti[0] == L'.' && converti[1] == L'.' && converti[2] == L'.')
+            std::wsmatch match = *it;
+            if (match[0] == L"...")
             {
                 clevaleurs.push_back(std::make_pair(L"…", L""));
                 return clevaleurs;
             }
-            if (converti[0] == L'…')
+            if (match[0] == L'…')
             {
                 clevaleurs.push_back(std::make_pair(L"…", L""));
                 return clevaleurs;
             }
-            if (converti[0] == L'…')
+            if (match[0] == match[1])
             {
-                clevaleurs.push_back(std::make_pair(L"…", L""));
-                return clevaleurs;
+                std::wstring nom = match[1].str();
+                clevaleurs.push_back(std::make_pair(nom, L""));
             }
             if (converti.size() != 0)
             {
-                std::wsmatch match = *it;
                 std::wstring nom = match[1].str();
                 std::wstring role = match[2].str();
                 clevaleurs.push_back(std::make_pair(nom, role));
