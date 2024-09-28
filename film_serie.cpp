@@ -411,7 +411,7 @@ void initialiser_Avec(fs::path const& cheminFichier, std::vector<std::pair<std::
 {
     auto nomFichier = cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    m_avec = lire_paireCleValeur_depuisFichierTxt2(cheminFichier.wstring(), L" : ");
+    m_avec = lire_paireCleValeur_depuisFichierTxt(cheminFichier.wstring());
     assert((m_avec.size() != 0));
 }
 

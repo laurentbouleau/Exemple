@@ -629,7 +629,7 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    m_soundtrack = lire_paireCleValeur_depuisFichierTxt(nomFichier, L" : ");
+    m_soundtrack = lire_paireCleValeur_depuisFichierTxt(nomFichier);
     assert((m_soundtrack.size() != 0));
 }
 

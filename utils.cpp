@@ -84,12 +84,11 @@ std::string wstr_to_u8(std::wstring uneWString)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier,                       #
-// #                                                                                              std::wstring separeteur)                              #
+// # const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier)                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur)
+const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier)
 {
     std::string contenuFichier{ u8"" };
     std::vector<std::pair<std::wstring, std::wstring>> clevaleurs;
@@ -110,119 +109,38 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
     wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convertiseur;
     std::wstring converti = convertiseur.from_bytes(contenuFichier);
     rtrim(converti);
-    converti += L'\n';/*L"\r\n"*/;
 
-    std::size_t pos = converti.length();
-
-    if (pos == std::wstring::npos)
-        return clevaleurs;
-
-    std::size_t pos2 = 0;
-    while (pos = converti.find(L"\n"/*L"\r\n"*/))
+    std::wregex line_format_rg{ L"^(?:(?:(.+?) : (.+))|(?:(.+?) : )|(?: : (.+))|(\\.\\.\\.|…)|(.+))$" };
+    const auto etc = L"…";
+    const auto x_zero = L"";
+    for (std::wsregex_iterator it{ converti.begin(), converti.end(), line_format_rg }, end{}; it != end; ++it) 
     {
-        if (converti[0] != converti.length())
+        auto entry = *it;
+        if (entry[5].matched)
         {
-            pos2 = converti.find(L"...");
-            if (pos2 != std::wstring::npos && converti[0] == L'.' && converti[1] == L'.' && converti[2] == L'.')
-            {
-                clevaleurs.push_back(std::make_pair(L"…", L""));
-                return clevaleurs;
-            }
-            pos2 = converti.find(L"…");
-            if (pos2 != std::wstring::npos && converti[0] == L'…')
-            {
-                clevaleurs.push_back(std::make_pair(L"…", L""));
-                return clevaleurs;
-            }
-            pos2 = converti.find(L".");
-            if (pos2 != std::wstring::npos && converti[0] == L'…')
-            {
-                clevaleurs.push_back(std::make_pair(L"…", L""));
-                return clevaleurs;
-            }
-            pos2 = converti.find(separeteur);
-            if (pos2 == std::wstring::npos && pos != std::wstring::npos)
-            {
-                clevaleurs.push_back(std::make_pair(converti.substr(0, pos - 1), L""));
-            }
-            else if (pos2 == 0)
-            {
-                clevaleurs.push_back(std::make_pair(L"", converti.substr(3, (pos - 1) - 2)));
-            }
-            else if (pos > pos2)
-            {
-                clevaleurs.push_back(std::make_pair(converti.substr(0, pos2), converti.substr(pos2 + 3, pos - (pos2 + 3))));
-            }
-            else
-            {
-                break;
-            }
-            converti = converti.substr(pos + 1);
-        }
-        else
+            clevaleurs.push_back(std::make_pair(etc, x_zero));
             break;
-    }
-    return clevaleurs;
-}
-const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt2(std::wstring const& nomFichier, std::wstring separeteur)
-{
-    std::string contenuFichier{ u8"" };
-    std::vector<std::pair<std::wstring, std::wstring>> clevaleurs;
-
-    ifstream fichier{ nomFichier };
-    if (!fichier)
-    {
-        throw std::runtime_error("Fichier impossible à ouvrir.");
-    }
-
-    contenuFichier = std::string(istreambuf_iterator<char>{fichier}, {});
-
-    if (contenuFichier == u8"")
-    {
-        throw std::runtime_error("Le fichier '" + wstr_to_u8(nomFichier) + "' est vide.");
-    }
-
-    wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convertiseur;
-    std::wstring converti = convertiseur.from_bytes(contenuFichier);
-    rtrim(converti);
-    converti += L'\n';/*L"\r\n"*/;
-
-    std::size_t pos = converti.length();
-
-    if (pos == std::wstring::npos)
-        return clevaleurs;
-    
-    std::wregex line_format_rg{ L"^(?:(?:(.+?) : (.+))|(?:(.+?) : )|(?: : (.+))|(.+))$" };
-    for (std::wsregex_iterator it{ converti.begin(), converti.end(), line_format_rg }, end{}; it != end; ++it)
-    {
-        if(converti[0] != converti.length())
+        }
+        else if (entry[1].matched)
         {
-            std::wsmatch match = *it;
-            if (match[0] == L"...")
-            {
-                clevaleurs.push_back(std::make_pair(L"…", L""));
-                return clevaleurs;
-            }
-            if (match[0] == L'…')
-            {
-                clevaleurs.push_back(std::make_pair(L"…", L""));
-                return clevaleurs;
-            }
-            if (match[0] == match[1])
-            {
-                std::wstring nom = match[1].str();
-                clevaleurs.push_back(std::make_pair(nom, L""));
-            }
-            if (converti.size() != 0)
-            {
-                std::wstring nom = match[1].str();
-                std::wstring role = match[2].str();
-                clevaleurs.push_back(std::make_pair(nom, role));
-            }
-            else
-            {
-                break;
-            }
+            std::wstring nom = entry[1].str();
+            std::wstring role = entry[2].str();
+            clevaleurs.push_back(std::make_pair(nom, role));
+        }
+        else if (entry[3].matched)
+        {
+            std::wstring nom = entry[3].str();
+            clevaleurs.push_back(std::make_pair(nom, x_zero));
+        }
+        else if (entry[4].matched)
+        {
+            std::wstring role = entry[4].str();
+            clevaleurs.push_back(std::make_pair(x_zero, role));
+        }
+        else if (entry[6].matched)
+        {
+            std::wstring nom = entry[6].str();
+            clevaleurs.push_back(std::make_pair(nom, x_zero));
         }
     }
     return clevaleurs;
