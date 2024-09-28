@@ -265,6 +265,7 @@ private:
     const void Print_Saisons();
  
     //
+    const void Print_Avec_etc();
     const void Print_Chaine();
     const void Print_Creee_par();
     const void Print_En_relation_avec();
@@ -302,6 +303,7 @@ private:
     bool affichage_annees_actif = true;
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
+    bool affichage_avec_etc_actif = true;
     bool affichage_chaine_actif = true;
     bool affichage_catalogue_actif = true;
     bool affichage_creee_par_actif = true;

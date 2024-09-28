@@ -700,7 +700,7 @@ const void Film::Print()
 
 const void Film::Print_Avec()
 {
-    if (affichage_avec_etc_actif && m_avec.size())
+    if (affichage_avec_actif && m_avec.size())
     {
         std::wstring avec_str = m_keyColor[0] + L"Avec : " + m_valuesColor;
         bool found = false;

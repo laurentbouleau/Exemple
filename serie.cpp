@@ -1495,6 +1495,8 @@ const void Serie::Print()
     Print_Genres(m_genre, affichage_genres_actif, m_sous_genre, affichage_sous_genre_actif, m_keyColor[0], m_valuesColor);
     // En relation avec
     Print_En_relation_avec();
+    // Avec etc
+    Print_Avec_etc();
     // Nationalité(s)
     Print_Nationalites(m_nationalite, affichage_nationalite_actif, m_keyColor[0], m_valuesColor);
     // Image(s)
@@ -1506,6 +1508,34 @@ const void Serie::Print()
     std::wcout << L"\r\n";
     // Saison(s)
     Print_Saisons();
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Serie::Print_Avec_etc()                                                                                                                 #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Serie::Print_Avec_etc()
+{
+    if (affichage_avec_etc_actif && saisons.back().m_avec.size())
+    {
+        std::wstring avec_str = m_keyColor[0] + L"Avec : " + m_valuesColor;
+        int i = 0;
+        for (auto&& [nom, role] : saisons.back().m_avec)
+        {
+            if (nom == L"…" || nom == L"...")
+                break;
+            if (i < saisons.back().m_avec.size() && nom != L"")
+                avec_str += nom;
+            i++;
+            if (i > 2)
+                break;
+            avec_str += m_keyColor[0] + L", " + m_valuesColor;
+        }
+        avec_str += L"\r\n";
+        std::wcout << avec_str;
+    }
 }
 
 // ######################################################################################################################################################
