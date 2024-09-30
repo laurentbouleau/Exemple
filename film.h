@@ -62,7 +62,7 @@ class Film
 public:
     Film(std::filesystem::path racine);
      
-    void get_Pernson(const Person& p);
+    void get_Pernson(Person& p);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Date_de_reprise(std::filesystem::path const& cheminFichier);

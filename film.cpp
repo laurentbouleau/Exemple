@@ -535,7 +535,7 @@ void Film::initialiser_Distributeur(fs::path const& cheminFichier)
     assert((m_distributeur.size() != 0));
 }
 
-void Film::get_Pernson(const Person& p)
+void Film::get_Pernson(Person& p)
 {
     m_h = p.m_h;
     m_min = p.m_min;
