@@ -148,6 +148,79 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier,                       #
+// #                                                                                              std::wstring separeteur_pattern)                      #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier, std::wstring separeteur_pattern)
+{
+    std::string contenuFichier{ u8"" };
+    std::vector<std::pair<std::wstring, std::wstring>> clevaleurs;
+
+    ifstream fichier{ nomFichier };
+    if (!fichier)
+    {
+        throw std::runtime_error("Fichier impossible à ouvrir.");
+    }
+
+    contenuFichier = std::string(istreambuf_iterator<char>{fichier}, {});
+
+    if (contenuFichier == u8"")
+    {
+        throw std::runtime_error("Le fichier '" + wstr_to_u8(nomFichier) + "' est vide.");
+    }
+
+    wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convertiseur;
+    std::wstring converti = convertiseur.from_bytes(contenuFichier);
+    rtrim(converti);
+    converti += L'\n';
+
+    std::size_t pos = converti.length();
+
+    if (pos == std::wstring::npos)
+        return clevaleurs;
+
+    const std::wregex line_format_rg{ L"^(.+?)?((" + separeteur_pattern + L")(.*))|(…|\\.\\.\\.)|(.+)$" };
+
+    for (std::wsregex_iterator it{ converti.begin(), converti.end(), line_format_rg }, end{}; it != end; ++it) {
+        auto entry = *it;
+        if (entry[5].matched)
+        {
+            clevaleurs.push_back(std::make_pair(L"…", L""));
+        }
+        else if (entry[1].matched)
+        {
+            if (entry[4].matched)
+            {
+                clevaleurs.push_back(std::make_pair(entry[1].str(), entry[4].str()));
+            }
+            else
+            {
+                clevaleurs.push_back(std::make_pair(entry[1].str(), L""));
+            }
+        }
+        else
+        {
+            if (entry[4].matched)
+            {
+                clevaleurs.push_back(std::make_pair(L"", entry[4].str()));
+            }
+            else
+            {
+                if (entry[6].matched)
+                {
+                    clevaleurs.push_back(std::make_pair(entry[6].str(), L""));
+                }
+            }
+        }
+    }
+
+    return clevaleurs;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # const std::vector<std::wstring> lire_fichierTxt(std::wstring const& nomFichier, std::vector<std::wstring> separeteurs)                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################

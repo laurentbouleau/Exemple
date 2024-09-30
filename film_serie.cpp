@@ -592,27 +592,27 @@ std::wstring recuperer_SJ(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_catalogue, bool affichage_catalogue_actif,                             #
-// #                      std::wstring& keyColor, std::wstring& m_valuesColor)                                                                          #
+// # void Print_Catalogue(const std::wstring sur, std::vector<std::wstring>& catalogue, bool affichage_catalogue_actif,                                 #
+// #                      std::wstring& keyColor, std::wstring& valuesColor)                                                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_catalogue, bool affichage_catalogue_actif, std::wstring& keyColor, std::wstring& m_valuesColor)
+void Print_Catalogue(const std::wstring sur, std::vector<std::wstring>& catalogue, bool affichage_catalogue_actif, std::wstring& keyColor, std::wstring& valuesColor)
 {
     // Sur == m_sur ???
-    std::wstring sur = L"";
+    std::wstring sur_str = L"";
     if (affichage_catalogue_actif)
     {
-        for (auto/*&*/ c : m_catalogue)
+        for (auto c : catalogue)
         {
-            if (m_sur == c)
+            if (sur == c)
             {
-                sur = m_sur;
+                sur_str = sur;
                 break;
             }
         }
-        std::wstring sur_str;
-        for (auto c : m_catalogue)
+        //std::wstring sur_str;
+        for (auto c : catalogue)
         {
             if (c == sur)
             {
@@ -620,20 +620,10 @@ void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_cata
             }
             else
             {
-                sur_str += keyColor + c + L" : " + m_valuesColor + L"Oui" + keyColor + L" !" + m_valuesColor + L"\r\n";
+                sur_str += keyColor + c + L" : " + valuesColor + L"Oui" + keyColor + L" !" + valuesColor + L"\r\n";
             }
         }
         std::wcout << sur_str;
-        /*if (!m_netflix_ok_ou_non)
-        {
-            std::wcout << keyColor << L"Netflix : " << m_valuesColor << L"Oui" << keyColor << L" !" << m_valuesColor << L"\r\n";
-            //found = true;
-        }
-        if (!m_disney_ok_ou_non)
-        {
-            std::wcout << keyColor << L"Disney : " << m_valuesColor << L"Oui" << keyColor << L" !" << m_valuesColor << L"\r\n";
-            //found = true;
-        }*/
     }
 }
 

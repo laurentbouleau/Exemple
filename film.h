@@ -38,11 +38,11 @@ extern const std::vector<std::wstring> Nationalite;
 
 struct Person;
 struct DateRecord;
-struct InfosVisionnage_film;
+struct SequenceVisionnage_film;
 
-struct InfosVisionnage_film
+struct SequenceVisionnage_film
 {
-    InfosVisionnage_film(std::filesystem::path const& m_cheminFichier);
+    SequenceVisionnage_film(std::filesystem::path const& m_cheminFichier);
     std::filesystem::path m_cheminFichier;
 
     static const std::wstring c_filenameFormat;
@@ -96,7 +96,7 @@ private:
     std::wstring Print_Note() const;
     const void Print_Soundtracks();
 
-    std::vector<InfosVisionnage_film>dates{};
+    std::vector<SequenceVisionnage_film>dates{};
     std::filesystem::path racine;
 
     std::wstring m_h= L"h";
@@ -131,7 +131,7 @@ private:
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
 
-    std::vector<InfosVisionnage_film> m_visionnages;
+    std::vector<SequenceVisionnage_film> m_visionnages;
 
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
