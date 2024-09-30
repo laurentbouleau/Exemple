@@ -535,6 +535,14 @@ void Film::initialiser_Distributeur(fs::path const& cheminFichier)
     assert((m_distributeur.size() != 0));
 }
 
+void Film::get_Pernson(const Person& p)
+{
+    m_h = p.m_h;
+    m_min = p.m_min;
+    m_keyColor = p.m_keyColor;
+    m_valuesColor = p.m_valuesColor;
+}
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Film::initialiser_Par(fs::path const& cheminFichier)                                                                                          #
@@ -737,26 +745,31 @@ const void Film::Print_Avec()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Avec_etc()                                                                                                                  #
+// # void Film::Print_Avec_etc()                                                                                                                  #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Avec_etc()
+void Film::Print_Avec_etc()
 {
-    if (affichage_avec_etc_actif && m_avec.size())
+    if (affichage_avec_etc_actif && m_avec.size() > 0)
     {
         std::wstring avec_str = m_keyColor[0] + L"Avec : " + m_valuesColor;
-        int i = 0;
+        int item_count = 0;
         for (auto&& [nom, role] : m_avec)
         {
-            if (nom == L"…" || nom == L"...")
+            if (nom == L"…")
                 break;
-            if (i < m_avec.size() && nom != L"")
+            if (nom != L"")
+            {
+                if (item_count > 0)
+                {
+                    avec_str += m_keyColor[0] + L", " + m_valuesColor;
+                }
                 avec_str += nom;
-            i++;
-            if (i > 2)
-                break;
-            avec_str += m_keyColor[0] + L", " + m_valuesColor;
+                item_count++;
+                if (item_count > 2)
+                    break;
+            }
         }
         avec_str += L"\r\n";
         std::wcout << avec_str;

@@ -112,13 +112,13 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
 
     std::wregex line_format_rg{ L"^(?:(?:(.+?) : (.+))|(?:(.+?) : )|(?: : (.+))|(\\.\\.\\.|…)|(.+))$" };
     const auto etc = L"…";
-    const auto x_zero = L"";
+    const auto empty_string = L"";
     for (std::wsregex_iterator it{ converti.begin(), converti.end(), line_format_rg }, end{}; it != end; ++it) 
     {
         auto entry = *it;
         if (entry[5].matched)
         {
-            clevaleurs.push_back(std::make_pair(etc, x_zero));
+            clevaleurs.push_back(std::make_pair(etc, empty_string));
             break;
         }
         else if (entry[1].matched)
@@ -130,17 +130,17 @@ const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depu
         else if (entry[3].matched)
         {
             std::wstring nom = entry[3].str();
-            clevaleurs.push_back(std::make_pair(nom, x_zero));
+            clevaleurs.push_back(std::make_pair(nom, empty_string));
         }
         else if (entry[4].matched)
         {
             std::wstring role = entry[4].str();
-            clevaleurs.push_back(std::make_pair(x_zero, role));
+            clevaleurs.push_back(std::make_pair(empty_string, role));
         }
         else if (entry[6].matched)
         {
             std::wstring nom = entry[6].str();
-            clevaleurs.push_back(std::make_pair(nom, x_zero));
+            clevaleurs.push_back(std::make_pair(nom, empty_string));
         }
     }
     return clevaleurs;

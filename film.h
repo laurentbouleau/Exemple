@@ -30,11 +30,13 @@
 
 #include <filesystem> // C++17 standard header file name
 
+
 extern const std::vector<std::wstring> Genre;
 extern const std::vector<std::wstring> Sur;
 extern const std::vector<std::wstring> Sous_Genre;
 extern const std::vector<std::wstring> Nationalite;
 
+struct Person;
 struct DateRecord;
 struct InfosVisionnage_film;
 
@@ -59,6 +61,8 @@ class Film
 {
 public:
     Film(std::filesystem::path racine);
+     
+    void get_Pernson(const Person& p);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Date_de_reprise(std::filesystem::path const& cheminFichier);
@@ -80,7 +84,7 @@ public:
 
 private:
     const void Print_Avec();
-    const void Print_Avec_etc();
+    void Print_Avec_etc();
     const void Print_Dates();
     const void Print_Date_de_Reprise();
     const void Print_Date_de_Sortie();
@@ -95,10 +99,10 @@ private:
     std::vector<InfosVisionnage_film>dates{};
     std::filesystem::path racine;
 
-    std::wstring m_h = L"h";
-    std::wstring m_min = L"min";
+    std::wstring m_h= L"h";
+    std::wstring m_min= L"min";
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
