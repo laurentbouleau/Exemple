@@ -1639,7 +1639,6 @@ void Serie::Print_Header() const
                     else if (m_sur == L"Netflix")
                     {
                         sur_str += L" Netflix " + m_keyColor[1] + L": " + m_valuesColor + m_netflix_sj;
-
                     }
                     else
                     {
@@ -1649,7 +1648,7 @@ void Serie::Print_Header() const
             }
         }
         // x signalétique jeunesse
-        if (affichage_x_sj_actif && m_sur == L"")
+        if (affichage_x_sj_actif && (m_sur != L"Disney+" || m_sur != L"Netflix"))
         {
             // Disney+ SJ
             if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
