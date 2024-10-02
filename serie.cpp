@@ -1304,22 +1304,6 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion() const
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*std::wstring Serie::format_Annees() const
-{
-    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
-    {
-        return m_keyColor[0] + L" [" + m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + m_keyColor[0] + L']' + m_valuesColor;
-    }
-    else if (m_f_anneesProduction.first)
-    {
-        return m_keyColor[0] + L" [" + m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[0] + L']' + m_valuesColor;
-    }
-    else
-    {
-        std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
-        return m_keyColor[0] + L" [" + m_valuesColor + std::to_wstring(anneesDiffusion.first) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(anneesDiffusion.second) + m_keyColor[0] + L']' + m_valuesColor;
-    }
-}*/
 std::wstring Serie::format_Annees() const
 {
     if (m_f_anneesProduction.first && m_f_anneesProduction.second)

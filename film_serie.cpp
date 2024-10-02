@@ -599,32 +599,15 @@ std::wstring recuperer_SJ(fs::path const& cheminFichier)
 
 void Print_Catalogue(const std::wstring sur, std::vector<std::wstring>& catalogue, bool affichage_catalogue_actif, std::wstring& keyColor, std::wstring& valuesColor)
 {
-    // Sur == m_sur ???
-    std::wstring sur_str = L"";
-    if (affichage_catalogue_actif)
+    std::wstring sur_str;
+    for (auto c : catalogue)
     {
-        for (auto c : catalogue)
+        if (c != sur)
         {
-            if (sur == c)
-            {
-                sur_str = sur;
-                break;
-            }
+            sur_str += keyColor + c + L" : " + valuesColor + L"Oui" + keyColor + L" !" + valuesColor + L"\r\n";
         }
-        //std::wstring sur_str;
-        for (auto c : catalogue)
-        {
-            if (c == sur)
-            {
-                continue;
-            }
-            else
-            {
-                sur_str += keyColor + c + L" : " + valuesColor + L"Oui" + keyColor + L" !" + valuesColor + L"\r\n";
-            }
-        }
-        std::wcout << sur_str;
     }
+    std::wcout << sur_str;
 }
 
 // ######################################################################################################################################################
