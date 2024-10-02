@@ -1308,16 +1308,16 @@ std::wstring Serie::format_Annees() const
 {
     if (m_f_anneesProduction.first && m_f_anneesProduction.second)
     {
-        return m_keyColor[0] + L" [" + m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(m_f_anneesProduction.second.value()) + m_keyColor[0] + L']' + m_valuesColor;
+        return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(m_f_anneesProduction.second.value());
     }
     else if (m_f_anneesProduction.first)
     {
-        return m_keyColor[0] + L" [" + m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-' + m_keyColor[0] + L']' + m_valuesColor;
+        return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-';
     }
     else
     {
         std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
-        return m_keyColor[0] + L" [" + m_valuesColor + std::to_wstring(anneesDiffusion.first) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(anneesDiffusion.second) + m_keyColor[0] + L']' + m_valuesColor;
+        return std::to_wstring(anneesDiffusion.first) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(anneesDiffusion.second);
     }
 }
 // ######################################################################################################################################################
@@ -1610,8 +1610,10 @@ void Serie::Print_Header() const
     if (affichage_titres_actif)
     {
         std::wstring titres_str;
+        std::wstring crochet_ouvrant_str = m_keyColor[0] + L" [" + m_valuesColor;
         std::wstring annees_str;
         std::wstring sur_str;
+        std::wstring crochet_fermant_str = m_keyColor[0] + L"]" + m_valuesColor;
         std::wstring x_sj_str;
         std::wstring sj_str;
         std::wstring duree_str;
@@ -1624,26 +1626,26 @@ void Serie::Print_Header() const
         if (affichage_annees_actif)
         {
             annees_str = format_Annees();
-        }
-        // sur
-        if (affichage_sur_actif)
-        {
-            if (m_sur == L"Disney+" || m_sur == L"Netflix")
+            // sur
+            if (affichage_sur_actif)
             {
-                sur_str += m_keyColor[0] + L" [" + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor;
-                if (m_sur == L"Disney+")
+                if (m_sur == L"Disney+" || m_sur == L"Netflix" || m_sur.size() != 0)
                 {
-                    sur_str += L"Disney+ " + m_keyColor[1] + L": " + m_valuesColor + m_disney_sj;
+                    sur_str += m_keyColor[0] + L' ' + m_valuesColor + m_keyColor[1] + L"sur" + m_valuesColor;
+                    if (m_sur == L"Disney+")
+                    {
+                        sur_str += L" Disney+ " + m_keyColor[1] + L": " + m_valuesColor + m_disney_sj;
+                    }
+                    else if (m_sur == L"Netflix")
+                    {
+                        sur_str += L" Netflix " + m_keyColor[1] + L": " + m_valuesColor + m_netflix_sj;
+
+                    }
+                    else
+                    {
+                        sur_str += L' ' + m_sur;
+                    }
                 }
-                else
-                {
-                    sur_str += L"Netflix " + m_keyColor[1] + L": " + m_valuesColor + m_netflix_sj;
-                }
-                sur_str += m_keyColor[0] + L']' + m_valuesColor;
-            }
-            else
-            {
-                sur_str += m_keyColor[0] + L" [" + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + m_sur + m_keyColor[0] + L']' + m_valuesColor;
             }
         }
         // x signalétique jeunesse
@@ -1668,7 +1670,7 @@ void Serie::Print_Header() const
         if (affichage_note_actif)
             note_str += calcul_Note_Affichage();
 
-        std::wcout << titres_str << annees_str << sur_str << x_sj_str << sj_str << duree_str << note_str << std::endl;
+        std::wcout << titres_str << crochet_ouvrant_str << annees_str << sur_str << crochet_fermant_str << x_sj_str << sj_str << duree_str << note_str << std::endl;
     }
 }
 
