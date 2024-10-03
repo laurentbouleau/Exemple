@@ -535,14 +535,6 @@ void Film::initialiser_Distributeur(fs::path const& cheminFichier)
     assert((m_distributeur.size() != 0));
 }
 
-void Film::get_Pernson(Person& p)
-{
-    m_h = p.m_h;
-    m_min = p.m_min;
-    m_keyColor = p.m_keyColor;
-    m_valuesColor = p.m_valuesColor;
-}
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Film::initialiser_Par(fs::path const& cheminFichier)                                                                                          #
@@ -654,6 +646,14 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
     m_titres = fusionner_Titres(m_titres, std::get<0>(res));
     m_duree = std::get<1>(res) ? std::get<1>(res).value() : -1;
     m_resume = std::get<2>(res);
+}
+
+void Film::set_Person(Person& p)
+{
+    m_h = p.m_h;
+    m_min = p.m_min;
+    m_keyColor = p.m_keyColor;
+    m_valuesColor = p.m_valuesColor;
 }
 
 // ######################################################################################################################################################
