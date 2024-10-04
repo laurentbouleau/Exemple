@@ -101,8 +101,6 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     const int filename_someFlag_index = filename_date_day_day_index + 2;
     const int filename_stream_index = filename_someFlag_index + 2;
 
-    //set_Person(*this);
-
     auto nomFichier = m_cheminFichier.wstring();
 
     assert(nomFichier.length() > 0 && L"Nom de fichier Episode vide");
@@ -199,8 +197,7 @@ void SequenceVisionnage_film::set_Person(Person& person)
     m_keyColor = person.m_keyColor;
     m_valuesColor = person.m_valuesColor;
 }
- 
- 
+
  // ######################################################################################################################################################
  // #                                                                                                                                                    #
  // # std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)                                        #
@@ -275,11 +272,11 @@ std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<Date
         dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
     //
     return dates_de_visionnage_wstr;
-
 }
 
 std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>&keyColor, std::wstring& valuesColor)
 {
+    //set_Person(person);
     m_keyColor = keyColor;
     m_valuesColor = valuesColor;
     const std::wstring date_format = L"%d" + m_keyColor[1] + L"/" + m_valuesColor + L"%m" + m_keyColor[1] + L"/" + m_valuesColor + L"%Y";
@@ -348,7 +345,6 @@ std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<Date
         dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
     //
     return dates_de_visionnage_wstr;
-
 }
 
 // ######################################################################################################################################################

@@ -42,7 +42,6 @@ struct SequenceVisionnage_film;
 
 struct SequenceVisionnage_film
 {
-    //Person person;
     SequenceVisionnage_film(std::filesystem::path const& m_cheminFichier);
     std::filesystem::path m_cheminFichier;
 
@@ -54,11 +53,9 @@ struct SequenceVisionnage_film
     //std::wstring m_min = L"min";
     std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor; // { L"\x1b[38;2;255;255;255m" }; // Blanc
-    //void Film::set_Person(Person& person)
-
+ 
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
-
 };
 
 class Film
@@ -106,7 +103,6 @@ private:
 
     std::vector<SequenceVisionnage_film>dates{};
     std::filesystem::path racine;
-
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
