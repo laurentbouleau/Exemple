@@ -1375,7 +1375,7 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
         // SJ
         if (nomFichier == L"SJ.txt")
         {
-            m_sj =  recuperer_SJ(cheminFichier);
+            m_sj = recuperer_SJ(cheminFichier);
         }
         // Titre
         if (nomFichier == L"Titre.txt")

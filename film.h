@@ -42,19 +42,23 @@ struct SequenceVisionnage_film;
 
 struct SequenceVisionnage_film
 {
+    //Person person;
     SequenceVisionnage_film(std::filesystem::path const& m_cheminFichier);
     std::filesystem::path m_cheminFichier;
 
     static const std::wstring c_filenameFormat;
 
+    void set_Person(Person& person);
+    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
+    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>&keyColor, std::wstring& valuesColor);
     //std::wstring m_min = L"min";
-    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring m_valuesColor; // { L"\x1b[38;2;255;255;255m" }; // Blanc
+    //void Film::set_Person(Person& person)
 
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
 
-    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
 };
 
 class Film
@@ -73,14 +77,17 @@ public:
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    //void set_Person(const Person& p);
-    //const Person& set_Person() const;
-    void set_Person(Person& p);
+    void set_Person(Person& person);
     const void Print();
 
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
 
+    std::wstring m_h; // = L"h";
+    std::wstring m_min; //  = L"min";
+    std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    std::wstring m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
+    
     std::vector<std::wstring> m_resume;
 
 private:
@@ -100,10 +107,6 @@ private:
     std::vector<SequenceVisionnage_film>dates{};
     std::filesystem::path racine;
 
-    std::wstring m_h= L"h";
-    std::wstring m_min= L"min";
-    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
