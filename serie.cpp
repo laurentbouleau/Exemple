@@ -1274,6 +1274,7 @@ std::wstring Serie::calcul_Titres_Affichage() const
 {
     assert(m_titres.size() != 0 && L"Nom de m_titres vide");
     assert((m_titres.size() == 1 || m_titres.size() == 3) && L"Nom de m_titres est 2");
+    assert(m_titres.size() < 4 && L"Nom de m_titres est 4 ou plus");
     std::wstring titres_str;
     if (affichage_titres_actif)
     {
