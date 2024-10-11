@@ -36,7 +36,7 @@ extern const std::vector<std::wstring> Sur;
 extern const std::vector<std::wstring> Sous_Genre;
 extern const std::vector<std::wstring> Nationalite;
 
-struct Person;
+const class Person;
 struct DateRecord;
 struct SequenceVisionnage_film;
 
@@ -47,7 +47,7 @@ struct SequenceVisionnage_film
 
     static const std::wstring c_filenameFormat;
 
-    void set_Person(Person& person);
+    //void set_Person(const Person& person);
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>&keyColor, std::wstring& valuesColor);
     //std::wstring m_min = L"min";
@@ -62,7 +62,7 @@ class Film
 {
 public:
     Film(std::filesystem::path racine);
-     
+
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
     void initialiser_Date_de_reprise(std::filesystem::path const& cheminFichier);
     void initialiser_Date_de_sortie(std::filesystem::path const& cheminFichier);
@@ -74,7 +74,7 @@ public:
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    void set_Person(Person& person);
+    void set_Person(const Person& person);
     const void Print();
 
     std::filesystem::path getRacine() { return racine; };
@@ -88,6 +88,9 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
+    //std::wstring calcul_Titres_Affichage();
+    //
+
     const void Print_Avec();
     void Print_Avec_etc();
     const void Print_Dates();

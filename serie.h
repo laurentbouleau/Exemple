@@ -251,14 +251,15 @@ public:
 private:
     //const std::wstring calculer_Annee_Debut();
     //const std::wstring calculer_Annee_Fin(std::wstring& wstr);
+    std::pair<int, int> calculer_Annees_Diffusion() const;
     std::wstring calcul_Note_Affichage() const;
+    std::wstring calcul_Titres_Affichage() const;
 
     const void corriger_Annee_Debut();// const;
     const void corriger_Annee_Fin();
 
     //const std::wstring format_Annees();
     std::wstring format_Annees() const;
-    std::pair<int, int> calculer_Annees_Diffusion() const;
     std::pair<std::optional<int>, std::optional<int>> m_f_anneesProduction;
 
     const void Print_Saison(Saison saison);

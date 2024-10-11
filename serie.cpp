@@ -1212,6 +1212,18 @@ Serie::Serie(std::filesystem::path racine)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # std::pair<int, int> Serie::calculer_Annees_Diffusion() const                                                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::pair<int, int> Serie::calculer_Annees_Diffusion() const
+{
+    //return std::make_pair(saisons[0].m_f_anneesDiffusion, saisons.back().m_f_anneesDiffusion);
+    return make_pair<int, int>(m_f_anneesProduction.first.value_or(0), m_f_anneesProduction.second.value_or(0));
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # std::wstring Serie::calcul_Note_Affichage() const                                                                                                  #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -1258,6 +1270,20 @@ std::wstring Serie::calcul_Note_Affichage() const
     return (res.length() > 0) ? L" " + res + m_valuesColor : L"";
 }
 
+std::wstring Serie::calcul_Titres_Affichage() const
+{
+    assert(m_titres.size() != 0 && L"Nom de m_titres vide");
+    assert((m_titres.size() == 1 || m_titres.size() == 3) && L"Nom de m_titres est 2");
+    std::wstring titres_str;
+    if (affichage_titres_actif)
+    {
+        titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
+        if (m_titres.size() > 1)
+            titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
+    }
+    return titres_str;
+}
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # const void Serie::corriger_Annee_Debut()                                                                                                           #
@@ -1284,18 +1310,6 @@ const void Serie::corriger_Annee_Fin()
 
     if (!m_f_anneesProduction.first || (saisons.size() > 0 && saisons.back().m_f_anneesDiffusion && m_f_anneesProduction.first > saisons.back().m_f_anneesDiffusion))
         m_f_anneesProduction.first = saisons[0].m_f_anneesDiffusion;
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # std::pair<int, int> Serie::calculer_Annees_Diffusion() const                                                                                       #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-std::pair<int, int> Serie::calculer_Annees_Diffusion() const
-{
-    //return std::make_pair(saisons[0].m_f_anneesDiffusion, saisons.back().m_f_anneesDiffusion);
-    return make_pair<int, int>(m_f_anneesProduction.first.value_or(0), m_f_anneesProduction.second.value_or(0));
 }
 
 // ######################################################################################################################################################
@@ -1609,19 +1623,21 @@ void Serie::Print_Header() const
 {
     if (affichage_titres_actif)
     {
-        std::wstring titres_str;
-        std::wstring crochet_ouvrant_str = m_keyColor[0] + L" [" + m_valuesColor;
+        //std::wstring titres_str;
+        std::wstring titres_str = calcul_Titres_Affichage();
+
+        const std::wstring crochet_ouvrant_str = m_keyColor[0] + L" [" + m_valuesColor;
         std::wstring annees_str;
         std::wstring sur_str;
-        std::wstring crochet_fermant_str = m_keyColor[0] + L"]" + m_valuesColor;
+        const std::wstring crochet_fermant_str = m_keyColor[0] + L"]" + m_valuesColor;
         std::wstring x_sj_str;
         std::wstring sj_str;
         std::wstring duree_str;
         std::wstring note_str;
 
-        titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
-        if (m_titres.size() > 1)
-            titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
+        //titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
+        //if (m_titres.size() > 1)
+        //    titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
         // Année(s)
         if (affichage_annees_actif)
         {

@@ -190,13 +190,13 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void SequenceVisionnage_film::set_Person(Person& person)
+/*void SequenceVisionnage_film::set_Person(Person& person)
 {
     ///m_h = person.m_h;
     //m_min = person.m_min;
-    m_keyColor = person.m_keyColor;
-    m_valuesColor = person.m_valuesColor;
-}
+    m_keyColor = person.s_keyColor;
+    m_valuesColor = person.s_valuesColor;
+}*/
 
  // ######################################################################################################################################################
  // #                                                                                                                                                    #
@@ -735,16 +735,16 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Film::set_Person(Person& person)                                                                                                              #
+// # void Film::set_Person(const Person& person)                                                                                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::set_Person(Person& person)
+void Film::set_Person(const Person& person)
 {
-    m_h = person.m_h;
-    m_min = person.m_min;
-    m_keyColor = person.m_keyColor;
-    m_valuesColor = person.m_valuesColor;
+    m_h = person.s_h[0].first;
+    m_min = person.s_min[0].first;
+    m_keyColor = person.s_keyColor;
+    m_valuesColor = person.s_valuesColor;
 }
 
 // ######################################################################################################################################################
@@ -985,6 +985,7 @@ void Film::Print_Header() const
     if (affichage_titres_actif)
     {
         std::wstring titres_str;
+        //std::wstring titres_str = calcul_Titres_Affichage();
         std::wstring date_en_salle_ou_sur_str;
         std::wstring x_sj_str;
         std::wstring sj_str;
