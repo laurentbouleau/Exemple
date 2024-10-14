@@ -252,7 +252,10 @@ private:
     //const std::wstring calculer_Annee_Debut();
     //const std::wstring calculer_Annee_Fin(std::wstring& wstr);
     std::pair<int, int> calculer_Annees_Diffusion() const;
+    std::wstring calcul_duree_affichage() const;
     std::wstring calcul_Note_Affichage() const;
+    std::wstring calcul_signaletique_jeunesse_affichage() const;
+    std::wstring calcul_Sur_Affichage() const;
     std::wstring calcul_Titres_Affichage() const;
 
     const void corriger_Annee_Debut();// const;
@@ -260,6 +263,7 @@ private:
 
     //const std::wstring format_Annees();
     std::wstring format_Annees() const;
+    std::wstring format_AnneesEtSur(std::wstring& annees_str, std::wstring& sur_str) const;
     std::pair<std::optional<int>, std::optional<int>> m_f_anneesProduction;
 
     const void Print_Saison(Saison saison);
@@ -271,6 +275,7 @@ private:
     const void Print_Creee_par();
     const void Print_En_relation_avec();
     void Print_Header() const;
+    void Print_Header2() const;
 
     std::filesystem::path racine;
 
@@ -324,7 +329,7 @@ private:
     bool affichage_serie_actif = true;
     bool affichage_sj_actif = true;
     bool affichage_sous_genre_actif = true;
-    bool affichage_sur_actif = true;
+    bool affichage_sur_actif = true; // 
     bool affichage_titres_actif = true;
     bool affichage_titres_originaux_actif = true;
     bool affichage_x_sj_actif = true;
