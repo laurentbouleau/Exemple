@@ -255,15 +255,16 @@ private:
     std::wstring calcul_duree_affichage() const;
     std::wstring calcul_Note_Affichage() const;
     std::wstring calcul_signaletique_jeunesse_affichage() const;
-    std::wstring calcul_Sur_Affichage() const;
+    //std::wstring calcul_Sur_Affichage() const;
+    std::pair<std::wstring, std::wstring> calcul_Sur_Affichage() const;
     std::wstring calcul_Titres_Affichage() const;
-
+    std::pair<std::wstring, std::wstring> calcul_x_signaletique_jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur_str) const;
     const void corriger_Annee_Debut();// const;
     const void corriger_Annee_Fin();
 
     //const std::wstring format_Annees();
     std::wstring format_Annees() const;
-    std::wstring format_AnneesEtSur(std::wstring& annees_str, std::wstring& sur_str) const;
+    std::wstring format_AnneesEtSur(std::wstring& annees_str, std::pair<std::wstring, std::wstring>& sur_str) const;
     std::pair<std::optional<int>, std::optional<int>> m_f_anneesProduction;
 
     const void Print_Saison(Saison saison);
