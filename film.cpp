@@ -186,7 +186,7 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
  
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void SequenceVisionnage_film::set_Person(Person& person)                                                                                                 #
+// # void SequenceVisionnage_film::set_Person(Person& person)                                                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -383,6 +383,157 @@ Film::Film(std::filesystem::path racine)
     {
         assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
     }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring Film::calcul_Date_Affichage() const                                                                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring Film::calcul_Date_Affichage() const
+{
+    std::wstring date_str;
+    if (affichage_date_actif)
+    {
+        wchar_t date_string[15];
+        std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_date);
+        date_str = date_string;
+        date_str = date_str.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor +
+                   date_str.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor +
+                   date_str.substr(6, 4);
+    }
+    return date_str;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring Film::calcul_Duree_affichage() const                                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring Film::calcul_Duree_affichage() const
+{
+    // Durée
+    std::wstring duree_str;
+    if (affichage_duree_actif)
+        duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + m_keyColor[0] + L"h" + m_valuesColor + L' ' + 
+                   std::to_wstring((m_duree - ((m_duree / (60 * 60)) * 60 * 60)) / 60) + m_keyColor[0] + L"min" + m_valuesColor;
+    return duree_str;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring Film::calcul_Signaletique_Jeunesse_affichage() const                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring Film::calcul_Signaletique_Jeunesse_affichage() const
+{
+    // SJ
+    std::wstring signaletique_jeunesse_str;
+    if (affichage_sj_actif && m_sj.length() != 0)
+        signaletique_jeunesse_str = m_keyColor[0] + L" (" + m_valuesColor + L"SJ" + m_keyColor[1] + L" : " + m_valuesColor + m_sj + m_keyColor[0] + L')' + m_valuesColor;
+    return signaletique_jeunesse_str;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::pair<std::wstring, std::wstring> Film::calcul_Sur_Affichage() const                                                                           #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::pair<std::wstring, std::wstring> Film::calcul_Sur_Affichage() const
+{
+    std::pair<std::wstring, std::wstring> sur_str;
+    // sur
+    if (affichage_sur_actif)
+    {
+        if (m_sur == L"")
+            return { L"", L"" };
+        if (m_sur == L"Disney+")
+            sur_str = { m_sur, m_disney_sj };
+        else if (m_sur == L"Netflix")
+            sur_str = { m_sur, m_netflix_sj };
+        else
+            sur_str = { m_sur, L"" };
+    }
+    return sur_str;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::pair<std::wstring, std::wstring> Film::calcul_X_Signaletique_Jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::pair<std::wstring, std::wstring> Film::calcul_X_Signaletique_Jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const
+{
+    std::pair<std::wstring, std::wstring> x_signaletique_jeunesse_str;
+    if (affichage_x_sj_actif)
+    {
+        if (affichage_disney_sj_actif)
+        {
+            if (m_disney_sj != L"" && sur.first != L"Disney+")
+                x_signaletique_jeunesse_str.first += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
+
+        }
+        // Netflix SJ
+        if (affichage_netflix_sj_actif)
+        {
+            if (m_netflix_sj != L"" && sur.first != L"Netflix")
+                x_signaletique_jeunesse_str.first += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
+        }
+    }
+    return x_signaletique_jeunesse_str;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring Film::calcul_Titres_Affichage() const                                                                                                 #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring Film::calcul_Titres_Affichage() const
+{
+    std::wstring titres_str;
+    if (affichage_titres_actif)
+    {
+        titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
+        if (m_titres.size() == 3)
+            titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
+    }
+    return titres_str;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring Film::format_DateEtSur(std::wstring date_str, std::pair<std::wstring, std::wstring>& sur_str) const                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring Film::format_DateEtSur(std::wstring date_str, std::pair<std::wstring, std::wstring>& sur_str) const
+{
+    if (!affichage_date_actif && !affichage_sur_actif)
+        return L"";
+    const std::wstring parenthese_ouvrant_str = m_keyColor[0] + L" (" + m_valuesColor;
+    const std::wstring parenthese_fermant_str = m_keyColor[0] + L")" + m_valuesColor;
+    const wchar_t espace_str = L' ';
+    std::wstring date_et_sur = parenthese_ouvrant_str;
+    if (affichage_date_actif)
+    {
+        date_et_sur += date_str;
+    }
+    if (affichage_sur_actif)
+    {
+        if (sur_str.first == L"" && sur_str.second == L"")
+            ;
+        else if (sur_str.second == L"")
+            date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str.first;
+        else
+            date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str.first + m_keyColor[1] + L" : " + m_valuesColor + sur_str.second;
+    }
+    return date_et_sur + parenthese_fermant_str;
 }
 
 // ######################################################################################################################################################
@@ -982,75 +1133,16 @@ const void Film::Print_Distributeur()
 
 void Film::Print_Header() const
 {
-    if (affichage_titres_actif)
-    {
-        std::wstring titres_str;
-        //std::wstring titres_str = calcul_Titres_Affichage();
-        std::wstring date_en_salle_ou_sur_str;
-        std::wstring x_sj_str;
-        std::wstring sj_str;
-        std::wstring duree_str;
-        std::wstring note_str;
+    std::wstring titres_str = calcul_Titres_Affichage();
+    std::wstring date_str = calcul_Date_Affichage();
+    std::pair<std::wstring, std::wstring> sur_str = calcul_Sur_Affichage();
+    std::wstring dateEtSur_str = format_DateEtSur(date_str, sur_str);
+    std::pair<std::wstring, std::wstring> x_signaletique_jeunesse_str = calcul_X_Signaletique_Jeunesse_affichage(sur_str);
+    std::wstring signaletique_jeunesse_str = calcul_Signaletique_Jeunesse_affichage();
+    std::wstring duree_str = calcul_Duree_affichage();
+    std::wstring note_str = Print_Note();
 
-        titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
-        if (m_titres.size() > 1)
-            titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
-        // Date en salle ou sur
-        if (affichage_date_en_salle_ou_sur_actif)
-        {
-            wchar_t date_string[15];
-            std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_date);
-            date_en_salle_ou_sur_str = date_string;
-            date_en_salle_ou_sur_str = m_keyColor[0] + L" (" + m_valuesColor +
-                date_en_salle_ou_sur_str.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor +
-                date_en_salle_ou_sur_str.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor +
-                date_en_salle_ou_sur_str.substr(6, 4);
-            if (affichage_sur_actif && m_sur == L"")
-            {
-                date_en_salle_ou_sur_str += m_keyColor[1] + L" en salle" + m_valuesColor;
-            }
-            else if (affichage_sur_actif && (m_sur == L"Disney+" || m_sur == L"Netflix"))
-            {
-                date_en_salle_ou_sur_str += m_keyColor[1] + L" sur " + m_valuesColor;
-                if (m_sur == L"Disney+")
-                {
-                    date_en_salle_ou_sur_str += L"Disney+ " + m_keyColor[1] + L": " + m_valuesColor + m_disney_sj;
-                }
-                else
-                {
-                    date_en_salle_ou_sur_str += L"Netflix " + m_keyColor[1] + L": " + m_valuesColor + m_netflix_sj;
-                }
-            }
-            else 
-            {
-                date_en_salle_ou_sur_str += m_sur;
-            }
-            date_en_salle_ou_sur_str += m_keyColor[0] + L')' + m_valuesColor;
-        }
-        // x signalétique jeunesse
-        if (affichage_x_sj_actif && m_sur == L"")
-        {
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                x_sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                x_sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
-        }
-        // La signalétique jeunesse
-        if (affichage_sj_actif && m_sj.length() != 0)
-            sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"SJ" + m_keyColor[1] + L" : " + m_valuesColor + m_sj + m_keyColor[0] + L')' + m_valuesColor;
-        // Durée
-        if (affichage_duree_actif)
-        {
-            duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + m_keyColor[0] + L"h" + m_valuesColor + L' ' + std::to_wstring((m_duree - ((m_duree / (60 * 60)) * 60 * 60)) / 60) + m_keyColor[0] + L"min " + m_valuesColor;
-        }
-        // Note
-        if (affichage_note_actif)
-            note_str += Print_Note();
-
-        std::wcout << titres_str << date_en_salle_ou_sur_str << x_sj_str << sj_str << duree_str << note_str << std::endl;
-    }
+    std::wcout << titres_str << dateEtSur_str << x_signaletique_jeunesse_str.first << signaletique_jeunesse_str << duree_str << note_str << std::endl;
 }
 
 // ######################################################################################################################################################

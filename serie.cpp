@@ -1224,16 +1224,16 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::wstring Serie::calcul_duree_affichage() const                                                                                                 #
+// # std::wstring Serie::calcul_Duree_affichage() const                                                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring Serie::calcul_duree_affichage() const
+std::wstring Serie::calcul_Duree_affichage() const
 {
     // Durée
     std::wstring duree_str;
     if (affichage_duree_actif)
-        duree_str = L' ' + std::to_wstring(m_duree / 60) + m_keyColor[0] + L"min " + m_valuesColor;
+        duree_str = L' ' + std::to_wstring(m_duree / 60) + m_keyColor[0] + L"min" + m_valuesColor;
     return duree_str;
 }
 
@@ -1291,11 +1291,11 @@ std::wstring Serie::calcul_Note_Affichage() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::wstring Serie::calcul_signaletique_jeunesse_affichage() const                                                                                 #
+// # std::wstring Serie::calcul_Signaletique_Jeunesse_affichage() const                                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring Serie::calcul_signaletique_jeunesse_affichage() const
+std::wstring Serie::calcul_Signaletique_Jeunesse_affichage() const
 {
     // SJ
     std::wstring signaletique_jeunesse_str;
@@ -1348,11 +1348,11 @@ std::wstring Serie::calcul_Titres_Affichage() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::pair<std::wstring, std::wstring> Serie::calcul_x_signaletique_jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const            #
+// # std::pair<std::wstring, std::wstring> Serie::calcul_X_Signaletique_Jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::pair<std::wstring, std::wstring> Serie::calcul_x_signaletique_jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const
+std::pair<std::wstring, std::wstring> Serie::calcul_X_Signaletique_Jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const
 {
     std::pair<std::wstring, std::wstring> x_signaletique_jeunesse_str;
     if (affichage_x_sj_actif)
@@ -1749,9 +1749,9 @@ void Serie::Print_Header() const
     std::wstring annees_str = format_Annees();
     std::pair<std::wstring, std::wstring> sur_str = calcul_Sur_Affichage();
     std::wstring anneesEtSur_str = format_AnneesEtSur(annees_str, sur_str);
-    std::pair<std::wstring, std::wstring> x_signaletique_jeunesse_str = calcul_x_signaletique_jeunesse_affichage(sur_str);
-    std::wstring signaletique_jeunesse_str = calcul_signaletique_jeunesse_affichage();
-    std::wstring duree_str = calcul_duree_affichage();
+    std::pair<std::wstring, std::wstring> x_signaletique_jeunesse_str = calcul_X_Signaletique_Jeunesse_affichage(sur_str);
+    std::wstring signaletique_jeunesse_str = calcul_Signaletique_Jeunesse_affichage();
+    std::wstring duree_str = calcul_Duree_affichage();
     std::wstring note_str = calcul_Note_Affichage();
 
     std::wcout << titres_str << anneesEtSur_str << x_signaletique_jeunesse_str.first << signaletique_jeunesse_str << duree_str << note_str << std::endl;

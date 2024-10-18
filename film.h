@@ -88,8 +88,14 @@ public:
     std::vector<std::wstring> m_resume;
 
 private:
-    //std::wstring calcul_Titres_Affichage();
+    std::wstring calcul_Date_Affichage() const;
+    std::wstring calcul_Duree_affichage() const;
+    std::wstring calcul_Signaletique_Jeunesse_affichage() const;
+    std::pair<std::wstring, std::wstring> calcul_Sur_Affichage() const;
+    std::wstring calcul_Titres_Affichage() const;
+    std::pair<std::wstring, std::wstring> calcul_X_Signaletique_Jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const;
     //
+    std::wstring format_DateEtSur(std::wstring date_str, std::pair<std::wstring, std::wstring>& sur_str) const;
 
     const void Print_Avec();
     void Print_Avec_etc();
@@ -140,6 +146,7 @@ private:
     bool affichage_avec_actif = true;
     bool affichage_avec_etc_actif = true;
     bool affichage_catalogue_actif = true;
+    bool affichage_date_actif{ true };
     bool affichage_date_de_reprise_actif = true;
     bool affichage_date_de_sortie_actif = true;
     bool affichage_date_en_salle_ou_sur_actif = true;
