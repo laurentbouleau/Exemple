@@ -1747,7 +1747,6 @@ void Serie::Print_Header() const
 {
     std::wstring titres_str = calcul_Titres_Affichage();
     std::wstring annees_str = format_Annees();
-    //std::wstring sur_str = calcul_Sur_Affichage();
     std::pair<std::wstring, std::wstring> sur_str = calcul_Sur_Affichage();
     std::wstring anneesEtSur_str = format_AnneesEtSur(annees_str, sur_str);
     std::pair<std::wstring, std::wstring> x_signaletique_jeunesse_str = calcul_x_signaletique_jeunesse_affichage(sur_str);
