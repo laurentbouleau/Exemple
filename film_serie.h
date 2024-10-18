@@ -53,21 +53,40 @@ void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_cata
 void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif);
 void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
-const class Person
+const class X_Person
 {
 public:
-    void Personnalisation_Affichage();
+    //void Personnalisation_Affichage();
 //private:
     // _ h _ _ min
     std::pair<bool, bool> s_espace1{ false, true };
-    std::vector<std::pair<std::wstring, std::wstring>> s_h{ {L"h", L"h"}, {L"H", L"H"}, {L"heure", L"heures"}, {L"Heure", L"Heures"}, {L"HEURE", L"HEURES"} };
+    std::vector<std::pair<std::wstring, std::wstring>> m_h{ {L"h", L"h"}, {L"H", L"H"}, {L"heure", L"heures"}, {L"Heure", L"Heures"}, {L"HEURE", L"HEURES"} };
     std::pair<bool, bool> s_espace2{ false, true };
     std::pair<bool, bool> s_espace3{ false, true };
-    std::vector<std::pair<std::wstring, std::wstring>> s_min{ {L"min", L"min"}, {L"Min", L"Min"}, {L"MIN", L"MIN"}, {L"minute", L"minutes"}, {L"Minute", L"Minutes"}, {L"MINUTE", L"MINUTES"} };
+    std::vector<std::pair<std::wstring, std::wstring>> m_min{ {L"min", L"min"}, {L"Min", L"Min"}, {L"MIN", L"MIN"}, {L"minute", L"minutes"}, {L"Minute", L"Minutes"}, {L"MINUTE", L"MINUTES"} };
 
     //std::wstring m_h = L"h";
     //std::wstring m_min = L"min";
     //                                    (bleu)         (vert)                 (rouge)                (jaune)
-    std::vector<std::wstring> s_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
-    std::wstring s_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
+    std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
+    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
+};
+
+class Person
+{
+public:
+    //void Personnalisation_Affichage();
+//private:
+    // _ h _ _ min
+    std::pair<bool, bool> m_espace1{ false, true };
+    std::pair<std::wstring, std::wstring> m_h;
+    std::pair<bool, bool> m_espace2{ false, true };
+    std::pair<bool, bool> m_espace3{ false, true };
+    std::pair<std::wstring, std::wstring> m_min;
+
+    //std::wstring m_h = L"h";
+    //std::wstring m_min = L"min";
+    //                                    (bleu)         (vert)                 (rouge)                (jaune)
+    std::vector<std::wstring> m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
+    std::wstring m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
 };

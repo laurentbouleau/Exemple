@@ -761,7 +761,7 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Person::Personnalisation_Affichage()
+/*void Person::Personnalisation_Affichage()
 {
 
-}
+}*/
