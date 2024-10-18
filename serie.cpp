@@ -1245,44 +1245,48 @@ std::wstring Serie::calcul_duree_affichage() const
 
 std::wstring Serie::calcul_Note_Affichage() const
 {
-    std::wstring res;
-
-    std::vector<double>notes;
-    for (const auto& saison : saisons)
+    if (affichage_note_actif)
     {
-        if (saison.m_note >= 0.0)
-        {
-            notes.push_back(saison.m_note);
-        }
-    }
-    if (notes.size() < 1)
-        res = m_keyColor[0] + L'(' + m_valuesColor + L"pas de note !" + m_keyColor[0] + L')';
-    else
-    {
-        double note = std::accumulate(notes.begin(), notes.end(), 0.0) / notes.size();
-        double whole, fractional;
-        fractional = std::modf(note, &whole);
+        std::wstring res;
 
-        std::wstring whole_str = wstring_format(L"%.0f", whole);
-        std::wstring fractional_tmp = wstring_format(L"%.2f", fractional);
-        std::wstring sepDecimal = fractional_tmp.substr(1, 1);
-        std::wstring fractional_str;
-        if (ends_with(fractional_tmp, L"00"))
+        std::vector<double>notes;
+        for (const auto& saison : saisons)
         {
-            fractional_str = L"";
+            if (saison.m_note >= 0.0)
+            {
+                notes.push_back(saison.m_note);
+            }
         }
-        else if (ends_with(fractional_tmp, L"0"))
-        {
-            fractional_str = fractional_tmp.substr(2, 1);
-        }
+        if (notes.size() < 1)
+            res = m_keyColor[0] + L'(' + m_valuesColor + L"pas de note !" + m_keyColor[0] + L')';
         else
         {
-            fractional_str = fractional_tmp.substr(2, 2);
-        }
+            double note = std::accumulate(notes.begin(), notes.end(), 0.0) / notes.size();
+            double whole, fractional;
+            fractional = std::modf(note, &whole);
 
-        res = whole_str + m_keyColor[1] + sepDecimal + m_valuesColor + fractional_str + m_keyColor[0] + L"/5";
+            std::wstring whole_str = wstring_format(L"%.0f", whole);
+            std::wstring fractional_tmp = wstring_format(L"%.2f", fractional);
+            std::wstring sepDecimal = fractional_tmp.substr(1, 1);
+            std::wstring fractional_str;
+            if (ends_with(fractional_tmp, L"00"))
+            {
+                fractional_str = L"";
+            }
+            else if (ends_with(fractional_tmp, L"0"))
+            {
+                fractional_str = fractional_tmp.substr(2, 1);
+            }
+            else
+            {
+                fractional_str = fractional_tmp.substr(2, 2);
+            }
+
+            res = whole_str + m_keyColor[1] + sepDecimal + m_valuesColor + fractional_str + m_keyColor[0] + L"/5";
+        }
+        return (res.length() > 0) ? L" " + res + m_valuesColor : L"";
     }
-    return (res.length() > 0) ? L" " + res + m_valuesColor : L"";
+    return L"";
 }
 
 // ######################################################################################################################################################
@@ -1750,78 +1754,8 @@ void Serie::Print_Header() const
     std::wstring signaletique_jeunesse_str = calcul_signaletique_jeunesse_affichage();
     std::wstring duree_str = calcul_duree_affichage();
     std::wstring note_str = calcul_Note_Affichage();
-    // Note
-    //if (affichage_note_actif)
-    //    note_str = calcul_Note_Affichage();
 
     std::wcout << titres_str << anneesEtSur_str << x_signaletique_jeunesse_str.first << signaletique_jeunesse_str << duree_str << note_str << std::endl;
-}
-
-void Serie::Print_Header2() const
-{
-    std::wstring titres_str = calcul_Titres_Affichage();
-    const std::wstring crochet_ouvrant_str = m_keyColor[0] + L" [" + m_valuesColor;
-    const std::wstring crochet_fermant_str = m_keyColor[0] + L"]" + m_valuesColor;
-    std::wstring annees_str = format_Annees();
-    if (affichage_titres_actif)
-    {
-        //std::wstring titres_str;
-
-        //std::wstring annees_str;
-        std::wstring sur_str;
-        std::wstring x_sj_str;
-        std::wstring sj_str;
-        std::wstring duree_str;
-        std::wstring note_str;
-
-        // Année(s)
-        if (affichage_annees_actif)
-        {
-            // sur
-            if (affichage_sur_actif)
-            {
-                if (m_sur == L"Disney+" || m_sur == L"Netflix" || m_sur.size() != 0)
-                {
-                    sur_str += m_keyColor[0] + L' ' + m_valuesColor + m_keyColor[1] + L"sur" + m_valuesColor;
-                    if (m_sur == L"Disney+")
-                    {
-                        sur_str += L" Disney+ " + m_keyColor[1] + L": " + m_valuesColor + m_disney_sj;
-                    }
-                    else if (m_sur == L"Netflix")
-                    {
-                        sur_str += L" Netflix " + m_keyColor[1] + L": " + m_valuesColor + m_netflix_sj;
-                    }
-                    else
-                    {
-                        sur_str += L' ' + m_sur;
-                    }
-                }
-            }
-        }
-        // x signalétique jeunesse
-        if (affichage_x_sj_actif && (m_sur != L"Disney+" || m_sur != L"Netflix"))
-        {
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && m_disney_sj.length() != 0)
-                x_sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && m_netflix_sj.length() != 0)
-                x_sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
-        }
-        // La signalétique jeunesse
-        if (affichage_sj_actif && m_sj.length() != 0)
-            sj_str += m_keyColor[0] + L" (" + m_valuesColor + L"SJ" + m_keyColor[1] + L" : " + m_valuesColor + m_sj + m_keyColor[0] + L')' + m_valuesColor;
-        // Durée
-        if (affichage_duree_actif)
-        {
-            duree_str = L' ' + std::to_wstring(m_duree/60) + m_keyColor[0] + L"min " + m_valuesColor;
-        }
-        // Note
-        if (affichage_note_actif)
-            note_str += calcul_Note_Affichage();
-
-        std::wcout << titres_str << crochet_ouvrant_str << annees_str << sur_str << crochet_fermant_str << x_sj_str << sj_str << duree_str << note_str << std::endl;
-    }
 }
 
 // ######################################################################################################################################################

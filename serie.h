@@ -262,7 +262,6 @@ private:
     const void corriger_Annee_Debut();// const;
     const void corriger_Annee_Fin();
 
-    //const std::wstring format_Annees();
     std::wstring format_Annees() const;
     std::wstring format_AnneesEtSur(std::wstring& annees_str, std::pair<std::wstring, std::wstring>& sur_str) const;
     std::pair<std::optional<int>, std::optional<int>> m_f_anneesProduction;
@@ -270,13 +269,11 @@ private:
     const void Print_Saison(Saison saison);
     const void Print_Saisons();
  
-    //
     void Print_Avec_etc();
     const void Print_Chaine();
     const void Print_Creee_par();
     const void Print_En_relation_avec();
     void Print_Header() const;
-    void Print_Header2() const;
 
     std::filesystem::path racine;
 
@@ -284,23 +281,20 @@ private:
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    //std::wstring m_annees; // std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
     int m_annees{};
     std::wstring m_audiodescription;
     std::vector<std::wstring> m_catalogue;
     std::wstring m_chaine;
     std::vector<std::wstring> m_creee_par;
-    //bool m_disney{ false };
     std::wstring m_disney_sj;
     std::wstring m_en_relation_avec;
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
     std::vector<std::wstring> m_nationalite;
-    //bool m_netflix{ false };
     std::wstring m_netflix_sj;
     double m_note{ 0.0 };
     std::wstring m_sj;
-    std::wstring m_sous_genre;// {};
+    std::wstring m_sous_genre;
     std::wstring m_sur;
 
     std::vector<std::wstring> m_titres;
@@ -315,14 +309,14 @@ private:
     bool affichage_catalogue_actif = true;
     bool affichage_creee_par_actif = true;
     bool affichage_disney_sj_actif = true;
-    bool affichage_duree_actif = true;
+    bool affichage_duree_actif = true;// false;
     bool affichage_episode_titre_actif = true;
     bool affichage_en_relation_avec_actif = true;
     bool affichage_image_actif = true;
     bool affichage_genres_actif = true;
     bool affichage_nationalite_actif = true;
     bool affichage_netflix_sj_actif = true;
-    bool affichage_note_actif = true;
+    bool affichage_note_actif = true;// false;
     bool affichage_resume_actif = true;
     //bool affichage_saison_actif = true;
     bool affichage_saison_date_etc_actif = true;
