@@ -73,10 +73,10 @@ public:
     //void Personnalisation_Affichage();
 //private:
     // _ h _ _ min
-    bool m_espace1;
+    bool m_espace1{ false };
     std::pair<std::wstring, std::wstring> m_h;
-    bool m_espace2;
-    bool m_espace3;
+    bool m_espace2{ false };
+    bool m_espace3{ false };
     std::pair<std::wstring, std::wstring> m_min;
 
     std::vector<std::wstring> m_keyColor;
