@@ -56,8 +56,6 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
 const class X_Person
 {
 public:
-    //void Personnalisation_Affichage();
-//private:
     // _ h _ _ min
     std::pair<bool, bool> m_espace1{ false, true };
     std::vector<std::pair<std::wstring, std::wstring>> m_h{ {L"h", L"h"}, {L"H", L"H"}, {L"heure", L"heures"}, {L"Heure", L"Heures"}, {L"HEURE", L"HEURES"} };
@@ -65,9 +63,6 @@ public:
     std::pair<bool, bool> m_espace3{ false, true };
     std::vector<std::pair<std::wstring, std::wstring>> m_min{ {L"min", L"min"}, {L"Min", L"Min"}, {L"MIN", L"MIN"}, {L"minute", L"minutes"}, {L"Minute", L"Minutes"}, {L"MINUTE", L"MINUTES"} };
 
-    //std::wstring m_h = L"h";
-    //std::wstring m_min = L"min";
-    //                                    (bleu)         (vert)                 (rouge)                (jaune)
     std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
     std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
 };
@@ -84,9 +79,6 @@ public:
     bool m_espace3;
     std::pair<std::wstring, std::wstring> m_min;
 
-    //std::wstring m_h = L"h";
-    //std::wstring m_min = L"min";
-    //                                    (bleu)         (vert)                 (rouge)                (jaune)
-    std::vector<std::wstring> m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
-    std::wstring m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
+    std::vector<std::wstring> m_keyColor;
+    std::wstring m_valuesColor;
 };
