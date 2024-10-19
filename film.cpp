@@ -419,9 +419,11 @@ std::wstring Film::calcul_Duree_affichage() const
     if (affichage_duree_actif)
         //duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + m_keyColor[0] + L"h" + m_valuesColor + L' ' + 
         //           std::to_wstring((m_duree - ((m_duree / (60 * 60)) * 60 * 60)) / 60) + m_keyColor[0] + L"min" + m_valuesColor;
-        duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + m_keyColor[0] + m_h + m_valuesColor + L' ' +
-                    std::to_wstring((m_duree - ((m_duree / (60 * 60)) * 60 * 60)) / 60) + m_keyColor[0] + m_min + m_valuesColor;
-    return duree_str;
+        //duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + m_keyColor[0] + m_h + m_valuesColor + L' ' +
+        //            std::to_wstring((m_duree - ((m_duree / (60 * 60)) * 60 * 60)) / 60) + m_keyColor[0] + m_min + m_valuesColor;
+        duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + m_keyColor[0] + (m_espace1 ? L" " : L"") + m_h.first + m_valuesColor + (m_espace2 ? L" " : L"") +
+                    std::to_wstring((m_duree - ((m_duree / (60 * 60)) * 60 * 60)) / 60) + m_keyColor[0] + (m_espace3 ? L" " : L"") + m_min.first + m_valuesColor;
+        return duree_str;
 }
 
 // ######################################################################################################################################################
@@ -894,8 +896,11 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 
 void Film::set_Person(const Person& person)
 {
-    m_h = person.m_h.first;
-    m_min = person.m_min.first;
+    m_espace1 = person.m_espace1;
+    m_h = person.m_h;
+    m_espace2 = person.m_espace2;
+    m_espace3 = person.m_espace3;
+    m_min = person.m_min;
     m_keyColor = person.m_keyColor;
     m_valuesColor = person.m_valuesColor;
 }

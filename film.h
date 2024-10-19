@@ -80,8 +80,11 @@ public:
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
 
-    std::wstring m_h; // = L"h";
-    std::wstring m_min; //  = L"min";
+    bool m_espace1{false};
+    std::pair<std::wstring, std::wstring> m_h;
+    std::pair<std::wstring, std::wstring> m_min;
+    bool m_espace2{false};
+    bool m_espace3{false};
     std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
     

@@ -59,10 +59,10 @@ public:
     //void Personnalisation_Affichage();
 //private:
     // _ h _ _ min
-    std::pair<bool, bool> s_espace1{ false, true };
+    std::pair<bool, bool> m_espace1{ false, true };
     std::vector<std::pair<std::wstring, std::wstring>> m_h{ {L"h", L"h"}, {L"H", L"H"}, {L"heure", L"heures"}, {L"Heure", L"Heures"}, {L"HEURE", L"HEURES"} };
-    std::pair<bool, bool> s_espace2{ false, true };
-    std::pair<bool, bool> s_espace3{ false, true };
+    std::pair<bool, bool> m_espace2{ false, true };
+    std::pair<bool, bool> m_espace3{ false, true };
     std::vector<std::pair<std::wstring, std::wstring>> m_min{ {L"min", L"min"}, {L"Min", L"Min"}, {L"MIN", L"MIN"}, {L"minute", L"minutes"}, {L"Minute", L"Minutes"}, {L"MINUTE", L"MINUTES"} };
 
     //std::wstring m_h = L"h";
@@ -78,10 +78,10 @@ public:
     //void Personnalisation_Affichage();
 //private:
     // _ h _ _ min
-    std::pair<bool, bool> m_espace1{ false, true };
+    bool m_espace1;
     std::pair<std::wstring, std::wstring> m_h;
-    std::pair<bool, bool> m_espace2{ false, true };
-    std::pair<bool, bool> m_espace3{ false, true };
+    bool m_espace2;
+    bool m_espace3;
     std::pair<std::wstring, std::wstring> m_min;
 
     //std::wstring m_h = L"h";
