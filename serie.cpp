@@ -1306,24 +1306,24 @@ std::wstring Serie::calcul_Signaletique_Jeunesse_affichage() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::pair<std::wstring, std::wstring> Serie::calcul_Sur_Affichage() const                                                                                       #
+// # std::wstring Serie::calcul_Sur_Affichage() const                                                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::pair<std::wstring, std::wstring> Serie::calcul_Sur_Affichage() const
+std::wstring Serie::calcul_Sur_Affichage() const
 {
-    std::pair<std::wstring, std::wstring> sur_str;
+    std::wstring sur_str;
     // sur
     if (affichage_sur_actif)
     {
         if (m_sur == L"")
-            return { L"", L"" };
+            return L"";
         if (m_sur == L"Disney+")
-            sur_str = { m_sur, m_disney_sj };
+            sur_str = m_sur;
         else if (m_sur == L"Netflix")
-            sur_str = { m_sur, m_netflix_sj };
+            sur_str = m_sur;
         else
-            sur_str = { m_sur, L""};
+            sur_str = m_sur;
     }
     return sur_str;
 }
@@ -1348,26 +1348,24 @@ std::wstring Serie::calcul_Titres_Affichage() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::pair<std::wstring, std::wstring> Serie::calcul_X_Signaletique_Jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const            #
+// # std::wstring Serie::calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur) const                                                              #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::pair<std::wstring, std::wstring> Serie::calcul_X_Signaletique_Jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const
+std::wstring Serie::calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur) const
 {
-    std::pair<std::wstring, std::wstring> x_signaletique_jeunesse_str;
+    std::wstring x_signaletique_jeunesse_str;
     if (affichage_x_sj_actif)
     {
         if (affichage_disney_sj_actif)
         {
-            if(m_disney_sj != L"" && sur.first != L"Disney+")
-                x_signaletique_jeunesse_str.first += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
-
+            if (m_disney_sj != L"" && sur != L"Disney+")
+                x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
         }
-        // Netflix SJ
         if (affichage_netflix_sj_actif)
         {
-            if(m_netflix_sj != L"" && sur.first != L"Netflix")
-               x_signaletique_jeunesse_str.first += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
+            if (m_netflix_sj != L"" && sur != L"Netflix")
+                x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
         }
     }
     return x_signaletique_jeunesse_str;
@@ -1434,7 +1432,7 @@ std::wstring Serie::format_Annees() const
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring Serie::format_AnneesEtSur(std::wstring& annees_str, std::pair<std::wstring, std::wstring>& sur_str) const
+std::wstring Serie::format_AnneesEtSur(std::wstring& annees_str, std::wstring& sur_str) const
 {
     if(!affichage_annees_actif && !affichage_sur_actif)
         return L"";
@@ -1448,12 +1446,16 @@ std::wstring Serie::format_AnneesEtSur(std::wstring& annees_str, std::pair<std::
     }
     if (affichage_sur_actif)
     {
-        if (sur_str.first == L"" && sur_str.second == L"")
+        if (sur_str == L"Disney+" && m_disney_sj.size() != 0)
+            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj;
+        else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
+            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
+        else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
+            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
+        else if (sur_str.size() != 0)
+            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str;
+        else
             ;
-        else if (sur_str.second == L"")
-            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str.first;
-        else 
-            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str.first + m_keyColor[1] + L" : " + m_valuesColor + sur_str.second;
     }
     return annees_et_sur + crochet_fermant_str;
 }
@@ -1747,14 +1749,14 @@ void Serie::Print_Header() const
 {
     std::wstring titres_str = calcul_Titres_Affichage();
     std::wstring annees_str = format_Annees();
-    std::pair<std::wstring, std::wstring> sur_str = calcul_Sur_Affichage();
+    std::wstring sur_str = calcul_Sur_Affichage();
     std::wstring anneesEtSur_str = format_AnneesEtSur(annees_str, sur_str);
-    std::pair<std::wstring, std::wstring> x_signaletique_jeunesse_str = calcul_X_Signaletique_Jeunesse_affichage(sur_str);
+    std::wstring x_signaletique_jeunesse_str = calcul_X_Signaletique_Jeunesse_affichage(sur_str);
     std::wstring signaletique_jeunesse_str = calcul_Signaletique_Jeunesse_affichage();
     std::wstring duree_str = calcul_Duree_affichage();
     std::wstring note_str = calcul_Note_Affichage();
 
-    std::wcout << titres_str << anneesEtSur_str << x_signaletique_jeunesse_str.first << signaletique_jeunesse_str << duree_str << note_str << std::endl;
+    std::wcout << titres_str << anneesEtSur_str << x_signaletique_jeunesse_str << signaletique_jeunesse_str << duree_str << note_str << std::endl;
 }
 
 // ######################################################################################################################################################

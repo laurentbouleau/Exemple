@@ -94,11 +94,11 @@ private:
     std::wstring calcul_Date_Affichage() const;
     std::wstring calcul_Duree_affichage() const;
     std::wstring calcul_Signaletique_Jeunesse_affichage() const;
-    std::pair<std::wstring, std::wstring> calcul_Sur_Affichage() const;
+    std::wstring calcul_Sur_Affichage() const;
     std::wstring calcul_Titres_Affichage() const;
-    std::pair<std::wstring, std::wstring> calcul_X_Signaletique_Jeunesse_affichage(std::pair<std::wstring, std::wstring>& sur) const;
+    std::wstring calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur) const;
     //
-    std::wstring format_DateEtSur(std::wstring date_str, std::pair<std::wstring, std::wstring>& sur_str) const;
+    std::wstring format_DateEtSur(std::wstring date_str, std::wstring& sur_str) const;
 
     const void Print_Avec();
     void Print_Avec_etc();
