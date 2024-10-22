@@ -760,8 +760,21 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
 // # void Person::Personnalisation_Affichage()                                                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
-
 /*void Person::Personnalisation_Affichage()
 {
 
 }*/
+
+//void Person::AffichagePersonnaliser(const AffichagePersonnalisation& perso)
+void Person::AffichagePersonnaliser(const X_Person& perso)
+{
+    m_espace1 = (perso.m_espace1.second ? L" " : L"");
+    m_h = perso.m_h[2];
+    m_espace2 = (perso.m_espace2.second ? L" " : L"");
+    m_espace3 = (perso.m_espace1.second ? L" " : L"");
+    m_min = perso.m_min[3];
+    m_keyColor = perso.m_keyColor;
+    m_valuesColor = perso.m_valuesColor;
+}
+
+

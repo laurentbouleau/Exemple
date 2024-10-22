@@ -414,12 +414,16 @@ std::wstring Film::calcul_Date_Affichage() const
 
 std::wstring Film::calcul_Duree_affichage() const
 {
-    // Durée
     std::wstring duree_str;
     if (affichage_duree_actif)
-        duree_str = L' ' + std::to_wstring(m_duree / (60 * 60)) + m_keyColor[0] + (m_espace1 ? L" " : L"") + m_h.first + m_valuesColor + (m_espace2 ? L" " : L"") +
-                    std::to_wstring((m_duree - ((m_duree / (60 * 60)) * 60 * 60)) / 60) + m_keyColor[0] + (m_espace3 ? L" " : L"") + m_min.first + m_valuesColor;
-        return duree_str;
+    {
+        long heures = m_duree / (60 * 60);
+        long minutes = (m_duree % (60 * 60)) / 60;
+        long secondes = m_duree % 60;
+        duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_h.first : m_h.second) + m_valuesColor + m_espace2 +
+                    std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_min.first : m_min.second) + m_valuesColor;
+    }
+    return duree_str;
 }
 
 // ######################################################################################################################################################

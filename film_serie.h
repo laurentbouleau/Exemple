@@ -53,9 +53,30 @@ void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_cata
 void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif);
 void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
+const class X_Person;
+
+class Person
+{
+public:
+    void AffichagePersonnaliser(const X_Person& perso);
+
+    //void Personnalisation_Affichage();
+//private:
+    // _ h _ _ min
+    std::wstring m_espace1;
+    std::pair<std::wstring, std::wstring> m_h;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
+    std::pair<std::wstring, std::wstring> m_min;
+
+    std::vector<std::wstring> m_keyColor;
+    std::wstring m_valuesColor;
+};
+
 const class X_Person
 {
 public:
+    //void AffichagePersonnalisation();
     // _ h _ _ min
     std::pair<bool, bool> m_espace1{ false, true };
     std::vector<std::pair<std::wstring, std::wstring>> m_h{ {L"h", L"h"}, {L"H", L"H"}, {L"heure", L"heures"}, {L"Heure", L"Heures"}, {L"HEURE", L"HEURES"} };
@@ -67,18 +88,3 @@ public:
     std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
 };
 
-class Person
-{
-public:
-    //void Personnalisation_Affichage();
-//private:
-    // _ h _ _ min
-    bool m_espace1{ false };
-    std::pair<std::wstring, std::wstring> m_h;
-    bool m_espace2{ false };
-    bool m_espace3{ false };
-    std::pair<std::wstring, std::wstring> m_min;
-
-    std::vector<std::wstring> m_keyColor;
-    std::wstring m_valuesColor;
-};
