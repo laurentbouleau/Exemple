@@ -59,7 +59,6 @@ class Person
 {
 public:
     void AffichagePersonnaliser(const X_Person& perso);
-
     //void Personnalisation_Affichage();
 //private:
     // _ h _ _ min
