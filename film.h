@@ -81,8 +81,8 @@ public:
     std::filesystem::path getFileName() { return racine.filename(); };
 
     std::wstring m_espace1;
-    std::pair<std::wstring, std::wstring> m_h;
-    std::pair<std::wstring, std::wstring> m_min;
+    std::vector<std::wstring> m_h{};
+    std::vector<std::wstring> m_min{};
     std::wstring m_espace2;
     std::wstring m_espace3;
     std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)

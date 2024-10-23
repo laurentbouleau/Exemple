@@ -63,10 +63,10 @@ public:
 //private:
     // _ h _ _ min
     std::wstring m_espace1;
-    std::pair<std::wstring, std::wstring> m_h;
+    std::vector<std::wstring> m_h{};
     std::wstring m_espace2;
     std::wstring m_espace3;
-    std::pair<std::wstring, std::wstring> m_min;
+    std::vector<std::wstring> m_min{};
 
     std::vector<std::wstring> m_keyColor;
     std::wstring m_valuesColor;
@@ -77,11 +77,20 @@ const class X_Person
 public:
     //void AffichagePersonnalisation();
     // _ h _ _ min
-    std::pair<bool, bool> m_espace1{ false, true };
-    std::vector<std::pair<std::wstring, std::wstring>> m_h{ {L"h", L"h"}, {L"H", L"H"}, {L"heure", L"heures"}, {L"Heure", L"Heures"}, {L"HEURE", L"HEURES"} };
-    std::pair<bool, bool> m_espace2{ false, true };
-    std::pair<bool, bool> m_espace3{ false, true };
-    std::vector<std::pair<std::wstring, std::wstring>> m_min{ {L"min", L"min"}, {L"Min", L"Min"}, {L"MIN", L"MIN"}, {L"minute", L"minutes"}, {L"Minute", L"Minutes"}, {L"MINUTE", L"MINUTES"} };
+    std::vector<std::wstring> m_espace1{L"", L" "};
+    std::vector<std::wstring> m_h { L"h", L"",        // 0 et 1
+                                    L"H", L"",        // 2 et 3
+                                    L"heure", L"s",   // 4 et 5
+                                    L"Heure", L"s",   // 6 et 7
+                                    L"HEURE", L"S" }; // 8 et 9
+    std::vector<std::wstring> m_espace2{ L"", L" " };
+    std::vector<std::wstring> m_espace3{ L"", L" " };
+    std::vector<std::wstring> m_min{ L"min", L"",      // 0 et 1
+                                     L"Min", L"",      // 2 et 3
+                                     L"MIN", L"",      // 4 et 5
+                                     L"minute", L"s",  // 6 et 7
+                                     L"Minute", L"s",  // 8 et 9
+                                     L"MINUTE", L"S"}; // 10 et 11
 
     std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
     std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc

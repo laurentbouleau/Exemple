@@ -420,8 +420,8 @@ std::wstring Film::calcul_Duree_affichage() const
         long heures = m_duree / (60 * 60);
         long minutes = (m_duree % (60 * 60)) / 60;
         long secondes = m_duree % 60;
-        duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_h.first : m_h.second) + m_valuesColor + m_espace2 +
-                    std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_min.first : m_min.second) + m_valuesColor;
+        duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_h[0] : m_h[0] + m_h[1]) + m_valuesColor + m_espace2 +
+            std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_min[0] : m_min[0] + m_min[1]) + m_valuesColor;
     }
     return duree_str;
 }
@@ -899,10 +899,14 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 void Film::set_Person(const Person& person)
 {
     m_espace1 = person.m_espace1;
+
     m_h = person.m_h;
+
     m_espace2 = person.m_espace2;
     m_espace3 = person.m_espace3;
+
     m_min = person.m_min;
+
     m_keyColor = person.m_keyColor;
     m_valuesColor = person.m_valuesColor;
 }
