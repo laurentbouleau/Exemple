@@ -1316,14 +1316,7 @@ std::wstring Serie::calcul_Sur_Affichage() const
     // sur
     if (affichage_sur_actif)
     {
-        if (m_sur == L"")
-            return L"";
-        if (m_sur == L"Disney+")
-            sur_str = m_sur;
-        else if (m_sur == L"Netflix")
-            sur_str = m_sur;
-        else
-            sur_str = m_sur;
+        sur_str = m_sur;
     }
     return sur_str;
 }

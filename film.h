@@ -74,7 +74,8 @@ public:
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    void set_Person(const Person& person);
+    void AffichagePersonnaliser();
+
     const void Print();
 
     std::filesystem::path getRacine() { return racine; };

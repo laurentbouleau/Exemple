@@ -103,7 +103,7 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
 
     auto nomFichier = m_cheminFichier.wstring();
 
-    assert(nomFichier.length() > 0 && L"Nom de fichier Episode vide");
+    assert(nomFichier.length() > 0 && L"Nom de fichier Film vide");
 
     auto stem = m_cheminFichier.stem().wstring();
     // prefixe ???
@@ -453,14 +453,7 @@ std::wstring Film::calcul_Sur_Affichage() const
     // sur
     if (affichage_sur_actif)
     {
-        if (m_sur == L"")
-            return L"";
-        if (m_sur == L"Disney+")
-            sur_str = m_sur;
-        else if (m_sur == L"Netflix")
-            sur_str = m_sur;
-        else
-            sur_str = m_sur;
+        sur_str = m_sur;
     }
     return sur_str;
 }
@@ -892,23 +885,43 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Film::set_Person(const Person& person)                                                                                                        #
+// # void Film::AffichagePersonnaliser()                                                                                                                #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::set_Person(const Person& person)
-{
-    m_espace1 = person.m_espace1;
+void Film::AffichagePersonnaliser()
+{  
+    const class AffichagePersonnaliser perso;
+    auto& e_1_0 = perso.m_espace1[0], & e_1_1 = perso.m_espace1[1];
+    auto& e_2_0 = perso.m_espace2[0], & e_2_1 = perso.m_espace2[1];
+    auto& e_3_0 = perso.m_espace3[0], & e_3_1 = perso.m_espace3[1];
 
-    m_h = person.m_h;
+    auto& h0 = perso.m_h[0], & h1 = perso.m_h[1];
+    auto& h2 = perso.m_h[2], & h3 = perso.m_h[3];
+    auto& h4 = perso.m_h[4], & h5 = perso.m_h[5];
+    auto& h6 = perso.m_h[6], & h7 = perso.m_h[7];
+    auto& h8 = perso.m_h[8], & h9 = perso.m_h[9];
 
-    m_espace2 = person.m_espace2;
-    m_espace3 = person.m_espace3;
+    auto& min0 = perso.m_min[0], & min1 = perso.m_min[1];
+    auto& min2 = perso.m_min[2], & min3 = perso.m_min[3];
+    auto& min4 = perso.m_min[4], & min5 = perso.m_min[5];
+    auto& min6 = perso.m_min[6], & min7 = perso.m_min[7];
+    auto& min8 = perso.m_min[8], & min9 = perso.m_min[9];
+    auto& min10 = perso.m_min[10], & min11 = perso.m_min[11];
 
-    m_min = person.m_min;
+    //
 
-    m_keyColor = person.m_keyColor;
-    m_valuesColor = person.m_valuesColor;
+    m_espace1 = e_1_1;
+
+    m_h = { h4, h5 };
+
+    m_espace2 = e_2_1;
+    m_espace3 = e_3_1;
+
+    m_min = { min6, min7 };
+
+    m_keyColor = perso.m_keyColor;
+    m_valuesColor = perso.m_valuesColor;
 }
 
 // ######################################################################################################################################################

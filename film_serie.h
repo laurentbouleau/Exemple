@@ -53,38 +53,26 @@ void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_cata
 void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif);
 void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
-const class X_Person;
+// ######################################################################################################################################################
+// ######################################################################################################################################################
 
-class Person
+const class AffichagePersonnaliser
 {
 public:
-    void AffichagePersonnaliser(const X_Person& perso);
-    //void Personnalisation_Affichage();
-//private:
-    // _ h _ _ min
-    std::wstring m_espace1;
-    std::vector<std::wstring> m_h{};
-    std::wstring m_espace2;
-    std::wstring m_espace3;
-    std::vector<std::wstring> m_min{};
-
-    std::vector<std::wstring> m_keyColor;
-    std::wstring m_valuesColor;
-};
-
-const class X_Person
-{
-public:
-    //void AffichagePersonnalisation();
-    // _ h _ _ min
+    //// _ h _ _ min
+    // _
     std::vector<std::wstring> m_espace1{L"", L" "};
+    // h
     std::vector<std::wstring> m_h { L"h", L"",        // 0 et 1
                                     L"H", L"",        // 2 et 3
                                     L"heure", L"s",   // 4 et 5
                                     L"Heure", L"s",   // 6 et 7
                                     L"HEURE", L"S" }; // 8 et 9
+    // _
     std::vector<std::wstring> m_espace2{ L"", L" " };
+    // _
     std::vector<std::wstring> m_espace3{ L"", L" " };
+    // min
     std::vector<std::wstring> m_min{ L"min", L"",      // 0 et 1
                                      L"Min", L"",      // 2 et 3
                                      L"MIN", L"",      // 4 et 5
