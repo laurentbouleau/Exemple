@@ -83,7 +83,11 @@ public:
 
     std::wstring m_espace1;
     std::vector<std::wstring> m_h{};
+    std::wstring m_labelHeureSingulier;
+    std::wstring m_labelHeurePluriel;
     std::vector<std::wstring> m_min{};
+    std::wstring m_labelMinuteSingulier;
+    std::wstring m_labelMinutePluriel;
     std::wstring m_espace2;
     std::wstring m_espace3;
     std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)

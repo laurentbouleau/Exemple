@@ -420,8 +420,11 @@ std::wstring Film::calcul_Duree_affichage() const
         long heures = m_duree / (60 * 60);
         long minutes = (m_duree % (60 * 60)) / 60;
         long secondes = m_duree % 60;
-        duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_h[0] : m_h[0] + m_h[1]) + m_valuesColor + m_espace2 +
-            std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_min[0] : m_min[0] + m_min[1]) + m_valuesColor;
+        //duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_h[0] : m_h[0] + m_h[1]) + m_valuesColor + m_espace2 +
+        //    std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_min[0] : m_min[0] + m_min[1]) + m_valuesColor;
+
+        duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeureSingulier + m_labelHeurePluriel) + m_valuesColor + m_espace2 +
+            std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinuteSingulier + m_labelMinutePluriel) + m_valuesColor;
     }
     return duree_str;
 }
@@ -914,11 +917,15 @@ void Film::AffichagePersonnaliser()
     m_espace1 = e_1_1;
 
     m_h = { h4, h5 };
+    m_labelHeureSingulier = h4;
+    m_labelHeurePluriel = h5;
 
     m_espace2 = e_2_1;
     m_espace3 = e_3_1;
 
     m_min = { min6, min7 };
+    m_labelMinuteSingulier = min6;
+    m_labelMinutePluriel = min7;
 
     m_keyColor = perso.m_keyColor;
     m_valuesColor = perso.m_valuesColor;
