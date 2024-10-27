@@ -89,6 +89,25 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     const int dates_someFlag_index_f = dates_date_day_day_index + 2;
 
     const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
+    //const std::wregex filename_format_rg = L"(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\\s(.+))?";
+    /*const std::wregex filename_format_rg = L"(((" + // Noir
+        L"([[:digit:]]{4})" + // Rouge
+        L"-" +                // Noir
+        L"([[:digit:]]{2})" + // Vert
+        L"-" +                // Noir
+        L"([[:digit:]]{2})" + // Bleu clair
+        L"|" +                // Noir
+        L"([[:digit:]]{2})" + // Rouge
+        L"-" +                // Noir
+        L"([[:digit:]]{2})" + // Vert
+        L"|" +                // Noir
+        L"([[:digit:]]{2})" + // Bleu clair
+        L")" +                // Noir 
+        L"(_?)" +             // Rouge
+        L")+" +               // Noir
+        L"(|\\s(.+)" +         // Vert
+        L")?";                // Noir
+ */
 
     //const int filename_full_match_index = 0;
     const int filename_dates_index = 0;
@@ -423,8 +442,8 @@ std::wstring Film::calcul_Duree_affichage() const
         //duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_h[0] : m_h[0] + m_h[1]) + m_valuesColor + m_espace2 +
         //    std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_min[0] : m_min[0] + m_min[1]) + m_valuesColor;
 
-        duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeureSingulier + m_labelHeurePluriel) + m_valuesColor + m_espace2 +
-            std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinuteSingulier + m_labelMinutePluriel) + m_valuesColor;
+        duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +
+            std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
     }
     return duree_str;
 }
@@ -892,7 +911,7 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::AffichagePersonnaliser()
+/*void Film::AffichagePersonnaliser()
 {  
     const class AffichagePersonnaliser perso;
     auto& e_1_0 = perso.m_espace1[0], & e_1_1 = perso.m_espace1[1];
@@ -929,6 +948,19 @@ void Film::AffichagePersonnaliser()
 
     m_keyColor = perso.m_keyColor;
     m_valuesColor = perso.m_valuesColor;
+}*/
+
+void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
+{
+    m_espace1 = perso.m_espace1;
+    m_labelHeureSingulier = perso.m_labelsHeure.first;
+    m_labelHeurePluriel = perso.m_labelsHeure.second;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
+    m_labelMinuteSingulier = perso.m_labelsMinute.first;
+    m_labelMinutePluriel = perso.m_labelsMinute.second;
+    m_keyColor = perso.m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    m_valuesColor = perso.m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
 }
 
 // ######################################################################################################################################################

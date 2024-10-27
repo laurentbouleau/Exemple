@@ -74,18 +74,17 @@ public:
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    void AffichagePersonnaliser();
-
+    void AffichagePersonnaliser(AffichagePersonnalisation perso);
     const void Print();
 
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
 
     std::wstring m_espace1;
-    std::vector<std::wstring> m_h{};
+    //std::vector<std::wstring> m_h{};
     std::wstring m_labelHeureSingulier;
     std::wstring m_labelHeurePluriel;
-    std::vector<std::wstring> m_min{};
+    //std::vector<std::wstring> m_min{};
     std::wstring m_labelMinuteSingulier;
     std::wstring m_labelMinutePluriel;
     std::wstring m_espace2;

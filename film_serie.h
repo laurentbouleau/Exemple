@@ -56,31 +56,25 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-const class AffichagePersonnaliser
+//<std::wstring, std::wstring, std::wstring, std::pair<std::wstring, std::wstring>, std::pair<std::wstring, std::wstring>, std::vector<std::wstring>, std::wstring>> 
+void getCurrentAffichagePersonnalisation();
+
+const class AffichagePersonnalisation
 {
 public:
     //// _ h _ _ min
     // _
-    std::vector<std::wstring> m_espace1{L"", L" "};
+    std::wstring m_espace1{ L" " };
     // h
-    std::vector<std::wstring> m_h { L"h", L"",        // 0 et 1
-                                    L"H", L"",        // 2 et 3
-                                    L"heure", L"s",   // 4 et 5
-                                    L"Heure", L"s",   // 6 et 7
-                                    L"HEURE", L"S" }; // 8 et 9
+    std::pair<std::wstring, std::wstring> m_labelsHeure{ L"heure", L"heures" };
     // _
-    std::vector<std::wstring> m_espace2{ L"", L" " };
+    std::wstring m_espace2{ L" " };
     // _
-    std::vector<std::wstring> m_espace3{ L"", L" " };
+    std::wstring m_espace3{ L" " };
     // min
-    std::vector<std::wstring> m_min{ L"min", L"",      // 0 et 1
-                                     L"Min", L"",      // 2 et 3
-                                     L"MIN", L"",      // 4 et 5
-                                     L"minute", L"s",  // 6 et 7
-                                     L"Minute", L"s",  // 8 et 9
-                                     L"MINUTE", L"S"}; // 10 et 11
-
+    std::pair<std::wstring, std::wstring> m_labelsMinute{ L"minute", L"minutes" };
+    //
     std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
-    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
+    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" };
 };
 
