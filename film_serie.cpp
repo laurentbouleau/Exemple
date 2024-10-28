@@ -755,8 +755,14 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
+
+AffichagePersonnalisation getCurrentAffichagePersonnalisation()
+{
+    return AffichagePersonnalisation();
+}
+
 //{ std::wstring, std::wstring, std::wstring, std::pair<std::wstring, std::wstring>, std::pair<std::wstring, std::wstring>, std::vector<std::wstring>, std::wstring > } 
-void getCurrentAffichagePersonnalisation()
+/*AffichagePersonnalisation Yyyy
 {
     const std::pair<std::wstring, std::wstring> espace1{ L"", L" " };
     // _
@@ -802,6 +808,7 @@ void getCurrentAffichagePersonnalisation()
 
     //
 
-    //return { {r_e_1_1}, {r_e_2_1}, {r_e_3_1}, r_lH_2 };
+    //eturn { {r_e_1_1}, {r_e_2_1}, {r_e_3_1}, r_lH_2 };
+    //return AffichagePersonnalisation;
 }
-
+*/

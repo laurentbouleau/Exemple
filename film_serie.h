@@ -55,13 +55,41 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
+struct Xxx
+{
+    const std::pair<std::wstring, std::wstring> espace1{ L"", L" " };
+    // _
+    const std::pair<std::wstring, std::wstring> espace2{ L"", L" " };
+    // _
+    const std::pair <std::wstring, std::wstring> espace3{ L"", L" " };
+    // h
+    std::vector<std::pair<std::wstring, std::wstring>> labelsHeure{ { L"h", L"h" },            // 0
+                                                                    { L"H", L"h" },            // 1
+                                                                    { L"heure", L"heures" },   // 2
+                                                                    { L"Heure", L"Heures" },   // 3
+                                                                    { L"HEURE", L"HEURES" } }; // 4
+
+    // min
+    std::vector<std::pair<std::wstring, std::wstring>> labelsMinute{ { L"min", L"min" },          // 0
+                                                                     { L"Min", L"Min" },          // 1
+                                                                     { L"MIN", L"MIN" },          // 2
+                                                                     { L"minute", L"minutes" },   // 3
+                                                                     { L"Minute", L"Minutes" },   // 4
+                                                                     { L"MINUTE", L"MINUTES" } }; // 5
+    //
+    std::vector<std::wstring> keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
+    std::wstring valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
+};
+
+//AffichagePersonnalisation getCurrentAffichagePersonnalisation();
 
 //<std::wstring, std::wstring, std::wstring, std::pair<std::wstring, std::wstring>, std::pair<std::wstring, std::wstring>, std::vector<std::wstring>, std::wstring>> 
-void getCurrentAffichagePersonnalisation();
+//void getCurrentAffichagePersonnalisation();
 
-const class AffichagePersonnalisation
+class AffichagePersonnalisation
 {
 public:
+    AffichagePersonnalisation getCurrentAffichagePersonnalisation();
     //// _ h _ _ min
     // _
     std::wstring m_espace1{ L" " };
