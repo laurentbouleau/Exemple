@@ -50,6 +50,20 @@ using DateVisionnage = DateRecord;
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # AffichagePersonnalisation getCurrentAffichagePersonnalisation()                                                                                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+AffichagePersonnalisation getCurrentAffichagePersonnalisation()
+{
+    return AffichagePersonnalisation();
+}
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # const std::wstring SequenceVisionnage_film::c_filenameFormat = L"^(\\d{4}\\-\\d{2}\\-\\d{2}.*)$";                                                  #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -547,8 +561,8 @@ std::wstring Film::format_DateEtSur(std::wstring date_str, std::wstring& sur_str
             date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj;
         else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
             date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
-        else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
-            date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
+        //else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
+        //    date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
         else if (sur_str.size() != 0)
             date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str;
         else
@@ -950,10 +964,18 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
     m_valuesColor = perso.m_valuesColor;
 }*/
 
+//void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
+//void AffichagePersonnaliser(AffichagePersonnalisation perso);
+
 void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    m_espace1 = perso.m_espace1;
-    m_labelHeureSingulier = perso.m_labelsHeure.first;
+    //perso.m_espace1;
+
+    m_espace1 = perso.m_espace1.first;
+
+//    perso.m_espace1;
+    //setPrivateMember(std::wstring espace1);// .first;
+    /*m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_espace2 = perso.m_espace2;
     m_espace3 = perso.m_espace3;
@@ -961,7 +983,14 @@ void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
     m_labelMinutePluriel = perso.m_labelsMinute.second;
     m_keyColor = perso.m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     m_valuesColor = perso.m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
+   */
+//    return perso;
 }
+
+/*void AffichagePersonnalisation::setPrivateMember(std::wstring espace1)
+{
+    //m_espace1 = espace1;
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

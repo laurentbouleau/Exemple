@@ -53,9 +53,16 @@ void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_cata
 void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif);
 void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
+//std::wstring getCurrentAffichagePersonnalisation();
+
+
+//AffichagePersonnalisation getCurrentAffichagePersonnalisation();
+
+
+
 // ######################################################################################################################################################
 // ######################################################################################################################################################
-struct Xxx
+/*void
 {
     const std::pair<std::wstring, std::wstring> espace1{ L"", L" " };
     // _
@@ -79,17 +86,17 @@ struct Xxx
     //
     std::vector<std::wstring> keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
     std::wstring valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
-};
+};*/
 
-//AffichagePersonnalisation getCurrentAffichagePersonnalisation();
+AffichagePersonnalisation getCurrentAffichagePersonnalisation();
 
 //<std::wstring, std::wstring, std::wstring, std::pair<std::wstring, std::wstring>, std::pair<std::wstring, std::wstring>, std::vector<std::wstring>, std::wstring>> 
 //void getCurrentAffichagePersonnalisation();
 
-class AffichagePersonnalisation
+/*class AffichagePersonnalisation
 {
 public:
-    AffichagePersonnalisation getCurrentAffichagePersonnalisation();
+//    AffichagePersonnalisation getCurrentAffichagePersonnalisation();
     //// _ h _ _ min
     // _
     std::wstring m_espace1{ L" " };
@@ -104,5 +111,13 @@ public:
     //
     std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
     std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" };
-};
+};*/
 
+/*class Person
+{
+private:
+public:
+    //std::wstring m_espace1;
+    std::pair<std::wstring, std::wstring> m_espace1{ L"", L" " };
+
+};*/
