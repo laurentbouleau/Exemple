@@ -91,28 +91,10 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     const int dates_date_day_day_index_f = dates_date_month_day_day_index + 1;
     const int dates_someFlag_index_f = dates_date_day_day_index + 2;
 
-    const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
-    //const std::wregex filename_format_rg = L"(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\\s(.+))?";
-    /*const std::wregex filename_format_rg = L"(((" + // Noir
-        L"([[:digit:]]{4})" + // Rouge
-        L"-" +                // Noir
-        L"([[:digit:]]{2})" + // Vert
-        L"-" +                // Noir
-        L"([[:digit:]]{2})" + // Bleu clair
-        L"|" +                // Noir
-        L"([[:digit:]]{2})" + // Rouge
-        L"-" +                // Noir
-        L"([[:digit:]]{2})" + // Vert
-        L"|" +                // Noir
-        L"([[:digit:]]{2})" + // Bleu clair
-        L")" +                // Noir 
-        L"(_?)" +             // Rouge
-        L")+" +               // Noir
-        L"(|\\s(.+)" +         // Vert
-        L")?";                // Noir
- */
+//    const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
+ 
+    const std::wregex filename_format_rg{ L"(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\\s(.+))?" };
 
-    //const int filename_full_match_index = 0;
     const int filename_dates_index = 0;
     const int filename_date_year_month_day_year_index = filename_dates_index + 2;
     const int filename_date_year_month_day_month_index = filename_date_year_month_day_year_index + 1;
@@ -130,7 +112,6 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     auto stem = m_cheminFichier.stem().wstring();
     // prefixe ???
     assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
-
     std::wsmatch match;
     auto str = stem;
     //Exemple assez complexe de nom de fichier
@@ -189,7 +170,7 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
         }
         else
         {
-            assert(true && L"format de date d'épisode inconnu.");
+            assert(true && L"format de date film inconnu.");
         }
 
         if (dates_match[dates_someFlag_index].matched)
