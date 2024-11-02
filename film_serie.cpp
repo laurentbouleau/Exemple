@@ -769,39 +769,19 @@ AffichagePersonnalisation getCurrentAffichagePersonnalisation()
     const std::pair<std::wstring, std::wstring> m_espace2{L"", L" "};
     // _
     const std::pair <std::wstring, std::wstring> m_espace3{ L"", L" " };
-
-    auto& r_e_1_0 = m_espace1.first, & r_e_1_1 = m_espace1.second;
-    auto& r_e_2_0 = m_espace2.first, & r_e_2_1 = m_espace2.second;
-    auto& r_e_3_0 = m_espace3.first, & r_e_3_1 = m_espace3.second;
-
     // h
     std::vector<std::pair<std::wstring, std::wstring>> m_labelsHeure{ { L"h", L"h" },            // 0
-                                                                    { L"H", L"h" },            // 1
-                                                                    { L"heure", L"heures" },   // 2
-                                                                    { L"Heure", L"Heures" },   // 3
-                                                                    { L"HEURE", L"HEURES" } }; // 4
-
-    auto& r_lH_0{ m_labelsHeure[0] };
-    auto& r_lH_1{ m_labelsHeure[1] };
-    auto& r_lH_2{ m_labelsHeure[2] };
-    auto& r_lH_3{ m_labelsHeure[3] };
-    auto& r_lH_4{ m_labelsHeure[4] };
-
+                                                                      { L"H", L"h" },            // 1
+                                                                      { L"heure", L"heures" },   // 2
+                                                                      { L"Heure", L"Heures" },   // 3
+                                                                      { L"HEURE", L"HEURES" } }; // 4
     // min
     std::vector<std::pair<std::wstring, std::wstring>> m_labelsMinute{ { L"min", L"min" },          // 0
-                                                                     { L"Min", L"Min" },          // 1
-                                                                     { L"MIN", L"MIN" },          // 2
-                                                                     { L"minute", L"minutes" },   // 3
-                                                                     { L"Minute", L"Minutes" },   // 4
-                                                                     { L"MINUTE", L"MINUTES" } }; // 5
-
-    auto& r_lM_0{ m_labelsMinute[0] };
-    auto& r_lM_1{ m_labelsMinute[0] };
-    auto& r_lM_2{ m_labelsMinute[0] };
-    auto& r_lM_3{ m_labelsMinute[0] };
-    auto& r_lM_4{ m_labelsMinute[0] };
-    auto& r_lM_5{ m_labelsMinute[0] };
-
+                                                                       { L"Min", L"Min" },          // 1
+                                                                       { L"MIN", L"MIN" },          // 2
+                                                                       { L"minute", L"minutes" },   // 3
+                                                                       { L"Minute", L"Minutes" },   // 4
+                                                                       { L"MINUTE", L"MINUTES" } }; // 5
     //
     std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
     std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
