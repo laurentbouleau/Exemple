@@ -49,17 +49,6 @@ using DateVisionnage = DateRecord;
 };*/
 
 // ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # AffichagePersonnalisation getCurrentAffichagePersonnalisation()                                                                                    #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-AffichagePersonnalisation getCurrentAffichagePersonnalisation()
-{
-    return AffichagePersonnalisation();
-}
-
-// ######################################################################################################################################################
 // ######################################################################################################################################################
 
 // ######################################################################################################################################################
@@ -215,27 +204,13 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     {
         m_streaming = match[filename_stream_index];
     }
- }
+}
  
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void SequenceVisionnage_film::set_Person(Person& person)                                                                                           #
+// # std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
-
-/*void SequenceVisionnage_film::set_Person(Person& person)
-{
-    ///m_h = person.m_h;
-    //m_min = person.m_min;
-    m_keyColor = person.s_keyColor;
-    m_valuesColor = person.s_valuesColor;
-}*/
-
- // ######################################################################################################################################################
- // #                                                                                                                                                    #
- // # std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)                                        #
- // #                                                                                                                                                    #
- // ######################################################################################################################################################
  
 std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
 {
@@ -307,16 +282,21 @@ std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<Date
     return dates_de_visionnage_wstr;
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage,                                        #
+// #                                                                 std::vector<std::wstring>&keyColor, std::wstring& valuesColor)                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>&keyColor, std::wstring& valuesColor)
 {
-    //set_Person(person);
     m_keyColor = keyColor;
     m_valuesColor = valuesColor;
     const std::wstring date_format = L"%d" + m_keyColor[1] + L"/" + m_valuesColor + L"%m" + m_keyColor[1] + L"/" + m_valuesColor + L"%Y";
     const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;
     const std::wstring same_date_format = between_parenthesis;
     const std::wstring prequel_format = between_parenthesis;
-    //const std::wstring streaming_format = m_keyColor[1] + L" : " + m_valuesColor + L"%s";
     const std::wstring streaming_format = m_keyColor[1] + L" :" + m_valuesColor + L"%s";
     const std::wstring step_by_step_tag = L' ' + m_keyColor[1] + L'[' + m_valuesColor + L"pas-à-pas" + m_keyColor[1] + L']' + m_valuesColor;
 
@@ -453,9 +433,6 @@ std::wstring Film::calcul_Duree_affichage() const
         long heures = m_duree / (60 * 60);
         long minutes = (m_duree % (60 * 60)) / 60;
         long secondes = m_duree % 60;
-        //duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_h[0] : m_h[0] + m_h[1]) + m_valuesColor + m_espace2 +
-        //    std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_min[0] : m_min[0] + m_min[1]) + m_valuesColor;
-
         duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +
             std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
     }
@@ -561,8 +538,6 @@ std::wstring Film::format_DateEtSur(std::wstring date_str, std::wstring& sur_str
             date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj;
         else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
             date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
-        //else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
-        //    date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
         else if (sur_str.size() != 0)
             date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str;
         else
@@ -921,76 +896,45 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Film::AffichagePersonnaliser()                                                                                                                #
+// # void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void Film::AffichagePersonnaliser()
-{  
-    const class AffichagePersonnaliser perso;
-    auto& e_1_0 = perso.m_espace1[0], & e_1_1 = perso.m_espace1[1];
-    auto& e_2_0 = perso.m_espace2[0], & e_2_1 = perso.m_espace2[1];
-    auto& e_3_0 = perso.m_espace3[0], & e_3_1 = perso.m_espace3[1];
-
-    auto& h0 = perso.m_h[0], & h1 = perso.m_h[1];
-    auto& h2 = perso.m_h[2], & h3 = perso.m_h[3];
-    auto& h4 = perso.m_h[4], & h5 = perso.m_h[5];
-    auto& h6 = perso.m_h[6], & h7 = perso.m_h[7];
-    auto& h8 = perso.m_h[8], & h9 = perso.m_h[9];
-
-    auto& min0 = perso.m_min[0], & min1 = perso.m_min[1];
-    auto& min2 = perso.m_min[2], & min3 = perso.m_min[3];
-    auto& min4 = perso.m_min[4], & min5 = perso.m_min[5];
-    auto& min6 = perso.m_min[6], & min7 = perso.m_min[7];
-    auto& min8 = perso.m_min[8], & min9 = perso.m_min[9];
-    auto& min10 = perso.m_min[10], & min11 = perso.m_min[11];
-
-    //
-
-    m_espace1 = e_1_1;
-
-    m_h = { h4, h5 };
-    m_labelHeureSingulier = h4;
-    m_labelHeurePluriel = h5;
-
-    m_espace2 = e_2_1;
-    m_espace3 = e_3_1;
-
-    m_min = { min6, min7 };
-    m_labelMinuteSingulier = min6;
-    m_labelMinutePluriel = min7;
-
-    m_keyColor = perso.m_keyColor;
-    m_valuesColor = perso.m_valuesColor;
-}*/
-
-//void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
-//void AffichagePersonnaliser(AffichagePersonnalisation perso);
-
 void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    //perso.m_espace1;
+    // _ h _ _ min
 
-    m_espace1 = perso.m_espace1.first;
+    auto& r_e_1_0 = perso.m_espace1.first, & r_e_1_1 = perso.m_espace1.second;
+    auto& r_e_2_0 = perso.m_espace2.first, & r_e_2_1 = perso.m_espace2.second;
+    auto& r_e_3_0 = perso.m_espace3.first, & r_e_3_1 = perso.m_espace3.second;
 
-//    perso.m_espace1;
-    //setPrivateMember(std::wstring espace1);// .first;
-    /*m_labelHeureSingulier = perso.m_labelsHeure.first;
-    m_labelHeurePluriel = perso.m_labelsHeure.second;
-    m_espace2 = perso.m_espace2;
-    m_espace3 = perso.m_espace3;
-    m_labelMinuteSingulier = perso.m_labelsMinute.first;
-    m_labelMinutePluriel = perso.m_labelsMinute.second;
+    // h
+    auto& r_h00 = perso.m_labelsHeure[0].first, & r_h01 = perso.m_labelsHeure[0].second;
+    auto& r_h10 = perso.m_labelsHeure[1].first, & r_h11 = perso.m_labelsHeure[1].second;
+    auto& r_h20 = perso.m_labelsHeure[2].first, & r_h21 = perso.m_labelsHeure[2].second;
+    auto& r_h30 = perso.m_labelsHeure[3].first, & r_h31 = perso.m_labelsHeure[3].second;
+    auto& r_h40 = perso.m_labelsHeure[4].first, & r_h41 = perso.m_labelsHeure[4].second;
+
+    // min
+    auto& r_m00 = perso.m_labelsMinute[0].first, & r_m01 = perso.m_labelsMinute[0].second;
+    auto& r_m10 = perso.m_labelsMinute[1].first, & r_m11 = perso.m_labelsMinute[1].second;
+    auto& r_m20 = perso.m_labelsMinute[2].first, & r_m21 = perso.m_labelsMinute[2].second;
+    auto& r_m30 = perso.m_labelsMinute[3].first, & r_m31 = perso.m_labelsMinute[3].second;
+    auto& r_m40 = perso.m_labelsMinute[4].first, & r_m401 = perso.m_labelsMinute[4].second;
+    auto& r_m50 = perso.m_labelsMinute[5].first, & r_m501 = perso.m_labelsMinute[5].second;
+
+    // Ok !
+    m_espace1 = r_e_1_0;
+    m_labelHeureSingulier = r_h20;
+    m_labelHeurePluriel = r_h21;
+    m_espace2 = r_e_2_1;
+    m_espace3 = r_e_3_0;
+    m_labelMinuteSingulier = r_m30;
+    m_labelMinutePluriel = r_m31;
+
     m_keyColor = perso.m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     m_valuesColor = perso.m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
-   */
-//    return perso;
 }
-
-/*void AffichagePersonnalisation::setPrivateMember(std::wstring espace1)
-{
-    //m_espace1 = espace1;
-}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

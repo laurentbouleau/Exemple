@@ -44,35 +44,7 @@ class AffichagePersonnalisation;
 class AffichagePersonnalisation
 {
 public:
-    //getCurrentAffichagePersonnalisation();
-
-    //void setPrivateMember(std::wstring espace1);
-    //getCurrentAffichagePersonnalisation();
-    //std::wstring m_espace1;
     std::pair<std::wstring, std::wstring> m_espace1{ L"", L" " };
-private:
-    //friend Film;
-    //void AffichagePersonnalisation::getCurrentAffichagePersonnalisation()
-    //// _ h _ _ min
-    // _
-    //std::wstring m_espace1;
-    // h
-    /*std::wstring m_labelHeureSingulier{L"h"};
-    std::wstring m_labelHeurePluriel{ L"h" };
-    //std::vector<std::wstring> m_min{};
-    // _
-    std::wstring m_espace2{ L" " };
-    // _
-    std::wstring m_espace3{ L" " };
-    // min
-    std::wstring m_labelMinuteSingulier{ L"min" };
-    std::wstring m_labelMinutePluriel{ L"min" };
-    //
-    std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
-    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" };
-    */
-    //std::pair<std::wstring, std::wstring> m_espace1{ L"", L" " };
-    //std::wstring m_espace1{ };
     std::pair<std::wstring, std::wstring> m_espace2{ L"", L" " };
     std::pair<std::wstring, std::wstring> m_espace3{ L"", L" " };
     // h
@@ -102,10 +74,8 @@ struct SequenceVisionnage_film
 
     static const std::wstring c_filenameFormat;
 
-    //void set_Person(const Person& person);
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>&keyColor, std::wstring& valuesColor);
-    //std::wstring m_min = L"min";
     std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor; // { L"\x1b[38;2;255;255;255m" }; // Blanc
  
@@ -131,24 +101,21 @@ public:
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
     void AffichagePersonnaliser(AffichagePersonnalisation perso);
-    //AffichagePersonnalisation AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     const void Print();//
 
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
 
-    std::wstring m_espace1{ L" " };
-    //std::vector<std::wstring> m_h{};
-    std::wstring m_labelHeureSingulier{ L"h" };
-    std::wstring m_labelHeurePluriel{ L"h" };
-    //std::vector<std::wstring> m_min{};
-    std::wstring m_labelMinuteSingulier{ L"min" };
-    std::wstring m_labelMinutePluriel{ L"min" };
-    std::wstring m_espace2{ L" " };
-    std::wstring m_espace3{ L"" };
-    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
+    std::wstring m_espace1;
+    std::wstring m_labelHeureSingulier;
+    std::wstring m_labelHeurePluriel;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
+    std::wstring m_labelMinuteSingulier;
+    std::wstring m_labelMinutePluriel;
+    std::vector<std::wstring>m_keyColor;
+    std::wstring m_valuesColor;
 
     std::vector<std::wstring> m_resume;
 
