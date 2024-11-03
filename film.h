@@ -47,10 +47,23 @@ struct SequenceVisionnage_film
 
     static const std::wstring c_filenameFormat;
 
+    const void AffichagePersonnaliser_Film(AffichagePersonnalisation perso);
+
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage);
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>&keyColor, std::wstring& valuesColor);
-    std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor; // { L"\x1b[38;2;255;255;255m" }; // Blanc
+
+    std::wstring m_espace1;
+    std::wstring m_labelHeureSingulier;
+    std::wstring m_labelHeurePluriel;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
+    std::wstring m_labelMinuteSingulier;
+    std::wstring m_labelMinutePluriel;
+    std::vector<std::wstring>m_keyColor;
+    std::wstring m_valuesColor;
+
+    //std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    //std::wstring m_valuesColor; // { L"\x1b[38;2;255;255;255m" }; // Blanc
  
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
@@ -72,7 +85,7 @@ public:
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    void AffichagePersonnaliser_Film(AffichagePersonnalisation perso);
+    const void AffichagePersonnaliser_Film(AffichagePersonnalisation perso);
 
     const void Print();//
 
