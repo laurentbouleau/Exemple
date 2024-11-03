@@ -242,7 +242,7 @@ public:
     void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    void AffichagePersonnaliser_Serie(AffichagePersonnalisation perso);
+    const void AffichagePersonnaliser_Serie(AffichagePersonnalisation perso);
 
     const void Print();
 

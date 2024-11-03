@@ -1601,11 +1601,11 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)                                                                            #
+// # const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
+const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
 {
     // _ h _ _ min
 
