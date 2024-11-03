@@ -322,7 +322,11 @@ void SequenceVisionnage::Print()
 
     if (m_numero == 1) // ???
     {
-        duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_duree_en_seconde / 60) + m_keyColor[1] + m_min + L')' + m_valuesColor;
+        //duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_duree_en_seconde / 60) + m_keyColor[1] + m_min + L')' + m_valuesColor;
+        long minutes = (m_duree % (60 * 60)) / 60;
+        long secondes = m_duree % 60;
+        duree_str += /*L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +*/
+            m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
     }
     else
     {
@@ -1233,7 +1237,13 @@ std::wstring Serie::calcul_Duree_affichage() const
     // Durée
     std::wstring duree_str;
     if (affichage_duree_actif)
-        duree_str = L' ' + std::to_wstring(m_duree / 60) + m_keyColor[0] + L"min" + m_valuesColor;
+    {
+        //duree_str = L' ' + std::to_wstring(m_duree / 60) + m_keyColor[0] + L"min" + m_valuesColor;
+        long minutes = (m_duree % (60 * 60)) / 60;
+        long secondes = m_duree % 60;
+        duree_str = L' ' + /*std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +*/
+            std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
+    }
     return duree_str;
 }
 
@@ -1587,6 +1597,48 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier)
     m_titres = fusionner_Titres(m_titres, std::get<0>(res));
     m_duree = std::get<1>(res) ? std::get<1>(res).value() : -1;
     m_resume = std::get<2>(res);
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)                                                                            #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
+{
+    // _ h _ _ min
+
+    auto& r_e_1_0 = perso.m_espace1.first, & r_e_1_1 = perso.m_espace1.second;
+    auto& r_e_2_0 = perso.m_espace2.first, & r_e_2_1 = perso.m_espace2.second;
+    auto& r_e_3_0 = perso.m_espace3.first, & r_e_3_1 = perso.m_espace3.second;
+
+    // h
+    auto& r_h00 = perso.m_labelsHeure[0].first, & r_h01 = perso.m_labelsHeure[0].second;
+    auto& r_h10 = perso.m_labelsHeure[1].first, & r_h11 = perso.m_labelsHeure[1].second;
+    auto& r_h20 = perso.m_labelsHeure[2].first, & r_h21 = perso.m_labelsHeure[2].second;
+    auto& r_h30 = perso.m_labelsHeure[3].first, & r_h31 = perso.m_labelsHeure[3].second;
+    auto& r_h40 = perso.m_labelsHeure[4].first, & r_h41 = perso.m_labelsHeure[4].second;
+
+    // min
+    auto& r_m00 = perso.m_labelsMinute[0].first, & r_m01 = perso.m_labelsMinute[0].second;
+    auto& r_m10 = perso.m_labelsMinute[1].first, & r_m11 = perso.m_labelsMinute[1].second;
+    auto& r_m20 = perso.m_labelsMinute[2].first, & r_m21 = perso.m_labelsMinute[2].second;
+    auto& r_m30 = perso.m_labelsMinute[3].first, & r_m31 = perso.m_labelsMinute[3].second;
+    auto& r_m40 = perso.m_labelsMinute[4].first, & r_m401 = perso.m_labelsMinute[4].second;
+    auto& r_m50 = perso.m_labelsMinute[5].first, & r_m501 = perso.m_labelsMinute[5].second;
+
+    // Ok !
+    m_espace1 = r_e_1_0;
+    m_labelHeureSingulier = r_h20;
+    m_labelHeurePluriel = r_h21;
+    m_espace2 = r_e_2_1;
+    m_espace3 = r_e_3_0;
+    m_labelMinuteSingulier = r_m30;
+    m_labelMinutePluriel = r_m31;
+
+    m_keyColor = perso.m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    m_valuesColor = perso.m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
 }
 
 // ######################################################################################################################################################

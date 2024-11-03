@@ -36,36 +36,9 @@ extern const std::vector<std::wstring> Sur;
 extern const std::vector<std::wstring> Sous_Genre;
 extern const std::vector<std::wstring> Nationalite;
 
-const class Person;
 struct DateRecord;
 struct SequenceVisionnage_film;
 class AffichagePersonnalisation;
-
-class AffichagePersonnalisation
-{
-public:
-    std::pair<std::wstring, std::wstring> m_espace1{ L"", L" " };
-    std::pair<std::wstring, std::wstring> m_espace2{ L"", L" " };
-    std::pair<std::wstring, std::wstring> m_espace3{ L"", L" " };
-    // h
-    std::vector<std::pair<std::wstring, std::wstring>> m_labelsHeure{ { L"h", L"h" },            // 0
-                                                                    { L"H", L"h" },            // 1
-                                                                    { L"heure", L"heures" },   // 2
-                                                                    { L"Heure", L"Heures" },   // 3
-                                                                    { L"HEURE", L"HEURES" } }; // 4
-
-    // min
-    std::vector<std::pair<std::wstring, std::wstring>> m_labelsMinute{ { L"min", L"min" },          // 0
-                                                                     { L"Min", L"Min" },          // 1
-                                                                     { L"MIN", L"MIN" },          // 2
-                                                                     { L"minute", L"minutes" },   // 3
-                                                                     { L"Minute", L"Minutes" },   // 4
-                                                                     { L"MINUTE", L"MINUTES" } }; // 5
-    //
-    std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
-    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
-
-};
 
 struct SequenceVisionnage_film
 {
@@ -85,7 +58,6 @@ struct SequenceVisionnage_film
 
 class Film
 {
-    friend AffichagePersonnalisation;
 public:
     Film(std::filesystem::path racine);
 
@@ -100,22 +72,13 @@ public:
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    void AffichagePersonnaliser(AffichagePersonnalisation perso);
+    void AffichagePersonnaliser_Film(AffichagePersonnalisation perso);
 
     const void Print();//
 
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
 
-    std::wstring m_espace1;
-    std::wstring m_labelHeureSingulier;
-    std::wstring m_labelHeurePluriel;
-    std::wstring m_espace2;
-    std::wstring m_espace3;
-    std::wstring m_labelMinuteSingulier;
-    std::wstring m_labelMinutePluriel;
-    std::vector<std::wstring>m_keyColor;
-    std::wstring m_valuesColor;
 
     std::vector<std::wstring> m_resume;
 
@@ -144,6 +107,16 @@ private:
 
     std::vector<SequenceVisionnage_film>dates{};
     std::filesystem::path racine;
+
+    std::wstring m_espace1;
+    std::wstring m_labelHeureSingulier;
+    std::wstring m_labelHeurePluriel;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
+    std::wstring m_labelMinuteSingulier;
+    std::wstring m_labelMinutePluriel;
+    std::vector<std::wstring>m_keyColor;
+    std::wstring m_valuesColor;
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;

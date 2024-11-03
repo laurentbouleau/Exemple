@@ -877,11 +877,11 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                                 #
+// # void Film::AffichagePersonnaliser_Film(AffichagePersonnalisation perso)                                                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
+void Film::AffichagePersonnaliser_Film(AffichagePersonnalisation perso)
 {
     // _ h _ _ min
 

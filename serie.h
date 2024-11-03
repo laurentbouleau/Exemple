@@ -102,7 +102,11 @@ struct SequenceVisionnage
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     bool Print_Titre_chiffre_et_point_ou_pas(int episode);
 
-    std::wstring m_min = L"min";
+    //std::wstring m_min = L"min";
+    std::wstring m_espace3;
+    std::wstring m_labelMinuteSingulier;
+    std::wstring m_labelMinutePluriel;
+
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
@@ -238,6 +242,8 @@ public:
     void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
+    void AffichagePersonnaliser_Serie(AffichagePersonnalisation perso);
+
     const void Print();
 
     std::vector<Saison>saisons{};
@@ -278,8 +284,18 @@ private:
     std::filesystem::path racine;
 
     std::wstring m_min = L"min";
-    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    //std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    //std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+
+    std::wstring m_espace1;
+    std::wstring m_labelHeureSingulier;
+    std::wstring m_labelHeurePluriel;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
+    std::wstring m_labelMinuteSingulier;
+    std::wstring m_labelMinutePluriel;
+    std::vector<std::wstring>m_keyColor;
+    std::wstring m_valuesColor;
 
     int m_annees{};
     std::wstring m_audiodescription;

@@ -54,3 +54,28 @@ void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resu
 void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
 AffichagePersonnalisation getCurrentAffichagePersonnalisation();
+
+class AffichagePersonnalisation
+{
+public:
+    std::pair<std::wstring, std::wstring> m_espace1{ L"", L" " };
+    std::pair<std::wstring, std::wstring> m_espace2{ L"", L" " };
+    std::pair<std::wstring, std::wstring> m_espace3{ L"", L" " };
+    // h
+    std::vector<std::pair<std::wstring, std::wstring>> m_labelsHeure{ { L"h", L"h" },            // 0
+                                                                    { L"H", L"h" },            // 1
+                                                                    { L"heure", L"heures" },   // 2
+                                                                    { L"Heure", L"Heures" },   // 3
+                                                                    { L"HEURE", L"HEURES" } }; // 4
+
+    // min
+    std::vector<std::pair<std::wstring, std::wstring>> m_labelsMinute{ { L"min", L"min" },          // 0
+                                                                     { L"Min", L"Min" },          // 1
+                                                                     { L"MIN", L"MIN" },          // 2
+                                                                     { L"minute", L"minutes" },   // 3
+                                                                     { L"Minute", L"Minutes" },   // 4
+                                                                     { L"MINUTE", L"MINUTES" } }; // 5
+    //
+    std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
+    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
+};
