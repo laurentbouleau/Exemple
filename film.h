@@ -91,6 +91,7 @@ private:
     //
     std::wstring format_DateEtSur(std::wstring date_str, std::wstring& sur_str) const;
 
+    const void Print_Acteurs_de_doublage_Voix_originales();
     const void Print_Avec();
     void Print_Avec_etc();
     const void Print_Dates();
@@ -117,6 +118,7 @@ private:
     std::vector<std::wstring>m_keyColor;
     std::wstring m_valuesColor;
 
+    std::vector<std::pair<std::wstring, std::wstring>> m_acteurs_de_doublage_voix_originales;
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
     std::vector<std::wstring> m_catalogue;
@@ -146,6 +148,7 @@ private:
 
     std::vector<SequenceVisionnage_film> m_visionnages;
 
+    bool affichage_acteurs_de_doublage_voix_originales_actif = true;
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_avec_etc_actif = true;

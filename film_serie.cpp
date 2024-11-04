@@ -382,6 +382,21 @@ std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouv
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # void initialiser_Acteurs_de_doublage_Voix_originales(fs::path const& cheminFichier,                                                                #
+// #                                                      std::vector<std::pair<std::wstring, std::wstring>>& m_acteurs_de_doublage_voix_originales)    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void initialiser_Acteurs_de_doublage_Voix_originales(fs::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_acteurs_de_doublage_voix_originales)
+{
+    auto nomFichier = cheminFichier.filename().wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    m_acteurs_de_doublage_voix_originales = lire_paireCleValeur_depuisFichierTxt(cheminFichier.wstring());
+    assert((m_acteurs_de_doublage_voix_originales.size() != 0));
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m_ad)                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################

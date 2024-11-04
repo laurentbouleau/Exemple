@@ -462,7 +462,11 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     auto nomFichier = cheminFichier.filename().wstring();
     auto extensionFichier = cheminFichier.extension().wstring();
 
-    if (nomFichier == L"AD.txt")
+    if (nomFichier == L"Acteurs de doublage (Voix originales).txt")
+    {
+        initialiser_Acteurs_de_doublage_Voix_originales(cheminFichier, m_acteurs_de_doublage_voix_originales);
+    }
+    else if (nomFichier == L"AD.txt")
     {
         initialiser_Audiodescription(cheminFichier, m_audiodescription);
     }
@@ -877,6 +881,8 @@ const void Film::Print()
     Print_Dates();
     // Avec
     Print_Avec();
+    // Acteurs de doublage (Voix originales)
+    Print_Acteurs_de_doublage_Voix_originales();
     // Soundtracks
     Print_Soundtracks();
     // Image(s)
@@ -884,6 +890,49 @@ const void Film::Print()
     // Making-of
     Print_Making_of();
     std::wcout << L"\r\n";
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_Acteurs_de_doublage_voix_originales()                                                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Film::Print_Acteurs_de_doublage_Voix_originales()
+{
+    if (affichage_acteurs_de_doublage_voix_originales_actif && m_acteurs_de_doublage_voix_originales.size())
+    {
+        std::wstring avec_str = m_keyColor[0] + L"Acteurs de doublage (Voix originales) :" + m_valuesColor + L"\r\n";
+        bool found = false;
+        for (auto&& [nom, role] : m_acteurs_de_doublage_voix_originales)
+        {
+            if (nom == L"…" || nom == L"..." || nom == L".")
+            {
+                found = true;
+                break;
+            }
+            if (nom != L"" && role != L"")
+            {
+                avec_str += nom + L' ' + m_keyColor[1] + L'(' + m_valuesColor + role + m_keyColor[1] + L')' + m_valuesColor;
+            }
+            else if (nom == L"" && role != L"")
+            {
+                avec_str += m_keyColor[1] + L'(' + m_valuesColor + role + m_keyColor[1] + L')' + m_valuesColor;
+            }
+            else
+            {
+                avec_str += nom;
+            }
+            if (m_acteurs_de_doublage_voix_originales.back().first != nom)
+                avec_str += m_keyColor[1] + L", " + m_valuesColor;
+            else
+                avec_str += m_keyColor[1] + L'.' + m_valuesColor;
+        }
+        if (found)
+            avec_str += L"...";
+        avec_str += L"\r\n";
+        std::wcout << avec_str;
+    }
 }
 
 // ######################################################################################################################################################
