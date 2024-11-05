@@ -67,31 +67,15 @@ const std::wstring SequenceVisionnage_film::c_filenameFormat = L"^(\\d{4}\\-\\d{
 
 SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier)
 {
-    const std::wstring date_year_month_day_format = L"([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})";
+    /*const std::wstring date_year_month_day_format = L"([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_month_day_format = L"([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_day_format = L"([[:digit:]]{2})";
     const std::wstring stream_format = L"(\\s(.+))?";
     const std::wstring dates_format = L"((" + date_year_month_day_format + L"|" + date_month_day_format + L"|" + date_day_format + L")(_?))";
+    const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
+    */
+    // (((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\s(.+))?
 
-    const int dates_full_match_index = 0;
-    const int dates_date_year_month_day_year_index = dates_full_match_index + 3;
-    const int dates_date_year_month_day_month_index = dates_date_year_month_day_year_index + 1;
-    const int dates_date_year_month_day_day_index = dates_date_year_month_day_month_index + 1;
-    const int dates_date_month_day_month_index = dates_date_year_month_day_day_index + 1;
-    const int dates_date_month_day_day_index = dates_date_month_day_month_index + 1;
-    const int dates_date_day_day_index = dates_date_month_day_day_index + 1;
-    const int dates_someFlag_index = dates_date_day_day_index + 2;
-
-    const int dates_full_match_index_f = 0;
-    const int dates_date_year_month_day_year_index_f = dates_full_match_index + 3;
-    const int dates_date_year_month_day_month_index_f = dates_date_year_month_day_year_index + 1;
-    const int dates_date_year_month_day_day_index_f = dates_date_year_month_day_month_index + 1;
-    const int dates_date_month_day_month_index_f = dates_date_year_month_day_day_index + 1;
-    const int dates_date_month_day_day_index_f = dates_date_month_day_month_index + 1;
-    const int dates_date_day_day_index_f = dates_date_month_day_day_index + 1;
-    const int dates_someFlag_index_f = dates_date_day_day_index + 2;
-
-//    const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
  
     const std::wregex filename_format_rg{ L"(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\\s(.+))?" };
 
@@ -119,13 +103,13 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
 
     std::wsmatch dates_match;
     auto dates_str = match[filename_dates_index].str();
-    while (std::regex_search(dates_str, dates_match, std::wregex{ dates_format }))
+    while (std::regex_search(dates_str, dates_match, std::wregex{ L"((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)" }));
     {
-        if (dates_match[dates_date_year_month_day_year_index].matched)
+        if (dates_match[/*dates_date_year_month_day_year_index*/L"(([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))"].matched)
         {
-            auto year = std::stoi(dates_match[dates_date_year_month_day_year_index]);
-            auto month = std::stoi(dates_match[dates_date_year_month_day_month_index]);
-            auto day = std::stoi(dates_match[dates_date_year_month_day_day_index]);
+            auto year = std::stoi(dates_match[/*dates_date_year_month_day_year_index*/L"[[:digit:]]{4}"]);
+            auto month = std::stoi(dates_match[/*dates_date_year_month_day_month_index*/L"[[:digit:]]{2}"]);
+            auto day = std::stoi(dates_match[/*dates_date_year_month_day_day_index*/L"[[:digit:]]{2}"]);
 
             assert(checkyear(year));
             assert(checkmonth(month));
