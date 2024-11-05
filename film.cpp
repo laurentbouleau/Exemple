@@ -464,7 +464,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
 
     if (nomFichier == L"Acteurs de doublage (Voix originales).txt")
     {
-        initialiser_Acteurs_de_doublage_Voix_originales(cheminFichier, m_acteurs_de_doublage_voix_originales);
+        m_acteurs_de_doublage_voix_originales = initialiser_Avec(cheminFichier);
     }
     else if (nomFichier == L"AD.txt")
     {
@@ -472,7 +472,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else if (nomFichier == L"Avec.txt")
     {
-        initialiser_Avec(cheminFichier, m_avec);
+        m_avec = initialiser_Avec(cheminFichier);
     }
     else if (nomFichier == L"Date de reprise.txt")
     {

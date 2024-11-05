@@ -667,20 +667,18 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             // Avec
             if (nomFichier == L"Avec.txt")
             {
-                initialiser_Avec(cheminFichier, m_avec);
+                m_avec = initialiser_Avec(cheminFichier);
             }
             // Chaîne d'origine
             if (nomFichier == L"Chaîne d'origine.txt")
             {
                 initialiser_Chaine(cheminFichier);
             }
-
             // Disney+
             if (nomFichier == L"Disney+.txt")
             {
                 std::wcout << L"Disney+.txt" << L"\r\n";
             }
-
             // DVD
             if (nomFichier == L"DVD.txt")
             {

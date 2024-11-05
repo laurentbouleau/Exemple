@@ -35,9 +35,8 @@ std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_con
 std::wstring filter_values(std::wstring const& content, std::vector<std::wstring> const& values);
 std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouveaux_titres, const std::vector<std::wstring>& vieux_titres);
 
-void initialiser_Acteurs_de_doublage_Voix_originales(std::filesystem::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_acteurs_de_doublage_Voix_originales);
 void initialiser_Audiodescription(std::filesystem::path const& cheminFichier, std::wstring& m_ad);
-void initialiser_Avec(std::filesystem::path const& cheminFichier, std::vector<std::pair<std::wstring, std::wstring>>& m_avec);
+std::vector<std::pair<std::wstring, std::wstring>> initialiser_Avec(std::filesystem::path const& cheminFichier);
 void initialiser_Genre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 void initialiser_Image(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_images);
 void initialiser_Nationalite(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
