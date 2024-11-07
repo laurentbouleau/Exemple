@@ -53,29 +53,24 @@ void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_cata
 void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif);
 void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
+
 AffichagePersonnalisation getCurrentAffichagePersonnalisation();
 
 class AffichagePersonnalisation
 {
 public:
-    std::pair<std::wstring, std::wstring> m_espace1{ L"", L" " };
-    std::pair<std::wstring, std::wstring> m_espace2{ L"", L" " };
-    std::pair<std::wstring, std::wstring> m_espace3{ L"", L" " };
+    AffichagePersonnalisation() {};
+    AffichagePersonnalisation(std::wstring espace, std::pair<std::wstring, std::wstring> labelsHeure, std::pair<std::wstring, std::wstring> labelsMinute) :
+        m_espace1(espace), m_espace2(espace), m_espace3(espace), m_labelsHeure(labelsHeure), m_labelsMinute(labelsMinute) {};
+    // _ h _ _ min
+    std::wstring m_espace1{ L" " };
+    std::wstring m_espace2{ L" " };
+    std::wstring m_espace3{ L" " };
     // h
-    std::vector<std::pair<std::wstring, std::wstring>> m_labelsHeure{ { L"h", L"h" },            // 0
-                                                                    { L"H", L"h" },            // 1
-                                                                    { L"heure", L"heures" },   // 2
-                                                                    { L"Heure", L"Heures" },   // 3
-                                                                    { L"HEURE", L"HEURES" } }; // 4
-
+    std::pair<std::wstring, std::wstring> m_labelsHeure{ L"h", L"h" };
     // min
-    std::vector<std::pair<std::wstring, std::wstring>> m_labelsMinute{ { L"min", L"min" },          // 0
-                                                                     { L"Min", L"Min" },          // 1
-                                                                     { L"MIN", L"MIN" },          // 2
-                                                                     { L"minute", L"minutes" },   // 3
-                                                                     { L"Minute", L"Minutes" },   // 4
-                                                                     { L"MINUTE", L"MINUTES" } }; // 5
+    std::pair<std::wstring, std::wstring> m_labelsMinute{ L"min", L"min" };
     //
-    std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
+    std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" }; // Bleu, Vert, Rouge, Jaune
     std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
 };

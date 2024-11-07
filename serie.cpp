@@ -1603,7 +1603,7 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
+/*const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
 {
     // _ h _ _ min
 
@@ -1637,6 +1637,21 @@ const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
 
     m_keyColor = perso.m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     m_valuesColor = perso.m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
+}*/
+const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
+{
+    //m_espace1 = perso.m_espace1;
+    m_espace1 = L"";
+    m_labelHeureSingulier = perso.m_labelsHeure.first;
+    m_labelHeurePluriel = perso.m_labelsHeure.second;
+    m_espace2 = perso.m_espace2;
+    //m_espace3 = perso.m_espace3;
+    m_espace3 = L"";
+    m_labelMinuteSingulier = perso.m_labelsMinute.first;
+    m_labelMinutePluriel = perso.m_labelsMinute.second;
+
+    m_keyColor = perso.m_keyColor;
+    m_valuesColor = perso.m_valuesColor;
 }
 
 // ######################################################################################################################################################

@@ -755,6 +755,15 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
+AffichagePersonnalisation perso_short_minuscule = AffichagePersonnalisation{};
+AffichagePersonnalisation perso_short_majuscule = AffichagePersonnalisation{ L"", { L"H", L"H" },{ L"MIN", L"MIN" } };
+AffichagePersonnalisation perso_short_pascalCase = AffichagePersonnalisation{ L"", { L"H", L"H" },{ L"Min", L"Min" } };
+AffichagePersonnalisation perso_long_minuscule = AffichagePersonnalisation{ L"", { L"heure", L"heures" },{ L"minute", L"minutes" } };
+AffichagePersonnalisation perso_long_majuscule = AffichagePersonnalisation{ L"", { L"HEURE", L"HEURES" },{ L"MINUTE", L"MINUTES" } };
+AffichagePersonnalisation perso_long_pascalCase = AffichagePersonnalisation{ L"", { L"Heure", L"Heures" },{ L"Minute", L"Minutes" } };
+
+AffichagePersonnalisation person = getCurrentAffichagePersonnalisation();//fonction à implémenter pour récupérer la configuration de personnalisation de l'utilisateur.
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # AffichagePersonnalisation getCurrentAffichagePersonnalisation()                                                                                    #
@@ -763,28 +772,10 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
 
 AffichagePersonnalisation getCurrentAffichagePersonnalisation()
 {
-    // _
-    const std::pair<std::wstring, std::wstring> m_espace1{ L"", L" " };
-    // _
-    const std::pair<std::wstring, std::wstring> m_espace2{L"", L" "};
-    // _
-    const std::pair <std::wstring, std::wstring> m_espace3{ L"", L" " };
-    // h
-    std::vector<std::pair<std::wstring, std::wstring>> m_labelsHeure{ { L"h", L"h" },            // 0
-                                                                      { L"H", L"h" },            // 1
-                                                                      { L"heure", L"heures" },   // 2
-                                                                      { L"Heure", L"Heures" },   // 3
-                                                                      { L"HEURE", L"HEURES" } }; // 4
-    // min
-    std::vector<std::pair<std::wstring, std::wstring>> m_labelsMinute{ { L"min", L"min" },          // 0
-                                                                       { L"Min", L"Min" },          // 1
-                                                                       { L"MIN", L"MIN" },          // 2
-                                                                       { L"minute", L"minutes" },   // 3
-                                                                       { L"Minute", L"Minutes" },   // 4
-                                                                       { L"MINUTE", L"MINUTES" } }; // 5
-    //
-    std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" };
-    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
-    
-    return AffichagePersonnalisation();
+    //return AffichagePersonnalisation(perso_short_minuscule);
+    //return AffichagePersonnalisation(perso_short_majuscule);
+    return AffichagePersonnalisation(perso_short_pascalCase);
+    //return AffichagePersonnalisation(perso_long_minuscule);
+    //return AffichagePersonnalisation(perso_long_majuscule);
+    //return AffichagePersonnalisation(perso_long_pascalCase);
 }

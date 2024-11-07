@@ -65,8 +65,8 @@ const std::wstring SequenceVisionnage_film::c_filenameFormat = L"^(\\d{4}\\-\\d{
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier)
-{
+//SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier)
+//{
     /*const std::wstring date_year_month_day_format = L"([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_month_day_format = L"([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_day_format = L"([[:digit:]]{2})";
@@ -76,8 +76,8 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     */
     // (((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\s(.+))?
 
- 
-    const std::wregex filename_format_rg{ L"(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\\s(.+))?" };
+
+    /*/const std::wregex filename_format_rg{L"(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\\s(.+))?"};
 
     const int filename_dates_index = 0;
     const int filename_date_year_month_day_year_index = filename_dates_index + 2;
@@ -105,11 +105,132 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     auto dates_str = match[filename_dates_index].str();
     while (std::regex_search(dates_str, dates_match, std::wregex{ L"((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)" }));
     {
-        if (dates_match[/*dates_date_year_month_day_year_index*/L"(([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))"].matched)
+        if (dates_match[/*dates_date_year_month_day_year_index*//*L"(([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))"].matched)
         {
-            auto year = std::stoi(dates_match[/*dates_date_year_month_day_year_index*/L"[[:digit:]]{4}"]);
-            auto month = std::stoi(dates_match[/*dates_date_year_month_day_month_index*/L"[[:digit:]]{2}"]);
-            auto day = std::stoi(dates_match[/*dates_date_year_month_day_day_index*/L"[[:digit:]]{2}"]);
+            auto year = std::stoi(dates_match[/*dates_date_year_month_day_year_index*///L"[[:digit:]]{4}"]);
+            /*auto month = std::stoi(dates_match[/*dates_date_year_month_day_month_index*/// L"[[:digit:]]{2}"]);
+            /*auto day = std::stoi(dates_match[*//*dates_date_year_month_day_day_index*///L"[[:digit:]]{2}"]);
+
+            //assert(checkyear(year));
+            //assert(checkmonth(month));
+            //assert(checkday(month, day, year));
+
+            //DateRecord dr{ {0,0,0,day,month - 1,year - 1900} };
+
+            //m_DatesVisionnage.emplace_back(dr);
+        //}
+        //else if (dates_match[dates_date_month_day_month_index].matched)
+        /* {
+            assert(m_DatesVisionnage.size() > 0 && L"Utilisation d'un format mois-jour sans avoir d'année déduite.");
+
+            auto month = std::stoi(dates_match[dates_date_month_day_month_index]);
+            auto day = std::stoi(dates_match[dates_date_month_day_day_index]);
+
+            auto lastDateRecord = m_DatesVisionnage.back();
+            auto last_year = lastDateRecord.date.tm_year + 1900;
+
+            assert(checkmonth(month));
+            assert(checkday(month, day, last_year));
+
+            DateRecord dr{ {0,0,0,day,month - 1,last_year - 1900} };
+
+            m_DatesVisionnage.emplace_back(dr);
+        }
+        else if (dates_match[dates_date_day_day_index].matched)
+        {
+            assert(m_DatesVisionnage.size() > 0 && L"Utilisation d'un format jour sans avoir de mois et d'années déduits.");
+
+            auto day = std::stoi(dates_match[dates_date_day_day_index]);
+
+            auto lastDateRecord = m_DatesVisionnage.back();
+            auto last_year = lastDateRecord.date.tm_year + 1900;
+            auto last_month = lastDateRecord.date.tm_mon + 1;
+
+            assert(checkday(last_month, day, last_year));
+
+            DateRecord dr{ {0,0,0,day,last_month - 1,last_year - 1900} };
+
+            m_DatesVisionnage.emplace_back(dr);
+        }
+        else
+        {
+            assert(true && L"format de date film inconnu.");
+        }
+
+        if (dates_match[dates_someFlag_index].matched)
+        {
+            m_DatesVisionnage.back().someFlag = true;
+        }
+
+        dates_str = dates_match.suffix().str();
+    //}
+    */
+    /*if (match[filename_stream_index].matched)
+    {
+        m_streaming = match[filename_stream_index];
+    }*/
+//}
+SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier)
+{
+    const std::wstring date_year_month_day_format = L"([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})";
+    const std::wstring date_month_day_format = L"([[:digit:]]{2})-([[:digit:]]{2})";
+    const std::wstring date_day_format = L"([[:digit:]]{2})";
+    const std::wstring stream_format = L"(\\s(.+))?";
+    const std::wstring dates_format = L"((" + date_year_month_day_format + L"|" + date_month_day_format + L"|" + date_day_format + L")(_?))";
+
+    const int dates_full_match_index = 0;
+    const int dates_date_year_month_day_year_index = dates_full_match_index + 3;
+    const int dates_date_year_month_day_month_index = dates_date_year_month_day_year_index + 1;
+    const int dates_date_year_month_day_day_index = dates_date_year_month_day_month_index + 1;
+    const int dates_date_month_day_month_index = dates_date_year_month_day_day_index + 1;
+    const int dates_date_month_day_day_index = dates_date_month_day_month_index + 1;
+    const int dates_date_day_day_index = dates_date_month_day_day_index + 1;
+    const int dates_someFlag_index = dates_date_day_day_index + 2;
+
+    const int dates_full_match_index_f = 0;
+    const int dates_date_year_month_day_year_index_f = dates_full_match_index + 3;
+    const int dates_date_year_month_day_month_index_f = dates_date_year_month_day_year_index + 1;
+    const int dates_date_year_month_day_day_index_f = dates_date_year_month_day_month_index + 1;
+    const int dates_date_month_day_month_index_f = dates_date_year_month_day_day_index + 1;
+    const int dates_date_month_day_day_index_f = dates_date_month_day_month_index + 1;
+    const int dates_date_day_day_index_f = dates_date_month_day_day_index + 1;
+    const int dates_someFlag_index_f = dates_date_day_day_index + 2;
+
+//    const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
+ 
+    const std::wregex filename_format_rg{ L"(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\\s(.+))?" };
+
+    const int filename_dates_index = 0;
+    const int filename_date_year_month_day_year_index = filename_dates_index + 2;
+    const int filename_date_year_month_day_month_index = filename_date_year_month_day_year_index + 1;
+    const int filename_date_year_month_day_day_index = filename_date_year_month_day_month_index + 1;
+    const int filename_date_month_day_month_index = filename_date_year_month_day_day_index + 1;
+    const int filename_date_month_day_day_index = filename_date_month_day_month_index + 1;
+    const int filename_date_day_day_index = filename_date_month_day_day_index + 1;
+    const int filename_someFlag_index = filename_date_day_day_index + 2;
+    const int filename_stream_index = filename_someFlag_index + 2;
+
+    auto nomFichier = m_cheminFichier.wstring();
+
+    assert(nomFichier.length() > 0 && L"Nom de fichier Film vide");
+
+    auto stem = m_cheminFichier.stem().wstring();
+    // prefixe ???
+    assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
+    std::wsmatch match;
+    auto str = stem;
+    //Exemple assez complexe de nom de fichier
+    std::regex_match(str, match, filename_format_rg);
+
+    std::wsmatch dates_match;
+    auto dates_str = match[filename_dates_index].str();
+    while (std::regex_search(dates_str, dates_match, std::wregex{ dates_format }))
+    {
+        if (dates_match[dates_date_year_month_day_year_index].matched)
+        {
+            auto year = std::stoi(dates_match[dates_date_year_month_day_year_index]);
+            auto month = std::stoi(dates_match[dates_date_year_month_day_month_index]);
+            auto day = std::stoi(dates_match[dates_date_year_month_day_day_index]);
 
             assert(checkyear(year));
             assert(checkmonth(month));
@@ -170,6 +291,23 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
         m_streaming = match[filename_stream_index];
     }
 }
+
+
+/*const void SequenceVisionnage_film::AffichagePersonnaliser_Film(AffichagePersonnalisation perso)
+{
+    m_espace1 = perso.m_espace1;
+    m_labelHeureSingulier = perso.m_labelsHeure.first;
+    m_labelHeurePluriel = perso.m_labelsHeure.second;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
+    m_labelMinuteSingulier = perso.m_labelsMinute.first;
+    m_labelMinutePluriel = perso.m_labelsMinute.second;
+
+    m_keyColor = perso.m_keyColor;
+    m_valuesColor = perso.m_valuesColor;
+}*/
+
+
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -523,6 +661,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else if (std::regex_match(nomFichier, std::wregex{ SequenceVisionnage_film::c_filenameFormat }))
     {
+        //SequenceVisionnage_film vis{ cheminFichier };
         SequenceVisionnage_film vis{ cheminFichier };
         m_visionnages.push_back(vis);
     }
@@ -768,7 +907,6 @@ void Film::initialiser_Soundtrack(fs::path const& cheminFichier)
 {
     auto nomFichier = cheminFichier.wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    //m_soundtrack = lire_paireCleValeur_depuisFichierTxt(nomFichier);
     m_soundtrack = lire_paireCleValeur_depuisFichierTxt(nomFichier, L"[[:blank:]]\\:[[:blank:]]");
     assert((m_soundtrack.size() != 0));
 }
@@ -793,7 +931,7 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::AffichagePersonnaliser_Film(AffichagePersonnalisation perso)
+/*const void Film::AffichagePersonnaliser_Film(AffichagePersonnalisation perso)
 {
     // _ h _ _ min
 
@@ -827,6 +965,23 @@ const void Film::AffichagePersonnaliser_Film(AffichagePersonnalisation perso)
 
     m_keyColor = perso.m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     m_valuesColor = perso.m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
+}*/
+const void Film::AffichagePersonnaliser_Film(AffichagePersonnalisation perso)
+{
+    //m_espace1 = perso.m_espace1;
+    m_labelHeureSingulier = perso.m_labelsHeure.first;
+    m_labelHeurePluriel = perso.m_labelsHeure.second;
+    //m_espace2 = perso.m_espace2;
+    //m_espace3 = perso.m_espace3;
+    m_labelMinuteSingulier = perso.m_labelsMinute.first;
+    m_labelMinutePluriel = perso.m_labelsMinute.second;
+
+    m_keyColor = perso.m_keyColor;
+    m_valuesColor = perso.m_valuesColor;
+
+    m_espace1 = L"";
+    m_espace2 = perso.m_espace2;
+    m_espace3 = L"";
 }
 
 // ######################################################################################################################################################
@@ -864,9 +1019,11 @@ const void Film::Print()
     // Dates
     Print_Dates();
     // Avec
-    Print_Avec();
+    //Print_Avec();
+    Print_Avec(affichage_avec_actif, m_avec, L"Avec :");
     // Acteurs de doublage (Voix originales)
-    Print_Acteurs_de_doublage_Voix_originales();
+    //Print_Acteurs_de_doublage_Voix_originales();
+    Print_Avec(affichage_acteurs_de_doublage_voix_originales_actif, m_acteurs_de_doublage_voix_originales, L"Acteurs de doublage (Voix originales) :");
     // Soundtracks
     Print_Soundtracks();
     // Image(s)
@@ -961,7 +1118,42 @@ const void Film::Print_Avec()
         std::wcout << avec_str;
     }
 }
-
+const void Film::Print_Avec(bool affichage_actif, std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str)
+{
+    if (affichage_actif && avec.size())
+    {
+        std::wstring avec_str = m_keyColor[0] + str + m_valuesColor + L"\r\n";
+        bool found = false;
+        for (auto&& [nom, role] : avec)
+        {
+            if (nom == L"…" || nom == L"..." || nom == L".")
+            {
+                found = true;
+                break;
+            }
+            if (nom != L"" && role != L"")
+            {
+                avec_str += nom + L' ' + m_keyColor[1] + L'(' + m_valuesColor + role + m_keyColor[1] + L')' + m_valuesColor;
+            }
+            else if (nom == L"" && role != L"")
+            {
+                avec_str += m_keyColor[1] + L'(' + m_valuesColor + role + m_keyColor[1] + L')' + m_valuesColor;
+            }
+            else
+            {
+                avec_str += nom;
+            }
+            if (avec.back().first != nom)
+                avec_str += m_keyColor[1] + L", " + m_valuesColor;
+            else
+                avec_str += m_keyColor[1] + L'.' + m_valuesColor;
+        }
+        if (found)
+            avec_str += L"...";
+        avec_str += L"\r\n";
+        std::wcout << avec_str;
+    }
+}
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Film::Print_Avec_etc()                                                                                                                  #
