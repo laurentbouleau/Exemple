@@ -60,8 +60,6 @@ class AffichagePersonnalisation
 {
 public:
     AffichagePersonnalisation() {};
-    //AffichagePersonnalisation(std::wstring espace, std::pair<std::wstring, std::wstring> labelsHeure, std::pair<std::wstring, std::wstring> labelsMinute) :
-    //    m_espace1(espace), m_espace2(espace), m_espace3(espace), m_labelsHeure(labelsHeure), m_labelsMinute(labelsMinute) {};
     AffichagePersonnalisation(std::tuple<std::wstring, std::wstring, std::wstring> espaces, std::pair<std::wstring, std::wstring> labelsHeure, std::pair<std::wstring, std::wstring> labelsMinute) :
         m_espace1{ std::get<0>(espaces) }, m_espace2{ std::get<1>(espaces) }, m_espace3{ std::get<2>(espaces) }, m_labelsHeure{ labelsHeure }, m_labelsMinute{ labelsMinute } {};
     // _ h _ _ min

@@ -1599,46 +1599,11 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)                                                                    #
+// # const void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
-{
-    // _ h _ _ min
-
-    auto& r_e_1_0 = perso.m_espace1.first, & r_e_1_1 = perso.m_espace1.second;
-    auto& r_e_2_0 = perso.m_espace2.first, & r_e_2_1 = perso.m_espace2.second;
-    auto& r_e_3_0 = perso.m_espace3.first, & r_e_3_1 = perso.m_espace3.second;
-
-    // h
-    auto& r_h00 = perso.m_labelsHeure[0].first, & r_h01 = perso.m_labelsHeure[0].second;
-    auto& r_h10 = perso.m_labelsHeure[1].first, & r_h11 = perso.m_labelsHeure[1].second;
-    auto& r_h20 = perso.m_labelsHeure[2].first, & r_h21 = perso.m_labelsHeure[2].second;
-    auto& r_h30 = perso.m_labelsHeure[3].first, & r_h31 = perso.m_labelsHeure[3].second;
-    auto& r_h40 = perso.m_labelsHeure[4].first, & r_h41 = perso.m_labelsHeure[4].second;
-
-    // min
-    auto& r_m00 = perso.m_labelsMinute[0].first, & r_m01 = perso.m_labelsMinute[0].second;
-    auto& r_m10 = perso.m_labelsMinute[1].first, & r_m11 = perso.m_labelsMinute[1].second;
-    auto& r_m20 = perso.m_labelsMinute[2].first, & r_m21 = perso.m_labelsMinute[2].second;
-    auto& r_m30 = perso.m_labelsMinute[3].first, & r_m31 = perso.m_labelsMinute[3].second;
-    auto& r_m40 = perso.m_labelsMinute[4].first, & r_m401 = perso.m_labelsMinute[4].second;
-    auto& r_m50 = perso.m_labelsMinute[5].first, & r_m501 = perso.m_labelsMinute[5].second;
-
-    // Ok !
-    m_espace1 = r_e_1_0;
-    m_labelHeureSingulier = r_h20;
-    m_labelHeurePluriel = r_h21;
-    m_espace2 = r_e_2_1;
-    m_espace3 = r_e_3_0;
-    m_labelMinuteSingulier = r_m30;
-    m_labelMinutePluriel = r_m31;
-
-    m_keyColor = perso.m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    m_valuesColor = perso.m_valuesColor;// { L"\x1b[38;2;255;255;255m" }; // Blanc
-}*/
-const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
+const void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
     m_espace1 = perso.m_espace1;
     m_espace2 = perso.m_espace2;

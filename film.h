@@ -2,8 +2,6 @@
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #define _CRT_SECURE_NO_WARNINGS
 
-//#include "film_.h"
-
 // C :
 #include <io.h>
 #include <fcntl.h>
@@ -29,7 +27,6 @@
 #include <optional>
 
 #include <filesystem> // C++17 standard header file name
-
 
 extern const std::vector<std::wstring> Genre;
 extern const std::vector<std::wstring> Sur;
@@ -74,7 +71,7 @@ public:
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    const void AffichagePersonnaliser_Film(AffichagePersonnalisation perso);
+    const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     const void Print();//
 
