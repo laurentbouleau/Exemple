@@ -755,12 +755,18 @@ void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, boo
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-AffichagePersonnalisation perso_short_minuscule = AffichagePersonnalisation{};
-AffichagePersonnalisation perso_short_majuscule = AffichagePersonnalisation{ L"", { L"H", L"H" },{ L"MIN", L"MIN" } };
-AffichagePersonnalisation perso_short_pascalCase = AffichagePersonnalisation{ L"", { L"H", L"H" },{ L"Min", L"Min" } };
-AffichagePersonnalisation perso_long_minuscule = AffichagePersonnalisation{ L"", { L"heure", L"heures" },{ L"minute", L"minutes" } };
-AffichagePersonnalisation perso_long_majuscule = AffichagePersonnalisation{ L"", { L"HEURE", L"HEURES" },{ L"MINUTE", L"MINUTES" } };
-AffichagePersonnalisation perso_long_pascalCase = AffichagePersonnalisation{ L"", { L"Heure", L"Heures" },{ L"Minute", L"Minutes" } };
+//AffichagePersonnalisation perso_short_minuscule = AffichagePersonnalisation{};
+//AffichagePersonnalisation perso_short_majuscule = AffichagePersonnalisation{ L"", { L"H", L"H" },{ L"MIN", L"MIN" } };
+//AffichagePersonnalisation perso_short_pascalCase = AffichagePersonnalisation{ L"", { L"H", L"H" },{ L"Min", L"Min" } };
+//AffichagePersonnalisation perso_long_minuscule = AffichagePersonnalisation{ L"", { L"heure", L"heures" },{ L"minute", L"minutes" } };
+//AffichagePersonnalisation perso_long_majuscule = AffichagePersonnalisation{ L"", { L"HEURE", L"HEURES" },{ L"MINUTE", L"MINUTES" } };
+//AffichagePersonnalisation perso_long_pascalCase = AffichagePersonnalisation{ L"", { L"Heure", L"Heures" },{ L"Minute", L"Minutes" } };
+AffichagePersonnalisation perso_short_minuscule = AffichagePersonnalisation{ {L"", L"", L""}, { L"h", L"h" },{ L"min", L"min" } };
+AffichagePersonnalisation perso_short_majuscule = AffichagePersonnalisation{ {L"", L"", L""}, { L"H", L"H" },{ L"MIN", L"MIN" } };
+AffichagePersonnalisation perso_short_pascalCase = AffichagePersonnalisation{ {L"", L"", L""}, { L"H", L"H" }, { L"Min", L"Min" } };
+AffichagePersonnalisation perso_long_minuscule = AffichagePersonnalisation{ {L"", L"", L""}, { L"heure", L"heures" }, { L"minute", L"minutes" } };
+AffichagePersonnalisation perso_long_majuscule = AffichagePersonnalisation{ {L"", L"", L""}, { L"HEURE", L"HEURES" }, { L"MINUTE", L"MINUTES" } };
+AffichagePersonnalisation perso_long_pascalCase = AffichagePersonnalisation{ {L"", L"", L""}, { L"Heure", L"Heures" }, { L"Minute", L"Minutes" } };
 
 AffichagePersonnalisation person = getCurrentAffichagePersonnalisation();//fonction à implémenter pour récupérer la configuration de personnalisation de l'utilisateur.
 
@@ -770,7 +776,7 @@ AffichagePersonnalisation person = getCurrentAffichagePersonnalisation();//fonct
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-AffichagePersonnalisation getCurrentAffichagePersonnalisation()
+/*AffichagePersonnalisation getCurrentAffichagePersonnalisation()
 {
     //return AffichagePersonnalisation(perso_short_minuscule);
     //return AffichagePersonnalisation(perso_short_majuscule);
@@ -778,4 +784,19 @@ AffichagePersonnalisation getCurrentAffichagePersonnalisation()
     //return AffichagePersonnalisation(perso_long_minuscule);
     //return AffichagePersonnalisation(perso_long_majuscule);
     //return AffichagePersonnalisation(perso_long_pascalCase);
+}*/
+
+AffichagePersonnalisation getCurrentAffichagePersonnalisation()
+{
+    //AffichagePersonnalisation perso = perso_short_minuscule;
+    //AffichagePersonnalisation perso = perso_short_majuscule;
+    //AffichagePersonnalisation perso = perso_short_pascalCase;
+    AffichagePersonnalisation perso = perso_long_minuscule;
+    //AffichagePersonnalisation perso = perso_long_majuscule;
+    //AffichagePersonnalisation perso = perso_long_pascalCase;
+
+    perso.m_espace1 = L" ";
+    //perso.m_espace2 = L" ";
+    //perso.m_espace3 = L" ";
+    return AffichagePersonnalisation(perso);
 }

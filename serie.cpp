@@ -1640,13 +1640,11 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier)
 }*/
 const void Serie::AffichagePersonnaliser_Serie(AffichagePersonnalisation perso)
 {
-    //m_espace1 = perso.m_espace1;
-    m_espace1 = L"";
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
-    m_espace2 = perso.m_espace2;
-    //m_espace3 = perso.m_espace3;
-    m_espace3 = L"";
     m_labelMinuteSingulier = perso.m_labelsMinute.first;
     m_labelMinutePluriel = perso.m_labelsMinute.second;
 

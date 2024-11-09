@@ -968,20 +968,16 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 }*/
 const void Film::AffichagePersonnaliser_Film(AffichagePersonnalisation perso)
 {
-    //m_espace1 = perso.m_espace1;
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
-    //m_espace2 = perso.m_espace2;
-    //m_espace3 = perso.m_espace3;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;
     m_labelMinutePluriel = perso.m_labelsMinute.second;
 
     m_keyColor = perso.m_keyColor;
     m_valuesColor = perso.m_valuesColor;
-
-    m_espace1 = L"";
-    m_espace2 = perso.m_espace2;
-    m_espace3 = L"";
 }
 
 // ######################################################################################################################################################
