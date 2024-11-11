@@ -48,8 +48,8 @@ struct SequenceVisionnage_film
 
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>&keyColor, std::wstring& valuesColor);
 
-    std::vector<std::wstring>m_keyColor;// { L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor; // { L"\x1b[38;2;255;255;255m" }; // Blanc
+    std::vector<std::wstring>m_keyColor;
+    std::wstring m_valuesColor;
  
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
@@ -124,8 +124,7 @@ private:
     std::vector<std::wstring> m_catalogue;
     std::tm m_date{0}, m_date_de_reprise{0}, m_date_de_sortie{0};
     std::vector<std::wstring> m_de;
-    //bool m_disney{ false };
-    std::wstring m_disney_sj;
+     std::wstring m_disney_sj;
     std::wstring m_distributeur;
     std::vector<std::wstring> m_genre;
     std::vector<std::wstring> m_image;
@@ -134,7 +133,6 @@ private:
     long m_making_of_duree{ -1 };
     std::vector<std::wstring> m_making_of_resume;
     std::vector<std::wstring> m_nationalite;
-    //bool m_netflix{ false };
     std::wstring m_netflix_sj;
     double m_note = 0.0;
     std::wstring m_sj;

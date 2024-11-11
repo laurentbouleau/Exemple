@@ -299,7 +299,7 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>&keyColor, std::wstring& valuesColor)
+std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>& keyColor, std::wstring& valuesColor)
 {
     m_keyColor = keyColor;
     m_valuesColor = valuesColor;
@@ -642,10 +642,9 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     else if (nomFichier == L"_you_.txt")
     {
     }
-    else if (std::regex_match(nomFichier, std::wregex{ SequenceVisionnage_film::c_filenameFormat }))
+    else if (std::regex_match(nomFichier, std::wregex{ SequenceVisionnage_film::c_filenameFormat}))
     {
-        //SequenceVisionnage_film vis{ cheminFichier };
-        SequenceVisionnage_film vis{ cheminFichier };
+        SequenceVisionnage_film vis{cheminFichier};
         m_visionnages.push_back(vis);
     }
     else if (extensionFichier == L".jpg" || extensionFichier == L".png" || extensionFichier == L".webp")
@@ -913,7 +912,6 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 // # const void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
-
 
 const void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {

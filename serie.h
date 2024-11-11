@@ -97,25 +97,33 @@ struct SequenceVisionnage
     {};
 
     void Une_Fonction_De_La_Classe_SequenceVisionnage(...);
+    
+    const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     void Print();
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     bool Print_Titre_chiffre_et_point_ou_pas(int episode);
 
     //std::wstring m_min = L"min";
+    //std::wstring m_espace3;
+    //std::wstring m_labelMinuteSingulier;
+    //std::wstring m_labelMinutePluriel;
+
+    //std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    //std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+
+    std::wstring m_espace1;
+    std::wstring m_labelHeureSingulier;
+    std::wstring m_labelHeurePluriel;
+    std::wstring m_espace2;
     std::wstring m_espace3;
     std::wstring m_labelMinuteSingulier;
     std::wstring m_labelMinutePluriel;
-
-    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
-
+    std::vector<std::wstring>m_keyColor;
+    std::wstring m_valuesColor;
 
     unsigned short int m_NumeroSaison{};
     unsigned short int m_NumeroEpisode{};
-
-
-
 
     std::wstring m_streaming{ L"" };
     //bool m_fichier_pas_zero{ false };
@@ -141,6 +149,8 @@ struct Episode
     void Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
     int m_episode{};
 
+    const void AffichagePersonnaliser(AffichagePersonnalisation perso);
+
     void GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis);
 
     void Print();
@@ -152,6 +162,16 @@ struct Episode
 
     //void Print_Data();
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
+
+    std::wstring m_espace1;
+    std::wstring m_labelHeureSingulier;
+    std::wstring m_labelHeurePluriel;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
+    std::wstring m_labelMinuteSingulier;
+    std::wstring m_labelMinutePluriel;
+    std::vector<std::wstring>m_keyColor;
+    std::wstring m_valuesColor;
 
     int m_numero{ -1 };
     long m_duree{ -1 };
@@ -183,6 +203,8 @@ public:
     void initialiser_Resume(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
+    const void AffichagePersonnaliser(AffichagePersonnalisation perso);
+
     void Print();
     void Print_Avec();
     void Print_Chaine();
@@ -193,8 +215,17 @@ public:
     void Print_Note();
 
     std::wstring m_min = L"min";
-    std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    //std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
+    //std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
+    std::wstring m_espace1;
+    std::wstring m_labelHeureSingulier;
+    std::wstring m_labelHeurePluriel;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
+    std::wstring m_labelMinuteSingulier;
+    std::wstring m_labelMinutePluriel;
+    std::vector<std::wstring>m_keyColor;
+    std::wstring m_valuesColor;
 
     std::wstring m_audiodescription;
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
@@ -255,13 +286,10 @@ public:
     int lInfoQuiMInteresse{};
 
 private:
-    //const std::wstring calculer_Annee_Debut();
-    //const std::wstring calculer_Annee_Fin(std::wstring& wstr);
     std::pair<int, int> calculer_Annees_Diffusion() const;
     std::wstring calcul_Duree_affichage() const;
     std::wstring calcul_Note_Affichage() const;
     std::wstring calcul_Signaletique_Jeunesse_affichage() const;
-    //std::wstring calcul_Sur_Affichage() const;
     std::wstring calcul_Sur_Affichage() const;
     std::wstring calcul_Titres_Affichage() const;
     std::wstring calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur_str) const;
@@ -282,10 +310,6 @@ private:
     void Print_Header() const;
 
     std::filesystem::path racine;
-
-    std::wstring m_min = L"min";
-    //std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    //std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;

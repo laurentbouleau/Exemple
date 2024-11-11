@@ -278,6 +278,32 @@ void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                             #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)
+{
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
+    m_labelHeureSingulier = perso.m_labelsHeure.first;
+    m_labelHeurePluriel = perso.m_labelsHeure.second;
+    m_labelMinuteSingulier = perso.m_labelsMinute.first;
+    m_labelMinutePluriel = perso.m_labelsMinute.second;
+
+    m_keyColor = perso.m_keyColor;
+    m_valuesColor = perso.m_valuesColor;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)                                                                         #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 // Ok !!!
 
 void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
@@ -320,12 +346,12 @@ void SequenceVisionnage::Print()
         wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
     }
 
-    if (m_numero == 1) // ???
+/*    if (m_numero == 1) // ???
     {
         //duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_duree_en_seconde / 60) + m_keyColor[1] + m_min + L')' + m_valuesColor;
         long minutes = (m_duree % (60 * 60)) / 60;
         long secondes = m_duree % 60;
-        duree_str += /*L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +*/
+        duree_str += //L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +
             m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
     }
     else
@@ -338,6 +364,7 @@ void SequenceVisionnage::Print()
 //        m_numero++;
         //m_NumeroSaison++;
     }
+    */
     wstr += m_keyColor[1] + L" : " + m_valuesColor;
     wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
 
@@ -492,7 +519,32 @@ void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
 {
     //...
     //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
-    //auto NumeroSequenceVisionnage = /*m_episode.*/GetNumeroSequenceVisionnage(sev_vis); // ??? #804
+    //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(sev_vis); // ??? #804
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                        #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)
+{
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
+    m_labelHeureSingulier = perso.m_labelsHeure.first;
+    m_labelHeurePluriel = perso.m_labelsHeure.second;
+    m_labelMinuteSingulier = perso.m_labelsMinute.first;
+    m_labelMinutePluriel = perso.m_labelsMinute.second;
+
+    m_keyColor = perso.m_keyColor;
+    m_valuesColor = perso.m_valuesColor;
+
+    for (auto& sequencevisionnage : sequencevisionnages)
+    {
+        sequencevisionnage.AffichagePersonnaliser(perso);
+    }
 }
 
 // ######################################################################################################################################################
@@ -776,24 +828,12 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
      return { -1 };
  }*/
 
- void Saison::initialiser_Hors_Saison(std::filesystem::path const& cheminFichier)
- { // Hors Saison
-     auto nomFichier = cheminFichier.filename().wstring();
-     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-     m_hors_saison = true;
-     /*std::vector<std::wstring>hors_saison = lire_fichierTxt(cheminFichier.wstring(), {L"\n"});
-     assert((hors_saison.size() != 0));
-     std::vector<std::wstring>m_hors_saison = ::extraire_Titres_Depuis_UneLigne(hors_saison[0]);
-     hors_saison.erase(hors_saison.begin());
-     if (hors_saison.size() > 0)
-     {
-         m_hors_saison_duree = initialiser_Duree(hors_saison[0]);
-         hors_saison.erase(hors_saison.begin());
-     }
-     if (hors_saison.size() > 0)
-         m_hors_saison_resume = hors_saison;
-         */
- }
+void Saison::initialiser_Hors_Saison(std::filesystem::path const& cheminFichier)
+{ // Hors Saison
+    auto nomFichier = cheminFichier.filename().wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    m_hors_saison = true;
+}
 
 
 // ######################################################################################################################################################
@@ -888,6 +928,33 @@ std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring m
     res += suffixe;
     return res;
 }
+
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                               #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
+{
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
+    m_labelHeureSingulier = perso.m_labelsHeure.first;
+    m_labelHeurePluriel = perso.m_labelsHeure.second;
+    m_labelMinuteSingulier = perso.m_labelsMinute.first;
+    m_labelMinutePluriel = perso.m_labelsMinute.second;
+
+    m_keyColor = perso.m_keyColor;
+    m_valuesColor = perso.m_valuesColor;
+
+    for (auto& episode : episodes)
+    {
+        episode.AffichagePersonnaliser(perso);
+    }
+}
+
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1615,6 +1682,11 @@ const void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)
 
     m_keyColor = perso.m_keyColor;
     m_valuesColor = perso.m_valuesColor;
+
+    for (auto& saison : saisons)
+    {
+        saison.AffichagePersonnaliser(perso);
+    }
 }
 
 // ######################################################################################################################################################
