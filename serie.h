@@ -137,7 +137,7 @@ struct SequenceVisionnage
 
 private:
     const Episode& m_episode;
- };
+};
 
 struct Episode
 {

@@ -541,7 +541,7 @@ const void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)
     m_keyColor = perso.m_keyColor;
     m_valuesColor = perso.m_valuesColor;
 
-    for (auto& sequencevisionnage : sequencevisionnages)
+    for (auto& sequencevisionnage : m_liste_sequence_visionnages)
     {
         sequencevisionnage.AffichagePersonnaliser(perso);
     }
@@ -796,7 +796,7 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
     {
         std::wcout << L'{' << cheminFichier << L'}' << std::endl;
     }
- }
+}
 
 // ######################################################################################################################################################
 
@@ -949,9 +949,9 @@ const void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
     m_keyColor = perso.m_keyColor;
     m_valuesColor = perso.m_valuesColor;
 
-    for (auto& episode : episodes)
+    for (auto& episode : m_liste_episodes)
     {
-        episode.AffichagePersonnaliser(perso);
+        episode.second->AffichagePersonnaliser(perso);
     }
 }
 
