@@ -719,7 +719,7 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             // Avec
             if (nomFichier == L"Avec.txt")
             {
-                m_avec = initialiser_Avec(cheminFichier);
+                m_avec = extraire_Liste_De_Paire_Depuis_Contenu_Fichier(cheminFichier);
             }
             // Chaîne d'origine
             if (nomFichier == L"Chaîne d'origine.txt")
@@ -788,7 +788,7 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
         }
     }
     else if(nomImage == L".jpg" || nomImage == L".png" || nomImage == L".webp")
-        // Image
+    // Image
     {
         initialiser_Image(cheminFichier, m_image);
     }
@@ -828,13 +828,18 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
      return { -1 };
  }*/
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Saison::initialiser_Hors_Saison(std::filesystem::path const& cheminFichier)                                                                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
 void Saison::initialiser_Hors_Saison(std::filesystem::path const& cheminFichier)
 { // Hors Saison
     auto nomFichier = cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_hors_saison = true;
 }
-
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

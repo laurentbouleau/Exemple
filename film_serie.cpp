@@ -223,6 +223,20 @@ std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstr
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # std::vector<std::pair<std::wstring, std::wstring>> extraire_Liste_De_Paire_Depuis_Contenu_Fichier(fs::path const& cheminFichier)                   #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::vector<std::pair<std::wstring, std::wstring>> extraire_Liste_De_Paire_Depuis_Contenu_Fichier(fs::path const& cheminFichier)
+{
+    auto nomFichier = cheminFichier.filename().wstring();
+    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+    std::vector<std::pair<std::wstring, std::wstring>> avec = lire_paireCleValeur_depuisFichierTxt(cheminFichier.wstring());
+    return avec;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring>& ligne)                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -399,20 +413,6 @@ void initialiser_Audiodescription(fs::path const& cheminFichier, std::wstring& m
     if (std::find(::Audiodescription.begin(), ::Audiodescription.end(), ad) != ::Audiodescription.end())
         m_ad = ad;
     assert((m_ad.size() != 0));
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # std::vector<std::pair<std::wstring, std::wstring>> initialiser_Avec(fs::path const& cheminFichier)                                                 #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-std::vector<std::pair<std::wstring, std::wstring>> initialiser_Avec(fs::path const& cheminFichier)
-{
-    auto nomFichier = cheminFichier.filename().wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    std::vector<std::pair<std::wstring, std::wstring>> avec = lire_paireCleValeur_depuisFichierTxt(cheminFichier.wstring());
-    return avec;
 }
 
 // ######################################################################################################################################################

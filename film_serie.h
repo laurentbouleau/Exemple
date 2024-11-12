@@ -28,6 +28,7 @@
 
 std::optional<long> extraire_Duree_DepuisUneLigneDUnFichier(const std::wstring& ligne);
 std::tuple<std::vector<std::wstring>, std::optional<long>, std::vector<std::wstring>> extraire_Informations_DepuisLeContenuDUnFichier(std::filesystem::path const& cheminFichier);
+std::vector<std::pair<std::wstring, std::wstring>> extraire_Liste_De_Paire_Depuis_Contenu_Fichier(std::filesystem::path const& cheminFichier);
 std::vector<std::wstring> extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(std::wstring& titres);
 std::vector<std::wstring> extraire_Titres_Depuis_UnFichier(std::filesystem::path const& cheminFichier);
 std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& file_content);
@@ -36,7 +37,6 @@ std::wstring filter_values(std::wstring const& content, std::vector<std::wstring
 std::vector<std::wstring> fusionner_Titres(const std::vector<std::wstring>& nouveaux_titres, const std::vector<std::wstring>& vieux_titres);
 
 void initialiser_Audiodescription(std::filesystem::path const& cheminFichier, std::wstring& m_ad);
-std::vector<std::pair<std::wstring, std::wstring>> initialiser_Avec(std::filesystem::path const& cheminFichier);
 void initialiser_Genre(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_genres_renvoyes, const std::vector<std::wstring>& genres_valides);
 void initialiser_Image(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_images);
 void initialiser_Nationalite(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);

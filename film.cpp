@@ -172,6 +172,7 @@ const std::wstring SequenceVisionnage_film::c_filenameFormat = L"^(\\d{4}\\-\\d{
 //}
 SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier)
 {
+    // (((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\s(.+))?
     const std::wstring date_year_month_day_format = L"([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_month_day_format = L"([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_day_format = L"([[:digit:]]{2})";
@@ -569,7 +570,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
 
     if (nomFichier == L"Acteurs de doublage (Voix originales).txt")
     {
-        m_acteurs_de_doublage_voix_originales = initialiser_Avec(cheminFichier);
+        m_acteurs_de_doublage_voix_originales = extraire_Liste_De_Paire_Depuis_Contenu_Fichier(cheminFichier);
     }
     else if (nomFichier == L"AD.txt")
     {
@@ -577,7 +578,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else if (nomFichier == L"Avec.txt")
     {
-        m_avec = initialiser_Avec(cheminFichier);
+        m_avec = extraire_Liste_De_Paire_Depuis_Contenu_Fichier(cheminFichier);
     }
     else if (nomFichier == L"Date de reprise.txt")
     {
