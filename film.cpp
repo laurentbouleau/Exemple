@@ -197,10 +197,8 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     const int dates_date_day_day_index_f = dates_date_month_day_day_index + 1;
     const int dates_someFlag_index_f = dates_date_day_day_index + 2;
 
-//    const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
+    const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
  
-    const std::wregex filename_format_rg{ L"(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2}))(_?))+)(\\s(.+))?" };
-
     const int filename_dates_index = 0;
     const int filename_date_year_month_day_year_index = filename_dates_index + 2;
     const int filename_date_year_month_day_month_index = filename_date_year_month_day_year_index + 1;
@@ -209,7 +207,10 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     const int filename_date_month_day_day_index = filename_date_month_day_month_index + 1;
     const int filename_date_day_day_index = filename_date_month_day_day_index + 1;
     const int filename_someFlag_index = filename_date_day_day_index + 2;
-    const int filename_stream_index = filename_someFlag_index + 2;
+    //const int filename_someFlag_index = filename_date_day_day_index + 1;
+    //const int filename_stream_index = filename_someFlag_index + 2;
+    //const int filename_stream_index = filename_someFlag_index + 1;
+    const int filename_stream_index = filename_someFlag_index + 3;
 
     auto nomFichier = m_cheminFichier.wstring();
 
@@ -308,7 +309,7 @@ std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<Date
     const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;
     const std::wstring same_date_format = between_parenthesis;
     const std::wstring prequel_format = between_parenthesis;
-    const std::wstring streaming_format = m_keyColor[1] + L" :" + m_valuesColor + L"%s";
+    const std::wstring streaming_format = m_keyColor[1] + L" : " + m_valuesColor + L"%s";
     const std::wstring step_by_step_tag = L' ' + m_keyColor[1] + L'[' + m_valuesColor + L"pas-à-pas" + m_keyColor[1] + L']' + m_valuesColor;
 
     std::wstring dates_de_visionnage_wstr = L"";
@@ -366,7 +367,7 @@ std::wstring SequenceVisionnage_film::Print_Dates_de_visionnage(std::vector<Date
     }
 
     if (m_streaming != L"" && dates_de_visionnage_wstr.length() > 0)
-        dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
+         dates_de_visionnage_wstr += wstring_format(streaming_format, m_streaming.c_str());
     //
     return dates_de_visionnage_wstr;
 }
