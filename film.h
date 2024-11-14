@@ -44,7 +44,7 @@ struct SequenceVisionnage_film
 
     static const std::wstring c_filenameFormat;
 
-//    const void AffichagePersonnaliser_Film(AffichagePersonnalisation perso);
+//    const void AffichagePersonnaliser_film(AffichagePersonnalisation perso);
 
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage, std::vector<std::wstring>&keyColor, std::wstring& valuesColor);
 
@@ -91,7 +91,6 @@ private:
     std::wstring format_DateEtSur(std::wstring date_str, std::wstring& sur_str) const;
 
     const void Print_Acteurs_de_doublage_Voix_originales();
-    const void Print_Avec();
     const void Print_Avec(bool affichage_actif, std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str);
     void Print_Avec_etc();
     const void Print_Dates();

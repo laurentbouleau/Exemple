@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "film_serie.h"
 
 // C :
@@ -223,7 +222,6 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     }
 }
 
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # InfosVisionnage::initialiser_Duree(std::wstring& m)                                                                                                #
@@ -305,7 +303,6 @@ const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation 
 // ######################################################################################################################################################
 
 // Ok !!!
-
 void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
 {
 
@@ -611,7 +608,13 @@ void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 //{
 //}
 
-bool Episode::Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode)
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # bool Episode::Print_Titre_chiffre_et_point_ou_pas(int episode)                                                                                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+bool Episode::Print_Titre_chiffre_et_point_ou_pas(int episode)
 {
     if (episode == 0)
         return false;
