@@ -695,7 +695,6 @@ void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
     //m_liste_episodes.insert({ m_numero, seq_vis });
 }
 
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Saison::initialiser_Fichier(fs::path const& cheminFichier)                                                                                    #
@@ -1108,9 +1107,10 @@ const void Saison::Print_Date_etc()
 
 void Saison::Print_Header()
 {
-    std::wstring hors_saison_str;
+    /*std::wstring hors_saison_str;
     if (m_hors_saison)
         hors_saison_str += m_keyColor[1] + L"Hors Saison : " + m_valuesColor;
+        */
     wchar_t date_tab[15];
     std::wstring date_str{};
     if (m_date_diffusee_a_partir_de.first.tm_mday == -1 && m_date_diffusee_a_partir_de.first.tm_mon == -1)
@@ -1159,7 +1159,8 @@ void Saison::Print_Header()
 
     std::wstring numero_str = L' ' + m_keyColor[1] + L'(' + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
 
-    std::wcout << hors_saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << std::endl;
+    //std::wcout << hors_saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << std::endl;
+    std::wcout << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << std::endl;
 }
 
 // ######################################################################################################################################################
@@ -1210,7 +1211,7 @@ void Saison::Print_Netflix()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::Print_Netflix()                                                                                                                       #
+// # Saison::Print_Note()                                                                                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -1884,8 +1885,18 @@ const void Serie::Print_Saisons()
 {
     if (affichage_saisons_actif)
     {
+        int i = 1;
         for (auto saison : saisons)
         {
+            std::wstring saison_str = m_keyColor[0];
+            const std::wstring saison_123_etc = L"Saison ";
+            const std::wstring hors_saison = L"Hors saison";
+            if (saison.m_hors_saison)
+                saison_str += hors_saison;
+            else
+                saison_str += saison_123_etc + std::to_wstring(i++);
+            saison_str += L" :" + m_valuesColor + L"\r\n";
+            std::wcout << saison_str;
             Print_Saison(saison);
         }
     }
