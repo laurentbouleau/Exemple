@@ -590,8 +590,29 @@ void Episode::Print()
 
 void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
 {
-    // ???
-    m_liste_sequence_visionnages.push_back(vis);
+    auto& liste = m_liste_sequence_visionnages[0];
+
+    std::wstring liste_str;// = L"\r\n";
+
+    //if()
+    liste_str += std::to_wstring(liste.m_NumeroSaison + 1);
+    liste_str += m_keyColor[1] + L'x' + m_valuesColor;
+    liste_str += std::to_wstring(liste.m_NumeroEpisode + 1);
+    liste_str += m_keyColor[1] + L" : " + m_valuesColor;
+
+    liste_str += m_keyColor[1] + liste.m_titres[0] + m_valuesColor;
+    if (liste.m_titres.size() > 1)
+        liste_str += liste.m_titres[1] + m_keyColor[1] + liste.m_titres[2] + m_valuesColor;
+
+    liste_str += m_keyColor[1] + L" (" + m_valuesColor + m_keyColor[1] + L"min)" + m_valuesColor;
+
+    liste_str += L"\r\n";
+    for (auto l : liste.m_resume)
+    {
+        liste_str += l + L"\r\n";
+    }
+    liste_str += L"\r\n";
+    std::wcout << liste_str;
 }
 
 void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
