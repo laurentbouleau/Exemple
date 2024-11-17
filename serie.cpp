@@ -597,7 +597,6 @@ void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
 void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 {
     // ???
-
 }
 
 // ######################################################################################################################################################
