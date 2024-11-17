@@ -209,7 +209,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         //auto ligne_titres = (pos != std::wstring::npos) ? file_content[0].substr(pos + c_separateur_numero_titre_dans_ligne_de_fichier.length()) : L"";
         //m_titres = ::extraire_Titres_Depuis_UneLigne(ligne_titres);
 
-        m_titres = ::extraire_Titres_Depuis_UneLigne(file_content[0]);
+        m_titres = /*::*/extraire_Titres_Depuis_UneLigne(file_content[0]);
     }
 
     if (file_content.size() > 1)
@@ -591,7 +591,9 @@ void Episode::Print()
 void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
 {
     // ???
+    m_liste_sequence_visionnages.push_back(vis);
 }
+
 void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 {
     // ???
@@ -911,34 +913,6 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::wstring stringFormatOneLine(std::wstring str,                                                                                                 #
-// #                                  int lengthMax,                                                                                                    #
-// #                                  std::wstring marqueurTroncature,                                                                                  #
-// #                                  int marqueurTroncature_len,                                                                                       #
-// #                                  std::wstring suffixe,                                                                                             #
-// #                                  int suffixe_len)                                                                                                  #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring marqueurTroncature, int marqueurTroncature_len, std::wstring suffixe, int suffixe_len)
-{
-    std::wstring res;
-
-    if (str.size() < lengthMax - suffixe_len)
-    {
-        res = str;
-    }
-    else
-    {
-        res = str.substr(0, lengthMax - marqueurTroncature_len - suffixe_len) + marqueurTroncature;
-    }
-    res += suffixe;
-    return res;
-}
-
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -1077,23 +1051,23 @@ void Saison::Print_Chaine()
 // ???
 const void Saison::Print_Date_etc()
 {
-/*    if (affichage_date_etc_actif)
+    /*if (affichage_date_etc_actif)
     {
         wchar_t date_string[15];
         std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_date_diffusee_a_partir_de.first);
         std::wstring date_etc_str;
         date_etc_str = date_string;
-        date_etc_str = date_etc_str.substr(0, 2) + keyColor[1] + L'/' + valuesColor + date_etc_str.substr(3, 2) + keyColor[1] + L'/' + valuesColor + date_etc_str.substr(6, 4);
+        date_etc_str = date_etc_str.substr(0, 2) + m_keyColor[1] + L'/' + m_valuesColor + date_etc_str.substr(3, 2) + m_keyColor[1] + L'/' + m_valuesColor + date_etc_str.substr(6, 4);
         if (m_date_diffusee_a_partir_de.second != L"")
-            date_etc_str += keyColor[0] + m_date_diffusee_a_partir_de.second + valuesColor + L' ';
-        date_etc_str += keyColor[0] + m_titres[0] + valuesColor;
+            date_etc_str += m_keyColor[0] + m_date_diffusee_a_partir_de.second + m_valuesColor + L' ';
+        date_etc_str += m_keyColor[0] + m_titres[0] + m_valuesColor;
         if (m_titres[2] != L"")
-            date_etc_str += keyColor[1] + m_titres[1] + valuesColor + keyColor[0] + m_titres[2] + valuesColor;
+            date_etc_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_keyColor[0] + m_titres[2] + m_valuesColor;
 
-        date_etc_str += keyColor[1] + L" : " + valuesColor;
+        date_etc_str += m_keyColor[1] + L" : " + m_valuesColor;
         for (auto r : m_resume)
             date_etc_str += r;
-        date_etc_str += L' ' + keyColor[1] + L'(' + valuesColor + std::to_wstring(m_numero) + keyColor[1] + L')' + valuesColor;
+        date_etc_str += L' ' + m_keyColor[1] + L'(' + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
         date_etc_str += L"\r\n";
         std::wcout << date_etc_str;
     }*/
@@ -1889,12 +1863,12 @@ const void Serie::Print_Saisons()
         for (auto saison : saisons)
         {
             std::wstring saison_str = m_keyColor[0];
-            const std::wstring saison_123_etc = L"Saison ";
+            const std::wstring saison_chiffre = L"Saison ";
             const std::wstring hors_saison = L"Hors saison";
             if (saison.m_hors_saison)
                 saison_str += hors_saison;
             else
-                saison_str += saison_123_etc + std::to_wstring(i++);
+                saison_str += saison_chiffre + std::to_wstring(i++);
             saison_str += L" :" + m_valuesColor + L"\r\n";
             std::wcout << saison_str;
             Print_Saison(saison);
