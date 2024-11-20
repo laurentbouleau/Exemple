@@ -57,8 +57,10 @@ struct InfosVisionnage
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    unsigned short int m_NumeroSaison{};
-    unsigned short int m_NumeroEpisode{};
+    //unsigned short int m_NumeroSaison{};
+    //unsigned short int m_NumeroEpisode{};
+    long m_NumeroSaison{};
+    long m_NumeroEpisode{};
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
  //   bool m_fichier_pas_zero{ false };
@@ -68,7 +70,7 @@ struct InfosVisionnage
     std::vector<std::wstring> m_titres;
 //    unsigned short int m_numero{ 1 };
 
-    int m_numero{ -1 };
+    long m_numero{ -1 };
     //long m_duree{ -1 };
     long m_duree{ 0 };
     std::vector<std::wstring> m_resume;
@@ -96,12 +98,12 @@ struct SequenceVisionnage
 
     //void Print();
 
-    void Print() const;
+    //void Print() const;
     void Print(bool isFirstSequence);
 
 
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
-    bool Print_Titre_chiffre_et_point_ou_pas(int episode);
+    bool Print_Titre_chiffre_et_point_ou_pas(long episode);
 
     //std::wstring m_min = L"min";
     //std::wstring m_espace3;
@@ -121,8 +123,8 @@ struct SequenceVisionnage
     std::vector<std::wstring>m_keyColor;
     std::wstring m_valuesColor;
 
-    long long m_NumeroSaison{};
-    long long m_NumeroEpisode{};
+    long m_NumeroSaison{};
+    long m_NumeroEpisode{};
 
     std::wstring m_streaming{ L"" };
     //bool m_fichier_pas_zero{ false };
@@ -131,9 +133,8 @@ struct SequenceVisionnage
     std::vector<std::wstring> m_resume{};
     std::vector<DateRecord> m_DatesVisionnage{};
 
-    int m_numero{ -1 };
+    long m_numero{ -1 };
     long m_duree{ -1 };
-
 
 
 private:
@@ -151,11 +152,11 @@ struct Episode
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
+    int GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
 
     void Print();
 
-    bool Print_Titre_chiffre_et_point_ou_pas(long long episode);
+    bool Print_Titre_chiffre_et_point_ou_pas(long episode);
 
     void PrintFirstSequenceVisionnage(const SequenceVisionnage& vis);
     void PrintSequenceVisionnage(const SequenceVisionnage& vis);
@@ -172,15 +173,16 @@ struct Episode
     std::vector<std::wstring>m_keyColor;
     std::wstring m_valuesColor;
 
-    long long m_episode{};
+    long m_episode{};
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
 
-    int m_numero{ -1 };
+    long m_numero{ -1 };
     long m_duree{ -1 };
     std::vector<std::wstring> m_resume;
 
     int lInfoQuiMInteresse;
  
+    SequenceVisionnage uneFonctionQuiAfficheLaSequenceDeVisionnage(bool);
 
 };
 
@@ -304,7 +306,7 @@ private:
     std::pair<std::optional<int>, std::optional<int>> m_f_anneesProduction;
 
     const void Print_Saison(Saison saison);
-    const void Print_Saisons();
+    void Print_Saisons();
  
     void Print_Avec_etc();
     const void Print_Chaine();

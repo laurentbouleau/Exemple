@@ -50,7 +50,7 @@ static bool ends_with(std::wstring_view str, std::wstring_view suffix)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # SequenceVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier)                                                       #
+// # SequenceVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier)                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -209,7 +209,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         //auto ligne_titres = (pos != std::wstring::npos) ? file_content[0].substr(pos + c_separateur_numero_titre_dans_ligne_de_fichier.length()) : L"";
         //m_titres = ::extraire_Titres_Depuis_UneLigne(ligne_titres);
 
-        m_titres = /*::*/extraire_Titres_Depuis_UneLigne(file_content[0]);
+        m_titres = extraire_Titres_Depuis_UneLigne(file_content[0]);
     }
 
     if (file_content.size() > 1)
@@ -330,9 +330,9 @@ void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void SequenceVisionnage::Print() const
+/*void SequenceVisionnage::Print() const
 {
-    int numero_sequence = m_episode.GetNumeroSequenceVisionnage(*this);
+    long numero_sequence = m_episode.GetNumeroSequenceVisionnage(*this);
 
     std::wstring wstr;
     std::wstring chiffre_et_point_ou_pas_str{};
@@ -350,7 +350,6 @@ void SequenceVisionnage::Print() const
 
     if (numero_sequence == 1)
     {
-        long minutes = (m_duree_en_seconde/* % (60 * 60)*/) / 60;
         long secondes = m_duree_en_seconde % 60;
         duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
     }
@@ -370,7 +369,7 @@ void SequenceVisionnage::Print() const
             resume_str += r;
     }
     std::wcout << chiffre_et_point_ou_pas_str << wstr << duree_str << resume_str << L"\r\n";
-}
+}*/
 
 void SequenceVisionnage::Print(bool isFirstSequence)
 {
@@ -380,7 +379,6 @@ void SequenceVisionnage::Print(bool isFirstSequence)
     bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_numero);
     if (chiffre_et_point_ou_pas)
     {
-        //chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + keyColor[1] + L'x' + valuesColor + std::to_wstring(m_episode.m_numero) + keyColor[1] + L" : " + valuesColor;
         chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
     }
 
@@ -490,11 +488,11 @@ std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecor
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(int episode)                                                                          #
+// # bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(long episode)                                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(int episode)
+bool SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(long episode)
 {
     if (episode == 0)
         return false;
@@ -586,7 +584,7 @@ void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
     //return NumeroSequenceVisionnage;
 }
 
-long long Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const
+int Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const
 {
     auto it = std::find(m_liste_sequence_visionnages.begin(), m_liste_sequence_visionnages.end(), sev_vis);
     return (it - m_liste_sequence_visionnages.begin()) + 1; // +1 parce que les numéro de séquence commencent à 1
@@ -688,7 +686,6 @@ void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
 void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 {
     vis.uneFonctionQuiAfficheLaSequenceDeVisionnage(false);
-
 }
 
 
@@ -704,11 +701,11 @@ void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # bool Episode::Print_Titre_chiffre_et_point_ou_pas(long long episode)                                                                               #
+// # bool Episode::Print_Titre_chiffre_et_point_ou_pas(long episode)                                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-bool Episode::Print_Titre_chiffre_et_point_ou_pas(long long episode)
+bool Episode::Print_Titre_chiffre_et_point_ou_pas(long episode)
 {
     if (episode == 0)
         return false;
@@ -1943,15 +1940,15 @@ const void Serie::Print_Saison(Saison saison)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::Print_Saisons()                                                                                                                  #
+// # void Serie::Print_Saisons()                                                                                                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_Saisons()
+void Serie::Print_Saisons()
 {
     if (affichage_saisons_actif)
     {
-        for (auto& saison : saisons)
+        /*for (auto& saison : saisons)
         {
             const std::wstring saison_chiffre = L"Saison ";
             const std::wstring hors_saison = L"Hors saison";
@@ -1965,6 +1962,11 @@ const void Serie::Print_Saisons()
             saison_str += L" :" + m_valuesColor + L"\r\n";
             std::wcout << saison_str;
             Print_Saison(saison);
+        }*/
+        for (auto& saison : saisons)
+        {
+            saison.Print();
+            std::wcout << L"\r\n\r\n";
         }
     }
 }
