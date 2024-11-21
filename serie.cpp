@@ -280,7 +280,7 @@ void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)
 
 /////
 
-std::wstring SequenceVisionnage::uneFonctionQuiAfficheLaSequenceDeVisionnage(bool f)
+std::wstring SequenceVisionnage::uneFonctionQuiAfficheLaSequenceDeVisionnage(bool f) const
 {
 
     return L"1";
@@ -539,7 +539,11 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
     m_liste_sequence_visionnages.push_back(SequenceVisionnage(*this, info_vis));
 }
 
-
+/*SequenceVisionnage*/void uneFonctionQuiAfficheLaSequenceDeVisionnage(bool f)
+{
+    bool e = f;
+    //return SequenceVisionnage;
+}
 /*void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
 {
     //...
@@ -584,7 +588,7 @@ void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
     //return NumeroSequenceVisionnage;
 }
 
-int Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const
+long long Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const
 {
     auto it = std::find(m_liste_sequence_visionnages.begin(), m_liste_sequence_visionnages.end(), sev_vis);
     return (it - m_liste_sequence_visionnages.begin()) + 1; // +1 parce que les numéro de séquence commencent à 1
@@ -685,7 +689,7 @@ void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
 
 void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 {
-    vis.uneFonctionQuiAfficheLaSequenceDeVisionnage(false);
+    /*vis.*/uneFonctionQuiAfficheLaSequenceDeVisionnage(false);
 }
 
 

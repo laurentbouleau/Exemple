@@ -71,8 +71,8 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     const std::wstring date_month_day_format = L"([[:digit:]]{2})-([[:digit:]]{2})";
     const std::wstring date_day_format = L"([[:digit:]]{2})";
     const std::wstring stream_format = L"(\\s(.+))?";
-    //const std::wstring dates_format = L"((" + date_year_month_day_format + L"|" + date_month_day_format + L"|" + date_day_format + L")(_?))";
-    const std::wstring dates_format = L"((" + date_year_month_day_format + L"|" + date_month_day_format + L"|" + date_day_format + L")" + stream_format;
+    const std::wstring dates_format = L"((" + date_year_month_day_format + L"|" + date_month_day_format + L"|" + date_day_format + L")(_?))";
+    //const std::wstring dates_format = L"((" + date_year_month_day_format + L"|" + date_month_day_format + L"|" + date_day_format + L")" + stream_format;
 
     const int dates_full_match_index = 0;
     const int dates_date_year_month_day_year_index = dates_full_match_index + 3;

@@ -90,7 +90,7 @@ struct SequenceVisionnage
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
 
     // uneFonctionQuiAfficheLaSequenceDeVisionnage
-    std::wstring uneFonctionQuiAfficheLaSequenceDeVisionnage(bool);
+    std::wstring uneFonctionQuiAfficheLaSequenceDeVisionnage(bool) const;
 
     void Une_Fonction_De_La_Classe_SequenceVisionnage(...);
     
@@ -152,7 +152,7 @@ struct Episode
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    int GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
+    long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
 
     void Print();
 
@@ -182,7 +182,7 @@ struct Episode
 
     int lInfoQuiMInteresse;
  
-    SequenceVisionnage uneFonctionQuiAfficheLaSequenceDeVisionnage(bool);
+    /*SequenceVisionnage*///void  uneFonctionQuiAfficheLaSequenceDeVisionnage(bool);
 
 };
 
