@@ -280,10 +280,37 @@ void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)
 
 /////
 
-std::wstring SequenceVisionnage::uneFonctionQuiAfficheLaSequenceDeVisionnage(bool f) const
-{
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring SequenceVisionnage::calcul_Duree_affichage() const                                                                                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
-    return L"1";
+std::wstring SequenceVisionnage::calcul_Duree_affichage() const
+{
+    std::wstring duree_str;
+    if (affichage_duree_actif)
+    {
+        //long minutes = (m_duree_en_seconde % (60 * 60)) / 60;
+        //long secondes = m_duree_en_seconde % 60;
+        long minutes = (m_duree % (60 * 60)) / 60;
+        long secondes = m_duree % 60;
+        duree_str = L' ' + m_keyColor[1] + L'(' + m_valuesColor +
+            std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) +
+            L')' + m_valuesColor;
+    }
+    return duree_str;
+}
+
+std::wstring SequenceVisionnage::uneFonctionQuiAfficheLaSequenceDeVisionnage(bool found) const
+{
+    //bool found = false;
+
+    //Print(found);
+    //*this.GetNumeroSequenceVisionnage(m_DatesVisionnage);
+    //Episode::GetNumeroSequenceVisionnage(m_DatesVisionnage);
+    //*this.GetNumeroSequenceVisionnage(m_liste_sequence_visionnages);
+    return L"100000000";
 }
 
 
@@ -318,7 +345,6 @@ const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation 
 // Ok !!!
 void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
 {
-
     auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
     auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
     auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
@@ -396,6 +422,8 @@ void SequenceVisionnage::Print(bool isFirstSequence)
         wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
     }
 
+    wstr += calcul_Duree_affichage();
+
     wstr += m_keyColor[1] + L" : " + m_valuesColor;
     wstr += Print_Dates_de_visionnage(m_DatesVisionnage);
 
@@ -410,6 +438,9 @@ void SequenceVisionnage::Print(bool isFirstSequence)
     }
     std::wcout << chiffre_et_point_ou_pas_str << wstr << duree_str << resume_str << L"\r\n";
 }
+
+
+
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -539,11 +570,6 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
     m_liste_sequence_visionnages.push_back(SequenceVisionnage(*this, info_vis));
 }
 
-/*SequenceVisionnage*/void uneFonctionQuiAfficheLaSequenceDeVisionnage(bool f)
-{
-    bool e = f;
-    //return SequenceVisionnage;
-}
 /*void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
 {
     //...
@@ -628,31 +654,21 @@ long long Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis
 void Episode::Print()
 {
     bool first = true;
-    for (auto vis : m_liste_sequence_visionnages)
+    for (auto& vis : m_liste_sequence_visionnages)
     {
+        //vis.Print(first);
         if (first)
         {
             PrintFirstSequenceVisionnage(vis);
+            first = false;
         }
         else
         {
             PrintSequenceVisionnage(vis);
+
         }
-        first = false;
     }
 }
-
-
-
-/*oid Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
-{
-    vis.uneFonctionQuiAfficheLaSequenceDeVisionnageSelonLeFormatNecessaireQuandCEstLaPremiereDUnEpisode();
-}
-void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
-{
-    vis.uneFonctionQuiAfficheLaSequenceDeVisionnageSelonLeFormatNecessaireQuandCENEstPasLaPremiereDUnEpisode();
-
-}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -665,31 +681,38 @@ void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
     auto& liste = m_liste_sequence_visionnages[0];
 
     std::wstring liste_str;// = L"\r\n";
+    bool chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_numero);
 
-    //if()
-    liste_str += std::to_wstring(liste.m_NumeroSaison + 1);
-    liste_str += m_keyColor[1] + L'x' + m_valuesColor;
-    liste_str += std::to_wstring(liste.m_NumeroEpisode + 1);
-    liste_str += m_keyColor[1] + L" : " + m_valuesColor;
+/*    if (chiffre_et_point_ou_pas)
+    {
+        liste.Print(chiffre_et_point_ou_pas);
+    }
 
     liste_str += m_keyColor[1] + liste.m_titres[0] + m_valuesColor;
     if (liste.m_titres.size() > 1)
         liste_str += liste.m_titres[1] + m_keyColor[1] + liste.m_titres[2] + m_valuesColor;
+*/
+    //liste_str += m_keyColor[1] + L" (" + m_valuesColor + m_keyColor[1] + L"min)" + m_valuesColor;
+    //liste_str += liste.calcul_Duree_affichage();
 
-    liste_str += m_keyColor[1] + L" (" + m_valuesColor + m_keyColor[1] + L"min)" + m_valuesColor;
+    bool isFirstSequence = true;
+    liste.Print(isFirstSequence);
 
-    liste_str += L"\r\n";
-    for (auto l : liste.m_resume)
+
+/*    liste_str += L"\r\n";
+    for (auto& l : liste.m_resume)
     {
         liste_str += l + L"\r\n";
     }
     liste_str += L"\r\n";
     std::wcout << liste_str;
+*/
 }
+
 
 void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 {
-    /*vis.*/uneFonctionQuiAfficheLaSequenceDeVisionnage(false);
+    vis.uneFonctionQuiAfficheLaSequenceDeVisionnage(false);
 }
 
 
@@ -1375,15 +1398,12 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion() const
 
 std::wstring Serie::calcul_Duree_affichage() const
 {
-    // Durée
     std::wstring duree_str;
     if (affichage_duree_actif)
     {
-        //duree_str = L' ' + std::to_wstring(m_duree / 60) + m_keyColor[0] + L"min" + m_valuesColor;
         long minutes = (m_duree % (60 * 60)) / 60;
         long secondes = m_duree % 60;
-        duree_str = L' ' + /*std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +*/
-            std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
+        duree_str = L' ' + std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
     }
     return duree_str;
 }
@@ -1879,11 +1899,6 @@ const void Serie::Print_Creee_par()
             first = false;
         }
         creee_par_str += L"\r\n";
-
-        //PrintStringW(m_hOut, creee_par_str, 0);
-        //PrintStringW(HANDLE hOut, creee_par_str);
-        //int i = Console_Lire_txt(creee_par_str, 0, 0);
-        //Console::PrintStringW(creee_par_str, 0);
         std::wcout << creee_par_str;
     }
 }
@@ -1952,21 +1967,6 @@ void Serie::Print_Saisons()
 {
     if (affichage_saisons_actif)
     {
-        /*for (auto& saison : saisons)
-        {
-            const std::wstring saison_chiffre = L"Saison ";
-            const std::wstring hors_saison = L"Hors saison";
-
-            std::wstring saison_str = m_keyColor[0];
-
-            if (saison.m_hors_saison)
-                saison_str += hors_saison;
-            else
-                saison_str += saison_chiffre + std::to_wstring(saison.m_numero);
-            saison_str += L" :" + m_valuesColor + L"\r\n";
-            std::wcout << saison_str;
-            Print_Saison(saison);
-        }*/
         for (auto& saison : saisons)
         {
             saison.Print();

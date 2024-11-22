@@ -89,6 +89,8 @@ struct SequenceVisionnage
 
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
 
+    std::wstring calcul_Duree_affichage() const;
+
     // uneFonctionQuiAfficheLaSequenceDeVisionnage
     std::wstring uneFonctionQuiAfficheLaSequenceDeVisionnage(bool) const;
 
@@ -134,7 +136,9 @@ struct SequenceVisionnage
     std::vector<DateRecord> m_DatesVisionnage{};
 
     long m_numero{ -1 };
-    long m_duree{ -1 };
+    long m_duree;// { -1 };
+
+    bool affichage_duree_actif = true;// false;
 
 
 private:
@@ -147,7 +151,8 @@ struct Episode
     Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } { ajouter_SequenceVisionnage(info_vis); };
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
-    
+
+
     void Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
@@ -176,13 +181,13 @@ struct Episode
     long m_episode{};
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
 
-    long m_numero{ -1 };
+    //long m_numero{ -1 };
+    long m_numero{ 0 };
     long m_duree{ -1 };
     std::vector<std::wstring> m_resume;
 
     int lInfoQuiMInteresse;
  
-    /*SequenceVisionnage*///void  uneFonctionQuiAfficheLaSequenceDeVisionnage(bool);
 
 };
 

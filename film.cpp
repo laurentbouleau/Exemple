@@ -1004,7 +1004,7 @@ const void Film::Print_Dates()
     if (affichage_visionnages_actif)
     {
         std::wstring dates_str = L"\r\n";
-        for (auto visionnage : m_visionnages)
+        for (auto& visionnage : m_visionnages)
         {
             //dates_str += visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage) + L"\r\n";
             dates_str += visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage, m_keyColor, m_valuesColor) + L"\r\n";
