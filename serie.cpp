@@ -291,10 +291,10 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage() const
     std::wstring duree_str;
     if (affichage_duree_actif)
     {
-        //long minutes = (m_duree_en_seconde % (60 * 60)) / 60;
-        //long secondes = m_duree_en_seconde % 60;
-        long minutes = (m_duree % (60 * 60)) / 60;
-        long secondes = m_duree % 60;
+        long minutes = (m_duree_en_seconde % (60 * 60)) / 60;
+        long secondes = m_duree_en_seconde % 60;
+        //long minutes = (m_duree % (60 * 60)) / 60;
+        //long secondes = m_duree % 60;
         duree_str = L' ' + m_keyColor[1] + L'(' + m_valuesColor +
             std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) +
             L')' + m_valuesColor;
@@ -651,6 +651,7 @@ long long Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis
         first = false;
     }
 }*/
+
 void Episode::Print()
 {
     bool first = true;

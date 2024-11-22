@@ -103,7 +103,6 @@ struct SequenceVisionnage
     //void Print() const;
     void Print(bool isFirstSequence);
 
-
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     bool Print_Titre_chiffre_et_point_ou_pas(long episode);
 
