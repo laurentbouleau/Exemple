@@ -48,12 +48,6 @@ bool checkyear(int y);
 bool checkmonth(int m);
 bool checkday(int m, int d, int y);
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # Classes                                                                                                                                            #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
 class exception_date_tiret
 {
     std::wstring message;
@@ -78,31 +72,9 @@ public:
     std::wstring get_message() const { return message; }
 };
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # Structs                                                                                                                                            #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
 struct DateRecord
 {
     std::tm date{ 0 };
     bool someFlag{ false };
 };
 
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # Template<typename ... Args>                                                                                                                        #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-template<typename ... Args>
-std::wstring wstring_format(const std::wstring& format, Args ... args)
-{
-    int size_s = _snwprintf(nullptr, 0, format.c_str(), args ...) + 1; // Extra space for '\0'
-    if (size_s <= 0) { throw std::runtime_error("Error during formatting."); }
-    auto size = static_cast<size_t>(size_s);
-    std::unique_ptr<wchar_t[]> buf(new wchar_t[size]);
-    _snwprintf(buf.get(), size, format.c_str(), args ...);
-    return std::wstring(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
-}

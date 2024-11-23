@@ -514,33 +514,6 @@ void initialiser_Sur(std::wstring& m_sur)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::wstring stringFormatOneLine(std::wstring str,                                                                                                 #
-// #                                  int lengthMax,                                                                                                    #
-// #                                  std::wstring marqueurTroncature,                                                                                  #
-// #                                  int marqueurTroncature_len,                                                                                       #
-// #                                  std::wstring suffixe,                                                                                             #
-// #                                  int suffixe_len)                                                                                                  #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring marqueurTroncature, int marqueurTroncature_len, std::wstring suffixe, int suffixe_len)
-{
-    std::wstring res;
-
-    if (str.size() < lengthMax - suffixe_len)
-    {
-        res = str;
-    }
-    else
-    {
-        res = str.substr(0, lengthMax - marqueurTroncature_len - suffixe_len) + marqueurTroncature;
-    }
-    res += suffixe;
-    return res;
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # std::wstring recuperer_Disney_SJ(fs::path const& cheminFichier, std::vector<std::wstring>& m_catalogue)                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -600,7 +573,7 @@ std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier, std::vector<std
 // ######################################################################################################################################################
 // Cinéma et serie
 std::wstring recuperer_SJ(fs::path const& cheminFichier)
-{ // La signalétique jeunesse : SJ : https://www.csa.fr/Informer/Toutes-les-actualites/Actualites/Tuto-CSA-Tout-savoir-sur-la-signaletique-jeunesse
+{ // SJ
     auto nomFichier = cheminFichier.wstring();
 
     std::wstring content = lire_fichierTxt(nomFichier);
