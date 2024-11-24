@@ -41,6 +41,8 @@ void initialiser_Genre(std::filesystem::path const& cheminFichier, std::vector<s
 void initialiser_Image(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_images);
 void initialiser_Nationalite(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
 
+std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring marqueurTroncature, int marqueurTroncature_len, std::wstring suffixe, int suffixe_len);
+
 std::wstring recuperer_Disney_SJ(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_cataloguer);
 std::wstring recuperer_Netflix_SJ(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_cataloguer);
 std::wstring recuperer_SJ(std::filesystem::path const& cheminFichier);
