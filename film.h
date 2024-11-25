@@ -90,8 +90,6 @@ private:
     //
     std::wstring format_DateEtSur(std::wstring date_str, std::wstring& sur_str) const;
 
-    const void Print_Acteurs_de_doublage_Voix_locales();
-    const void Print_Acteurs_de_doublage_Voix_originales();
     const void Print_Avec(bool affichage_actif, std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str);
     void Print_Avec_etc();
     const void Print_Dates();
