@@ -146,7 +146,7 @@ private:
     std::vector<std::wstring> m_titres_originaux;
 
     std::vector<SequenceVisionnage_film> m_visionnages;
-      //   affichage_acteurs_de_doublage_voix_locales_actif
+ 
     bool affichage_acteurs_de_doublage_voix_locales_actif = true;
     bool affichage_acteurs_de_doublage_voix_originales_actif = true;
     bool affichage_audiodescription_actif = true;
