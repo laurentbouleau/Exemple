@@ -96,14 +96,14 @@ SequenceVisionnage_film::SequenceVisionnage_film(fs::path const& m_cheminFichier
     const int dates_someFlag_index = dates_date_day_day_index + 2;
 
 
-    //const int dates_full_match_index_f = 0;
-    //const int dates_date_year_month_day_year_index_f = dates_full_match_index + 3;
-    //const int dates_date_year_month_day_month_index_f = dates_date_year_month_day_year_index + 1;
-    //const int dates_date_year_month_day_day_index_f = dates_date_year_month_day_month_index + 1;
-    //const int dates_date_month_day_month_index_f = dates_date_year_month_day_day_index + 1;
-    //const int dates_date_month_day_day_index_f = dates_date_month_day_month_index + 1;
-    //const int dates_date_day_day_index_f = dates_date_month_day_day_index + 1;
-    //const int dates_someFlag_index_f = dates_date_day_day_index + 2;
+    const int dates_full_match_index_f = 0;
+    const int dates_date_year_month_day_year_index_f = dates_full_match_index + 3;
+    const int dates_date_year_month_day_month_index_f = dates_date_year_month_day_year_index + 1;
+    const int dates_date_year_month_day_day_index_f = dates_date_year_month_day_month_index + 1;
+    const int dates_date_month_day_month_index_f = dates_date_year_month_day_day_index + 1;
+    const int dates_date_month_day_day_index_f = dates_date_month_day_month_index + 1;
+    const int dates_date_day_day_index_f = dates_date_month_day_day_index + 1;
+    const int dates_someFlag_index_f = dates_date_day_day_index + 2;
 
     ///const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };
     const std::wregex filename_format_rg{ L"(" + dates_format + L"+)" + stream_format };

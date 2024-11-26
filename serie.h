@@ -72,7 +72,8 @@ struct InfosVisionnage
 
     long m_numero{ -1 };
     //long m_duree{ -1 };
-    long m_duree{ 0 };
+    //long m_duree{ 0 };
+    long m_duree_en_seconde{ 0 };
     std::vector<std::wstring> m_resume;
 
 private:
@@ -82,17 +83,21 @@ private:
 struct SequenceVisionnage
 {
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
-        m_episode{ episode }, m_titres{info_vis.m_titres}, m_streaming{info_vis.m_streaming},
-        m_duree_en_seconde{ info_vis.m_duree * 60 }, m_resume{ info_vis.m_resume },
+        m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
+        m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
         m_DatesVisionnage{ info_vis.m_DatesVisionnage }
     {};
+
+
+    long numero_sequence{ -1 };
 
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
 
     std::wstring calcul_Duree_affichage() const;
 
     // uneFonctionQuiAfficheLaSequenceDeVisionnage
-    std::wstring uneFonctionQuiAfficheLaSequenceDeVisionnage(bool) const;
+    //std::wstring uneFonctionQuiAfficheLaSequenceDeVisionnage(bool) const;
+    //void uneFonctionQuiAfficheLaSequenceDeVisionnage(bool) const;
 
     void Une_Fonction_De_La_Classe_SequenceVisionnage(...);
     
@@ -104,7 +109,8 @@ struct SequenceVisionnage
     void Print(bool isFirstSequence);
 
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
-    bool Print_Titre_chiffre_et_point_ou_pas(long episode);
+    //bool Print_Titre_chiffre_et_point_ou_pas(long episode);
+    long Print_Titre_chiffre_et_point_ou_pas(long episode);
 
     //std::wstring m_min = L"min";
     //std::wstring m_espace3;
@@ -140,6 +146,7 @@ struct SequenceVisionnage
     bool affichage_duree_actif = true;// false;
 
 
+
 private:
     const Episode& m_episode;
 };
@@ -164,8 +171,6 @@ struct Episode
 
     void PrintFirstSequenceVisionnage(const SequenceVisionnage& vis);
     void PrintSequenceVisionnage(const SequenceVisionnage& vis);
-
-    //void Print_Data();
 
     std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
@@ -240,7 +245,7 @@ public:
     std::vector<std::pair<std::wstring, std::wstring>> m_avec;
     std::pair<std::tm, std::wstring>m_date_diffusee_a_partir_de;
     bool m_disney{ false };
-    int m_f_anneesDiffusion{0};
+    int m_f_anneesDiffusion{ 0 };
     //std::pair<std::tm, std::wstring>m_dossier;
     //std::vector<Episode> episodes;
     //std::vector<InfosVisionnage>infosvisionnages;
@@ -252,7 +257,7 @@ public:
     std::vector<std::wstring> m_image;
     bool m_netflix{ false };
     double m_note{ -1.0 };
-    
+
     //std::pair<unsigned short int, std::vector<std::wstring>>saison;
     std::vector<std::wstring> m_titres;
     std::vector<std::wstring> m_resume;
@@ -269,6 +274,7 @@ public:
 
     int m_numero{ -1 };
     int lInfoQuiMInteresse{};
+
 };
 
 class Serie
