@@ -637,25 +637,27 @@ void Episode::Print()
 void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
 {
     auto& liste = m_liste_sequence_visionnages[0];
-
     bool isFirstSequence = true;
     liste.Print(isFirstSequence);
 }
 
 void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 {
-    /*for (auto& liste : m_liste_sequence_visionnages)
+    auto liste = m_liste_sequence_visionnages;
+    size_t i = liste.size();
+    if (i != 0)
     {
-        auto& l = liste;
+        for (auto l : liste)
+        {
+            l.Print(false);
 
-        l.Print(false);
+            if (i == 0)
+                break;
+            liste.erase(liste.begin());
 
-    }*/
-    auto& liste = m_liste_sequence_visionnages[1];
-
-    bool isFirstSequence = false;
-
-    liste.Print(isFirstSequence);
+            size_t i = liste.size();
+        }
+    }
 }
 
 
