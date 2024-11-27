@@ -365,8 +365,8 @@ void SequenceVisionnage::Print(bool isFirstSequence)
 
     bool found = false;
     if (!found && m_titres.size() == 0)
-        found = true;
-    if (!found && m_titres.size() == 1)
+        found = false;// true;
+    else if (!found && m_titres.size() == 1)
     {
         found = true;
         wstr = m_keyColor[1] + m_titres[0] + m_valuesColor;
@@ -381,6 +381,7 @@ void SequenceVisionnage::Print(bool isFirstSequence)
         duree_str = calcul_Duree_affichage();
     else
         duree_str += L' ' + m_keyColor[0] + L'[' + m_keyColor[1] + L"bis" + m_keyColor[0] + L']' + m_valuesColor;
+    
     std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage(m_DatesVisionnage);
 
     std::wstring resume_str;
@@ -615,12 +616,15 @@ void Episode::Print()
         if (first)
         {
             PrintFirstSequenceVisionnage(vis);
-            first = false;
+
+
         }
         else
         {
             PrintSequenceVisionnage(vis);
+
         }
+        first = false;
     }
 }
 
@@ -640,11 +644,18 @@ void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
 
 void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 {
-    for (auto& liste : m_liste_sequence_visionnages)
+    /*for (auto& liste : m_liste_sequence_visionnages)
     {
         auto& l = liste;
+
         l.Print(false);
-    }
+
+    }*/
+    auto& liste = m_liste_sequence_visionnages[1];
+
+    bool isFirstSequence = false;
+
+    liste.Print(isFirstSequence);
 }
 
 
