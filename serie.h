@@ -106,19 +106,12 @@ struct SequenceVisionnage
     //void Print();
 
     //void Print() const;
-    void Print(bool isFirstSequence);
+    //void Print(bool isFirstSequence);
+    void Print(int numero_sequence);
 
     std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
     //bool Print_Titre_chiffre_et_point_ou_pas(long episode);
     long Print_Titre_chiffre_et_point_ou_pas(long episode);
-
-    //std::wstring m_min = L"min";
-    //std::wstring m_espace3;
-    //std::wstring m_labelMinuteSingulier;
-    //std::wstring m_labelMinutePluriel;
-
-    //std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    //std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
@@ -163,14 +156,14 @@ struct Episode
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
+    //long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
 
     void Print();
 
     bool Print_Titre_chiffre_et_point_ou_pas(long episode);
 
-    void PrintFirstSequenceVisionnage(const SequenceVisionnage& vis);
-    void PrintSequenceVisionnage(const SequenceVisionnage& vis);
+    //void PrintFirstSequenceVisionnage(const SequenceVisionnage& vis);
+    //void PrintSequenceVisionnage(const SequenceVisionnage& vis);
 
     std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
@@ -183,7 +176,8 @@ struct Episode
     std::wstring m_valuesColor;
 
     long m_episode{};
-    std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
+    //std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
+    std::vector<SequenceVisionnage> m_liste_sequence_visionnages_ordonnee_chronologiquement{};
 
     //long m_numero{ -1 };
     long m_numero{ 0 };

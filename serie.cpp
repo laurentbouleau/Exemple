@@ -349,7 +349,7 @@ void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void SequenceVisionnage::Print(bool isFirstSequence)
+/*void SequenceVisionnage::Print(bool isFirstSequence)
 {
     // Header
     //Print_Header();
@@ -393,7 +393,54 @@ void SequenceVisionnage::Print(bool isFirstSequence)
             resume_str += r;
     }
     std::wcout << chiffre_et_point_ou_pas_str << wstr << duree_str << dates_str << resume_str << L"\r\n";
+}*/
+
+void SequenceVisionnage::Print(int numero_sequence)
+{
+    // Header
+    //Print_Header();
+    std::wstring wstr;
+    std::wstring chiffre_et_point_ou_pas_str{};
+    std::wstring duree_str;
+    long chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_numero);
+    //    if (chiffre_et_point_ou_pas != 0)
+    if (numero_sequence)
+    {
+        chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+    }
+
+    bool found = false;
+    if (!found && m_titres.size() == 0)
+        found = false;// true;
+    else if (!found && m_titres.size() == 1)
+    {
+        found = true;
+        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor;
+    }
+    else
+    {
+        found = true;
+        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
+    }
+
+    if (numero_sequence)
+        duree_str = calcul_Duree_affichage();
+    else
+        duree_str += L' ' + m_keyColor[0] + L'[' + m_keyColor[1] + L"bis" + m_keyColor[0] + L']' + m_valuesColor;
+
+    std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage(m_DatesVisionnage);
+
+    std::wstring resume_str;
+
+    if (numero_sequence)
+    {
+        resume_str += L"\r\n";
+        for (auto r : m_resume)
+            resume_str += r;
+    }
+    std::wcout << chiffre_et_point_ou_pas_str << wstr << duree_str << dates_str << resume_str << L"\r\n";
 }
+
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -523,7 +570,8 @@ long SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(long episode)
 
 void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 {
-    m_liste_sequence_visionnages.push_back(SequenceVisionnage(*this, info_vis));
+    //m_liste_sequence_visionnages.push_back(SequenceVisionnage(*this, info_vis));
+    m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage(*this, info_vis));
 }
 
 /*void Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis)
@@ -552,7 +600,8 @@ const void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)
     m_keyColor = perso.m_keyColor;
     m_valuesColor = perso.m_valuesColor;
 
-    for (auto& sequencevisionnage : m_liste_sequence_visionnages)
+    //for (auto& sequencevisionnage : m_liste_sequence_visionnages)
+    for (auto& sequencevisionnage : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
         sequencevisionnage.AffichagePersonnaliser(perso);
     }
@@ -570,11 +619,11 @@ void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
     //return NumeroSequenceVisionnage;
 }
 
-long long Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const
+/*long long Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const
 {
     auto it = std::find(m_liste_sequence_visionnages.begin(), m_liste_sequence_visionnages.end(), sev_vis);
     return (it - m_liste_sequence_visionnages.begin()) + 1; // +1 parce que les numéro de séquence commencent à 1
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -608,7 +657,7 @@ long long Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis
     }
 }*/
 
-void Episode::Print()
+/*void Episode::Print()
 {
     bool first = true;
     for (auto& vis : m_liste_sequence_visionnages)
@@ -626,6 +675,18 @@ void Episode::Print()
         }
         first = false;
     }
+}*/
+
+void Episode::Print()
+{
+    bool first = true;
+    int numero_sequence = 1;
+    for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
+    {
+        sequence.Print(numero_sequence);
+        first = false;
+        numero_sequence++;
+    }
 }
 
 // ######################################################################################################################################################
@@ -634,31 +695,21 @@ void Episode::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
+/*void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
 {
-    auto& liste = m_liste_sequence_visionnages[0];
+    auto& sequence = m_liste_sequence_visionnages[0];
     bool isFirstSequence = true;
-    liste.Print(isFirstSequence);
+    sequence.Print(isFirstSequence);
 }
 
 void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
 {
-    auto liste = m_liste_sequence_visionnages;
-    size_t i = liste.size();
-    if (i != 0)
+    for (auto& sequence : m_liste_sequence_visionnages)
     {
-        for (auto l : liste)
-        {
-            l.Print(false);
-
-            if (i == 0)
-                break;
-            liste.erase(liste.begin());
-
-            size_t i = liste.size();
-        }
+        auto& s = sequence;
+        s.Print(false);
     }
-}
+}*/
 
 
 // ######################################################################################################################################################
