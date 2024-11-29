@@ -681,7 +681,7 @@ void Episode::Print()
 {
     bool first = true;
     int numero_sequence = 1;
-    for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
+    for (/*const*/ auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
         sequence.Print(numero_sequence);
         first = false;
