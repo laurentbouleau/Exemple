@@ -27,7 +27,7 @@
 
 #include <filesystem> // C++17 standard header file name
 
-// Hors saison : ???
+// Hors saison : 0 !!!
 // Saison 1 : exemple : 2023/02/15
 // Saison 2 : exemple : 2024/09/10
 // etc...
@@ -205,9 +205,6 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
             pos = file_content[0].find(L". ");
             file_content[0] = file_content[0].substr(pos + 2);
         }
-        //std::size_t pos = file_content[0].find(c_separateur_numero_titre_dans_ligne_de_fichier);
-        //auto ligne_titres = (pos != std::wstring::npos) ? file_content[0].substr(pos + c_separateur_numero_titre_dans_ligne_de_fichier.length()) : L"";
-        //m_titres = ::extraire_Titres_Depuis_UneLigne(ligne_titres);
 
         m_titres = extraire_Titres_Depuis_UneLigne(file_content[0]);
     }
@@ -285,7 +282,7 @@ void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring SequenceVisionnage::calcul_Duree_affichage() const
+std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) const
 {
     std::wstring duree_str;
     if (affichage_duree_actif)
@@ -298,10 +295,10 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage() const
             long secondes = m_duree_en_seconde % 60;
             duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
         }
-        else
+        /*else
         {
             duree_str += m_keyColor[1] + L" [" + m_valuesColor + std::to_wstring(numero_sequence) + m_keyColor[1] + L']' + m_valuesColor;
-        }
+        }*/
     }
     return duree_str;
 }
@@ -395,18 +392,19 @@ void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
     std::wcout << chiffre_et_point_ou_pas_str << wstr << duree_str << dates_str << resume_str << L"\r\n";
 }*/
 
-void SequenceVisionnage::Print(int numero_sequence)
+void SequenceVisionnage::Print(int numero_sequence) const
 {
     // Header
     //Print_Header();
     std::wstring wstr;
-    std::wstring chiffre_et_point_ou_pas_str{};
+    std::wstring chiffre_str{};
     std::wstring duree_str;
-    long chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_numero);
+    //long chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_numero);
+    long chiffre = Print_Titre_chiffre(numero_sequence);
     //    if (chiffre_et_point_ou_pas != 0)
-    if (numero_sequence)
+    if (numero_sequence == 1)
     {
-        chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+        chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
     }
 
     bool found = false;
@@ -423,22 +421,22 @@ void SequenceVisionnage::Print(int numero_sequence)
         wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
     }
 
-    if (numero_sequence)
-        duree_str = calcul_Duree_affichage();
+    if (numero_sequence == 1)
+        duree_str = calcul_Duree_affichage(numero_sequence);
     else
         duree_str += L' ' + m_keyColor[0] + L'[' + m_keyColor[1] + L"bis" + m_keyColor[0] + L']' + m_valuesColor;
 
-    std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage(m_DatesVisionnage);
+    std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage(numero_sequence, m_DatesVisionnage);
 
     std::wstring resume_str;
 
-    if (numero_sequence)
+    if (numero_sequence == 1)
     {
         resume_str += L"\r\n";
         for (auto r : m_resume)
             resume_str += r;
     }
-    std::wcout << chiffre_et_point_ou_pas_str << wstr << duree_str << dates_str << resume_str << L"\r\n";
+    std::wcout << chiffre_str << wstr << duree_str << dates_str << resume_str << L"\r\n";
 }
 
 
@@ -447,8 +445,7 @@ void SequenceVisionnage::Print(int numero_sequence)
 // # std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
-
-std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)
+std::wstring SequenceVisionnage::Print_Dates_de_visionnage(int numero_sequence, std::vector<DateRecord> m_DatesVisionnage) const
 {
     const std::wstring date_format = L"%d" + m_keyColor[1] + L"/" + m_valuesColor + L"%m" + m_keyColor[1] + L"/" + m_valuesColor + L"%Y";
     const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;
@@ -523,13 +520,13 @@ std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecor
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-long SequenceVisionnage::Print_Titre_chiffre_et_point_ou_pas(long episode)
+long SequenceVisionnage::Print_Titre_chiffre(long episode) const
 {
-    if (episode == 0)
+    if (episode == 1)
         //return false;
-        return 0;
+        return 1;
     //return true;
-    return 1;
+    return -1;
 
 }
 
@@ -662,7 +659,7 @@ void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
     bool first = true;
     for (auto& vis : m_liste_sequence_visionnages)
     {
-        if (first)
+        if (first)za
         {
             PrintFirstSequenceVisionnage(vis);
 
@@ -681,7 +678,7 @@ void Episode::Print()
 {
     bool first = true;
     int numero_sequence = 1;
-    for (/*const*/ auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
+    for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
         sequence.Print(numero_sequence);
         first = false;

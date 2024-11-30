@@ -89,11 +89,11 @@ struct SequenceVisionnage
     {};
 
 
-    long numero_sequence{ -1 };
+    //long numero_sequence{ -1 };
 
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
 
-    std::wstring calcul_Duree_affichage() const;
+    std::wstring calcul_Duree_affichage(int numero_sequence) const;
 
     // uneFonctionQuiAfficheLaSequenceDeVisionnage
     //std::wstring uneFonctionQuiAfficheLaSequenceDeVisionnage(bool) const;
@@ -107,11 +107,11 @@ struct SequenceVisionnage
 
     //void Print() const;
     //void Print(bool isFirstSequence);
-    void Print(int numero_sequence);
+    void Print(int numero_sequence) const;
 
-    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
+    std::wstring(Print_Dates_de_visionnage)(int numero_sequence, std::vector<DateRecord>dr) const;
     //bool Print_Titre_chiffre_et_point_ou_pas(long episode);
-    long Print_Titre_chiffre_et_point_ou_pas(long episode);
+    long Print_Titre_chiffre(long episode) const;
 
     std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
