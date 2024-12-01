@@ -372,7 +372,7 @@ void SequenceVisionnage::Print(int numero_sequence) const
     else
         duree_str += L' ' + m_keyColor[0] + L'[' + m_keyColor[1] + L"bis" + m_keyColor[0] + L']' + m_valuesColor;
 
-    std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage(m_DatesVisionnage);
+    std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage(numero_sequence, m_DatesVisionnage);
 
     std::wstring resume_str;
 
@@ -391,7 +391,7 @@ void SequenceVisionnage::Print(int numero_sequence) const
 // # std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
-std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord> m_DatesVisionnage) const
+std::wstring SequenceVisionnage::Print_Dates_de_visionnage(int numero_sequence, std::vector<DateRecord> m_DatesVisionnage) const
 {
     const std::wstring date_format = L"%d" + m_keyColor[1] + L"/" + m_valuesColor + L"%m" + m_keyColor[1] + L"/" + m_valuesColor + L"%Y";
     const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;

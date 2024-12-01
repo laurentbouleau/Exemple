@@ -94,7 +94,7 @@ struct SequenceVisionnage
 
     void Print(int numero_sequence) const;
 
-    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>dr) const;
+    std::wstring Print_Dates_de_visionnage(int numero_sequence, std::vector<DateRecord>dr) const;
     long Print_Titre_chiffre(long episode) const;
 
     std::wstring m_espace1;
@@ -178,7 +178,6 @@ struct Saison
 public:
     const Serie& m_serie;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
-
     void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
