@@ -45,15 +45,11 @@ struct InfosVisionnage
     const Saison& m_saison;
 
     InfosVisionnage(const Saison& saison, std::filesystem::path const& m_cheminFichier);
-    //void Print();
-    //std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>& dr);
-    //bool Print_Titre_chiffre_et_point_ou_pas(unsigned short int episode);
 
     std::filesystem::path m_cheminFichier;
 
     void Une_Fonction_De_La_Classe_InfosVisionnage(...);
 
-    //std::wstring m_min = L"min";
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
@@ -63,10 +59,6 @@ struct InfosVisionnage
     long m_NumeroEpisode{};
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
- //   bool m_fichier_pas_zero{ false };
-    //std::wstring m_titre;
-    //std::wstring m_deux_points;
-    //std::wstring m_sous_titre;
     std::vector<std::wstring> m_titres;
 //    unsigned short int m_numero{ 1 };
 
@@ -88,9 +80,6 @@ struct SequenceVisionnage
         m_DatesVisionnage{ info_vis.m_DatesVisionnage }
     {};
 
-
-    //long numero_sequence{ -1 };
-
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
 
     std::wstring calcul_Duree_affichage(int numero_sequence) const;
@@ -103,14 +92,9 @@ struct SequenceVisionnage
     
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    //void Print();
-
-    //void Print() const;
-    //void Print(bool isFirstSequence);
     void Print(int numero_sequence) const;
 
-    std::wstring(Print_Dates_de_visionnage)(int numero_sequence, std::vector<DateRecord>dr) const;
-    //bool Print_Titre_chiffre_et_point_ou_pas(long episode);
+    std::wstring Print_Dates_de_visionnage(std::vector<DateRecord>dr) const;
     long Print_Titre_chiffre(long episode) const;
 
     std::wstring m_espace1;
@@ -194,6 +178,7 @@ struct Saison
 public:
     const Serie& m_serie;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
+
     void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);

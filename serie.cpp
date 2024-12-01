@@ -234,7 +234,6 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
     if (std::regex_match(m, match, duree_format_rg))
     {
         auto duree_en_minute = std::stoi(match[1]);
-        //m_duree = duree_en_minute * 60;
         m_duree_en_seconde = duree_en_minute * 60;
     }
     else
@@ -245,7 +244,7 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # InfosVisionnage::initialiser_Duree(std::wstring& m)                                                                                                #
+// # void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)                                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -287,22 +286,15 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
     std::wstring duree_str;
     if (affichage_duree_actif)
     {
-        //long minutes = m_duree_en_seconde / (60 * 60);
-        //duree_str = m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_espace3 + m_keyColor[1] + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
         if (numero_sequence == 1)
         {
             long minutes = (m_duree_en_seconde/* % (60 * 60)*/) / 60;
             long secondes = m_duree_en_seconde % 60;
             duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
         }
-        /*else
-        {
-            duree_str += m_keyColor[1] + L" [" + m_valuesColor + std::to_wstring(numero_sequence) + m_keyColor[1] + L']' + m_valuesColor;
-        }*/
     }
     return duree_str;
 }
-
 
 /////
 
@@ -342,55 +334,9 @@ void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void SequenceVisionnage::Print(bool isFirstSequence)                                                                                               #
+// # void SequenceVisionnage::Print(int numero_sequence) const                                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
-
-/*void SequenceVisionnage::Print(bool isFirstSequence)
-{
-    // Header
-    //Print_Header();
-    std::wstring wstr;
-    std::wstring chiffre_et_point_ou_pas_str{};
-    std::wstring duree_str;
-    long chiffre_et_point_ou_pas = Print_Titre_chiffre_et_point_ou_pas(m_numero);
-//    if (chiffre_et_point_ou_pas != 0)
-    if (isFirstSequence)
-    {
-        chiffre_et_point_ou_pas_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
-    }
-
-    bool found = false;
-    if (!found && m_titres.size() == 0)
-        found = false;// true;
-    else if (!found && m_titres.size() == 1)
-    {
-        found = true;
-        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor;
-    }
-    else
-    {
-        found = true;
-        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
-    }
-
-    if(isFirstSequence)
-        duree_str = calcul_Duree_affichage();
-    else
-        duree_str += L' ' + m_keyColor[0] + L'[' + m_keyColor[1] + L"bis" + m_keyColor[0] + L']' + m_valuesColor;
-    
-    std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage(m_DatesVisionnage);
-
-    std::wstring resume_str;
-
-    if (isFirstSequence)
-    {
-        resume_str += L"\r\n";
-        for (auto r : m_resume)
-            resume_str += r;
-    }
-    std::wcout << chiffre_et_point_ou_pas_str << wstr << duree_str << dates_str << resume_str << L"\r\n";
-}*/
 
 void SequenceVisionnage::Print(int numero_sequence) const
 {
@@ -426,7 +372,7 @@ void SequenceVisionnage::Print(int numero_sequence) const
     else
         duree_str += L' ' + m_keyColor[0] + L'[' + m_keyColor[1] + L"bis" + m_keyColor[0] + L']' + m_valuesColor;
 
-    std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage(numero_sequence, m_DatesVisionnage);
+    std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage(m_DatesVisionnage);
 
     std::wstring resume_str;
 
@@ -445,7 +391,7 @@ void SequenceVisionnage::Print(int numero_sequence) const
 // # std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord>& m_DatesVisionnage)                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
-std::wstring SequenceVisionnage::Print_Dates_de_visionnage(int numero_sequence, std::vector<DateRecord> m_DatesVisionnage) const
+std::wstring SequenceVisionnage::Print_Dates_de_visionnage(std::vector<DateRecord> m_DatesVisionnage) const
 {
     const std::wstring date_format = L"%d" + m_keyColor[1] + L"/" + m_valuesColor + L"%m" + m_keyColor[1] + L"/" + m_valuesColor + L"%Y";
     const std::wstring between_parenthesis = m_keyColor[1] + L"(" + m_valuesColor + L"%s" + m_keyColor[1] + L")" + m_valuesColor;
@@ -628,52 +574,6 @@ void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void Episode::Print()
-{
-    for (auto vis : m_liste_sequence_visionnages)
-    {
-        vis.Print();
-    }
-}*/
-
-// ===> Ici !!!
-/*void Episode::Print()
-{
-    bool first = true;
-    for (auto vis : m_liste_sequence_visionnages)
-    {
-        if (first)
-        {
-            PrintFirstSequenceVisionnage(vis);
-        }
-        else
-        {
-            PrintSequenceVisionnage(vis);
-        }
-        first = false;
-    }
-}*/
-
-/*void Episode::Print()
-{
-    bool first = true;
-    for (auto& vis : m_liste_sequence_visionnages)
-    {
-        if (first)za
-        {
-            PrintFirstSequenceVisionnage(vis);
-
-
-        }
-        else
-        {
-            PrintSequenceVisionnage(vis);
-
-        }
-        first = false;
-    }
-}*/
-
 void Episode::Print()
 {
     bool first = true;
@@ -685,39 +585,6 @@ void Episode::Print()
         numero_sequence++;
     }
 }
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)                                                                          #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/*void Episode::PrintFirstSequenceVisionnage(const SequenceVisionnage& vis)
-{
-    auto& sequence = m_liste_sequence_visionnages[0];
-    bool isFirstSequence = true;
-    sequence.Print(isFirstSequence);
-}
-
-void Episode::PrintSequenceVisionnage(const SequenceVisionnage& vis)
-{
-    for (auto& sequence : m_liste_sequence_visionnages)
-    {
-        auto& s = sequence;
-        s.Print(false);
-    }
-}*/
-
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # bool Episode::Print_Data()                                                                                                                         #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-//void Episode::Print_Data()
-//{
-//}
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -788,22 +655,6 @@ Saison::Saison(fs::path const& cheminFichier, const Serie& serie) : m_serie{ ser
         m_date_diffusee_a_partir_de.second = match[4];
     }
     m_date_diffusee_a_partir_de.first = tm;
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)                                                                            #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void Saison::ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis)
-{
-    //m_liste_episodes.insert({ 1, seq_vis });
-    //m_liste_episodes.insert({ 1, seq_vis });
-    //m_numero++;
-    //auto [xxx, success] = m_liste_episodes.insert({ m_numero, seq_vis });
-    //m_liste_episodes.insert(std::pair<int, Episode>(m_numero, seq_vis));
-    //m_liste_episodes.insert({ m_numero, seq_vis });
 }
 
 // ######################################################################################################################################################
@@ -926,20 +777,6 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
      m_chaine = lire_fichierTxt(cheminFichier.wstring());
      assert((m_chaine.size() != 0));
  }
-
- /*long Saison::initialiser_Duree(std::wstring& m)
- {
-     const std::wregex duree_format_rg{ L"([[:digit:]]+)\\s?(min|MIN|Min)" };
-
-     std::wsmatch match;
-
-     if (std::regex_match(m, match, duree_format_rg))
-     {
-         auto duree_en_minute = std::stoi(match[1]);
-         return duree_en_minute * 60;
-     }
-     return { -1 };
- }*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
