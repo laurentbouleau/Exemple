@@ -94,7 +94,8 @@ struct SequenceVisionnage
 
     void Print(int numero_sequence) const;
 
-    std::wstring Print_Dates_de_visionnage(int numero_sequence, const std::vector<DateRecord>dr) const;
+    //std::wstring Print_Dates_de_visionnage(int numero_sequence, const std::vector<DateRecord>dr) const;
+    std::wstring Print_Dates_de_visionnage() const;
     long Print_Titre_chiffre(long episode) const;
 
     std::wstring m_espace1;
