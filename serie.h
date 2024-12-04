@@ -94,7 +94,6 @@ struct SequenceVisionnage
 
     void Print(int numero_sequence) const;
 
-    //std::wstring Print_Dates_de_visionnage(int numero_sequence, const std::vector<DateRecord>dr) const;
     std::wstring Print_Dates_de_visionnage() const;
     long Print_Titre_chiffre(long episode) const;
 
@@ -108,11 +107,10 @@ struct SequenceVisionnage
     std::vector<std::wstring>m_keyColor;
     std::wstring m_valuesColor;
 
-    long m_NumeroSaison{};
-    long m_NumeroEpisode{};
+    long m_NumeroSaison{1};
+    long m_NumeroEpisode{1};
 
     std::wstring m_streaming{ L"" };
-    //bool m_fichier_pas_zero{ false };
     std::vector<std::wstring> m_titres;
     long m_duree_en_seconde{ -1 };
     std::vector<std::wstring> m_resume{};
@@ -136,6 +134,7 @@ struct Episode
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
+    void xxx_SequenceVisionnage(InfosVisionnage& info_vis) const;
 
     void Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
 
@@ -146,9 +145,6 @@ struct Episode
     void Print();
 
     bool Print_Titre_chiffre_et_point_ou_pas(long episode);
-
-    //void PrintFirstSequenceVisionnage(const SequenceVisionnage& vis);
-    //void PrintSequenceVisionnage(const SequenceVisionnage& vis);
 
     std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
@@ -161,7 +157,6 @@ struct Episode
     std::wstring m_valuesColor;
 
     long m_episode{};
-    //std::vector<SequenceVisionnage> m_liste_sequence_visionnages{};
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages_ordonnee_chronologiquement{};
 
     //long m_numero{ -1 };
@@ -171,7 +166,7 @@ struct Episode
 
     int lInfoQuiMInteresse;
  
-
+    long m_NumeroEpisode{1};
 };
 
 struct Saison
@@ -180,7 +175,7 @@ public:
     const Serie& m_serie;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
 
-    void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
+    //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
 
@@ -254,6 +249,11 @@ public:
 
     int m_numero{ -1 };
     int lInfoQuiMInteresse{};
+
+    //
+    //
+    // 2024/12/04
+    long m_NumeroSaison{};
 
 };
 
