@@ -108,7 +108,8 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
     assert(std::isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
     m_NumeroSaison = std::stoi(stem);
-
+    assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");
+    //
     assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");// saison == m_NumeroSaison
     //
     assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
@@ -348,9 +349,6 @@ void SequenceVisionnage::Print(int numero_sequence) const
     if (numero_sequence == 1)
     {
         chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
-        //chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_NumeroEpisode) + m_keyColor[1] + L" : " + m_valuesColor;
-        //chiffre_str = std::to_wstring(m_NumeroSaison) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_NumeroEpisode) + m_keyColor[1] + L" : " + m_valuesColor;
-        //m_NumeroEpisode++;
     }
 
     bool found = false;
@@ -485,9 +483,6 @@ long SequenceVisionnage::Print_Titre_chiffre(long episode) const
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-
-Episode::Episode(InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_numero{ info_vis.m_NumeroEpisode } { m_saison.m_numero = info_vis.m_NumeroSaison; ajouter_SequenceVisionnage(info_vis); }
-
 // Ok !!!
 /*Episode::Episode(InfosVisionnage const& seq_vis)
 {
@@ -508,8 +503,6 @@ Episode::Episode(InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_nu
     //titre = sequencevisionnage.titre;
 }*/
 
-
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& seq_vis)                                                                           #
@@ -519,10 +512,6 @@ Episode::Episode(InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_nu
 void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 {
     m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage(*this, info_vis));
-
-    // 2024/12/04
-    //m_NumeroEpisode++;
-
 }
 
 void Episode::xxx_SequenceVisionnage(InfosVisionnage& info_vis) const
@@ -530,7 +519,7 @@ void Episode::xxx_SequenceVisionnage(InfosVisionnage& info_vis) const
     //m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage(*this, info_vis));
     for (auto i = 1; i < m_liste_sequence_visionnages_ordonnee_chronologiquement.size(); i++)
     {
-        //m_liste_sequence_visionnages_ordonnee_chronologiquement[0, info_vis.m_titres[i]] = m_liste_sequence_visionnages_ordonnee_chronologiquement[0, info_vis.m_titres[0]];
+        m_liste_sequence_visionnages_ordonnee_chronologiquement[0, info_vis.m_titres[i]] = m_liste_sequence_visionnages_ordonnee_chronologiquement[0, info_vis.m_titres[0]];
     }
 }
 
@@ -602,8 +591,6 @@ void Episode::Print()
         first = false;
         numero_sequence++;
     }
-    // 2024/12/04
-    //m_NumeroEpisode++;
 }
 
 // ######################################################################################################################################################
@@ -926,7 +913,7 @@ void Saison::Print()
 //    if (std::wcsftime(wstr, 100, L"%A %c", std::localtime(&t)))
 //        std::wcout << wstr << '\n';
 
-    for (auto& episode : m_liste_episodes)
+    for (auto episode : m_liste_episodes)
     {
         episode.second->Print();
     }
@@ -945,8 +932,6 @@ void Saison::Print()
     Print_Images();
     // Saison ok !
     std::wcout << L"\r\n";
-    // 2024/12/04
-    //m_NumeroSaison++;
 }
 
 // ######################################################################################################################################################

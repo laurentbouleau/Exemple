@@ -62,7 +62,7 @@ struct InfosVisionnage
     std::vector<std::wstring> m_titres;
 //    unsigned short int m_numero{ 1 };
 
-    int m_numero{ -1 };
+    long m_numero{ -1 };
     //long m_duree{ -1 };
     //long m_duree{ 0 };
     long m_duree_en_seconde{ 0 };
@@ -107,8 +107,8 @@ struct SequenceVisionnage
     std::vector<std::wstring>m_keyColor;
     std::wstring m_valuesColor;
 
-    //long m_NumeroSaison{1};
-    //long m_NumeroEpisode{1};
+    long m_NumeroSaison{};
+    long m_NumeroEpisode{};
 
     std::wstring m_streaming{ L"" };
     std::vector<std::wstring> m_titres;
@@ -116,7 +116,7 @@ struct SequenceVisionnage
     std::vector<std::wstring> m_resume{};
     std::vector<DateRecord> m_DatesVisionnage{};
 
-    int m_numero{ -1 };
+    long m_numero{ -1 };
     long m_duree { -1 };
 
     bool affichage_duree_actif = true;// false;
@@ -130,8 +130,7 @@ private:
 struct Episode
 {
     const Saison& m_saison;
-    //Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } { ajouter_SequenceVisionnage(info_vis); };
-    Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison }, m_numero{ info_vis.m_NumeroEpisode } { ajouter_SequenceVisionnage(info_vis); };
+    Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } { ajouter_SequenceVisionnage(info_vis); };
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
@@ -160,13 +159,14 @@ struct Episode
     long m_episode{};
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages_ordonnee_chronologiquement{};
 
-    int m_numero{ -1 };
+    //long m_numero{ -1 };
+    long m_numero{ 0 };
     long m_duree{ -1 };
     std::vector<std::wstring> m_resume;
 
     int lInfoQuiMInteresse;
  
-    //long m_NumeroEpisode{1};
+
 };
 
 struct Saison
@@ -247,14 +247,8 @@ public:
 
     std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
 
-    //long m_numero{ -1 };
-    mutable int m_numero{ -1 };
+    int m_numero{ -1 };
     int lInfoQuiMInteresse{};
-
-    //
-    //
-    // 2024/12/04
-    //long m_NumeroSaison{};
 
 };
 
