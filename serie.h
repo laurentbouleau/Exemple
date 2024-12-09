@@ -62,7 +62,7 @@ struct InfosVisionnage
     std::vector<std::wstring> m_titres;
 //    unsigned short int m_numero{ 1 };
 
-    long m_numero{ -1 };
+    int m_numero{ -1 };
     //long m_duree{ -1 };
     //long m_duree{ 0 };
     long m_duree_en_seconde{ 0 };
@@ -107,8 +107,8 @@ struct SequenceVisionnage
     std::vector<std::wstring>m_keyColor;
     std::wstring m_valuesColor;
 
-    long m_NumeroSaison{};
-    long m_NumeroEpisode{};
+    //long m_NumeroSaison{1};
+    //long m_NumeroEpisode{1};
 
     std::wstring m_streaming{ L"" };
     std::vector<std::wstring> m_titres;
@@ -116,12 +116,10 @@ struct SequenceVisionnage
     std::vector<std::wstring> m_resume{};
     std::vector<DateRecord> m_DatesVisionnage{};
 
-    long m_numero{ -1 };
+    int m_numero{ -1 };
     long m_duree { -1 };
 
     bool affichage_duree_actif = true;// false;
-
-
 
 private:
     const Episode& m_episode;
@@ -130,21 +128,18 @@ private:
 struct Episode
 {
     const Saison& m_saison;
-    Episode(InfosVisionnage const& info_vis) :m_saison{ info_vis.m_saison } { ajouter_SequenceVisionnage(info_vis); };
+
+    Episode(const InfosVisionnage& info_vis);
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
-    void xxx_SequenceVisionnage(InfosVisionnage& info_vis) const;
-
-    void Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
-
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    //long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
+    long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
 
+    void Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
+    
     void Print();
-
-    bool Print_Titre_chiffre_et_point_ou_pas(long episode);
 
     std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
@@ -159,14 +154,13 @@ struct Episode
     long m_episode{};
     std::vector<SequenceVisionnage> m_liste_sequence_visionnages_ordonnee_chronologiquement{};
 
-    //long m_numero{ -1 };
-    long m_numero{ 0 };
+    int m_numero{ -1 };
     long m_duree{ -1 };
     std::vector<std::wstring> m_resume;
 
     int lInfoQuiMInteresse;
  
-
+    //long m_NumeroEpisode{1};
 };
 
 struct Saison
@@ -178,12 +172,6 @@ public:
     //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
-
-    //void afficher(std::filesystem::path const& m_cheminFichier);
-    //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
-    //Episode creer_Episode(InfosVisionnage const& seq_vis);
-    //void creer_SequenceVisionnage(std::filesystem::path const& m_cheminFichier);
-    //void initialiser_Dossier(std::filesystem::path const& m_cheminFichier);
 
     void initialiser_Chaine(std::filesystem::path const& cheminFichier);
     void initialiser_Hors_Saison(std::filesystem::path const& cheminFichier);
@@ -204,8 +192,6 @@ public:
     void Print_Note();
 
     std::wstring m_min = L"min";
-    //std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
-    //std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
     std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
     std::wstring m_labelHeurePluriel;
@@ -247,8 +233,14 @@ public:
 
     std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
 
-    int m_numero{ -1 };
+    //int m_numero{ -1 };
+    mutable int m_numero{-1};
     int lInfoQuiMInteresse{};
+
+    //
+    //
+    // 2024/12/04
+    //long m_NumeroSaison{};
 
 };
 
