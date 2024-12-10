@@ -332,30 +332,34 @@ void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void SequenceVisionnage::Print(int numero_sequence) const                                                                                          #
+// # void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequence) const                                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void SequenceVisionnage::Print(int numero_sequence) const
+void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequence) const
 {
-    // Header
-    //Print_Header();
     std::wstring wstr;
     std::wstring chiffre_str{};
     std::wstring duree_str;
     long chiffre = Print_Titre_chiffre(numero_sequence);
-    if (numero_sequence == 1)
-    {
-        chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
 
-        //chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_NumeroEpisode) + m_keyColor[1] + L" : " + m_valuesColor;
-        //chiffre_str = std::to_wstring(m_NumeroSaison) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_NumeroEpisode) + m_keyColor[1] + L" : " + m_valuesColor;
-        //m_NumeroEpisode++;
-    }
+    if(numero_sequence >= 1)
+        chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
 
     bool found = false;
     if (!found && m_titres.size() == 0)
-        found = false;// true;
+    {
+        if (titres.size() == 1)
+        {
+            found = true;
+            wstr = m_keyColor[1] + titres[0] + m_valuesColor;
+        }
+        else
+        {
+            found = true;
+            wstr = m_keyColor[1] + titres[0] + m_valuesColor + titres[1] + m_keyColor[1] + titres[2] + m_valuesColor;
+        }
+    }
     else if (!found && m_titres.size() == 1)
     {
         found = true;
@@ -370,7 +374,7 @@ void SequenceVisionnage::Print(int numero_sequence) const
     if (numero_sequence == 1)
         duree_str = calcul_Duree_affichage(numero_sequence);
     else
-        duree_str += L' ' + m_keyColor[0] + L'[' + m_keyColor[1] + L"bis" + m_keyColor[0] + L']' + m_valuesColor;
+        duree_str += L' ' + m_keyColor[1] + L'[' + m_valuesColor + L"bis" + m_keyColor[1] + L']' + m_valuesColor;
 
     std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage();
 
@@ -501,8 +505,7 @@ Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }
 void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 {
     m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage(*this, info_vis));
-
-    // 2024/12/04
+     // 2024/12/04
     //m_NumeroEpisode++;
 
 }
@@ -564,11 +567,17 @@ void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
 
 void Episode::Print()
 {
+    //std::vector<std::wstring> titres = m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres;
+
     bool first = true;
     int numero_sequence = 1;
     for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
-        sequence.Print(numero_sequence);
+        //m_titres.size() != 0
+        //if (m_liste_sequence_visionnages_ordonnee_chronologiquement.m_titres[0].size() != 0)
+        //if(sequence.m_titres.size() == 0)
+        ///    sequence.m_titres = titres;
+        sequence.Print(m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres, numero_sequence);
         first = false;
         numero_sequence++;
     }
@@ -1059,7 +1068,7 @@ void Saison::Print_Header()
         resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, m_keyColor[1] + L'(' + m_valuesColor + L"Bis" + m_keyColor[1] + L')' + m_valuesColor, 5);
     }
 
-    std::wcout << saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str;
+    std::wcout << saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << L"\r\n";
 }
 
 // ######################################################################################################################################################
