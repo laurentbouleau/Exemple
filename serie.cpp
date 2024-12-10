@@ -1010,6 +1010,14 @@ void Saison::Print_Header()
     if (m_hors_saison)
         hors_saison_str += m_keyColor[1] + L"Hors Saison : " + m_valuesColor;
         */
+    std::wstring saison_str = m_keyColor[0];
+    std::wstring numero_str;// = L' ' + m_keyColor[1] + L'(' + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
+    if(!m_hors_saison)
+        saison_str += L"Saison " + m_keyColor[1] + std::to_wstring(m_numero) + m_keyColor[0] + L" :" + m_valuesColor;
+    else
+        saison_str += L"Hors saison : " + m_valuesColor;
+    saison_str += L"\r\n";
+
     wchar_t date_tab[15];
     std::wstring date_str{};
     if (m_date_diffusee_a_partir_de.first.tm_mday == -1 && m_date_diffusee_a_partir_de.first.tm_mon == -1)
@@ -1056,10 +1064,10 @@ void Saison::Print_Header()
         resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, m_keyColor[1] + L'(' + m_valuesColor + L"Bis" + m_keyColor[1] + L')' + m_valuesColor, 5);
     }
 
-    std::wstring numero_str = L' ' + m_keyColor[1] + L'(' + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
+    //std::wstring numero_str = L' ' + m_keyColor[1] + L'(' + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
 
     //std::wcout << hors_saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << std::endl;
-    std::wcout << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << std::endl;
+    std::wcout << saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str /*<< numero_str << std::endl*/;
 }
 
 // ######################################################################################################################################################
