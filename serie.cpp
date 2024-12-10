@@ -505,9 +505,6 @@ Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }
 void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 {
     m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage(*this, info_vis));
-     // 2024/12/04
-    //m_NumeroEpisode++;
-
 }
 
 // ######################################################################################################################################################
@@ -567,22 +564,14 @@ void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
 
 void Episode::Print()
 {
-    //std::vector<std::wstring> titres = m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres;
-
     bool first = true;
     int numero_sequence = 1;
     for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
-        //m_titres.size() != 0
-        //if (m_liste_sequence_visionnages_ordonnee_chronologiquement.m_titres[0].size() != 0)
-        //if(sequence.m_titres.size() == 0)
-        ///    sequence.m_titres = titres;
         sequence.Print(m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres, numero_sequence);
         first = false;
         numero_sequence++;
     }
-    // 2024/12/04
-    //m_NumeroEpisode++;
 }
 
 // ######################################################################################################################################################
