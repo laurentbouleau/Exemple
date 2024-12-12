@@ -345,6 +345,7 @@ void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequ
 
     if(numero_sequence >= 1)
         chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+        //chiffre_str = std::to_wstring(episode) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
 
     bool found = false;
     if (!found && m_titres.size() == 0)
@@ -566,6 +567,7 @@ void Episode::Print()
 {
     bool first = true;
     int numero_sequence = 1;
+
     for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
         sequence.Print(m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres, numero_sequence);
@@ -1006,7 +1008,7 @@ void Saison::Print_Header()
 {
     std::wstring saison_str = m_keyColor[0];
     if(!m_hors_saison)
-        saison_str += L"Saison " + m_keyColor[1] + std::to_wstring(m_numero) + m_keyColor[0] + L" :" + m_valuesColor;
+        saison_str += L"Saison " + m_keyColor[1] + L"???" + m_keyColor[0] + L" :" + m_valuesColor;
     else
         saison_str += L"Hors saison : " + m_valuesColor;
     saison_str += L"\r\n";
@@ -1057,7 +1059,9 @@ void Saison::Print_Header()
         resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, m_keyColor[1] + L'(' + m_valuesColor + L"Bis" + m_keyColor[1] + L')' + m_valuesColor, 5);
     }
 
-    std::wcout << saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << L"\r\n";
+    std::wstring numero_str = m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
+
+    std::wcout << saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << L"\r\n";
 }
 
 // ######################################################################################################################################################

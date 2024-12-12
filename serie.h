@@ -234,7 +234,8 @@ public:
     std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
 
     //int m_numero{ -1 };
-    mutable int m_numero{-1};
+    //mutable int m_numero{-1};
+    mutable int m_numero{-1};// { -1 };
     int lInfoQuiMInteresse{};
 
     //
