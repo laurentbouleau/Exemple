@@ -717,7 +717,6 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
         //
         if (int j = std::stoi(nomFichier))
         {
-            m_numero = j;
             initialiser_Resume(cheminFichier);
             return;
         }
@@ -1008,7 +1007,7 @@ void Saison::Print_Header()
 {
     std::wstring saison_str = m_keyColor[0];
     if(!m_hors_saison)
-        saison_str += L"Saison " + m_keyColor[1] + L"???" + m_keyColor[0] + L" :" + m_valuesColor;
+        saison_str += L"Saison " + m_keyColor[1] + std::to_wstring(m_numero) + m_keyColor[0] + L" :" + m_valuesColor;
     else
         saison_str += L"Hors saison : " + m_valuesColor;
     saison_str += L"\r\n";
