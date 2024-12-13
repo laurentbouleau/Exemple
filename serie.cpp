@@ -107,8 +107,8 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     assert((stem.length() > 9) && L"Nom de fichier Episode trop court pour avoir au moins une date");
 
     assert(std::isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
-    m_NumeroSaison = std::stoi(stem);
-
+    //m_NumeroSaison = std::stoi(stem);
+    
     assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");// saison == m_NumeroSaison
     //
     assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
@@ -123,6 +123,9 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     //Exemple assez complexe de nom de fichier
     //str = L"1x01.2024-02-01_2024-02-02_02-03_0405 Netflix";
     std::regex_match(str, match, filename_format_rg);
+
+    if (match[filename_numero_saison_index].matched)
+        m_NumeroSaison = std::stoi(match[filename_numero_saison_index]);
 
     std::wsmatch dates_match;
     auto dates_str = match[filename_dates_index].str();
@@ -341,11 +344,15 @@ void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequ
     std::wstring wstr;
     std::wstring chiffre_str{};
     std::wstring duree_str;
+    static std::wstring ch;
     long chiffre = Print_Titre_chiffre(numero_sequence);
 
-    if(numero_sequence >= 1)
+    if (numero_sequence == 1)
+    {
         chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
         //chiffre_str = std::to_wstring(episode) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+        ch = chiffre_str;
+    }
 
     bool found = false;
     if (!found && m_titres.size() == 0)
@@ -353,12 +360,13 @@ void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequ
         if (titres.size() == 1)
         {
             found = true;
-            wstr = m_keyColor[1] + titres[0] + m_valuesColor;
+            //wstr = m_keyColor[1] + titres[0] + m_valuesColor;
+            wstr = ch + m_keyColor[1] + titres[0] + m_valuesColor;
         }
         else
         {
             found = true;
-            wstr = m_keyColor[1] + titres[0] + m_valuesColor + titres[1] + m_keyColor[1] + titres[2] + m_valuesColor;
+            wstr = ch + m_keyColor[1] + titres[0] + m_valuesColor + titres[1] + m_keyColor[1] + titres[2] + m_valuesColor;
         }
     }
     else if (!found && m_titres.size() == 1)
@@ -483,6 +491,11 @@ long SequenceVisionnage::Print_Titre_chiffre(long episode) const
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################
+
+/*Episode::Episode(Episode&& src)
+{
+    src.swap(*this);
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

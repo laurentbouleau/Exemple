@@ -128,9 +128,16 @@ private:
 struct Episode
 {
     const Saison& m_saison;
-
     Episode(const InfosVisionnage& info_vis);
-
+    Episode(Episode&& src) : this(std::move(src.this)) // the expression "arg.member" is lvalue
+    {
+    };
+    // Simple move assignment operator
+    Episode& operator=(Episode&& src)
+    {
+        this = std::move(src.this);
+        return *this;
+    };
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
@@ -167,6 +174,7 @@ struct Saison
 {
 public:
     const Serie& m_serie;
+    //Saison(Saison&& src);
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
 
     //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
@@ -223,6 +231,10 @@ public:
     std::vector<std::wstring> m_titres;
     std::vector<std::wstring> m_resume;
 
+    std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
+    mutable int m_numero{ -1 };
+    int lInfoQuiMInteresse{};
+
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_chaine_actif = true;
@@ -230,19 +242,6 @@ public:
     bool affichage_image_actif = true;
     bool affichage_netflix_actif = true;
     bool affichage_note_actif = true;
-
-    std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
-
-    //int m_numero{ -1 };
-    //mutable int m_numero{-1};
-    mutable int m_numero{-1};// { -1 };
-    int lInfoQuiMInteresse{};
-
-    //
-    //
-    // 2024/12/04
-    //long m_NumeroSaison{};
-
 };
 
 class Serie
