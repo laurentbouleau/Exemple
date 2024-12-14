@@ -129,15 +129,15 @@ struct Episode
 {
     const Saison& m_saison;
     Episode(const InfosVisionnage& info_vis);
-    Episode(Episode&& src) : this(std::move(src.this)) // the expression "arg.member" is lvalue
+    Episode(Episode&& src) : m_liste_sequence_visionnages_ordonnee_chronologiquement(std::move(src.m_liste_sequence_visionnages_ordonnee_chronologiquement)) // the expression "arg.member" is lvalue
     {
-    };
+    }
     // Simple move assignment operator
     Episode& operator=(Episode&& src)
     {
-        this = std::move(src.this);
+        m_liste_sequence_visionnages_ordonnee_chronologiquement = std::move(src.m_liste_sequence_visionnages_ordonnee_chronologiquement);
         return *this;
-    };
+    }
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
@@ -174,8 +174,16 @@ struct Saison
 {
 public:
     const Serie& m_serie;
-    //Saison(Saison&& src);
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
+    Saison(Saison&& src) : m_liste_episodes(std::move(src.m_liste_episodes)) // the expression "arg.member" is lvalue
+    {
+    }
+    // Simple move assignment operator
+    Saison& operator=(Saison&& src)
+    {
+        m_liste_episodes = std::move(src.m_liste_episodes);
+        return *this;
+    }
 
     //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
