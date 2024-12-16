@@ -129,16 +129,17 @@ struct Episode
 {
     const Saison& m_saison;
     Episode(const InfosVisionnage& info_vis);
-    Episode(Episode&& src) : m_liste_sequence_visionnages_ordonnee_chronologiquement(std::move(src.m_liste_sequence_visionnages_ordonnee_chronologiquement)) // the expression "arg.member" is lvalue
-    {
-    }
-    // Simple move assignment operator
-    Episode& operator=(Episode&& src)
+    /*Episode& operator=(Episode&& src)
     {
         m_liste_sequence_visionnages_ordonnee_chronologiquement = std::move(src.m_liste_sequence_visionnages_ordonnee_chronologiquement);
         return *this;
+    }*/
+    Episode(Episode&& src) : m_saison(src.m_saison)
+    {
+        m_liste_sequence_visionnages_ordonnee_chronologiquement = std::move(src.m_liste_sequence_visionnages_ordonnee_chronologiquement);
     }
-    void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
+    // Simple move assignment operator
+   void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
@@ -159,7 +160,7 @@ struct Episode
     std::wstring m_valuesColor;
 
     long m_episode{};
-    std::vector<SequenceVisionnage> m_liste_sequence_visionnages_ordonnee_chronologiquement{};
+    std::vector<SequenceVisionnage> m_liste_sequence_visionnages_ordonnee_chronologiquement;
 
     int m_numero{ -1 };
     long m_duree{ -1 };
@@ -175,15 +176,16 @@ struct Saison
 public:
     const Serie& m_serie;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
-    Saison(Saison&& src) : m_liste_episodes(std::move(src.m_liste_episodes)) // the expression "arg.member" is lvalue
+    Saison(Saison&& src) : m_serie(src.m_serie)
     {
+        m_liste_episodes = std::move(src.m_liste_episodes);
     }
     // Simple move assignment operator
-    Saison& operator=(Saison&& src)
+    /*Saison& operator=(Saison&& src)
     {
         m_liste_episodes = std::move(src.m_liste_episodes);
         return *this;
-    }
+    }*/
 
     //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
@@ -250,6 +252,7 @@ public:
     bool affichage_image_actif = true;
     bool affichage_netflix_actif = true;
     bool affichage_note_actif = true;
+private:
 };
 
 class Serie

@@ -496,7 +496,10 @@ long SequenceVisionnage::Print_Titre_chiffre(long episode) const
 {
     src.swap(*this);
 }*/
-
+/*Episode::Episode(Episode&& src)
+{
+    m_liste_sequence_visionnages_ordonnee_chronologiquement = src.m_liste_sequence_visionnages_ordonnee_chronologiquement;
+}*/
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_numero{ info_vis.m_NumeroEpisode }                             #
