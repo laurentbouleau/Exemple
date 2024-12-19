@@ -619,12 +619,12 @@ std::wstring recuperer_SJ(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Print_Catalogue(const std::wstring sur, std::vector<std::wstring>& catalogue, bool affichage_catalogue_actif,                                 #
+// # void Print_Catalogue(const std::wstring sur, std::vector<std::wstring>& catalogue,                                                                 #
 // #                      std::wstring& keyColor, std::wstring& valuesColor)                                                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Catalogue(const std::wstring sur, std::vector<std::wstring>& catalogue, bool affichage_catalogue_actif, std::wstring& keyColor, std::wstring& valuesColor)
+void Print_Catalogue(const std::wstring sur, std::vector<std::wstring>& catalogue, std::wstring& keyColor, std::wstring& valuesColor)
 {
     std::wstring sur_str;
     for (auto c : catalogue)
@@ -639,13 +639,13 @@ void Print_Catalogue(const std::wstring sur, std::vector<std::wstring>& catalogu
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& m_valuesColor)         #
+// # void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, std::wstring& keyColor, std::wstring& m_valuesColor)                     #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool actif, std::wstring& keyColor, std::wstring& m_valuesColor)
+void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, std::wstring& keyColor, std::wstring& m_valuesColor)
 {
-    if (actif && valeur.size() > 0)
+    if (valeur.size() > 0)
     {
         std::wstring valeur_str = keyColor + cle + L" : " + m_valuesColor + valeur + L"\r\n";
         std::wcout << valeur_str;// << std::endl;
@@ -654,15 +654,15 @@ void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, bool a
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Print_Genres(const std::vector<std::wstring>& genres, bool affichage_genres_actif,                                                            #
-// #                  const std::wstring& sous_genre, bool affichage_sous_genre_actif,                                                                  #
+// # void Print_Genres(const std::vector<std::wstring>& genres,                                                                                         #
+// #                  const std::wstring& sous_genre,                                                                                                   #
 // #                  std::wstring& keyColor, std::wstring& m_valuesColor)                                                                              #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Genres(const std::vector<std::wstring>& genres, bool affichage_genres_actif, const std::wstring& sous_genre, bool affichage_sous_genre_actif, std::wstring& keyColor, std::wstring& m_valuesColor)
+void Print_Genres(const std::vector<std::wstring>& genres, const std::wstring& sous_genre, std::wstring& keyColor, std::wstring& m_valuesColor)
 {
-    if (affichage_genres_actif && genres.size() > 0)
+    if (genres.size() > 0)
     {
         std::wstring genre_str = keyColor + L"Genre" + ((genres.size() > 1) ? L"s" : L"") + L" : " + m_valuesColor;
 
@@ -678,7 +678,7 @@ void Print_Genres(const std::vector<std::wstring>& genres, bool affichage_genres
         }
         genre_str += L"\r\n";
         std::wcout << genre_str;
-        if (affichage_sous_genre_actif && sous_genre.size() != 0)
+        if (sous_genre.size() != 0)
         {
             genre_str = keyColor + L"Sous-genre : " + m_valuesColor + sous_genre + L"\r\n";
             std::wcout << genre_str;// << std::endl;
@@ -688,13 +688,13 @@ void Print_Genres(const std::vector<std::wstring>& genres, bool affichage_genres
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Print_Images(const std::vector<std::wstring>& image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& m_valuesColor)         #
+// # void Print_Images(const std::vector<std::wstring>& image, std::wstring& keyColor, std::wstring& m_valuesColor)                                     #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Images(const std::vector<std::wstring>& image, bool affichage_image_actif, std::wstring& keyColor, std::wstring& m_valuesColor)
+void Print_Images(const std::vector<std::wstring>& image, std::wstring& keyColor, std::wstring& m_valuesColor)
 {
-    if (affichage_image_actif && image.size() > 0)
+    if (image.size() > 0)
     {
         std::wstring image_str = keyColor + L"Image" + ((image.size() > 1) ? L"s" : L"") + L" : [" + m_valuesColor;
         bool first = true;
@@ -714,14 +714,14 @@ void Print_Images(const std::vector<std::wstring>& image, bool affichage_image_a
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif                                    #                                                                                                    #
+// # const void Print_Nationalites(const std::vector<std::wstring>& m_nationalites,                                                                     #                                                                                                    #
 // #                        std::wstring& keyColor, std::wstring& m_valuesColor)                                                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool affichage_nationalite_actif, std::wstring& keyColor, std::wstring& m_valuesColor)
+void Print_Nationalites(const std::vector<std::wstring>& m_nationalites,std::wstring& keyColor, std::wstring& m_valuesColor)
 {
-    if (affichage_nationalite_actif && m_nationalites.size() > 0)
+    if (m_nationalites.size() > 0)
     {
         std::wstring nationalite_str = keyColor + L"Nationalite" + ((m_nationalites.size() > 1) ? L"s" : L"") + L" : " + m_valuesColor;
 
@@ -742,13 +742,13 @@ void Print_Nationalites(const std::vector<std::wstring>& m_nationalites, bool af
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif)                                                          #
+// # void Print_Resume(const std::vector<std::wstring>& m_resume)                                                                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resume_actif)
+void Print_Resume(const std::vector<std::wstring>& m_resume)
 {
-    if (affichage_resume_actif && m_resume.size() > 0)
+    if (m_resume.size() > 0)
     {
         std::wstring resume_str = L"";
         for (auto&& r : m_resume)
@@ -759,14 +759,14 @@ void Print_Resume(const std::vector<std::wstring>& m_resume, bool affichage_resu
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif,                                  #
+// # void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original,                                                                       #
 // #                              std::vector<std::wstring>& keyColor, std::wstring& m_valuesColor)                                                     #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, bool affichage_titre_original_actif, std::vector<std::wstring>& keyColor, std::wstring& m_valuesColor)
+void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original,std::vector<std::wstring>& keyColor, std::wstring& m_valuesColor)
 {
-    if (affichage_titre_original_actif && m_titre_original.size() > 0)
+    if (m_titre_original.size() > 0)
     {
         std::wstring titre_original_str = keyColor[0] + L"Titre original : " + m_valuesColor + m_titre_original[0];
         if (m_titre_original.size() > 2 && m_titre_original[2] != L"")

@@ -330,15 +330,12 @@ Film::Film(std::filesystem::path racine)
 std::wstring Film::calcul_Date_Affichage() const
 {
     std::wstring date_str;
-    if (affichage_date_actif)
-    {
-        wchar_t date_string[15];
-        std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_date);
-        date_str = date_string;
-        date_str = date_str.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor +
-                   date_str.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor +
-                   date_str.substr(6, 4);
-    }
+    wchar_t date_string[15];
+    std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_date);
+    date_str = date_string;
+    date_str = date_str.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor +
+        date_str.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor +
+        date_str.substr(6, 4);
     return date_str;
 }
 
@@ -351,14 +348,11 @@ std::wstring Film::calcul_Date_Affichage() const
 std::wstring Film::calcul_Duree_affichage() const
 {
     std::wstring duree_str;
-    if (affichage_duree_actif)
-    {
-        long heures = m_duree / (60 * 60);
-        long minutes = (m_duree % (60 * 60)) / 60;
-        long secondes = m_duree % 60;
-        duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +
-            std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
-    }
+    long heures = m_duree / (60 * 60);
+    long minutes = (m_duree % (60 * 60)) / 60;
+    long secondes = m_duree % 60;
+    duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +
+        std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
     return duree_str;
 }
 
@@ -372,7 +366,7 @@ std::wstring Film::calcul_Signaletique_Jeunesse_affichage() const
 {
     // SJ
     std::wstring signaletique_jeunesse_str;
-    if (affichage_sj_actif && m_sj.length() != 0)
+    if (m_sj.length() != 0)
         signaletique_jeunesse_str = m_keyColor[0] + L" (" + m_valuesColor + L"SJ" + m_keyColor[1] + L" : " + m_valuesColor + m_sj + m_keyColor[0] + L')' + m_valuesColor;
     return signaletique_jeunesse_str;
 }
@@ -387,10 +381,7 @@ std::wstring Film::calcul_Sur_Affichage() const
 {
     std::wstring sur_str;
     // sur
-    if (affichage_sur_actif)
-    {
-        sur_str = m_sur;
-    }
+    sur_str = m_sur;
     return sur_str;
 }
 
@@ -403,19 +394,10 @@ std::wstring Film::calcul_Sur_Affichage() const
 std::wstring Film::calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur) const
 {
     std::wstring x_signaletique_jeunesse_str;
-    if (affichage_x_sj_actif)
-    {
-        if (affichage_disney_sj_actif)
-        {
-            if (m_disney_sj != L"" && sur != L"Disney+")
-                x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
-        }
-        if (affichage_netflix_sj_actif)
-        {
-            if (m_netflix_sj != L"" && sur != L"Netflix")
-                x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
-        }
-    }
+    if (m_disney_sj != L"" && sur != L"Disney+")
+        x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
+    if (m_netflix_sj != L"" && sur != L"Netflix")
+        x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
     return x_signaletique_jeunesse_str;
 }
 
@@ -428,12 +410,9 @@ std::wstring Film::calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur) c
 std::wstring Film::calcul_Titres_Affichage() const
 {
     std::wstring titres_str;
-    if (affichage_titres_actif)
-    {
-        titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
-        if (m_titres.size() == 3)
-            titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
-    }
+    titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
+    if (m_titres.size() == 3)
+        titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
     return titres_str;
 }
 
@@ -445,27 +424,19 @@ std::wstring Film::calcul_Titres_Affichage() const
 
 std::wstring Film::format_DateEtSur(std::wstring date_str, std::wstring& sur_str) const
 {
-    if (!affichage_date_actif && !affichage_sur_actif)
-        return L"";
     const std::wstring parenthese_ouvrant_str = m_keyColor[0] + L" (" + m_valuesColor;
     const std::wstring parenthese_fermant_str = m_keyColor[0] + L")" + m_valuesColor;
     const wchar_t espace_str = L' ';
     std::wstring date_et_sur = parenthese_ouvrant_str;
-    if (affichage_date_actif)
-    {
-        date_et_sur += date_str;
-    }
-    if (affichage_sur_actif)
-    {
-        if (sur_str == L"Disney+" && m_disney_sj.size() != 0)
-            date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj;
-        else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
-            date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
-        else if (sur_str.size() != 0)
-            date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str;
-        else
-            ;
-    }
+    date_et_sur += date_str;
+    if (sur_str == L"Disney+" && m_disney_sj.size() != 0)
+        date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj;
+    else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
+        date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
+    else if (sur_str.size() != 0)
+        date_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str;
+    else
+        ;
     return date_et_sur + parenthese_fermant_str;
 }
 
@@ -859,11 +830,11 @@ const void Film::Print()
     // Date de sortie
     Print_Date_de_Sortie();
     // Titre Original
-    Print_Titre_Original(m_titres_originaux, affichage_titres_originaux_actif, m_keyColor, m_valuesColor);
+    Print_Titre_Original(m_titres_originaux, m_keyColor, m_valuesColor);
     // Distributeur
     Print_Distributeur();
     // AD
-    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, m_keyColor[0], m_valuesColor);
+    Print_CleValeur(L"Audiodescription", m_audiodescription, m_keyColor[0], m_valuesColor);
     // De
     Print_De();
     // Par
@@ -871,23 +842,23 @@ const void Film::Print()
     // Avec etc
     Print_Avec_etc();
     // Nationalité(s)
-    Print_Nationalites(m_nationalite, affichage_nationalite_actif, m_keyColor[0], m_valuesColor);
+    Print_Nationalites(m_nationalite, m_keyColor[0], m_valuesColor);
     // Catalogue
-    Print_Catalogue(m_sur, m_catalogue, affichage_catalogue_actif, m_keyColor[0], m_valuesColor);
+    Print_Catalogue(m_sur, m_catalogue, m_keyColor[0], m_valuesColor);
     // Resume
-    Print_Resume(m_resume, affichage_resume_actif);
+    Print_Resume(m_resume);
     // Dates
     Print_Dates();
     // Avec
-    Print_Avec(affichage_avec_actif, m_avec, L"Avec :");
+    Print_Avec(m_avec, L"Avec :");
     // Acteurs de doublage (Voix locales)
-    Print_Avec(affichage_acteurs_de_doublage_voix_locales_actif, m_acteurs_de_doublage_voix_locales, L"Acteurs de doublage (Voix locales) :");
+    Print_Avec(m_acteurs_de_doublage_voix_locales, L"Acteurs de doublage (Voix locales) :");
     // Acteurs de doublage (Voix originales)
-    Print_Avec(affichage_acteurs_de_doublage_voix_originales_actif, m_acteurs_de_doublage_voix_originales, L"Acteurs de doublage (Voix originales) :");
+    Print_Avec(m_acteurs_de_doublage_voix_originales, L"Acteurs de doublage (Voix originales) :");
     // Soundtracks
     Print_Soundtracks();
     // Image(s)
-    Print_Images(m_image, affichage_image_actif, m_keyColor[0], m_valuesColor);
+    Print_Images(m_image, m_keyColor[0], m_valuesColor);
     // Making-of
     Print_Making_of();
     std::wcout << L"\r\n";
@@ -895,13 +866,13 @@ const void Film::Print()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Avec(bool affichage_actif, std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str)                 #
+// # const void Film::Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str)                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Avec(bool affichage_actif, std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str)
+const void Film::Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str)
 {
-    if (affichage_actif && avec.size())
+    if (avec.size())
     {
         std::wstring avec_str = m_keyColor[0] + str + m_valuesColor + L"\r\n";
         bool found = false;
@@ -944,7 +915,7 @@ const void Film::Print_Avec(bool affichage_actif, std::vector<std::pair<std::wst
 
 void Film::Print_Avec_etc()
 {
-    if (affichage_avec_etc_actif && m_avec.size() > 0)
+    if (m_avec.size() > 0)
     {
         std::wstring avec_str = m_keyColor[0] + L"Avec : " + m_valuesColor;
         int item_count = 0;
@@ -977,17 +948,14 @@ void Film::Print_Avec_etc()
 
 const void Film::Print_Dates()
 {
-    if (affichage_visionnages_actif)
+    std::wstring dates_str = L"\r\n";
+    for (auto& visionnage : m_visionnages)
     {
-        std::wstring dates_str = L"\r\n";
-        for (auto& visionnage : m_visionnages)
-        {
-            //dates_str += visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage) + L"\r\n";
-            dates_str += visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage, m_keyColor, m_valuesColor) + L"\r\n";
-        }
-        dates_str += L"\r\n";
-        std::wcout << dates_str;
+        //dates_str += visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage) + L"\r\n";
+        dates_str += visionnage.Print_Dates_de_visionnage(visionnage.m_DatesVisionnage, m_keyColor, m_valuesColor) + L"\r\n";
     }
+    dates_str += L"\r\n";
+    std::wcout << dates_str;
 }
 
 // ######################################################################################################################################################
@@ -998,16 +966,13 @@ const void Film::Print_Dates()
 
 const void Film::Print_Date_de_Reprise()
 {
-    if (affichage_date_de_reprise_actif && m_date_de_reprise.tm_year != 0)
-    {
-        wchar_t date_string[22];
-        std::wstring wstr;
-        wcsftime(date_string, 18, L"%d/%m/%Y", &m_date_de_reprise);
-        wstr = date_string;
-        //Console_Lire(keyColor[0] + L"Date de reprise : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 19);
-        //int i = Console_Lire_txt(keyColor[0] + L"Date de reprise : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 19);
-        std::wcout << m_keyColor[0] + L"Date de reprise : " + m_valuesColor + wstr.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(6, 4) + L"\r\n";
-    }
+    wchar_t date_string[22];
+    std::wstring wstr;
+    wcsftime(date_string, 18, L"%d/%m/%Y", &m_date_de_reprise);
+    wstr = date_string;
+    //Console_Lire(keyColor[0] + L"Date de reprise : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 19);
+    //int i = Console_Lire_txt(keyColor[0] + L"Date de reprise : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 19);
+    std::wcout << m_keyColor[0] + L"Date de reprise : " + m_valuesColor + wstr.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(6, 4) + L"\r\n";
 }
 
 // ######################################################################################################################################################
@@ -1018,16 +983,13 @@ const void Film::Print_Date_de_Reprise()
 
 const void Film::Print_Date_de_Sortie()
 {
-    if (affichage_date_de_sortie_actif && m_date_de_sortie.tm_year != 0)
-    {
-        wchar_t date_string[22];
-        std::wstring wstr;
-        wcsftime(date_string, 14, L"%d/%m/%Y", &m_date_de_sortie);
-        wstr = date_string;
-        //Console_Lire(keyColor[0] + L"Date de sortie : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 18);
-        //int i = Console_Lire_txt(keyColor[0] + L"Date de sortie : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 18);
-        std::wcout << m_keyColor[0] + L"Date de sortie : " + m_valuesColor + wstr.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(6, 4) + L"\r\n";
-    }
+    wchar_t date_string[22];
+    std::wstring wstr;
+    wcsftime(date_string, 14, L"%d/%m/%Y", &m_date_de_sortie);
+    wstr = date_string;
+    //Console_Lire(keyColor[0] + L"Date de sortie : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 18);
+    //int i = Console_Lire_txt(keyColor[0] + L"Date de sortie : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 18);
+    std::wcout << m_keyColor[0] + L"Date de sortie : " + m_valuesColor + wstr.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(6, 4) + L"\r\n";
 }
 
 // ######################################################################################################################################################
@@ -1038,7 +1000,7 @@ const void Film::Print_Date_de_Sortie()
 
 const void Film::Print_De()
 {
-    if (affichage_de_actif && m_de.size() > 0)
+    if (m_de.size() > 0)
     {
         std::wstring de_str = m_keyColor[0] + L"De : " + m_valuesColor;
         bool first = true;
@@ -1064,7 +1026,7 @@ const void Film::Print_De()
 
 const void Film::Print_Distributeur()
 {
-    if (affichage_distributeur_actif && m_distributeur.size() > 0)
+    if (m_distributeur.size() > 0)
     {
         std::wstring distributeur_str = m_keyColor[0] + L"Distributeur : " + m_valuesColor + m_distributeur + L"\r\n";
         //PrintStringW(m_hOut, creee_par_str, 0);
@@ -1103,17 +1065,14 @@ void Film::Print_Header() const
 
 const void Film::Print_Making_of()
 {
-    if (affichage_making_of_actif && m_making_of)
+    if (m_making_of)
     {
         std::wstring making_of_str = m_keyColor[0] + L"Making of" + m_valuesColor + L' ';
         std::wstring duree_str;
         std::wstring resume_str;
-        if (affichage_duree_actif)
-        {
-            duree_str = m_keyColor[0] + L"(" + m_valuesColor +
-                std::to_wstring(m_making_of_duree / (60 * 60)) + m_keyColor[1] + L"h" + m_valuesColor + L' ' + std::to_wstring((m_making_of_duree - ((m_making_of_duree / (60 * 60)) * 60 * 60)) / 60) + m_keyColor[1] + L"min" + m_valuesColor +
-                m_keyColor[0] + L") " + m_valuesColor;
-        }
+        duree_str = m_keyColor[0] + L"(" + m_valuesColor +
+            std::to_wstring(m_making_of_duree / (60 * 60)) + m_keyColor[1] + L"h" + m_valuesColor + L' ' + std::to_wstring((m_making_of_duree - ((m_making_of_duree / (60 * 60)) * 60 * 60)) / 60) + m_keyColor[1] + L"min" + m_valuesColor +
+            m_keyColor[0] + L") " + m_valuesColor;
         if(m_making_of)
         {
             duree_str += m_keyColor[0] + L':' + m_valuesColor + L"\r\n";
@@ -1134,33 +1093,30 @@ const void Film::Print_Making_of()
 
 std::wstring Film::Print_Note() const
 {
-    if (affichage_note_actif)
+    return L"";
+    std::wstring note_str;
+    if (m_note != 0.0)
     {
-        std::wstring note_str;
-        if (m_note != 0.0)
-        {
-            if (m_note == -1.0)
-                note_str += L' ' + m_keyColor[0] + L'(' + m_valuesColor + L"pas de note !" + m_keyColor[0] + L')' + m_valuesColor;
-            else
-            {
-                if (m_note == 0 || m_note == 1 || m_note == 2 || m_note == 3 || m_note == 4 || m_note == 5)
-                    note_str = L' ' + std::to_wstring(static_cast<int>(std::floor(m_note)));
-                else
-                {
-                    std::wstring wstr = std::to_wstring(m_note);
-                    wstr = wstr[0] + m_keyColor[0] + wstr[1] + m_valuesColor + wstr[2];
-                    note_str += L' ' + wstr;
-                }
-                note_str += m_keyColor[0] + L"/5" + m_valuesColor;
-            }
-        }
+        if (m_note == -1.0)
+            note_str += L' ' + m_keyColor[0] + L'(' + m_valuesColor + L"pas de note !" + m_keyColor[0] + L')' + m_valuesColor;
         else
         {
-            note_str = L' ' + m_keyColor[0] + L'(' + m_valuesColor + L"pas de note !" + m_keyColor[0] + L')' + m_valuesColor;
+            if (m_note == 0 || m_note == 1 || m_note == 2 || m_note == 3 || m_note == 4 || m_note == 5)
+                note_str = L' ' + std::to_wstring(static_cast<int>(std::floor(m_note)));
+            else
+            {
+                std::wstring wstr = std::to_wstring(m_note);
+                wstr = wstr[0] + m_keyColor[0] + wstr[1] + m_valuesColor + wstr[2];
+                note_str += L' ' + wstr;
+            }
+            note_str += m_keyColor[0] + L"/5" + m_valuesColor;
         }
-        return note_str;
     }
-    return L"";
+    else
+    {
+        note_str = L' ' + m_keyColor[0] + L'(' + m_valuesColor + L"pas de note !" + m_keyColor[0] + L')' + m_valuesColor;
+    }
+    return note_str;
 }
 
 // ######################################################################################################################################################
@@ -1171,7 +1127,7 @@ std::wstring Film::Print_Note() const
 
 const void Film::Print_Par()
 {
-    if (affichage_par_actif && m_par.size() > 0)
+    if (m_par.size() > 0)
     {
         std::wstring par_str = m_keyColor[0] + L"Par : " + m_valuesColor;
         bool first = true;
@@ -1198,7 +1154,7 @@ const void Film::Print_Par()
 
 const void Film::Print_Soundtracks()
 {
-    if (affichage_soundtraks_actif && m_soundtrack.size() > 0)
+    if (m_soundtrack.size() > 0)
     {
         std::size_t maxKeyLength = 0;
         for (int i = 0; i < m_soundtrack.size(); i++)

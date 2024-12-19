@@ -119,7 +119,7 @@ struct SequenceVisionnage
     int m_numero{ -1 };
     long m_duree { -1 };
 
-    bool affichage_duree_actif = true;// false;
+    //bool affichage_duree_actif = true;// false;
 
 private:
     const Episode& m_episode;
@@ -129,17 +129,22 @@ struct Episode
 {
     const Saison& m_saison;
     Episode(const InfosVisionnage& info_vis);
-    /*Episode& operator=(Episode&& src)
+    Episode& operator=(Episode&& src) noexcept
     {
-        m_liste_sequence_visionnages_ordonnee_chronologiquement = std::move(src.m_liste_sequence_visionnages_ordonnee_chronologiquement);
+        if (&src != this)
+        {
+            for (auto const& [key, lsvoc] : src.m_liste_sequence_visionnages_ordonnee_chronologiquement)
+            {
+                SequenceVisionnage tmp(*this, std::move(*lsvoc));
+                m_liste_sequence_visionnages_ordonnee_chronologiquement.emplace(key, std::make_shared<SequenceVisionnage>(tmp));
+            }
+            m_resume = std::move(src.m_resume);
+            m_duree = std::move(src.m_duree);
+            m_numero = std::move(src.m_numero);
+        }
         return *this;
-    }*/
-    Episode(Episode&& src) : m_saison(src.m_saison)
-    {
-        m_liste_sequence_visionnages_ordonnee_chronologiquement = std::move(src.m_liste_sequence_visionnages_ordonnee_chronologiquement);
     }
-    // Simple move assignment operator
-   void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
+    void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
@@ -166,7 +171,7 @@ struct Episode
     long m_duree{ -1 };
     std::vector<std::wstring> m_resume;
 
-    int lInfoQuiMInteresse;
+    //int lInfoQuiMInteresse;
  
     //long m_NumeroEpisode{1};
 };
@@ -176,17 +181,34 @@ struct Saison
 public:
     const Serie& m_serie;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
-    Saison(Saison&& src) : m_serie(src.m_serie)
+    Saison& operator=(Saison&& src) noexcept
     {
-        m_liste_episodes = std::move(src.m_liste_episodes);
-    }
-    // Simple move assignment operator
-    /*Saison& operator=(Saison&& src)
-    {
-        m_liste_episodes = std::move(src.m_liste_episodes);
-        return *this;
-    }*/
+        if (&src != this)
+        {
+            for (auto const& [key, ep] : src.m_liste_episodes)
+            {
+                Episode tmp(*this, std::move(*ep));
+                m_liste_episodes.emplace(key, std::make_shared<Episode>(tmp));
+            }
+            m_audiodescription = std::move(src.m_audiodescription);
+            m_avec = std::move(src.m_avec);
+            m_date_diffusee_a_partir_de = std::move(src.m_date_diffusee_a_partir_de);
+            m_disney = std::move(src.m_disney);
+            m_f_anneesDiffusion = std::move(src.m_f_anneesDiffusion);
+            m_chaine = std::move(src.m_chaine);
+            m_hors_saison = std::move(src.m_hors_saison);
 
+            m_image = std::move(src.m_image);
+            m_netflix = std::move(src.m_netflix);
+            m_note = std::move(src.m_note);
+
+            m_titres = std::move(src.m_titres);
+            m_resume = std::move(src.m_resume);
+
+            m_numero = std::move(src.m_numero);
+        }
+        return *this;
+    }
     //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
@@ -245,13 +267,14 @@ public:
     mutable int m_numero{ -1 };
     int lInfoQuiMInteresse{};
 
-    bool affichage_audiodescription_actif = true;
+    /*bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_chaine_actif = true;
     bool affichage_date_etc_actif = true;
     bool affichage_image_actif = true;
     bool affichage_netflix_actif = true;
     bool affichage_note_actif = true;
+    */
 private:
 };
 
@@ -334,7 +357,7 @@ private:
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
 
-    bool affichage_annees_actif = true;
+    /*bool affichage_annees_actif = true;
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
     bool affichage_avec_etc_actif = true;
@@ -361,5 +384,6 @@ private:
     bool affichage_titres_actif = true;
     bool affichage_titres_originaux_actif = true;
     bool affichage_x_sj_actif = true;
+    */
 };
 

@@ -285,14 +285,11 @@ void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)
 std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) const
 {
     std::wstring duree_str;
-    if (affichage_duree_actif)
+    if (numero_sequence == 1)
     {
-        if (numero_sequence == 1)
-        {
-            long minutes = (m_duree_en_seconde/* % (60 * 60)*/) / 60;
-            long secondes = m_duree_en_seconde % 60;
-            duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
-        }
+        long minutes = (m_duree_en_seconde/* % (60 * 60)*/) / 60;
+        long secondes = m_duree_en_seconde % 60;
+        duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
     }
     return duree_str;
 }
@@ -328,7 +325,7 @@ const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation 
 // Ok !!!
 void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
 {
-    auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
+    //auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
     auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
     auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
 }
@@ -349,7 +346,7 @@ void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequ
 
     if (numero_sequence == 1)
     {
-        chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+        chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + /*std::to_wstring(m_episode.m_numero) +*/ m_keyColor[1] + L" : " + m_valuesColor;
         //chiffre_str = std::to_wstring(episode) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
         ch = chiffre_str;
     }
@@ -492,14 +489,6 @@ long SequenceVisionnage::Print_Titre_chiffre(long episode) const
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 
-/*Episode::Episode(Episode&& src)
-{
-    src.swap(*this);
-}*/
-/*Episode::Episode(Episode&& src)
-{
-    m_liste_sequence_visionnages_ordonnee_chronologiquement = src.m_liste_sequence_visionnages_ordonnee_chronologiquement;
-}*/
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_numero{ info_vis.m_NumeroEpisode }                             #
@@ -509,7 +498,6 @@ long SequenceVisionnage::Print_Titre_chiffre(long episode) const
 Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_numero{ info_vis.m_NumeroEpisode }
 {
     m_saison.m_numero = info_vis.m_NumeroSaison;
-
     ajouter_SequenceVisionnage(info_vis);
 }
 
@@ -910,7 +898,7 @@ void Saison::Print()
     // Netflix
     Print_Netflix();
     // AD
-    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, m_keyColor[1], m_valuesColor);
+    Print_CleValeur(L"Audiodescription", m_audiodescription, m_keyColor[1], m_valuesColor);
     // Avec
     Print_Avec();
     // Images(s)
@@ -929,7 +917,7 @@ void Saison::Print()
 
 void Saison::Print_Avec()
 {
-    if (affichage_avec_actif && m_avec.size())
+    if (m_avec.size())
     {
         std::wstring avec_str = m_keyColor[1] + L"Avec : " + m_valuesColor;
         bool found = false;
@@ -972,7 +960,7 @@ void Saison::Print_Avec()
 
 void Saison::Print_Chaine()
 {
-    if (affichage_chaine_actif && m_chaine.size() > 0)
+    if (m_chaine.size() > 0)
     {
         std::wstring chaine_str = m_keyColor[1] + L"Chaîne d'origine : " + m_valuesColor + m_chaine + L"\r\n";
         //PrintStringW(m_hOut, creee_par_str, 0);
@@ -1087,7 +1075,7 @@ void Saison::Print_Header()
 
 void Saison::Print_Images()
 {
-    if (affichage_image_actif && m_image.size() > 0 )
+    if (m_image.size() > 0 )
     {
         std::wstring image_str = m_keyColor[1] + L"Image" + ((m_image.size() > 1) ? L"s" : L"") + L" : [" + m_valuesColor;
         bool first = true;
@@ -1117,7 +1105,7 @@ void Saison::Print_Images()
 
 void Saison::Print_Netflix()
 {
-    if (affichage_netflix_actif && m_netflix)
+    if (m_netflix)
     {
         std::wstring netflix_str = m_keyColor[1] + L'(' + m_valuesColor + L"Netflix" + m_keyColor[1] + L')' + m_valuesColor;
         netflix_str += L"\r\n";
@@ -1133,7 +1121,7 @@ void Saison::Print_Netflix()
 
 void Saison::Print_Note()
 { // 0...5 ou -1
-    if (affichage_note_actif && m_note)
+    if (m_note)
     {
         std::wstring note_str;
         if (m_note == -1.0)
@@ -1225,12 +1213,9 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion() const
 std::wstring Serie::calcul_Duree_affichage() const
 {
     std::wstring duree_str;
-    if (affichage_duree_actif)
-    {
-        long minutes = (m_duree % (60 * 60)) / 60;
-        long secondes = m_duree % 60;
-        duree_str = L' ' + std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
-    }
+    long minutes = (m_duree % (60 * 60)) / 60;
+    long secondes = m_duree % 60;
+    duree_str = L' ' + std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
     return duree_str;
 }
 
@@ -1242,48 +1227,44 @@ std::wstring Serie::calcul_Duree_affichage() const
 
 std::wstring Serie::calcul_Note_Affichage() const
 {
-    if (affichage_note_actif)
-    {
-        std::wstring res;
+    std::wstring res;
 
-        std::vector<double>notes;
-        for (const auto& saison : saisons)
+    std::vector<double>notes;
+    for (const auto& saison : saisons)
+    {
+        if (saison.m_note >= 0.0)
         {
-            if (saison.m_note >= 0.0)
-            {
-                notes.push_back(saison.m_note);
-            }
+            notes.push_back(saison.m_note);
         }
-        if (notes.size() < 1)
-            res = m_keyColor[0] + L'(' + m_valuesColor + L"pas de note !" + m_keyColor[0] + L')';
+    }
+    if (notes.size() < 1)
+        res = m_keyColor[0] + L'(' + m_valuesColor + L"pas de note !" + m_keyColor[0] + L')';
+    else
+    {
+        double note = std::accumulate(notes.begin(), notes.end(), 0.0) / notes.size();
+        double whole, fractional;
+        fractional = std::modf(note, &whole);
+
+        std::wstring whole_str = wstring_format(L"%.0f", whole);
+        std::wstring fractional_tmp = wstring_format(L"%.2f", fractional);
+        std::wstring sepDecimal = fractional_tmp.substr(1, 1);
+        std::wstring fractional_str;
+        if (ends_with(fractional_tmp, L"00"))
+        {
+            fractional_str = L"";
+        }
+        else if (ends_with(fractional_tmp, L"0"))
+        {
+            fractional_str = fractional_tmp.substr(2, 1);
+        }
         else
         {
-            double note = std::accumulate(notes.begin(), notes.end(), 0.0) / notes.size();
-            double whole, fractional;
-            fractional = std::modf(note, &whole);
-
-            std::wstring whole_str = wstring_format(L"%.0f", whole);
-            std::wstring fractional_tmp = wstring_format(L"%.2f", fractional);
-            std::wstring sepDecimal = fractional_tmp.substr(1, 1);
-            std::wstring fractional_str;
-            if (ends_with(fractional_tmp, L"00"))
-            {
-                fractional_str = L"";
-            }
-            else if (ends_with(fractional_tmp, L"0"))
-            {
-                fractional_str = fractional_tmp.substr(2, 1);
-            }
-            else
-            {
-                fractional_str = fractional_tmp.substr(2, 2);
-            }
-
-            res = whole_str + m_keyColor[1] + sepDecimal + m_valuesColor + fractional_str + m_keyColor[0] + L"/5";
+            fractional_str = fractional_tmp.substr(2, 2);
         }
-        return (res.length() > 0) ? L" " + res + m_valuesColor : L"";
+
+        res = whole_str + m_keyColor[1] + sepDecimal + m_valuesColor + fractional_str + m_keyColor[0] + L"/5";
     }
-    return L"";
+    return (res.length() > 0) ? L" " + res + m_valuesColor : L"";
 }
 
 // ######################################################################################################################################################
@@ -1296,7 +1277,7 @@ std::wstring Serie::calcul_Signaletique_Jeunesse_affichage() const
 {
     // SJ
     std::wstring signaletique_jeunesse_str;
-    if (affichage_sj_actif && m_sj.length() != 0)
+    if (m_sj.length() != 0)
         signaletique_jeunesse_str = m_keyColor[0] + L" (" + m_valuesColor + L"SJ" + m_keyColor[1] + L" : " + m_valuesColor + m_sj + m_keyColor[0] + L')' + m_valuesColor;
     return signaletique_jeunesse_str;
 }
@@ -1311,10 +1292,7 @@ std::wstring Serie::calcul_Sur_Affichage() const
 {
     std::wstring sur_str;
     // sur
-    if (affichage_sur_actif)
-    {
-        sur_str = m_sur;
-    }
+    sur_str = m_sur;
     return sur_str;
 }
 
@@ -1327,12 +1305,9 @@ std::wstring Serie::calcul_Sur_Affichage() const
 std::wstring Serie::calcul_Titres_Affichage() const
 {
     std::wstring titres_str;
-    if (affichage_titres_actif)
-    {
-        titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
-        if (m_titres.size() == 3)
-            titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
-    }
+    titres_str = m_keyColor[0] + L"Titre : " + m_valuesColor + m_titres[0];
+    if (m_titres.size() == 3)
+        titres_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_titres[2];
     return titres_str;
 }
 
@@ -1345,19 +1320,10 @@ std::wstring Serie::calcul_Titres_Affichage() const
 std::wstring Serie::calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur) const
 {
     std::wstring x_signaletique_jeunesse_str;
-    if (affichage_x_sj_actif)
-    {
-        if (affichage_disney_sj_actif)
-        {
-            if (m_disney_sj != L"" && sur != L"Disney+")
-                x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
-        }
-        if (affichage_netflix_sj_actif)
-        {
-            if (m_netflix_sj != L"" && sur != L"Netflix")
-                x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
-        }
-    }
+    if (m_disney_sj != L"" && sur != L"Disney+")
+        x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
+    if (m_netflix_sj != L"" && sur != L"Netflix")
+        x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
     return x_signaletique_jeunesse_str;
 }
 
@@ -1397,23 +1363,19 @@ const void Serie::corriger_Annee_Fin()
 
 std::wstring Serie::format_Annees() const
 {
-    if (affichage_annees_actif)
+    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
     {
-        if (m_f_anneesProduction.first && m_f_anneesProduction.second)
-        {
-            return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(m_f_anneesProduction.second.value());
-        }
-        else if (m_f_anneesProduction.first)
-        {
-            return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-';
-        }
-        else
-        {
-            std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
-            return std::to_wstring(anneesDiffusion.first) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(anneesDiffusion.second);
-        }
+        return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(m_f_anneesProduction.second.value());
     }
-    return L"";
+    else if (m_f_anneesProduction.first)
+    {
+        return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-';
+    }
+    else
+    {
+        std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
+        return std::to_wstring(anneesDiffusion.first) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(anneesDiffusion.second);
+    }
 }
 
 // ######################################################################################################################################################
@@ -1424,29 +1386,23 @@ std::wstring Serie::format_Annees() const
 
 std::wstring Serie::format_AnneesEtSur(std::wstring& annees_str, std::wstring& sur_str) const
 {
-    if(!affichage_annees_actif && !affichage_sur_actif)
-        return L"";
+    //if(!affichage_annees_actif && !affichage_sur_actif)
+    //    return L"";
     const std::wstring crochet_ouvrant_str = m_keyColor[0] + L" [" + m_valuesColor;
     const std::wstring crochet_fermant_str = m_keyColor[0] + L"]" + m_valuesColor;
     const wchar_t espace_str = L' ';
     std::wstring annees_et_sur = crochet_ouvrant_str;
-    if (affichage_annees_actif)
-    {
-        annees_et_sur += annees_str;
-    }
-    if (affichage_sur_actif)
-    {
-        if (sur_str == L"Disney+" && m_disney_sj.size() != 0)
-            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj;
-        else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
-            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
-        else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
-            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
-        else if (sur_str.size() != 0)
-            annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str;
-        else
-            ;
-    }
+    annees_et_sur += annees_str;
+    if (sur_str == L"Disney+" && m_disney_sj.size() != 0)
+        annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj;
+    else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
+        annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
+    else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
+        annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
+    else if (sur_str.size() != 0)
+        annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str;
+    else
+        ;
     return annees_et_sur + crochet_fermant_str;
 }
 
@@ -1622,28 +1578,28 @@ const void Serie::Print()
     // Header
     Print_Header();
     // Titre Original
-    Print_Titre_Original(m_titres_originaux, affichage_titres_originaux_actif, m_keyColor, m_valuesColor);
+    Print_Titre_Original(m_titres_originaux, m_keyColor, m_valuesColor);
     // Chaîne d'origine
     Print_Chaine();
     // AD
     //Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
-    Print_CleValeur(L"Audiodescription", m_audiodescription, affichage_audiodescription_actif, m_keyColor[0], m_valuesColor);
+    Print_CleValeur(L"Audiodescription", m_audiodescription, m_keyColor[0], m_valuesColor);
     // Creee par
     Print_Creee_par();
     // Genre(s)
-    Print_Genres(m_genre, affichage_genres_actif, m_sous_genre, affichage_sous_genre_actif, m_keyColor[0], m_valuesColor);
+    Print_Genres(m_genre, m_sous_genre, m_keyColor[0], m_valuesColor);
     // En relation avec
     Print_En_relation_avec();
     // Avec etc
     Print_Avec_etc();
     // Nationalité(s)
-    Print_Nationalites(m_nationalite, affichage_nationalite_actif, m_keyColor[0], m_valuesColor);
+    Print_Nationalites(m_nationalite, m_keyColor[0], m_valuesColor);
     // Image(s)
-    Print_Images(m_image, affichage_image_actif, m_keyColor[0], m_valuesColor);
+    Print_Images(m_image, m_keyColor[0], m_valuesColor);
     // Catalogue
-    Print_Catalogue(m_sur, m_catalogue, affichage_catalogue_actif, m_keyColor[0], m_valuesColor);
+    Print_Catalogue(m_sur, m_catalogue, m_keyColor[0], m_valuesColor);
     // Resume
-    Print_Resume(m_resume, affichage_resume_actif);
+    Print_Resume(m_resume);
     std::wcout << L"\r\n";
     // Saison(s)
     Print_Saisons();
@@ -1657,7 +1613,7 @@ const void Serie::Print()
 
 void Serie::Print_Avec_etc()
 {
-    if (affichage_avec_etc_actif && saisons.size() > 0 && saisons.back().m_avec.size() > 0)
+    if (saisons.size() > 0 && saisons.back().m_avec.size() > 0)
     {
         std::wstring avec_str = m_keyColor[0] + L"Avec : " + m_valuesColor;
 
@@ -1691,7 +1647,7 @@ void Serie::Print_Avec_etc()
 
 const void Serie::Print_Chaine()
 {
-    if (affichage_chaine_actif && m_chaine.size() > 0)
+    if (m_chaine.size() > 0)
     {
         std::wstring chaine_str = m_keyColor[0] + L"Chaîne d'origine : " + m_valuesColor;
         chaine_str += m_chaine + L"\r\n";
@@ -1711,7 +1667,7 @@ const void Serie::Print_Chaine()
 
 const void Serie::Print_Creee_par()
 {
-    if (affichage_creee_par_actif && m_creee_par.size() > 0)
+    if (m_creee_par.size() > 0)
     {
         std::wstring creee_par_str = m_keyColor[0] + L"Créée" + ((m_creee_par.size() > 1) ? L"s" : L"") + L" par : " + m_valuesColor;
         bool first = true;
@@ -1737,7 +1693,7 @@ const void Serie::Print_Creee_par()
 
 const void Serie::Print_En_relation_avec()
 {
-    if (affichage_en_relation_avec_actif && m_en_relation_avec.size() > 0)
+    if (m_en_relation_avec.size() > 0)
     {
         std::wstring en_relation_avec_str = m_keyColor[0] + L"En relation avec : " + m_valuesColor;
         en_relation_avec_str += m_en_relation_avec + L"\r\n";
@@ -1777,10 +1733,7 @@ void Serie::Print_Header() const
 
 const void Serie::Print_Saison(Saison saison)
 {
-    if (affichage_serie_actif)
-    {
-        saison.Print();
-    }
+    saison.Print();
 }
 
 // ######################################################################################################################################################
@@ -1791,13 +1744,10 @@ const void Serie::Print_Saison(Saison saison)
 
 void Serie::Print_Saisons()
 {
-    if (affichage_saisons_actif)
+    for (auto& saison : saisons)
     {
-        for (auto& saison : saisons)
-        {
-            saison.Print();
-            std::wcout << L"\r\n\r\n";
-        }
+        saison.Print();
+        std::wcout << L"\r\n\r\n";
     }
 }
 

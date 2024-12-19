@@ -90,7 +90,7 @@ private:
     //
     std::wstring format_DateEtSur(std::wstring date_str, std::wstring& sur_str) const;
 
-    const void Print_Avec(bool affichage_actif, std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str);
+    const void Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str);
     void Print_Avec_etc();
     const void Print_Dates();
     const void Print_Date_de_Reprise();
@@ -145,7 +145,7 @@ private:
 
     std::vector<SequenceVisionnage_film> m_visionnages;
  
-    bool affichage_acteurs_de_doublage_voix_locales_actif = true;
+    /*bool affichage_acteurs_de_doublage_voix_locales_actif = true;
     bool affichage_acteurs_de_doublage_voix_originales_actif = true;
     bool affichage_audiodescription_actif = true;
     bool affichage_avec_actif = true;
@@ -175,4 +175,5 @@ private:
     bool affichage_titres_originaux_actif = true;
     bool affichage_visionnages_actif = true;
     bool affichage_x_sj_actif = true;
+    */
 };
