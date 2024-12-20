@@ -74,11 +74,12 @@ private:
 
 struct SequenceVisionnage
 {
-    SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
-        m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
-        m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
-        m_DatesVisionnage{ info_vis.m_DatesVisionnage }
-    {};
+    SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
+        m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
+        m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
+        m_DatesVisionnage{ src.m_DatesVisionnage }
+    {
+    };
 
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
 
@@ -129,21 +130,8 @@ struct Episode
 {
     const Saison& m_saison;
     Episode(const InfosVisionnage& info_vis);
-    Episode& operator=(Episode&& src) noexcept
-    {
-        if (&src != this)
-        {
-            for (auto const& [key, lsvoc] : src.m_liste_sequence_visionnages_ordonnee_chronologiquement)
-            {
-                SequenceVisionnage tmp(*this, std::move(*lsvoc));
-                m_liste_sequence_visionnages_ordonnee_chronologiquement.emplace(key, std::make_shared<SequenceVisionnage>(tmp));
-            }
-            m_resume = std::move(src.m_resume);
-            m_duree = std::move(src.m_duree);
-            m_numero = std::move(src.m_numero);
-        }
-        return *this;
-    }
+
+
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
@@ -174,6 +162,33 @@ struct Episode
     //int lInfoQuiMInteresse;
  
     //long m_NumeroEpisode{1};
+private:
+    Episode(const Episode& src) :m_saison{ src.m_saison }
+    {
+        operator=(src);
+    }
+    Episode(const Saison& saison, Episode&& src) :m_saison{ saison } {
+        operator=(std::move(src));
+    };
+    Episode& operator=(const Episode& src)
+    {
+        if (&src != this)
+        {
+            for (auto const& lsvoc : src.m_liste_sequence_visionnages_ordonnee_chronologiquement)
+            {
+                m_liste_sequence_visionnages_ordonnee_chronologiquement.emplace_back(SequenceVisionnage{ *this, lsvoc });
+            }
+            m_resume = src.m_resume;
+            m_duree = src.m_duree;
+            m_numero = src.m_numero;
+        }
+        return *this;
+    }
+    Episode& operator=(Episode&& src) noexcept
+    {
+        operator=(src);
+        return *this;
+    }
 };
 
 struct Saison
@@ -181,34 +196,6 @@ struct Saison
 public:
     const Serie& m_serie;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
-    Saison& operator=(Saison&& src) noexcept
-    {
-        if (&src != this)
-        {
-            for (auto const& [key, ep] : src.m_liste_episodes)
-            {
-                Episode tmp(*this, std::move(*ep));
-                m_liste_episodes.emplace(key, std::make_shared<Episode>(tmp));
-            }
-            m_audiodescription = std::move(src.m_audiodescription);
-            m_avec = std::move(src.m_avec);
-            m_date_diffusee_a_partir_de = std::move(src.m_date_diffusee_a_partir_de);
-            m_disney = std::move(src.m_disney);
-            m_f_anneesDiffusion = std::move(src.m_f_anneesDiffusion);
-            m_chaine = std::move(src.m_chaine);
-            m_hors_saison = std::move(src.m_hors_saison);
-
-            m_image = std::move(src.m_image);
-            m_netflix = std::move(src.m_netflix);
-            m_note = std::move(src.m_note);
-
-            m_titres = std::move(src.m_titres);
-            m_resume = std::move(src.m_resume);
-
-            m_numero = std::move(src.m_numero);
-        }
-        return *this;
-    }
     //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
@@ -263,7 +250,8 @@ public:
     std::vector<std::wstring> m_titres;
     std::vector<std::wstring> m_resume;
 
-    std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
+    //std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
+    std::vector<Episode>m_liste_episodes;
     mutable int m_numero{ -1 };
     int lInfoQuiMInteresse{};
 
@@ -276,6 +264,37 @@ public:
     bool affichage_note_actif = true;
     */
 private:
+    Saison(Saison&& src) noexcept : m_serie{ std::move(src.m_serie) }// the expression "arg.member" is lvalue
+    {
+        operator=(std::move(src));
+    }
+    Saison& operator=(Saison&& src) noexcept
+    {
+        if (&src != this)
+        {
+            for (auto const& ep : src.m_liste_episodes)
+            {
+                m_liste_episodes.emplace_back(Episode{ *this, ep });
+            }
+            m_audiodescription = std::move(src.m_audiodescription);
+            m_avec = std::move(src.m_avec);
+            m_date_diffusee_a_partir_de = std::move(src.m_date_diffusee_a_partir_de);
+            m_disney = std::move(src.m_disney);
+            m_f_anneesDiffusion = std::move(src.m_f_anneesDiffusion);
+            m_chaine = std::move(src.m_chaine);
+            m_hors_saison = std::move(src.m_hors_saison);
+
+            m_image = std::move(src.m_image);
+            m_netflix = std::move(src.m_netflix);
+            m_note = std::move(src.m_note);
+
+            m_titres = std::move(src.m_titres);
+            m_resume = std::move(src.m_resume);
+
+            m_numero = std::move(src.m_numero);
+        }
+        return *this;
+    }
 };
 
 class Serie
