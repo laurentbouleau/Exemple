@@ -875,7 +875,8 @@ const void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
 
     for (auto& episode : m_liste_episodes)
     {
-        episode.second->AffichagePersonnaliser(perso);
+        //episode.second->AffichagePersonnaliser(perso);
+        episode.AffichagePersonnaliser(perso);
     }
 }
 
@@ -890,22 +891,10 @@ void Saison::Print()
 {
     Print_Header();
 
-    //std::time_t t = std::mktime(&dossier.first);
-    //std::tm local = *std::localtime(&t);
-    //std::wstringstream target_stream;
-    //target_stream << std::put_time(&local, L"%d/%m/%Y");
-    //std::wstring wstr = target_stream.str();
-
-//    https://en.cppreference.com/w/cpp/chrono/c/wcsftime
-//    std::locale::global(std::locale("ja_JP.utf8"));
-//    std::time_t t = std::time(nullptr);
-//    wchar_t wstr[100];
-//    if (std::wcsftime(wstr, 100, L"%A %c", std::localtime(&t)))
-//        std::wcout << wstr << '\n';
-
     for (auto& episode : m_liste_episodes)
     {
-        episode.second->Print();
+        //episode.second->Print();
+        episode.Print();
     }
 
     // Note

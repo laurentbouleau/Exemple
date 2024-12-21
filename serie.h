@@ -128,8 +128,8 @@ struct SequenceVisionnage
 
 private:
     const Episode& m_episode;
-}   boolean operator=(const SequenceVisionnage& rhs) const { return this == &rhs; };
-;
+    boolean operator=(const SequenceVisionnage& rhs) const { return this == &rhs; };
+};
 
 struct Episode
 {
@@ -139,7 +139,8 @@ struct Episode
     {
         operator=(src);
     }
-    Episode(const Saison& saison, Episode&& src) :m_saison{ saison } {
+    Episode(const Saison& saison, Episode&& src) :m_saison{ saison }
+    {
         operator=(std::move(src));
     };
 
@@ -187,7 +188,7 @@ private:
             m_numero = src.m_numero;
         }
         return *this;
-    }
+     }
     Episode& operator=(Episode&& src) noexcept
     {
         operator=(src);
