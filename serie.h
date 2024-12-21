@@ -74,14 +74,18 @@ private:
 
 struct SequenceVisionnage
 {
-    SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
+    /*SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
         m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
         m_DatesVisionnage{ src.m_DatesVisionnage }
     {
+    };*/
+    SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
+        m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
+        m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
+        m_DatesVisionnage{ info_vis.m_DatesVisionnage }
+    {
     };
-
-    boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
 
     std::wstring calcul_Duree_affichage(int numero_sequence) const;
 
@@ -124,13 +128,20 @@ struct SequenceVisionnage
 
 private:
     const Episode& m_episode;
-};
+}   boolean operator=(const SequenceVisionnage& rhs) const { return this == &rhs; };
+;
 
 struct Episode
 {
     const Saison& m_saison;
     Episode(const InfosVisionnage& info_vis);
-
+    Episode(const Episode& src) :m_saison{ src.m_saison }
+    {
+        operator=(src);
+    }
+    Episode(const Saison& saison, Episode&& src) :m_saison{ saison } {
+        operator=(std::move(src));
+    };
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
@@ -163,15 +174,8 @@ struct Episode
  
     //long m_NumeroEpisode{1};
 private:
-    Episode(const Episode& src) :m_saison{ src.m_saison }
-    {
-        operator=(src);
-    }
-    Episode(const Saison& saison, Episode&& src) :m_saison{ saison } {
-        operator=(std::move(src));
-    };
-    Episode& operator=(const Episode& src)
-    {
+     Episode& operator=(const Episode& src)
+     {
         if (&src != this)
         {
             for (auto const& lsvoc : src.m_liste_sequence_visionnages_ordonnee_chronologiquement)
@@ -196,6 +200,10 @@ struct Saison
 public:
     const Serie& m_serie;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
+    Saison(Saison&& src) noexcept : m_serie{ std::move(src.m_serie) }// the expression "arg.member" is lvalue
+    {
+        operator=(std::move(src));
+    }
     //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
@@ -264,17 +272,15 @@ public:
     bool affichage_note_actif = true;
     */
 private:
-    Saison(Saison&& src) noexcept : m_serie{ std::move(src.m_serie) }// the expression "arg.member" is lvalue
-    {
-        operator=(std::move(src));
-    }
     Saison& operator=(Saison&& src) noexcept
     {
         if (&src != this)
         {
-            for (auto const& ep : src.m_liste_episodes)
+            for (auto& ep : src.m_liste_episodes)
             {
-                m_liste_episodes.emplace_back(Episode{ *this, ep });
+                //Episode tmp(*this, std::move(*ep));
+                //m_liste_episodes.emplace_back(key, std::make_shared<Episode>(tmp));
+                m_liste_episodes.emplace_back(Episode{ *this, std::move(ep) });
             }
             m_audiodescription = std::move(src.m_audiodescription);
             m_avec = std::move(src.m_avec);

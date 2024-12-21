@@ -507,9 +507,13 @@ Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
+/*void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
+{
+    m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage(*this, info_vis));
+}*/
 void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 {
-    m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage info_vis);
+    m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage{ *this, info_vis });
 }
 
 // ######################################################################################################################################################
@@ -704,21 +708,33 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             return;
         }
         //
-        if (std::regex_match(nomFichier, std::wregex{L"([[:digit:]]{1,2})x(.)+"}))
+        /*if (std::regex_match(nomFichier, std::wregex{L"([[:digit:]]{1,2})x(.)+"}))
         {
             InfosVisionnage info_vis{ *this, cheminFichier };
-            //if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
-            if (m_liste_episodes.begin() != m_liste_episodes.end())
+            if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
             {
-                m_liste_episodes[info_vis.m_NumeroEpisode].ajouter_SequenceVisionnage(info_vis);
+                m_liste_episodes[info_vis.m_NumeroEpisode]->ajouter_SequenceVisionnage(info_vis);
             }
             else
             {
-                m_liste_episodes.emplace_back(Episode{ info_vis.m_NumeroEpisode, Episode(info_vis) });
+                m_liste_episodes.emplace(std::pair<const int, shared_ptr<Episode>>{ info_vis.m_NumeroEpisode, make_shared<Episode>(info_vis) });
+            }
+            return;
+        }*/
+        if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{1,2})x(.)+" }))
+        {
+            InfosVisionnage info_vis{ *this, cheminFichier };
+            auto it = std::find_if(m_liste_episodes.begin(), m_liste_episodes.end(), [&info_vis](const auto& x) { return x.m_numero == info_vis.m_NumeroEpisode; });
+            if (it != m_liste_episodes.end())
+            {
+                (*it).ajouter_SequenceVisionnage(info_vis);
+            }
+            else
+            {
+                m_liste_episodes.emplace_back(Episode{ info_vis });
             }
             return;
         }
-
         //
         if (int j = std::stoi(nomFichier))
         {
@@ -859,7 +875,7 @@ const void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
 
     for (auto& episode : m_liste_episodes)
     {
-        episode.AffichagePersonnaliser(perso);
+        episode.second->AffichagePersonnaliser(perso);
     }
 }
 
@@ -889,7 +905,7 @@ void Saison::Print()
 
     for (auto& episode : m_liste_episodes)
     {
-        episode.Print();
+        episode.second->Print();
     }
 
     // Note
