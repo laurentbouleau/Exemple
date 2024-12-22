@@ -74,18 +74,19 @@ private:
 
 struct SequenceVisionnage
 {
-    /*SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
+    SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
         m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
         m_DatesVisionnage{ src.m_DatesVisionnage }
     {
-    };*/
+    };
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
         m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
         m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
         m_DatesVisionnage{ info_vis.m_DatesVisionnage }
     {
     };
+    boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
 
     std::wstring calcul_Duree_affichage(int numero_sequence) const;
 
@@ -128,7 +129,6 @@ struct SequenceVisionnage
 
 private:
     const Episode& m_episode;
-    boolean operator=(const SequenceVisionnage& rhs) const { return this == &rhs; };
 };
 
 struct Episode
