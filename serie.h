@@ -264,14 +264,6 @@ public:
     mutable int m_numero{ -1 };
     int lInfoQuiMInteresse{};
 
-    /*bool affichage_audiodescription_actif = true;
-    bool affichage_avec_actif = true;
-    bool affichage_chaine_actif = true;
-    bool affichage_date_etc_actif = true;
-    bool affichage_image_actif = true;
-    bool affichage_netflix_actif = true;
-    bool affichage_note_actif = true;
-    */
 private:
     Saison& operator=(Saison&& src) noexcept
     {
@@ -279,8 +271,6 @@ private:
         {
             for (auto& ep : src.m_liste_episodes)
             {
-                //Episode tmp(*this, std::move(*ep));
-                //m_liste_episodes.emplace_back(key, std::make_shared<Episode>(tmp));
                 m_liste_episodes.emplace_back(Episode{ *this, std::move(ep) });
             }
             m_audiodescription = std::move(src.m_audiodescription);
