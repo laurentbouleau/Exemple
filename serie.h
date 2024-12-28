@@ -63,6 +63,7 @@ struct InfosVisionnage
 //    unsigned short int m_numero{ 1 };
 
     int m_numero{ -1 };
+    int m_numero_chiffres{ -1 };
     //long m_duree{ -1 };
     //long m_duree{ 0 };
     long m_duree_en_seconde{ 0 };
