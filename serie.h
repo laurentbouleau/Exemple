@@ -63,7 +63,7 @@ struct InfosVisionnage
 //    unsigned short int m_numero{ 1 };
 
     int m_numero{ -1 };
-    int m_numero_chiffres{ -1 };
+    //int m_numero_chiffres{ -1 };
     //long m_duree{ -1 };
     //long m_duree{ 0 };
     long m_duree_en_seconde{ 0 };
@@ -262,6 +262,7 @@ public:
 
     //std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
     std::vector<Episode>m_liste_episodes;
+    int m_numero_chiffres{ -1 };
     mutable int m_numero{ -1 };
     int lInfoQuiMInteresse{};
 
