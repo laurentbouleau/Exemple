@@ -1066,8 +1066,6 @@ void Saison::Print_Header()
         resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, m_keyColor[1] + L'(' + m_valuesColor + L"Bis" + m_keyColor[1] + L')' + m_valuesColor, 5);
     }
 
-    //std::wstring numero_str = m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
-//    std::wstring numero_str = m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_numero_chiffres) + m_keyColor[1] + L')' + m_valuesColor;
     std::wstring numero_str = m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_numero_chiffres) + m_keyColor[1] + L')' + m_valuesColor;
 
     std::wcout << saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << L"\r\n";

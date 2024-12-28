@@ -202,7 +202,8 @@ struct Saison
 public:
     const Serie& m_serie;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
-    Saison(Saison&& src) noexcept : m_serie{ std::move(src.m_serie) }// the expression "arg.member" is lvalue
+    //Saison(Saison&& src) noexcept : m_serie{ std::move(src.m_serie) }// the expression "arg.member" is lvalue
+    Saison(Saison&& src) noexcept : m_serie{ src.m_serie }// the expression "arg.member" is lvalue
     {
         operator=(std::move(src));
     }
@@ -262,7 +263,7 @@ public:
 
     //std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
     std::vector<Episode>m_liste_episodes;
-    int m_numero_chiffres{ -1 };
+    int m_numero_chiffres { 0 };
     mutable int m_numero{ -1 };
     int lInfoQuiMInteresse{};
 
@@ -290,6 +291,7 @@ private:
             m_titres = std::move(src.m_titres);
             m_resume = std::move(src.m_resume);
 
+            m_numero_chiffres = std::move(src.m_numero_chiffres);
             m_numero = std::move(src.m_numero);
         }
         return *this;
