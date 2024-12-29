@@ -263,7 +263,7 @@ public:
 
     //std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
     std::vector<Episode>m_liste_episodes;
-    int m_numero_chiffres { 0 };
+    int m_nombre_episodes{ -1 };
     mutable int m_numero{ -1 };
     int lInfoQuiMInteresse{};
 
@@ -291,7 +291,7 @@ private:
             m_titres = std::move(src.m_titres);
             m_resume = std::move(src.m_resume);
 
-            m_numero_chiffres = std::move(src.m_numero_chiffres);
+            m_nombre_episodes = std::move(src.m_nombre_episodes);
             m_numero = std::move(src.m_numero);
         }
         return *this;

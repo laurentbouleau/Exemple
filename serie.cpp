@@ -836,7 +836,7 @@ void Saison::initialiser_Resume(fs::path const& cheminFichier)
 {
     m_resume = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert((m_resume.size() != 0));
-    m_numero_chiffres = std::stoi(cheminFichier.filename().stem().wstring());
+    m_nombre_episodes = std::stoi(cheminFichier.filename().stem().wstring());
 }
 
 // ######################################################################################################################################################
@@ -1066,9 +1066,11 @@ void Saison::Print_Header()
         resume_str = stringFormatOneLine(m_resume.size() > 0 ? m_resume[0] : L"", 40 + 3 + 5, L"...", 3, m_keyColor[1] + L'(' + m_valuesColor + L"Bis" + m_keyColor[1] + L')' + m_valuesColor, 5);
     }
 
-    std::wstring numero_str = m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_numero_chiffres) + m_keyColor[1] + L')' + m_valuesColor;
+    std::wstring nombre_episodes_str;
+    if(m_nombre_episodes > 0) 
+        nombre_episodes_str = m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_nombre_episodes) + m_keyColor[1] + L')' + m_valuesColor;
 
-    std::wcout << saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << numero_str << L"\r\n";
+    std::wcout << saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << nombre_episodes_str << L"\r\n";
 }
 
 // ######################################################################################################################################################
