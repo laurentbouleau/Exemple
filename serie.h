@@ -48,24 +48,17 @@ struct InfosVisionnage
 
     std::filesystem::path m_cheminFichier;
 
-    void Une_Fonction_De_La_Classe_InfosVisionnage(...);
-
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
-    //unsigned short int m_NumeroSaison{};
-    //unsigned short int m_NumeroEpisode{};
     long m_NumeroSaison{};
     long m_NumeroEpisode{};
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
     std::vector<std::wstring> m_titres;
-//    unsigned short int m_numero{ 1 };
 
     int m_numero{ -1 };
-    //int m_numero_chiffres{ -1 };
-    //long m_duree{ -1 };
-    //long m_duree{ 0 };
+
     long m_duree_en_seconde{ 0 };
     std::vector<std::wstring> m_resume;
 
@@ -91,15 +84,8 @@ struct SequenceVisionnage
 
     std::wstring calcul_Duree_affichage(int numero_sequence) const;
 
-    // uneFonctionQuiAfficheLaSequenceDeVisionnage
-    //std::wstring uneFonctionQuiAfficheLaSequenceDeVisionnage(bool) const;
-    //void uneFonctionQuiAfficheLaSequenceDeVisionnage(bool) const;
-
-    void Une_Fonction_De_La_Classe_SequenceVisionnage(...);
-    
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    //void Print(int numero_sequence) const;
     void Print(std::vector<std::wstring>&titres, int numero_sequence) const;
     std::wstring Print_Dates_de_visionnage() const;
     long Print_Titre_chiffre(long episode) const;
@@ -113,9 +99,6 @@ struct SequenceVisionnage
     std::wstring m_labelMinutePluriel;
     std::vector<std::wstring>m_keyColor;
     std::wstring m_valuesColor;
-
-    //long m_NumeroSaison{1};
-    //long m_NumeroEpisode{1};
 
     std::wstring m_streaming{ L"" };
     std::vector<std::wstring> m_titres;
@@ -149,10 +132,8 @@ struct Episode
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
+    //long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
 
-    void Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...);
-    
     void Print();
 
     std::wstring m_espace1;
@@ -265,7 +246,7 @@ public:
     std::vector<Episode>m_liste_episodes;
     int m_nombre_episodes{ -1 };
     mutable int m_numero{ -1 };
-    int lInfoQuiMInteresse{};
+    //int lInfoQuiMInteresse{};
 
 private:
     Saison& operator=(Saison&& src) noexcept

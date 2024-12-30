@@ -245,36 +245,7 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
 }
 
 // ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)                                                                               #
-// #                                                                                                                                                    #
 // ######################################################################################################################################################
-
-void InfosVisionnage::Une_Fonction_De_La_Classe_InfosVisionnage(...)
-{
-    //...
-    auto uneInfoDeLaSaison = m_saison.lInfoQuiMInteresse;
-    auto NumeroSaison = m_saison.m_numero;
-    //...
-}
-
-// ######################################################################################################################################################
-// ######################################################################################################################################################
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # SequenceVisionnage::SequenceVisionnage(const Episode& episode) :m_episode{ episode } {};                                                           #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # SequenceVisionnage::SequenceVisionnage(const SequenceVisionnage& sep) = default;                                                                   #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-/// 
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -293,8 +264,6 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
     }
     return duree_str;
 }
-
-/////
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -318,20 +287,6 @@ const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation 
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)                                                                         #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-// Ok !!!
-void SequenceVisionnage::Une_Fonction_De_La_Classe_SequenceVisionnage(...)
-{
-    //auto uneInfoDeLEpisode = m_episode.lInfoQuiMInteresse;
-    auto uneInfoDeLaSaison = m_episode.m_saison.lInfoQuiMInteresse;
-    auto uneInfoDeLaSerie = m_episode.m_saison.m_serie.lInfoQuiMInteresse;
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequence) const                                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -347,7 +302,6 @@ void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequ
     if (numero_sequence == 1)
     {
         chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
-        //chiffre_str = std::to_wstring(episode) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
         ch = chiffre_str;
     }
 
@@ -479,11 +433,8 @@ std::wstring SequenceVisionnage::Print_Dates_de_visionnage() const
 long SequenceVisionnage::Print_Titre_chiffre(long episode) const
 {
     if (episode == 1)
-        //return false;
         return 1;
-    //return true;
     return -1;
-
 }
 
 // ######################################################################################################################################################
@@ -507,10 +458,6 @@ Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-/*void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
-{
-    m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage(*this, info_vis));
-}*/
 void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 {
     m_liste_sequence_visionnages_ordonnee_chronologiquement.push_back(SequenceVisionnage{ *this, info_vis });
@@ -547,23 +494,11 @@ const void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-long long Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const
+/*long long Episode::GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const
 {
     auto it = std::find(m_liste_sequence_visionnages_ordonnee_chronologiquement.begin(), m_liste_sequence_visionnages_ordonnee_chronologiquement.end(), sev_vis);
     return (it - m_liste_sequence_visionnages_ordonnee_chronologiquement.begin()) + 1; // +1 parce que les numéro de séquence commencent à 1
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
-// # void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)                                                                                #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-
-void Episode::Une_Fonction_De_La_Classe_SequenceVisionnage_xxx(...)
-{
-    //auto NumeroSequenceVisionnage = m_episode.GetNumeroSequenceVisionnage(*this); // ??? #804
-    //return NumeroSequenceVisionnage;
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -708,19 +643,7 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             return;
         }
         //
-        /*if (std::regex_match(nomFichier, std::wregex{L"([[:digit:]]{1,2})x(.)+"}))
-        {
-            InfosVisionnage info_vis{ *this, cheminFichier };
-            if (m_liste_episodes.find(info_vis.m_NumeroEpisode) != m_liste_episodes.end())
-            {
-                m_liste_episodes[info_vis.m_NumeroEpisode]->ajouter_SequenceVisionnage(info_vis);
-            }
-            else
-            {
-                m_liste_episodes.emplace(std::pair<const int, shared_ptr<Episode>>{ info_vis.m_NumeroEpisode, make_shared<Episode>(info_vis) });
-            }
-            return;
-        }*/
+
         if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{1,2})x(.)+" }))
         {
             InfosVisionnage info_vis{ *this, cheminFichier };
@@ -876,7 +799,6 @@ const void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
 
     for (auto& episode : m_liste_episodes)
     {
-        //episode.second->AffichagePersonnaliser(perso);
         episode.AffichagePersonnaliser(perso);
     }
 }
@@ -1753,7 +1675,6 @@ void Serie::Print_Saisons()
     for (auto& saison : saisons)
     {
         saison.Print();
-        std::wcout << L"\r\n\r\n";
     }
 }
 
