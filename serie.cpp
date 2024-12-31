@@ -775,12 +775,17 @@ void Saison::initialiser_Resume(fs::path const& cheminFichier)
 void Saison::initialiser_Saison(std::filesystem::path const& cheminFichier)
 {
     std::vector<std::wstring> saison = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
-    assert((saison.size() != 0));
-    m_nombre_episodes = std::stoi(saison[0]);
-    assert((m_nombre_episodes == std::stoi(saison[0])));
-    saison.erase(saison.begin());
-    m_resume = saison;
-    assert((m_resume.size() != 0));
+    assert(saison.size() > 1);
+    try
+    {
+        if(m_nombre_episodes == std::stoi(saison[0]))
+            throw runtime_error("0 <= des chiffres !!!");
+    }
+    catch (const exception& e)
+    {
+        std::cerr << "Exception caught: " << e.what() << std::endl;
+    }
+    m_resume = std::vector<std::wstring>(std::next(saison.begin()), saison.end());
 }
 
 // ######################################################################################################################################################
@@ -1009,7 +1014,7 @@ void Saison::Print_Header()
     }
 
     std::wstring nombre_episodes_str;
-    if(m_nombre_episodes > 0) 
+    if(m_nombre_episodes >= 0) 
         nombre_episodes_str = m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(m_nombre_episodes) + m_keyColor[1] + L')' + m_valuesColor;
 
     std::wcout << saison_str << date_str << dossier_str << m_keyColor[1] + L" : " + m_valuesColor << titre_str << resume_str << nombre_episodes_str << L"\r\n";
