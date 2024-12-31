@@ -635,6 +635,11 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             {
                 initialiser_Note(cheminFichier);
             }
+            // Saison
+            if (nomFichier == L"Saison.txt")
+            {
+                initialiser_Saison(cheminFichier);
+            }
             // Titre
             if (nomFichier == L"Titre.txt")
             {
@@ -643,7 +648,6 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
             return;
         }
         //
-
         if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{1,2})x(.)+" }))
         {
             InfosVisionnage info_vis{ *this, cheminFichier };
@@ -764,6 +768,23 @@ void Saison::initialiser_Resume(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # void Saison::initialiser_Saison(std::filesystem::path const& cheminFichier)                                                                        #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+void Saison::initialiser_Saison(std::filesystem::path const& cheminFichier)
+{
+    std::vector<std::wstring> saison = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    assert((saison.size() != 0));
+    m_nombre_episodes = std::stoi(saison[0]);
+    assert((m_nombre_episodes == std::stoi(saison[0])));
+    saison.erase(saison.begin());
+    m_resume = saison;
+    assert((m_resume.size() != 0));
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # void Saison::initialiser_Titre(fs::path const& cheminFichier)                                                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -802,7 +823,6 @@ const void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
         episode.AffichagePersonnaliser(perso);
     }
 }
-
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

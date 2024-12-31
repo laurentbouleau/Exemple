@@ -197,6 +197,7 @@ public:
     void initialiser_Netflix(std::filesystem::path const& cheminFichier);
     void initialiser_Note(std::filesystem::path const& cheminFichier);
     void initialiser_Resume(std::filesystem::path const& cheminFichier);
+    void initialiser_Saison(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
