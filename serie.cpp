@@ -776,15 +776,18 @@ void Saison::initialiser_Saison(std::filesystem::path const& cheminFichier)
 {
     std::vector<std::wstring> saison = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
     assert(saison.size() > 1);
+    const int s = std::stoi(saison[0]);
     try
     {
-        if(m_nombre_episodes == std::stoi(saison[0]))
-            throw runtime_error("0 <= des chiffres !!!");
+        if(s > -1 && s < 100)
+        //if (s < -1 && s > 100)
+            throw std::underflow_error("0 <= et 100 >= des chiffres !!!");
     }
     catch (const exception& e)
     {
         std::cerr << "Exception caught: " << e.what() << std::endl;
     }
+    m_nombre_episodes = s;
     m_resume = std::vector<std::wstring>(std::next(saison.begin()), saison.end());
 }
 
