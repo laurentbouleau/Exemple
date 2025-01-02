@@ -775,19 +775,21 @@ void Saison::initialiser_Resume(fs::path const& cheminFichier)
 void Saison::initialiser_Saison(std::filesystem::path const& cheminFichier)
 {
     std::vector<std::wstring> saison = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
-    assert(saison.size() > 1);
-    const int s = std::stoi(saison[0]);
+    if (saison.size() < 2)
+        throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas le nombre de ligne nécessaire pour une description de saison : " + std::to_string(saison.size()));
+
     try
     {
-        if(s > -1 && s < 100)
-        //if (s < -1 && s > 100)
-            throw std::underflow_error("0 <= et 100 >= des chiffres !!!");
+        m_nombre_episodes = std::stoi(saison[0]);
     }
-    catch (const exception& e)
+    catch (exception& ex)
     {
-        std::cerr << "Exception caught: " << e.what() << std::endl;
+        throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas le nombre d'épisode de la saison en première ligne : " + ex.what());
     }
-    m_nombre_episodes = s;
+
+    if (m_nombre_episodes < 0 || m_nombre_episodes>99)
+        throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas un nombre d'épisode de saison compris entre 0 et 99 : " + std::to_string(m_nombre_episodes));
+
     m_resume = std::vector<std::wstring>(std::next(saison.begin()), saison.end());
 }
 

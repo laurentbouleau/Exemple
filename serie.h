@@ -40,6 +40,13 @@ struct Episode;
 struct Saison;
 class Serie;
 
+class FileFormatException : public std::runtime_error 
+{
+public:
+    explicit FileFormatException(const std::string& message)
+        : std::runtime_error(message) {}
+};
+
 struct InfosVisionnage
 {
     const Saison& m_saison;
