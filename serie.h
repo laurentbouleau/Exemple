@@ -190,12 +190,10 @@ struct Saison
 public:
     const Serie& m_serie;
     Saison(std::filesystem::path const& cheminFichier, const Serie& serie);
-    //Saison(Saison&& src) noexcept : m_serie{ std::move(src.m_serie) }// the expression "arg.member" is lvalue
     Saison(Saison&& src) noexcept : m_serie{ src.m_serie }// the expression "arg.member" is lvalue
     {
         operator=(std::move(src));
     }
-    //void ajouter_InfosVisionnage(SequenceVisionnage const& seq_vis);
 
     void initialiser_Fichier(std::filesystem::path const& cheminFichier);
 
@@ -212,7 +210,6 @@ public:
     void Print();
     void Print_Avec();
     void Print_Chaine();
-    const void Print_Date_etc();
     void Print_Header();
     void Print_Images();
     void Print_Netflix();
@@ -234,27 +231,19 @@ public:
     std::pair<std::tm, std::wstring>m_date_diffusee_a_partir_de;
     bool m_disney{ false };
     int m_f_anneesDiffusion{ 0 };
-    //std::pair<std::tm, std::wstring>m_dossier;
-    //std::vector<Episode> episodes;
-    //std::vector<InfosVisionnage>infosvisionnages;
     std::wstring m_chaine;
     bool m_hors_saison{ false };
-    //long m_hors_saison_duree{ -1 };
-    //std::vector<std::wstring> m_hors_saison_resume;
 
     std::vector<std::wstring> m_image;
     bool m_netflix{ false };
     double m_note{ -1.0 };
 
-    //std::pair<unsigned short int, std::vector<std::wstring>>saison;
     std::vector<std::wstring> m_titres;
     std::vector<std::wstring> m_resume;
 
-    //std::map<int, std::shared_ptr<Episode>> m_liste_episodes;
     std::vector<Episode>m_liste_episodes;
     int m_nombre_episodes{ -1 };
     mutable int m_numero{ -1 };
-    //int lInfoQuiMInteresse{};
 
 private:
     Saison& operator=(Saison&& src) noexcept

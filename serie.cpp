@@ -929,36 +929,6 @@ void Saison::Print_Chaine()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Saison::Print_Date_etc()                                                                                                                      #
-// #                                                                                                                                                    #
-// ######################################################################################################################################################
-// ???
-const void Saison::Print_Date_etc()
-{
-    /*if (affichage_date_etc_actif)
-    {
-        wchar_t date_string[15];
-        std::wcsftime(date_string, 15, L"%d/%m/%Y", &m_date_diffusee_a_partir_de.first);
-        std::wstring date_etc_str;
-        date_etc_str = date_string;
-        date_etc_str = date_etc_str.substr(0, 2) + m_keyColor[1] + L'/' + m_valuesColor + date_etc_str.substr(3, 2) + m_keyColor[1] + L'/' + m_valuesColor + date_etc_str.substr(6, 4);
-        if (m_date_diffusee_a_partir_de.second != L"")
-            date_etc_str += m_keyColor[0] + m_date_diffusee_a_partir_de.second + m_valuesColor + L' ';
-        date_etc_str += m_keyColor[0] + m_titres[0] + m_valuesColor;
-        if (m_titres[2] != L"")
-            date_etc_str += m_keyColor[1] + m_titres[1] + m_valuesColor + m_keyColor[0] + m_titres[2] + m_valuesColor;
-
-        date_etc_str += m_keyColor[1] + L" : " + m_valuesColor;
-        for (auto r : m_resume)
-            date_etc_str += r;
-        date_etc_str += L' ' + m_keyColor[1] + L'(' + m_valuesColor + std::to_wstring(m_numero) + m_keyColor[1] + L')' + m_valuesColor;
-        date_etc_str += L"\r\n";
-        std::wcout << date_etc_str;
-    }*/
-}
-
-// ######################################################################################################################################################
-// #                                                                                                                                                    #
 // # void Saison::Print_Header()                                                                                                                        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
