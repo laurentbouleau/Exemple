@@ -93,8 +93,10 @@ private:
     const void Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str);
     void Print_Avec_etc();
     const void Print_Dates();
-    const void Print_Date_de_Reprise();
-    const void Print_Date_de_Sortie();
+    void Print_Date_de_Reprise();
+    void Print_Date_de_Sortie();
+    //const void Print_Date_de_Reprise();
+    //const void Print_Date_de_Sortie();
     const void Print_De();
     const void Print_Distributeur();
     void Print_Header() const;
