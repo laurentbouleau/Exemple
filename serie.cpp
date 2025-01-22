@@ -23,6 +23,7 @@
 #include <regex>
 #include <numeric>
 #include <string_view>
+#include <list>
 #include <optional>
 
 #include <filesystem> // C++17 standard header file name
@@ -1495,6 +1496,27 @@ const void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)
     }
 }
 
+
+void Serie::PostTraitement()
+{
+    //    std::list<Saison> m_hors_saisons;
+    //    std::list<Saison> m_non_hors_saisons;
+
+    for (auto& saison : saisons)
+    {
+        if (saison.m_hors_saison)
+        {
+            m_hors_saisons.emplace_back(move(saison));
+        }
+        else
+        {
+            m_non_hors_saisons.emplace_back(move(saison));
+        }
+    }
+}
+
+
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Serie::Print()                                                                                                                                #
@@ -1503,6 +1525,7 @@ const void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)
 
 const void Serie::Print()
 {
+    PostTraitement();
     // Header
     Print_Header();
     // Titre Original
@@ -1675,6 +1698,7 @@ void Serie::Print_Saisons()
     for (auto& saison : saisons)
     {
         saison.Print();
+        std::wcout << L"\r\n\r\n";
     }
 }
 
