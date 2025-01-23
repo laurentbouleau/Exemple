@@ -1506,6 +1506,7 @@ void Serie::PostTraitement()
     {
         if (saison.m_hors_saison)
         {
+            
             m_hors_saisons.emplace_back(move(saison));
         }
         else
@@ -1525,7 +1526,6 @@ void Serie::PostTraitement()
 
 const void Serie::Print()
 {
-    PostTraitement();
     // Header
     Print_Header();
     // Titre Original
@@ -1553,6 +1553,7 @@ const void Serie::Print()
     Print_Resume(m_resume);
     std::wcout << L"\r\n";
     // Saison(s)
+    PostTraitement();
     Print_Saisons();
 }
 
@@ -1693,12 +1694,38 @@ const void Serie::Print_Saison(Saison saison)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::Print_Saisons()
+/*void Serie::Print_Saisons()
 {
     for (auto& saison : saisons)
     {
         saison.Print();
         std::wcout << L"\r\n\r\n";
+    }
+}*/
+void Serie::Print_Saisons()
+{
+    std::list<Saison*> hors_saisons;
+    std::list<Saison*> non_hors_saisons;
+    for (auto& saison : saisons)
+    {
+        if (saison.m_hors_saison)
+        {
+            hors_saisons.emplace_back(&saison);
+        }
+        else
+        {
+            non_hors_saisons.emplace_back(&saison);
+        }
+    }
+
+    for (auto psaison : hors_saisons)
+    {
+        psaison->Print();
+    }
+
+    for (auto psaison : non_hors_saisons)
+    {
+        psaison->Print();
     }
 }
 
