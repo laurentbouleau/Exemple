@@ -206,7 +206,8 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         if (m_NumeroEpisode != 0)
         {
             pos = file_content[0].find(L". ");
-            file_content[0] = file_content[0].substr(pos + 2);
+            if (pos != wstring::npos)
+                file_content[0] = file_content[0].substr(pos + 2);
         }
 
         m_titres = extraire_Titres_Depuis_UneLigne(file_content[0]);
@@ -300,8 +301,9 @@ void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequ
     static std::wstring ch;
     long chiffre = Print_Titre_chiffre(numero_sequence);
 
-    if (numero_sequence == 1)
+    if (numero_sequence == 1 && chiffre != -1)
     {
+        // ???? problème
         chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
         ch = chiffre_str;
     }
@@ -1496,6 +1498,11 @@ const void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)
     }
 }
 
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void Serie::PostTraitement()                                                                                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
 
 void Serie::PostTraitement()
 {
@@ -1516,8 +1523,6 @@ void Serie::PostTraitement()
     }
 }
 
-
-
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Serie::Print()                                                                                                                                #
@@ -1533,7 +1538,6 @@ const void Serie::Print()
     // Chaîne d'origine
     Print_Chaine();
     // AD
-    //Print_Audiodescription(m_audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
     Print_CleValeur(L"Audiodescription", m_audiodescription, m_keyColor[0], m_valuesColor);
     // Creee par
     Print_Creee_par();
@@ -1683,10 +1687,10 @@ void Serie::Print_Header() const
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_Saison(Saison saison)
+/*const void Serie::Print_Saison(Saison saison)
 {
     saison.Print();
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
