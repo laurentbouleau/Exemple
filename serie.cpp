@@ -56,7 +56,7 @@ static bool ends_with(std::wstring_view str, std::wstring_view suffix)
 // ######################################################################################################################################################
 
 InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier) : m_saison{ saison }
-{ // "{" : marche pas !!!
+{ 
     // ([[:digit:]]+)x([[:digit:]]{1,3})\\.(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})))(_?))+)(\\s(.+))?
     const std::wstring numero_saison_format = L"([[:digit:]]{1,2})"; // saison
     const std::wstring sep_numero_saison = L"x"; // x
@@ -207,13 +207,13 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         {
             pos = file_content[0].find(L". ");
             if (pos != wstring::npos)
+            {
                 file_content[0] = file_content[0].substr(pos + 2);
+                m_numero = 1;
+            }
             else
             {
-                 //= file_content[0].substr(pos + 2);
-                //if (file_content[0][0]);
-                //if (!std::isdigit(file_content[0][0]))
-                //    ;
+                m_numero = 0;
             }
         }
 
@@ -296,15 +296,19 @@ const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation 
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequence) const                                                        #
+// # void SequenceVisionnage::Print(int numero_sequence) const                                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void SequenceVisionnage::Print(/*std::vector<std::wstring>& titres, */int numero_sequence) const
+void SequenceVisionnage::Print(int numero_sequence) const
 {
     static std::vector<std::wstring> titres;
+    static int numero;
     if (numero_sequence == 1)
+    {
         titres = m_titres;
+        numero = m_numero;
+    }
 
     std::wstring wstr;
     std::wstring chiffre_str{};
@@ -312,24 +316,24 @@ void SequenceVisionnage::Print(/*std::vector<std::wstring>& titres, */int numero
     static std::wstring ch;
     long chiffre = Print_Titre_chiffre(numero_sequence);
 
-    //if (numero_sequence == 1)
     if (numero_sequence == 1)
     {
         // ???? problème
-        chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
-        ch = chiffre_str;
+        if (numero == 1)
+        {
+            chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+            ch = chiffre_str;
+        }
     }
     else
         chiffre_str = ch;
 
     if (titres.size() == 1)
     {
-        //found = true;
         wstr = m_keyColor[1] + titres[0] + m_valuesColor;
     }
     else
     {
-        //found = true;
         wstr = m_keyColor[1] + titres[0] + m_valuesColor + titres[1] + m_keyColor[1] + titres[2] + m_valuesColor;
     }
 

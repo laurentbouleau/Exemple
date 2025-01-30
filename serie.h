@@ -79,13 +79,13 @@ struct SequenceVisionnage
     SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
         m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
-        m_DatesVisionnage{ src.m_DatesVisionnage }, m_NumeroEpisode{ src.m_NumeroEpisode }
+        m_DatesVisionnage{ src.m_DatesVisionnage }, m_numero{ src.m_numero }
     {
     };
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
         m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
         m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
-        m_DatesVisionnage{ info_vis.m_DatesVisionnage }, m_NumeroEpisode{ info_vis.m_NumeroEpisode }
+        m_DatesVisionnage{ info_vis.m_DatesVisionnage }, m_numero{ info_vis.m_numero }
     {
     };
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
@@ -94,11 +94,7 @@ struct SequenceVisionnage
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    //void Print(std::vector<std::wstring>&titres, int numero_sequence) const;
-    void Print(/*std::vector<std::wstring>& titres, */int numero_sequence) const;
-
-    //void Print(std::vector<std::wstring>& titres, long episode, int numero_sequence) const;
-
+    void Print(int numero_sequence) const;
 
     std::wstring Print_Dates_de_visionnage() const;
     long Print_Titre_chiffre(long episode) const;
@@ -119,10 +115,10 @@ struct SequenceVisionnage
     std::vector<std::wstring> m_resume{};
     std::vector<DateRecord> m_DatesVisionnage{};
 
-    long m_NumeroEpisode{};
+    //long m_NumeroEpisode{};
 
 
-    //int m_numero{ -1 };
+    int m_numero{ -1 };
     long m_duree { -1 };
 
     //bool affichage_duree_actif = true;// false;
