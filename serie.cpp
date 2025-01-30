@@ -208,6 +208,13 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
             pos = file_content[0].find(L". ");
             if (pos != wstring::npos)
                 file_content[0] = file_content[0].substr(pos + 2);
+            else
+            {
+                 //= file_content[0].substr(pos + 2);
+                //if (file_content[0][0]);
+                //if (!std::isdigit(file_content[0][0]))
+                //    ;
+            }
         }
 
         m_titres = extraire_Titres_Depuis_UneLigne(file_content[0]);
@@ -293,45 +300,37 @@ const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation 
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void SequenceVisionnage::Print(std::vector<std::wstring>&titres, int numero_sequence) const
+void SequenceVisionnage::Print(/*std::vector<std::wstring>& titres, */int numero_sequence) const
 {
+    static std::vector<std::wstring> titres;
+    if (numero_sequence == 1)
+        titres = m_titres;
+
     std::wstring wstr;
     std::wstring chiffre_str{};
     std::wstring duree_str;
     static std::wstring ch;
     long chiffre = Print_Titre_chiffre(numero_sequence);
 
-    if (numero_sequence == 1 && chiffre != -1)
+    //if (numero_sequence == 1)
+    if (numero_sequence == 1)
     {
         // ???? problème
         chiffre_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
         ch = chiffre_str;
     }
+    else
+        chiffre_str = ch;
 
-    bool found = false;
-    if (!found && m_titres.size() == 0)
+    if (titres.size() == 1)
     {
-        if (titres.size() == 1)
-        {
-            found = true;
-            //wstr = m_keyColor[1] + titres[0] + m_valuesColor;
-            wstr = ch + m_keyColor[1] + titres[0] + m_valuesColor;
-        }
-        else
-        {
-            found = true;
-            wstr = ch + m_keyColor[1] + titres[0] + m_valuesColor + titres[1] + m_keyColor[1] + titres[2] + m_valuesColor;
-        }
-    }
-    else if (!found && m_titres.size() == 1)
-    {
-        found = true;
-        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor;
+        //found = true;
+        wstr = m_keyColor[1] + titres[0] + m_valuesColor;
     }
     else
     {
-        found = true;
-        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
+        //found = true;
+        wstr = m_keyColor[1] + titres[0] + m_valuesColor + titres[1] + m_keyColor[1] + titres[2] + m_valuesColor;
     }
 
     if (numero_sequence == 1)
@@ -516,7 +515,8 @@ void Episode::Print()
 
     for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
-        sequence.Print(m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres, numero_sequence);
+        //sequence.Print(m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres, numero_sequence);
+        sequence.Print(/*m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres, */numero_sequence);
         first = false;
         numero_sequence++;
     }

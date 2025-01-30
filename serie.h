@@ -94,9 +94,10 @@ struct SequenceVisionnage
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    void Print(std::vector<std::wstring>&titres, int numero_sequence) const;
+    //void Print(std::vector<std::wstring>&titres, int numero_sequence) const;
+    void Print(/*std::vector<std::wstring>& titres, */int numero_sequence) const;
 
-    void Print(std::vector<std::wstring>& titres, long episode, int numero_sequence) const;
+    //void Print(std::vector<std::wstring>& titres, long episode, int numero_sequence) const;
 
 
     std::wstring Print_Dates_de_visionnage() const;
