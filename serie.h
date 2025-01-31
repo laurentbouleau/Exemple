@@ -144,7 +144,7 @@ struct Episode
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    //long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
+    long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
 
     void Print();
 

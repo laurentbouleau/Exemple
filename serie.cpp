@@ -720,6 +720,28 @@ void Saison::initialiser_Hors_Saison(std::filesystem::path const& cheminFichier)
     auto nomFichier = cheminFichier.filename().wstring();
     assert(nomFichier.length() > 0 && L"Nom de fichier vide");
     m_hors_saison = true;
+
+    /*std::vector<std::wstring> saison = lire_fichierTxt(cheminFichier.wstring(), {L"\n"});
+    if (saison.size() < 2)
+        throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas le nombre de ligne nécessaire pour une description de saison : " + std::to_string(saison.size()));
+
+    try
+    {
+        m_nombre_episodes = std::stoi(saison[0]);
+    }
+    catch (exception& ex)
+    {
+        throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas le nombre d'épisode de la saison en première ligne : " + ex.what());
+    }
+
+    if (m_nombre_episodes < 0 || m_nombre_episodes>99)
+        throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas un nombre d'épisode de saison compris entre 0 et 99 : " + std::to_string(m_nombre_episodes));
+
+    m_resume = std::vector<std::wstring>(std::next(saison.begin()), saison.end());
+    */
+
+    //std::vector<std::wstring> hors_saison = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+
 }
 
 // ######################################################################################################################################################
