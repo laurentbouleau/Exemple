@@ -243,7 +243,7 @@ std::vector<std::pair<std::wstring, std::wstring>> extraire_Liste_De_Paire_Depui
 
 std::vector<std::wstring> extraire_Titres_Depuis_UneLigne(std::wstring& ligne)
 { // Titres
-    assert(ligne.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
+//    assert(ligne.length() > 0 && L"Nom de titres vide"); // ??? pour Mot de... ?
     std::wstring& t = ligne;
 
     std::vector<std::wstring> titres;

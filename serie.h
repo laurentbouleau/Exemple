@@ -24,6 +24,7 @@
 #include <regex>
 #include <numeric>
 #include <string_view>
+#include <list>
 #include <optional>
 
 #include <filesystem> // C++17 standard header file name
@@ -78,13 +79,13 @@ struct SequenceVisionnage
     SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
         m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
-        m_DatesVisionnage{ src.m_DatesVisionnage }
+        m_DatesVisionnage{ src.m_DatesVisionnage }, m_numero{ src.m_numero }
     {
     };
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
         m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
         m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
-        m_DatesVisionnage{ info_vis.m_DatesVisionnage }
+        m_DatesVisionnage{ info_vis.m_DatesVisionnage }, m_numero{ info_vis.m_numero }
     {
     };
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
@@ -93,7 +94,8 @@ struct SequenceVisionnage
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    void Print(std::vector<std::wstring>&titres, int numero_sequence) const;
+    void Print(int numero_sequence) const;
+
     std::wstring Print_Dates_de_visionnage() const;
     long Print_Titre_chiffre(long episode) const;
 
@@ -112,6 +114,9 @@ struct SequenceVisionnage
     long m_duree_en_seconde{ -1 };
     std::vector<std::wstring> m_resume{};
     std::vector<DateRecord> m_DatesVisionnage{};
+
+    //long m_NumeroEpisode{};
+
 
     int m_numero{ -1 };
     long m_duree { -1 };
@@ -314,6 +319,8 @@ private:
     std::wstring format_AnneesEtSur(std::wstring& annees_str, std::wstring& sur_str) const;
     std::pair<std::optional<int>, std::optional<int>> m_f_anneesProduction;
 
+    void PostTraitement();
+
     const void Print_Saison(Saison saison);
     void Print_Saisons();
  
@@ -351,37 +358,11 @@ private:
     std::wstring m_sous_genre;
     std::wstring m_sur;
 
+    std::list<Saison> m_hors_saisons{};
+    std::list<Saison> m_non_hors_saisons;
+
     std::vector<std::wstring> m_titres;
     long m_duree{ -1 };
     std::vector<std::wstring> m_titres_originaux;
-
-    /*bool affichage_annees_actif = true;
-    bool affichage_audiodescription_actif = true;
-    bool affichage_avec_actif = true;
-    bool affichage_avec_etc_actif = true;
-    bool affichage_chaine_actif = true;
-    bool affichage_catalogue_actif = true;
-    bool affichage_creee_par_actif = true;
-    bool affichage_disney_sj_actif = true;
-    bool affichage_duree_actif = true;// false;
-    bool affichage_episode_titre_actif = true;
-    bool affichage_en_relation_avec_actif = true;
-    bool affichage_image_actif = true;
-    bool affichage_genres_actif = true;
-    bool affichage_nationalite_actif = true;
-    bool affichage_netflix_sj_actif = true;
-    bool affichage_note_actif = true;// false;
-    bool affichage_resume_actif = true;
-    //bool affichage_saison_actif = true;
-    bool affichage_saison_date_etc_actif = true;
-    bool affichage_saisons_actif = true;
-    bool affichage_serie_actif = true;
-    bool affichage_sj_actif = true;
-    bool affichage_sous_genre_actif = true;
-    bool affichage_sur_actif = true; // 
-    bool affichage_titres_actif = true;
-    bool affichage_titres_originaux_actif = true;
-    bool affichage_x_sj_actif = true;
-    */
 };
 

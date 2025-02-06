@@ -545,6 +545,7 @@ void Film::initialiser_Fichier(fs::path const& cheminFichier)
     }
 }
 
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # void Film::initialiser_Date_de_reprise(fs::path const& cheminFichier)                                                                              #
@@ -960,36 +961,42 @@ const void Film::Print_Dates()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Date_de_Reprise()                                                                                                           #
+// # void Film::Print_Date_de_Reprise()                                                                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Date_de_Reprise()
+void Film::Print_Date_de_Reprise()
 {
-    wchar_t date_string[22];
-    std::wstring wstr;
-    wcsftime(date_string, 18, L"%d/%m/%Y", &m_date_de_reprise);
-    wstr = date_string;
-    //Console_Lire(keyColor[0] + L"Date de reprise : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 19);
-    //int i = Console_Lire_txt(keyColor[0] + L"Date de reprise : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 19);
-    std::wcout << m_keyColor[0] + L"Date de reprise : " + m_valuesColor + wstr.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(6, 4) + L"\r\n";
+    if (m_date_de_reprise.tm_mday != 0)
+    {
+        wchar_t date_string[22];
+        std::wstring wstr;
+        wcsftime(date_string, 18, L"%d/%m/%Y", &m_date_de_reprise);
+        wstr = date_string;
+        //Console_Lire(keyColor[0] + L"Date de reprise : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 19);
+        //int i = Console_Lire_txt(keyColor[0] + L"Date de reprise : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 19);
+        std::wcout << m_keyColor[0] + L"Date de reprise : " + m_valuesColor + wstr.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(6, 4) + L"\r\n";
+    }
 }
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Date_de_Sortie()                                                                                                            #
+// # void Film::Print_Date_de_Sortie()                                                                                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Date_de_Sortie()
+void Film::Print_Date_de_Sortie()
 {
-    wchar_t date_string[22];
-    std::wstring wstr;
-    wcsftime(date_string, 14, L"%d/%m/%Y", &m_date_de_sortie);
-    wstr = date_string;
-    //Console_Lire(keyColor[0] + L"Date de sortie : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 18);
-    //int i = Console_Lire_txt(keyColor[0] + L"Date de sortie : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 18);
-    std::wcout << m_keyColor[0] + L"Date de sortie : " + m_valuesColor + wstr.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(6, 4) + L"\r\n";
+    if (m_date_de_sortie.tm_mday != 0)
+    {
+        wchar_t date_string[22];
+        std::wstring wstr;
+        wcsftime(date_string, 14, L"%d/%m/%Y", &m_date_de_sortie);
+        wstr = date_string;
+        //Console_Lire(keyColor[0] + L"Date de sortie : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 18);
+        //int i = Console_Lire_txt(keyColor[0] + L"Date de sortie : " + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4), 0, 18);
+        std::wcout << m_keyColor[0] + L"Date de sortie : " + m_valuesColor + wstr.substr(0, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(3, 2) + m_keyColor[0] + L'/' + m_valuesColor + wstr.substr(6, 4) + L"\r\n";
+    }
 }
 
 // ######################################################################################################################################################
