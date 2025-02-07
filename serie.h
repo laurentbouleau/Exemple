@@ -294,7 +294,7 @@ public:
 
     const void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    const void Print();
+    void Print();
 
     std::vector<Saison>saisons{};
     std::filesystem::path getRacine() { return racine; };
@@ -312,8 +312,8 @@ private:
     std::wstring calcul_Sur_Affichage() const;
     std::wstring calcul_Titres_Affichage() const;
     std::wstring calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur_str) const;
-    const void corriger_Annee_Debut();// const;
-    const void corriger_Annee_Fin();
+    void corriger_Annee_Debut();// const;
+    void corriger_Annee_Fin();
 
     std::wstring format_Annees() const;
     std::wstring format_AnneesEtSur(std::wstring& annees_str, std::wstring& sur_str) const;
@@ -321,13 +321,13 @@ private:
 
     void PostTraitement();
 
-    const void Print_Saison(Saison saison);
-    void Print_Saisons();
+    void Print_Saison(Saison saison);
+    //void Print_Saisons();
  
     void Print_Avec_etc();
-    const void Print_Chaine();
-    const void Print_Creee_par();
-    const void Print_En_relation_avec();
+    void Print_Chaine();
+    void Print_Creee_par();
+    void Print_En_relation_avec();
     void Print_Header() const;
 
     std::filesystem::path racine;

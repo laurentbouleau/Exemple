@@ -1072,7 +1072,7 @@ void Saison::Print_Header()
     std::wstring resume_str;
     if (m_serie.m_resume != m_resume)
     {
-        for (auto r : m_resume)
+        for (auto r : m_serie.m_resume)
             resume_str += r;
     }
     else
@@ -1349,11 +1349,11 @@ std::wstring Serie::calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur) 
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::corriger_Annee_Debut()                                                                                                           #
+// # void Serie::corriger_Annee_Debut()                                                                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::corriger_Annee_Debut()
+void Serie::corriger_Annee_Debut()
 {
     assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons[0].m_f_anneesDiffusion)) && L"Il faut au moins une date de début.");
 
@@ -1363,11 +1363,11 @@ const void Serie::corriger_Annee_Debut()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::corriger_Annee_Fin()                                                                                                             #
+// # void Serie::corriger_Annee_Fin()                                                                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::corriger_Annee_Fin()
+void Serie::corriger_Annee_Fin()
 {
     assert((m_f_anneesProduction.first || (saisons.size() > 0 && saisons.back().m_f_anneesDiffusion)) && L"Il faut au moins une date de fin.");
 
@@ -1618,7 +1618,7 @@ void Serie::PostTraitement()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print()
+void Serie::Print()
 {
     // Header
     Print_Header();
@@ -1647,7 +1647,7 @@ const void Serie::Print()
     std::wcout << L"\r\n";
     // Saison(s)
     PostTraitement();
-    Print_Saisons();
+    //Print_Saisons();
 }
 
 // ######################################################################################################################################################
@@ -1690,7 +1690,7 @@ void Serie::Print_Avec_etc()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_Chaine()
+void Serie::Print_Chaine()
 {
     if (m_chaine.size() > 0)
     {
@@ -1710,7 +1710,7 @@ const void Serie::Print_Chaine()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_Creee_par()
+void Serie::Print_Creee_par()
 {
     if (m_creee_par.size() > 0)
     {
@@ -1732,11 +1732,11 @@ const void Serie::Print_Creee_par()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::Print_En_relation_avec()                                                                                                         #
+// # void Serie::Print_En_relation_avec()                                                                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_En_relation_avec()
+void Serie::Print_En_relation_avec()
 {
     if (m_en_relation_avec.size() > 0)
     {
@@ -1772,11 +1772,11 @@ void Serie::Print_Header() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::Print_Saison(Saison saison)                                                                                                      #
+// # void Serie::Print_Saison(Saison saison)                                                                                                      #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::Print_Saison(Saison saison)
+void Serie::Print_Saison(Saison saison)
 {
     saison.Print();
 }
@@ -1795,7 +1795,7 @@ const void Serie::Print_Saison(Saison saison)
         std::wcout << L"\r\n\r\n";
     }
 }*/
-void Serie::Print_Saisons()
+/*void Serie::Print_Saisons()
 {
     std::list<Saison*> hors_saisons;
     std::list<Saison*> non_hors_saisons;
@@ -1820,5 +1820,5 @@ void Serie::Print_Saisons()
     {
         psaison->Print();
     }
-}
+}*/
 
