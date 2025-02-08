@@ -321,8 +321,8 @@ private:
 
     void PostTraitement();
 
-    void Print_Saison(Saison saison);
-    //void Print_Saisons();
+    //void Print_Saison(Saison saison);
+    void Print_Saisons();
  
     void Print_Avec_etc();
     void Print_Chaine();
