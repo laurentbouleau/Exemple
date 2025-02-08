@@ -798,11 +798,11 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                           #
+// # void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
+void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
     m_espace1 = perso.m_espace1;
     m_espace2 = perso.m_espace2;
@@ -818,11 +818,11 @@ const void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print()                                                                                                                           #
+// # void Film::Print()                                                                                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print()
+void Film::Print()
 {
     // Header
     Print_Header();
@@ -867,11 +867,11 @@ const void Film::Print()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str)                                       #
+// # void Film::Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str)                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str)
+void Film::Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str)
 {
     if (avec.size())
     {
@@ -943,11 +943,11 @@ void Film::Print_Avec_etc()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Dates()                                                                                                                     #
+// # void Film::Print_Dates()                                                                                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Dates()
+void Film::Print_Dates()
 {
     std::wstring dates_str = L"\r\n";
     for (auto& visionnage : m_visionnages)
@@ -961,7 +961,7 @@ const void Film::Print_Dates()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Film::Print_Date_de_Reprise()                                                                                                           #
+// # void Film::Print_Date_de_Reprise()                                                                                                                 #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -1001,11 +1001,11 @@ void Film::Print_Date_de_Sortie()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_De()                                                                                                                        #
+// # void Film::Print_De()                                                                                                                              #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_De()
+void Film::Print_De()
 {
     if (m_de.size() > 0)
     {
@@ -1027,11 +1027,11 @@ const void Film::Print_De()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Distributeur()                                                                                                              #
+// # void Film::Print_Distributeur()                                                                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Distributeur()
+void Film::Print_Distributeur()
 {
     if (m_distributeur.size() > 0)
     {
@@ -1066,11 +1066,11 @@ void Film::Print_Header() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Making_of()                                                                                                                 #
+// # void Film::Print_Making_of()                                                                                                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Making_of()
+void Film::Print_Making_of()
 {
     if (m_making_of)
     {
@@ -1128,11 +1128,11 @@ std::wstring Film::Print_Note() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Par()                                                                                                                       #
+// # void Film::Print_Par()                                                                                                                             #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Par()
+void Film::Print_Par()
 {
     if (m_par.size() > 0)
     {
@@ -1155,11 +1155,11 @@ const void Film::Print_Par()
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Film::Print_Soundtracks()                                                                                                               #
+// # void Film::Print_Soundtracks()                                                                                                                     #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Film::Print_Soundtracks()
+void Film::Print_Soundtracks()
 {
     if (m_soundtrack.size() > 0)
     {

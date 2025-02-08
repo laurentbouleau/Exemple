@@ -71,9 +71,9 @@ public:
     void initialiser_Soundtrack(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    const void AffichagePersonnaliser(AffichagePersonnalisation perso);
+    void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
-    const void Print();//
+    void Print();//
 
     std::filesystem::path getRacine() { return racine; };
     std::filesystem::path getFileName() { return racine.filename(); };
@@ -90,18 +90,18 @@ private:
     //
     std::wstring format_DateEtSur(std::wstring date_str, std::wstring& sur_str) const;
 
-    const void Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str);
+    void Print_Avec(std::vector<std::pair<std::wstring, std::wstring>> avec, const std::wstring str);
     void Print_Avec_etc();
-    const void Print_Dates();
+    void Print_Dates();
     void Print_Date_de_Reprise();
     void Print_Date_de_Sortie();
-    const void Print_De();
-    const void Print_Distributeur();
+    void Print_De();
+    void Print_Distributeur();
     void Print_Header() const;
-    const void Print_Making_of();
-    const void Print_Par();
+    void Print_Making_of();
+    void Print_Par();
     std::wstring Print_Note() const;
-    const void Print_Soundtracks();
+    void Print_Soundtracks();
 
     std::vector<SequenceVisionnage_film>dates{};
     std::filesystem::path racine;
@@ -144,36 +144,4 @@ private:
     std::vector<std::wstring> m_titres_originaux;
 
     std::vector<SequenceVisionnage_film> m_visionnages;
- 
-    /*bool affichage_acteurs_de_doublage_voix_locales_actif = true;
-    bool affichage_acteurs_de_doublage_voix_originales_actif = true;
-    bool affichage_audiodescription_actif = true;
-    bool affichage_avec_actif = true;
-    bool affichage_avec_etc_actif = true;
-    bool affichage_catalogue_actif = true;
-    bool affichage_date_actif{ true };
-    bool affichage_date_de_reprise_actif = true;
-    bool affichage_date_de_sortie_actif = true;
-    bool affichage_date_en_salle_ou_sur_actif = true;
-    bool affichage_de_actif = true;
-    bool affichage_disney_sj_actif = true;
-    bool affichage_distributeur_actif = true;
-    bool affichage_duree_actif = true;
-    bool affichage_image_actif = true;
-    bool affichage_genres_actif = true;
-    bool affichage_making_of_actif = true;
-    bool affichage_nationalite_actif = true;
-    bool affichage_netflix_sj_actif = true;
-    bool affichage_note_actif = true;
-    bool affichage_par_actif = true;
-    bool affichage_resume_actif = true;
-    bool affichage_sj_actif = true;
-    bool affichage_sous_genre_actif = true;
-    bool affichage_soundtraks_actif = true;
-    bool affichage_sur_actif = true;
-    bool affichage_titres_actif = true;
-    bool affichage_titres_originaux_actif = true;
-    bool affichage_visionnages_actif = true;
-    bool affichage_x_sj_actif = true;
-    */
-};
+ };

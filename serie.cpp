@@ -295,11 +295,11 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                             #
+// # oid SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                    #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)
+void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
     m_espace1 = perso.m_espace1;
     m_espace2 = perso.m_espace2;
@@ -534,11 +534,11 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                        #
+// # void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                              #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)
+void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
     m_espace1 = perso.m_espace1;
     m_espace2 = perso.m_espace2;
@@ -907,7 +907,7 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
+void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
     m_espace1 = perso.m_espace1;
     m_espace2 = perso.m_espace2;
@@ -1564,11 +1564,11 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # const void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                          #
+// # void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                                #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)
+void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
     m_espace1 = perso.m_espace1;
     m_espace2 = perso.m_espace2;

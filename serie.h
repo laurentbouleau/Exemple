@@ -92,7 +92,7 @@ struct SequenceVisionnage
 
     std::wstring calcul_Duree_affichage(int numero_sequence) const;
 
-    const void AffichagePersonnaliser(AffichagePersonnalisation perso);
+    void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     void Print(int numero_sequence) const;
 
@@ -142,7 +142,7 @@ struct Episode
 
     void ajouter_SequenceVisionnage(const InfosVisionnage& info_vis);
 
-    const void AffichagePersonnaliser(AffichagePersonnalisation perso);
+    void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     //long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
 
@@ -210,7 +210,7 @@ public:
     void initialiser_Saison(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    const void AffichagePersonnaliser(AffichagePersonnalisation perso);
+    void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     void Print();
     void Print_Avec();
@@ -292,7 +292,7 @@ public:
     void initialiser_En_relation_avec(std::filesystem::path const& cheminFichier);
     void initialiser_Titre(std::filesystem::path const& cheminFichier);
 
-    const void AffichagePersonnaliser(AffichagePersonnalisation perso);
+    void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     void Print();
 
