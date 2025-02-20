@@ -902,7 +902,6 @@ void Saison::initialiser_Saison(std::filesystem::path const& cheminFichier)
         throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas un nombre d'épisode de saison compris entre 0 et 99 : " + std::to_string(m_nombre_episodes));
 
     m_resume = std::vector<std::wstring>(std::next(saison.begin()), saison.end());
-    m_non_hors_saison = true;
 }
 
 // ######################################################################################################################################################
@@ -1047,11 +1046,11 @@ void Saison::Print_Chaine()
 
 void Saison::Print_Header()
 {
-    std::wstring saison_str = m_keyColor[0];
-    if(!m_hors_saison && m_non_hors_saison)
-        saison_str += L"Saison " + m_keyColor[1] + std::to_wstring(m_numero) + m_keyColor[0] + L" :" + m_valuesColor;
-    else if(m_hors_saison && !m_non_hors_saison)
-        saison_str += L"Hors saison : " + m_valuesColor;
+    std::wstring saison_str;
+    if(!m_hors_saison)
+        saison_str += m_keyColor[0] + L"Saison " + m_keyColor[1] + std::to_wstring(m_numero) + m_keyColor[0] + L" :" + m_valuesColor;
+    else
+        saison_str += m_keyColor[0] + L"Hors saison :" + m_valuesColor;
     saison_str += L"\r\n";
 
     wchar_t date_tab[15];
@@ -1620,7 +1619,7 @@ void Serie::PostTraitement()
 
     for (auto& saison : saisons)
     {
-        /*if (saison.m_hors_saison)
+        if (saison.m_hors_saison)
         {
             
             m_hors_saisons.emplace_back(move(saison));
@@ -1628,9 +1627,9 @@ void Serie::PostTraitement()
         else
         {
             m_non_hors_saisons.emplace_back(move(saison));
-        }*/
+        }
 
-        if (saison.m_non_hors_saison)
+/*        if (saison.m_non_hors_saison)
         {
 
             m_non_hors_saisons.emplace_back(move(saison));
@@ -1638,7 +1637,7 @@ void Serie::PostTraitement()
         else
         {
             m_hors_saisons.emplace_back(move(saison));
-        }
+        }*/
     }
 }
 

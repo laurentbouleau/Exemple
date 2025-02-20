@@ -79,13 +79,13 @@ struct SequenceVisionnage
     SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
         m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
-        m_DatesVisionnage{ src.m_DatesVisionnage }/*, m_numero{src.m_numero}*/, m_NumeroEpisode{ src.m_NumeroEpisode }
+        m_DatesVisionnage{ src.m_DatesVisionnage }/*, m_numero{src.m_numero}*/, m_NumeroEpisode{ src.m_NumeroEpisode }, m_keyColor{ src.m_keyColor }
     {
     };
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
         m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
         m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
-        m_DatesVisionnage{ info_vis.m_DatesVisionnage }/*, m_numero{info_vis.m_numero}*/, m_NumeroEpisode{ info_vis.m_NumeroEpisode }
+        m_DatesVisionnage{ info_vis.m_DatesVisionnage }/*, m_numero{info_vis.m_numero}*/, m_NumeroEpisode{ info_vis.m_NumeroEpisode }, m_keyColor{ info_vis.m_keyColor }
     {
     };
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
@@ -179,6 +179,8 @@ private:
             m_resume = src.m_resume;
             m_duree = src.m_duree;
             m_numero = src.m_numero;
+
+            m_keyColor = src.m_keyColor;
         }
         return *this;
      }
@@ -237,7 +239,6 @@ public:
     int m_f_anneesDiffusion{ 0 };
     std::wstring m_chaine;
     bool m_hors_saison{ false };
-    bool m_non_hors_saison{ false };
 
     std::vector<std::wstring> m_image;
     bool m_netflix{ false };
@@ -266,7 +267,6 @@ private:
             m_f_anneesDiffusion = std::move(src.m_f_anneesDiffusion);
             m_chaine = std::move(src.m_chaine);
             m_hors_saison = std::move(src.m_hors_saison);
-            m_non_hors_saison = std::move(src.m_non_hors_saison);
 
             m_image = std::move(src.m_image);
             m_netflix = std::move(src.m_netflix);
@@ -277,6 +277,8 @@ private:
 
             m_nombre_episodes = std::move(src.m_nombre_episodes);
             m_numero = std::move(src.m_numero);
+
+            m_keyColor = std::move(src.m_keyColor);
         }
         return *this;
     }
@@ -359,10 +361,8 @@ private:
     std::wstring m_sous_genre;
     std::wstring m_sur;
 
-    //std::list<Saison> m_hors_saisons{};
-    //std::list<Saison> m_non_hors_saisons{};
-    std::vector<Saison> m_hors_saisons{};
-    std::vector<Saison> m_non_hors_saisons{};
+    std::list<Saison> m_hors_saisons{};
+    std::list<Saison> m_non_hors_saisons{};
 
     std::vector<std::wstring> m_titres;
     long m_duree{ -1 };
