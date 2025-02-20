@@ -100,14 +100,14 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
     auto nomFichier = m_cheminFichier.filename().wstring();
 
-    assert(nomFichier.length() > 0 && L"Nom de fichier Episode vide");
+    assert(nomFichier.length() > 0 && L"Nom de fichier Épisode vide");
 
     auto stem = m_cheminFichier.stem().wstring();
     // prefixe ???
-    //assert((stem.length() > (9 + std::to_wstring(prefixe).length() + sep_numero_saison.length())) && L"Nom de fichier Episode trop court pour avoir au moins une date");
-    assert((stem.length() > 9) && L"Nom de fichier Episode trop court pour avoir au moins une date");
+    //assert((stem.length() > (9 + std::to_wstring(prefixe).length() + sep_numero_saison.length())) && L"Nom de fichier Épisode trop court pour avoir au moins une date");
+    assert((stem.length() > 9) && L"Nom de fichier Épisode trop court pour avoir au moins une date");
 
-    assert(std::isdigit(stem[0]) && L"Nom de fichier Episode ne commençant pas par un nombre");
+    assert(std::isdigit(stem[0]) && L"Nom de fichier Épisode ne commençant pas par un nombre");
     //m_NumeroSaison = std::stoi(stem);
     
     assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");// saison == m_NumeroSaison
@@ -237,15 +237,15 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
         std::wstring titres = titles_match[2];
         m_titres = extraire_Titres_Depuis_UneLigne(titres);
-    }
 
-    if (file_content.size() > 1)
-        initialiser_Duree(file_content[1]);
+        if (file_content.size() > 1)
+            initialiser_Duree(file_content[1]);
 
-    if (file_content.size() > 2)
-    {
-        file_content.erase(file_content.begin(), file_content.begin() + 2);
-        m_resume = file_content;
+        if (file_content.size() > 2)
+        {
+            file_content.erase(file_content.begin(), file_content.begin() + 2);
+            m_resume = file_content;
+        }
     }
 }
 
@@ -780,9 +780,11 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
 
 void Saison::initialiser_Hors_Saison(std::filesystem::path const& cheminFichier)
 { // Hors Saison
-    auto nomFichier = cheminFichier.filename().wstring();
-    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
-    m_hors_saison = true;
+//    auto nomFichier = cheminFichier.filename().wstring();
+//    assert(nomFichier.length() > 0 && L"Nom de fichier vide");
+//    m_hors_saison = true;
+
+ //   m_non_hors_saison = false;
 
     /*std::vector<std::wstring> saison = lire_fichierTxt(cheminFichier.wstring(), {L"\n"});
     if (saison.size() < 2)
@@ -804,7 +806,24 @@ void Saison::initialiser_Hors_Saison(std::filesystem::path const& cheminFichier)
     */
 
     //std::vector<std::wstring> hors_saison = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    std::vector<std::wstring> saison = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    if (saison.size() < 2)
+        throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas le nombre de ligne nécessaire pour une description de saison : " + std::to_string(saison.size()));
 
+    try
+    {
+        m_nombre_episodes = std::stoi(saison[0]);
+    }
+    catch (exception& ex)
+    {
+        throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas le nombre d'épisode de la saison en première ligne : " + ex.what());
+    }
+
+    if (m_nombre_episodes < 0 || m_nombre_episodes>99)
+        throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas un nombre d'épisode de saison compris entre 0 et 99 : " + std::to_string(m_nombre_episodes));
+
+    m_resume = std::vector<std::wstring>(std::next(saison.begin()), saison.end());
+    m_hors_saison = true;
 }
 
 // ######################################################################################################################################################
@@ -883,6 +902,7 @@ void Saison::initialiser_Saison(std::filesystem::path const& cheminFichier)
         throw FileFormatException("Le fichier " + cheminFichier.generic_u8string() + " n'a pas un nombre d'épisode de saison compris entre 0 et 99 : " + std::to_string(m_nombre_episodes));
 
     m_resume = std::vector<std::wstring>(std::next(saison.begin()), saison.end());
+    m_non_hors_saison = true;
 }
 
 // ######################################################################################################################################################
@@ -1028,9 +1048,9 @@ void Saison::Print_Chaine()
 void Saison::Print_Header()
 {
     std::wstring saison_str = m_keyColor[0];
-    if(!m_hors_saison)
+    if(!m_hors_saison && m_non_hors_saison)
         saison_str += L"Saison " + m_keyColor[1] + std::to_wstring(m_numero) + m_keyColor[0] + L" :" + m_valuesColor;
-    else
+    else if(m_hors_saison && !m_non_hors_saison)
         saison_str += L"Hors saison : " + m_valuesColor;
     saison_str += L"\r\n";
 
@@ -1600,7 +1620,7 @@ void Serie::PostTraitement()
 
     for (auto& saison : saisons)
     {
-        if (saison.m_hors_saison)
+        /*if (saison.m_hors_saison)
         {
             
             m_hors_saisons.emplace_back(move(saison));
@@ -1608,6 +1628,16 @@ void Serie::PostTraitement()
         else
         {
             m_non_hors_saisons.emplace_back(move(saison));
+        }*/
+
+        if (saison.m_non_hors_saison)
+        {
+
+            m_non_hors_saisons.emplace_back(move(saison));
+        }
+        else
+        {
+            m_hors_saisons.emplace_back(move(saison));
         }
     }
 }
@@ -1772,7 +1802,7 @@ void Serie::Print_Header() const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # void Serie::Print_Saison(Saison saison)                                                                                                      #
+// # void Serie::Print_Saison(Saison saison)                                                                                                            #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -1787,14 +1817,14 @@ void Serie::Print_Header() const
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void Serie::Print_Saisons()
+/*void Serie::Print_Saisons()
 {
     for (auto& saison : saisons)
     {
         saison.Print();
-        std::wcout << L"\r\n\r\n";
+        std::wcout << L"\r\n";// \r\n";
     }
-}
+}*/
 /*void Serie::Print_Saisons()
 {
     //std::list<Saison*> hors_saisons;
@@ -1821,4 +1851,15 @@ void Serie::Print_Saisons()
         saison.Print();
     }
 }*/
+void Serie::Print_Saisons()
+{
+    for (auto& saison : m_hors_saisons)
+    {
+        saison.Print();
+    }
 
+    for (auto& saison : m_non_hors_saisons)
+    {
+        saison.Print();
+    }
+}
