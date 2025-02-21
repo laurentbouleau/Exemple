@@ -295,7 +295,7 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # oid SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                    #
+// # void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)                                                                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -375,20 +375,13 @@ void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)
 }*/
 void SequenceVisionnage::Print(int numero_sequence) const
 {
-    std::wstring wstr;
     std::wstring chiffre_str{};
+    std::wstring wstr;
     std::wstring duree_str;
     static std::wstring ch;
-    long chiffre = Print_Titre_chiffre(numero_sequence);
+    static std::wstring tr;
 
-    if (m_titres.size() == 1)
-    {
-        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor;
-    }
-    else if (m_titres.size() > 2)
-    {
-        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
-    }
+    long chiffre = Print_Titre_chiffre(numero_sequence);
 
     if (numero_sequence == 1)
     {
@@ -398,8 +391,25 @@ void SequenceVisionnage::Print(int numero_sequence) const
     else
     {
         chiffre_str = ch;
-            ///...
+        ///...
     }
+
+    if (numero_sequence > 1)
+    {
+        //wstr = tr;
+        wstr = L"aaa";
+    }
+    else if (m_titres.size() == 1)
+    {
+        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor;
+        tr = wstr;
+    }
+    else if (m_titres.size() > 2)
+    {
+        wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
+        tr = wstr;
+    }
+
     if (numero_sequence == 1)
         duree_str = calcul_Duree_affichage(numero_sequence);
     else
@@ -418,6 +428,7 @@ void SequenceVisionnage::Print(int numero_sequence) const
 
     std::wcout << chiffre_str << wstr << duree_str << dates_str << resume_str << L"\r\n";
 }
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # std::wstring SequenceVisionnage::Print_Dates_de_visionnage() const                                                                                 #
@@ -582,8 +593,7 @@ void Episode::Print()
 
     for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
-        //sequence.Print(m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres, numero_sequence);
-        sequence.Print(/*m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres, */numero_sequence);
+        sequence.Print(numero_sequence);
         first = false;
         numero_sequence++;
     }
