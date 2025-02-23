@@ -80,6 +80,7 @@ struct SequenceVisionnage
         m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
         m_DatesVisionnage{ src.m_DatesVisionnage }/*, m_numero{src.m_numero}*/, m_NumeroEpisode{ src.m_NumeroEpisode },
+        m_espace3{ src.m_espace3 }, m_labelMinuteSingulier{ src.m_labelMinuteSingulier }, m_labelMinutePluriel{ src.m_labelMinutePluriel },
         m_keyColor{ src.m_keyColor }, m_valuesColor{ src.m_valuesColor }
     {
     };
@@ -87,6 +88,7 @@ struct SequenceVisionnage
         m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
         m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
         m_DatesVisionnage{ info_vis.m_DatesVisionnage }/*, m_numero{info_vis.m_numero}*/, m_NumeroEpisode{ info_vis.m_NumeroEpisode },
+        //m_espace3{ info_vis.m_espace3 }, m_labelMinuteSingulier{ info_vis.m_labelMinuteSingulier }, m_labelMinutePluriel{ info_vis.m_labelMinutePluriel },
         m_keyColor{ info_vis.m_keyColor }, m_valuesColor{ info_vis.m_valuesColor }
     {
     };
@@ -118,11 +120,7 @@ struct SequenceVisionnage
     std::vector<DateRecord> m_DatesVisionnage{};
 
     long m_NumeroEpisode{-1};
-
-    //int m_numero{ -1 };
     long m_duree { -1 };
-
-    //bool affichage_duree_actif = true;// false;
 
 private:
     const Episode& m_episode;

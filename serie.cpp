@@ -286,7 +286,7 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
     std::wstring duree_str;
     if (numero_sequence == 1)
     {
-        long minutes = (m_duree_en_seconde/* % (60 * 60)*/) / 60;
+        long minutes = m_duree_en_seconde / 60;
         long secondes = m_duree_en_seconde % 60;
         duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
     }
