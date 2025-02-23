@@ -398,16 +398,19 @@ void SequenceVisionnage::Print(int numero_sequence) const
     {
         //wstr = tr;
         wstr = L"aaa";
+        //wstr = m_tr;
     }
     else if (m_titres.size() == 1)
     {
         wstr = m_keyColor[1] + m_titres[0] + m_valuesColor;
         tr = wstr;
+        //m_tr = wstr;
     }
     else if (m_titres.size() > 2)
     {
         wstr = m_keyColor[1] + m_titres[0] + m_valuesColor + m_titres[1] + m_keyColor[1] + m_titres[2] + m_valuesColor;
         tr = wstr;
+        //m_tr = wstr;
     }
 
     if (numero_sequence == 1)
