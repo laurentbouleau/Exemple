@@ -55,4 +55,25 @@ void Print_Catalogue(const std::wstring m_sur, std::vector<std::wstring>& m_cata
 void Print_Resume(const std::vector<std::wstring>& m_resume);
 void Print_Titre_Original(const std::vector<std::wstring>& m_titre_original, std::vector<std::wstring>& keyColor, std::wstring& valuesColor);
 
+AffichagePersonnalisation getCurrentAffichagePersonnalisation();
+
+class AffichagePersonnalisation
+{
+public:
+    AffichagePersonnalisation() {};
+    AffichagePersonnalisation(std::tuple<std::wstring, std::wstring, std::wstring> espaces, std::pair<std::wstring, std::wstring> labelsHeure, std::pair<std::wstring, std::wstring> labelsMinute) :
+        m_espace1{ std::get<0>(espaces) }, m_espace2{ std::get<1>(espaces) }, m_espace3{ std::get<2>(espaces) }, m_labelsHeure{ labelsHeure }, m_labelsMinute{ labelsMinute } {
+    };
+    // _ h _ _ min
+    std::wstring m_espace1{ L" " };
+    std::wstring m_espace2{ L" " };
+    std::wstring m_espace3{ L" " };
+    // h
+    std::pair<std::wstring, std::wstring> m_labelsHeure{ L"h", L"h" };
+    // min
+    std::pair<std::wstring, std::wstring> m_labelsMinute{ L"min", L"min" };
+    //
+    std::vector<std::wstring> m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m", L"\x1b[38;2;255;0;0m", L"\x1b[38;2;255;255;0m" }; // Bleu, Vert, Rouge, Jaune
+    std::wstring m_valuesColor{ L"\x1b[38;2;255;255;255m" }; // Blanc
+};
 
