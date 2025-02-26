@@ -302,6 +302,7 @@ public:
     void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     void Print();
+    std::wostream& PrintSerieOnOutstream(const Serie& serie, std::wostream& out);
 
     std::vector<Saison>saisons{};
     std::filesystem::path getRacine() { return racine; };
