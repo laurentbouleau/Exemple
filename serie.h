@@ -76,39 +76,12 @@ private:
 
 struct SequenceVisionnage
 {
-    /*SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
-        m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
-        m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
-        m_DatesVisionnage{ src.m_DatesVisionnage }, m_NumeroEpisode{ src.m_NumeroEpisode },
-        m_espace3{ src.m_espace3 }, m_labelMinuteSingulier{ src.m_labelMinuteSingulier }, m_labelMinutePluriel{ src.m_labelMinutePluriel },
-        m_keyColor{ src.m_keyColor }, m_valuesColor{ src.m_valuesColor }
-    {
-    };
-    SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
-        m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
-        m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
-        m_DatesVisionnage{ info_vis.m_DatesVisionnage }, m_NumeroEpisode{ info_vis.m_NumeroEpisode },
-        //m_espace3{ info_vis.m_espace3 }, m_labelMinuteSingulier{ info_vis.m_labelMinuteSingulier }, m_labelMinutePluriel{ info_vis.m_labelMinutePluriel },
-        m_keyColor{ info_vis.m_keyColor }, m_valuesColor{ info_vis.m_valuesColor }
-    {
-    };
-    boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
-    //static std::wstring m_tr;
-    std::wstring calcul_Duree_affichage(int numero_sequence) const;
-
-    void AffichagePersonnaliser(AffichagePersonnalisation perso);
-
-    void Print(int numero_sequence) const;
-
-    std::wstring Print_Dates_de_visionnage() const;
-    long Print_Titre_chiffre(long episode) const;
-    */
     SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
         m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
         m_DatesVisionnage{ src.m_DatesVisionnage }/*, m_numero{src.m_numero}*/, m_NumeroEpisode{ src.m_NumeroEpisode },
-        m_keyColor{ src.m_keyColor }, m_valuesColor{ src.m_valuesColor }
-        , m_labelMinuteSingulier{ src.m_labelMinuteSingulier }, m_labelMinutePluriel{ src.m_labelMinutePluriel }, m_espace3{ src.m_espace3 }
+        m_keyColor{ src.m_keyColor }, m_valuesColor{ src.m_valuesColor },
+        m_labelMinuteSingulier{ src.m_labelMinuteSingulier }, m_labelMinutePluriel{ src.m_labelMinutePluriel }, m_espace3{ src.m_espace3 }
     {
     };
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
