@@ -25,6 +25,7 @@
 #include <string_view>
 #include <list>
 #include <optional>
+#include <cctype>
 
 #include <filesystem> // C++17 standard header file name
 
@@ -238,10 +239,12 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         std::wstring titres = titles_match[2];
 
         // //
-        wchar_t sp = L' ';
+/*        wchar_t sp = L' ';
         if (titres[0] == sp)
             titres = titres.substr(1);
         // //
+*/
+        trim(titres);
 
         m_titres = extraire_Titres_Depuis_UneLigne(titres);
 
@@ -1668,11 +1671,11 @@ void Serie::Print()
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wostream& Serie::PrintSerieOnOutstream(const Serie& serie, std::wostream& out)
+/*std::wostream& Serie::PrintSerieOnOutstream(const Serie& serie, std::wostream& out)
 {
     serie.Print();
     return out;
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #

@@ -26,8 +26,15 @@
 #include <string_view>
 #include <list>
 #include <optional>
+#include <cctype>
 
 #include <filesystem> // C++17 standard header file name
+
+extern inline void ltrim(std::wstring& s);
+extern inline void rtrim(std::wstring& s);
+extern inline void trim(std::wstring& s);
+
+//extern std::wostream& Serie::PrintSerieOnOutstream(const Serie& serie, std::wostream& out);
 
 extern const std::vector<std::wstring> Genre;
 extern const std::vector<std::wstring> Sur;
@@ -144,7 +151,7 @@ struct Episode
 
     //long long GetNumeroSequenceVisionnage(const SequenceVisionnage& sev_vis) const;
 
-    void Print();
+    //void Print();
     void Print(bool hors_saison);
 
     std::wstring m_espace1;
@@ -302,7 +309,7 @@ public:
     void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     void Print();
-    std::wostream& PrintSerieOnOutstream(const Serie& serie, std::wostream& out);
+    //std::wostream& PrintSerieOnOutstream(const Serie& serie, std::wostream& out);
 
     std::vector<Saison>saisons{};
     std::filesystem::path getRacine() { return racine; };
