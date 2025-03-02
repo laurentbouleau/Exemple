@@ -30,11 +30,6 @@
 
 #include <filesystem> // C++17 standard header file name
 
-// Hors saison : 0
-// Saison 1 : exemple : 2023/02/15
-// Saison 2 : exemple : 2024/09/10
-// etc...
-
 using namespace std;
 namespace fs = std::filesystem;
 

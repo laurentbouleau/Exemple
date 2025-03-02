@@ -27,10 +27,7 @@
 #include <numeric>
 #include <string_view>
 #include <optional>
-
-#include <algorithm> 
 #include <cctype>
-#include <locale>
 
 #include <filesystem> // C++17 standard header file name
 
@@ -42,6 +39,8 @@ inline void trim(std::wstring& s);
 inline std::wstring ltrim_copy(std::wstring s);
 inline std::wstring rtrim_copy(std::wstring s);
 inline std::wstring trim_copy(std::wstring s);
+
+// 
 
 std::string wstr_to_u8(std::wstring uneWString);
 const std::vector<std::pair<std::wstring, std::wstring>>lire_paireCleValeur_depuisFichierTxt(std::wstring const& nomFichier);

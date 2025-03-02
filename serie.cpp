@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "film_serie.h"
+#include "utils.h"
 
 // C :
 #include <io.h>
@@ -36,6 +37,19 @@
 
 using namespace std;
 namespace fs = std::filesystem;
+
+
+extern inline void ltrim(std::wstring& s);
+extern inline void rtrim(std::wstring& s);
+extern inline void trim(std::wstring& s);
+extern inline std::wstring ltrim_copy(std::wstring s);
+extern inline std::wstring rtrim_copy(std::wstring s);
+extern inline std::wstring trim_copy(std::wstring s);
+
+extern const std::vector<std::wstring> Genre;
+extern const std::vector<std::wstring> Sur;
+extern const std::vector<std::wstring> Sous_Genre;
+extern const std::vector<std::wstring> Nationalite;
 
 using DateVisionnage = DateRecord;
 
