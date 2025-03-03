@@ -40,27 +40,6 @@ namespace fs = std::filesystem;
 
 using DateVisionnage = DateRecord;
 
-/*extern inline void ltrim(std::wstring& s);
-extern inline void rtrim(std::wstring& s);
-extern inline void trim(std::wstring& s);
-extern inline std::wstring ltrim_copy(std::wstring s);
-extern inline std::wstring rtrim_copy(std::wstring s);
-extern inline std::wstring trim_copy(std::wstring s);*/
-
-// ???
-inline void ltrim(std::wstring& s);
-inline void rtrim(std::wstring& s);
-inline void trim(std::wstring& s);
-inline std::wstring ltrim_copy(std::wstring s);
-inline std::wstring rtrim_copy(std::wstring s);
-inline std::wstring trim_copy(std::wstring s);
-
-
-/*extern const std::vector<std::wstring> Genre;
-extern const std::vector<std::wstring> Sur;
-extern const std::vector<std::wstring> Sous_Genre;
-extern const std::vector<std::wstring> Nationalite;*/
-
 //const std::vector<std::wstring> Genre;
 //const std::vector<std::wstring> Sur;
 //const std::vector<std::wstring> Sous_Genre;

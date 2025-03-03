@@ -33,12 +33,79 @@
 
 std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
 
-inline void ltrim(std::wstring& s);
-inline void rtrim(std::wstring& s);
-inline void trim(std::wstring& s);
-inline std::wstring ltrim_copy(std::wstring s);
-inline std::wstring rtrim_copy(std::wstring s);
-inline std::wstring trim_copy(std::wstring s);
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # inline void ltrim(std::wstring& s)                                                                                                                 #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+// trim from start (in place)
+inline void ltrim(std::wstring& s)
+{
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](wchar_t ch) {
+        return !std::isspace(ch);
+        }));
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # inline void trim(std::wstring& s)                                                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+// trim from end (in place)
+inline void rtrim(std::wstring& s)
+{
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](wchar_t ch) {
+        return !std::isspace(ch);
+        }).base(), s.end());
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # inline void trim(std::wstring& s)                                                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+// trim from both ends (in place)
+inline void trim(std::wstring& s)
+{
+    rtrim(s);
+    ltrim(s);
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # inline std::wstring ltrim_copy(std::wstring s)                                                                                                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+// trim from start (copying)
+inline std::wstring ltrim_copy(std::wstring s)
+{
+    ltrim(s);
+    return s;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # inline std::wstring rtrim_copy(std::wstring s)                                                                                                     #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+// trim from end (copying)
+inline std::wstring rtrim_copy(std::wstring s)
+{
+    rtrim(s);
+    return s;
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # inline std::wstring trim_copy(std::wstring s)                                                                                                      #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+// trim from both ends (copying)
+inline std::wstring trim_copy(std::wstring s)
+{
+    trim(s);
+    return s;
+}
 
 // 
 
@@ -117,14 +184,4 @@ std::wstring wstring_format(const std::wstring& format, Args ... args)
     return std::wstring(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
 }
 
-//
-//
-
-
-//
-//
-
-
-//
-//
 
