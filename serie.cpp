@@ -1255,7 +1255,7 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion() const
 std::wstring Serie::calcul_Duree_affichage() const
 {
     std::wstring duree_str;
-    long minutes = (m_duree % (60 * 60)) / 60;
+    long minutes = m_duree / 60;
     long secondes = m_duree % 60;
     duree_str = L' ' + std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
     return duree_str;
