@@ -351,7 +351,8 @@ void SequenceVisionnage::Print(int numero_sequence, bool hors_saison) const
     }
     else
     {
-        numero_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + (m_episode.m_numero < 10 ? L"0" : L"") + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+        //numero_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + (m_episode.m_numero < 10 ? L"0" : L"") + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+        numero_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + ((m_episode.m_numero < 10 && m_episode.m_saison.m_nombre_episodes>10) ? L"0" : L"") + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
     }
 
     assert((m_titres.size() > 0 && m_titres[0].size() > 0) || numero_sequence > 1);
