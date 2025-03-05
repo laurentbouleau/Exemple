@@ -514,30 +514,20 @@ void initialiser_Sur(std::wstring& m_sur)
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # std::wstring stringFormatOneLine(std::wstring str,                                                                                                 #
-// #                                  int lengthMax,                                                                                                    #
-// #                                  std::wstring marqueurTroncature,                                                                                  #
-// #                                  int marqueurTroncature_len,                                                                                       #
-// #                                  std::wstring suffixe,                                                                                             #
-// #                                  int suffixe_len)                                                                                                  #
+// # std::wstring miseEnFormeDuree(long dureeEnSeconde, std::wstring labelMinuteSingulier, std::wstring labelMinutePluriel,                             #
+// #                              std::wstring keyColor, std::wstring valuesColor, std::wstring gauche, std::wstring droite, std::wstring space)        #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring marqueurTroncature, int marqueurTroncature_len, std::wstring suffixe, int suffixe_len)
+std::wstring miseEnFormeDuree(long dureeEnSeconde, std::wstring labelMinuteSingulier, std::wstring labelMinutePluriel, std::wstring keyColor, std::wstring valuesColor, std::wstring gauche, std::wstring droite, std::wstring space)
 {
-    std::wstring res;
-
-    if (str.size() < lengthMax - suffixe_len)
-    {
-        res = str;
-    }
-    else
-    {
-        res = str.substr(0, lengthMax - marqueurTroncature_len - suffixe_len) + marqueurTroncature;
-    }
-    res += suffixe;
-    return res;
+    long minutes = dureeEnSeconde / 60;
+    long secondes = dureeEnSeconde % 60;
+    return keyColor + gauche + valuesColor + std::to_wstring(minutes) + keyColor + space + (minutes <= 1 ? labelMinuteSingulier : labelMinutePluriel) + droite + valuesColor;
 }
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -588,6 +578,33 @@ std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier, std::vector<std
     m_catalogue.push_back(stem);
 
     return filter_values(content, { L"7\\+",L"10\\+",L"13\\+", L"16\\+", L"18\\+", L"Tous publics" });
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring stringFormatOneLine(std::wstring str,                                                                                                 #
+// #                                  int lengthMax,                                                                                                    #
+// #                                  std::wstring marqueurTroncature,                                                                                  #
+// #                                  int marqueurTroncature_len,                                                                                       #
+// #                                  std::wstring suffixe,                                                                                             #
+// #                                  int suffixe_len)                                                                                                  #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring marqueurTroncature, int marqueurTroncature_len, std::wstring suffixe, int suffixe_len)
+{
+    std::wstring res;
+
+    if (str.size() < lengthMax - suffixe_len)
+    {
+        res = str;
+    }
+    else
+    {
+        res = str.substr(0, lengthMax - marqueurTroncature_len - suffixe_len) + marqueurTroncature;
+    }
+    res += suffixe;
+    return res;
 }
 
 // ######################################################################################################################################################

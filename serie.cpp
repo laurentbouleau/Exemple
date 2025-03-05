@@ -302,9 +302,7 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
     std::wstring duree_str;
     if (numero_sequence == 1)
     {
-        long minutes = m_duree_en_seconde / 60;
-        long secondes = m_duree_en_seconde % 60;
-        duree_str += m_keyColor[1] + L" (" + m_valuesColor + std::to_wstring(minutes) + m_keyColor[1] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + L')' + m_valuesColor;
+        duree_str +=  miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[1], m_valuesColor, L" (", L")", m_espace3);
     }
     else
     {
@@ -351,7 +349,6 @@ void SequenceVisionnage::Print(int numero_sequence, bool hors_saison) const
     }
     else
     {
-        //numero_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + (m_episode.m_numero < 10 ? L"0" : L"") + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
         numero_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + ((m_episode.m_numero < 10 && m_episode.m_saison.m_nombre_episodes>10) ? L"0" : L"") + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
     }
 
@@ -1254,11 +1251,7 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion() const
 
 std::wstring Serie::calcul_Duree_affichage() const
 {
-    std::wstring duree_str;
-    long minutes = m_duree / 60;
-    long secondes = m_duree % 60;
-    duree_str = L' ' + std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
-    return duree_str;
+    return miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[0], m_valuesColor, L" (", L")", m_espace3);
 }
 
 // ######################################################################################################################################################
@@ -1580,7 +1573,7 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier)
 {
     auto res = extraire_Informations_DepuisLeContenuDUnFichier(cheminFichier);
     m_titres = fusionner_Titres(m_titres, std::get<0>(res));
-    m_duree = std::get<1>(res) ? std::get<1>(res).value() : -1;
+    m_duree_en_seconde = std::get<1>(res) ? std::get<1>(res).value() : -1;
     m_resume = std::get<2>(res);
 }
 

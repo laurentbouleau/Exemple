@@ -41,11 +41,13 @@ void initialiser_Genre(std::filesystem::path const& cheminFichier, std::vector<s
 void initialiser_Image(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_images);
 void initialiser_Nationalite(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_nationalites_renvoyes, const std::vector<std::wstring>& nationalites_valides);
 
-std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring marqueurTroncature, int marqueurTroncature_len, std::wstring suffixe, int suffixe_len);
+std::wstring miseEnFormeDuree(long dureeEnSeconde, std::wstring labelMinuteSingulier, std::wstring labelMinutePluriel, std::wstring keyColor, std::wstring valuesColor, std::wstring gauche, std::wstring droite, std::wstring space);
 
 std::wstring recuperer_Disney_SJ(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_cataloguer);
 std::wstring recuperer_Netflix_SJ(std::filesystem::path const& cheminFichier, std::vector<std::wstring>& m_cataloguer);
 std::wstring recuperer_SJ(std::filesystem::path const& cheminFichier);
+
+std::wstring stringFormatOneLine(std::wstring str, int lengthMax, std::wstring marqueurTroncature, int marqueurTroncature_len, std::wstring suffixe, int suffixe_len);
 
 void Print_CleValeur(const std::wstring& cle, const std::wstring& valeur, std::wstring& keyColor, std::wstring& valuesColor);
 void Print_Genres(const std::vector<std::wstring>& m_genres, const std::wstring& m_sous_genre, std::wstring& keyColor, std::wstring& valuesColor);

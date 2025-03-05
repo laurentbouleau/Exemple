@@ -368,6 +368,6 @@ private:
     std::list<Saison> m_non_hors_saisons{};
 
     std::vector<std::wstring> m_titres;
-    long m_duree{ -1 };
+    long m_duree_en_seconde{ -1 };
     std::vector<std::wstring> m_titres_originaux;
 };
