@@ -204,28 +204,10 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         m_streaming = match[filename_stream_index];
     }
 
-    std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
     m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
 
-    /*if (file_content.size() > 0 && file_content[0] != L"")
-    {
-        std::size_t pos;
-        if (m_NumeroEpisode != 0)
-        {
-            pos = file_content[0].find(L". ");
-            if (pos != wstring::npos)
-            {
-                file_content[0] = file_content[0].substr(pos + 2);
-                m_numero = 1;
-            }
-            else
-            {
-                m_numero = 0;
-            }
-        }
+    std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
 
-        m_titres = extraire_Titres_Depuis_UneLigne(file_content[0]);
-    }*/
     if (file_content.size() > 0)
     {
         const std::wregex numeroPlusTitres_rg{ L"(?:(\\d)+\\.)?(.*)" };
@@ -240,16 +222,15 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
                 std::wstring message = L"Le fichier " + nomFichier + L" contient un numéro d'épisode différent de celui dans son nom.";
                 OutputDebugStringW(message.c_str());
             }
+            m_Chiffres_ou_pas = true;
+        }
+        else
+        {
+            m_Chiffres_ou_pas = false;
         }
 
         std::wstring titres = titles_match[2];
 
-        // //
-/*        wchar_t sp = L' ';
-        if (titres[0] == sp)
-            titres = titres.substr(1);
-        // //
-*/
         trim(titres);
 
         m_titres = extraire_Titres_Depuis_UneLigne(titres);
@@ -385,7 +366,56 @@ void SequenceVisionnage::Print(int numero_sequence, bool hors_saison) const
 
     std::wcout << numero_str << titre_str << duree_str << dates_str << resume_str << L"\r\n";
 }
+void SequenceVisionnage::Print(int numero_sequence, bool hors_saison, bool chiffres_ou_pas) const
+{
+    std::wstring numero_str;
+    std::wstring titre_str;
+    std::wstring duree_str;
 
+    if (hors_saison /* && chiffres_ou_pas*/)
+    {
+        if(chiffres_ou_pas)
+            numero_str = std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+    }
+    else
+    {
+        if (chiffres_ou_pas)
+            numero_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + ((m_episode.m_numero < 10 && m_episode.m_saison.m_nombre_episodes>10) ? L"0" : L"") + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
+    }
+
+    assert((m_titres.size() > 0 && m_titres[0].size() > 0) || numero_sequence > 1);
+    std::vector<std::wstring> titres = m_titres;
+    if (m_titres.size() == 0 || (m_titres.size() == 1 && m_titres[0].size() == 0))
+    {
+        titres = m_episode.m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_titres;
+    }
+
+    std::vector<std::wstring> titre_prefixe_list{ m_keyColor[1] , m_valuesColor };
+    std::wstring titre_prefixe = titre_prefixe_list[0];
+    unsigned int titre_prefixe_index = 0;
+    for (auto& titre : titres)
+    {
+        titre_str += titre_prefixe_list[titre_prefixe_index] + titre;
+        titre_prefixe_index = ((titre_prefixe_index + 1) % titre_prefixe_list.size());
+    }
+    if (titre_str.size() > 0)
+        titre_str += m_valuesColor;
+
+    duree_str = calcul_Duree_affichage(numero_sequence);
+
+    std::wstring dates_str = m_keyColor[1] + L" : " + m_valuesColor + Print_Dates_de_visionnage();
+
+    std::wstring resume_str;
+
+    if (numero_sequence == 1)
+    {
+        resume_str += L"\r\n";
+        for (auto r : m_resume)
+            resume_str += r;
+    }
+
+    std::wcout << numero_str << titre_str << duree_str << dates_str << resume_str << L"\r\n";
+}
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # std::wstring SequenceVisionnage::Print_Dates_de_visionnage() const                                                                                 #
@@ -549,11 +579,11 @@ void Episode::Print(bool hors_saison)
 
     for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
-        sequence.Print(numero_sequence, hors_saison);
+        //sequence.Print(numero_sequence, hors_saison);
+        sequence.Print(numero_sequence, hors_saison, m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_Chiffres_ou_pas);
         numero_sequence++;
     }
 }
-
 
 // ######################################################################################################################################################
 // ######################################################################################################################################################

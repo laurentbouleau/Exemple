@@ -515,7 +515,7 @@ void initialiser_Sur(std::wstring& m_sur)
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # std::wstring miseEnFormeDuree(long dureeEnSeconde, std::wstring labelMinuteSingulier, std::wstring labelMinutePluriel,                             #
-// #                              std::wstring keyColor, std::wstring valuesColor, std::wstring gauche, std::wstring droite, std::wstring space)        #
+// #                               std::wstring keyColor, std::wstring valuesColor, std::wstring gauche, std::wstring droite, std::wstring space)       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 

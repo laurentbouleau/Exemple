@@ -59,11 +59,11 @@ struct InfosVisionnage
 
     long m_NumeroSaison{};
     long m_NumeroEpisode{};
+    bool m_Chiffres_ou_pas{ true };
+    //int m_numero{ -1 };
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
     std::vector<std::wstring> m_titres;
-
-    int m_numero{ -1 };
 
     long m_duree_en_seconde{ 0 };
     std::vector<std::wstring> m_resume;
@@ -77,17 +77,19 @@ struct SequenceVisionnage
     SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
         m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
-        m_DatesVisionnage{ src.m_DatesVisionnage }/*, m_numero{src.m_numero}*/, m_NumeroEpisode{ src.m_NumeroEpisode },
+        m_DatesVisionnage{ src.m_DatesVisionnage }, /*m_numero{src.m_numero},*/ m_NumeroEpisode{src.m_NumeroEpisode},
         m_keyColor{ src.m_keyColor }, m_valuesColor{ src.m_valuesColor },
         m_labelMinuteSingulier{ src.m_labelMinuteSingulier }, m_labelMinutePluriel{ src.m_labelMinutePluriel }, m_espace3{ src.m_espace3 }
+        , m_Chiffres_ou_pas{src.m_Chiffres_ou_pas }
     {
     };
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
         m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
         m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
-        m_DatesVisionnage{ info_vis.m_DatesVisionnage }/*, m_numero{info_vis.m_numero}*/, m_NumeroEpisode{ info_vis.m_NumeroEpisode },
+        m_DatesVisionnage{ info_vis.m_DatesVisionnage }, /*m_numero{info_vis.m_numero}, */m_NumeroEpisode{info_vis.m_NumeroEpisode},
         m_keyColor{ info_vis.m_keyColor }, m_valuesColor{ info_vis.m_valuesColor }
         //, m_labelMinuteSingulier{ info_vis.m_labelMinuteSingulier }, m_labelMinutePluriel{ info_vis.m_labelMinutePluriel }
+        , m_Chiffres_ou_pas{ info_vis.m_Chiffres_ou_pas }
     {
     };
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
@@ -97,6 +99,7 @@ struct SequenceVisionnage
     void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     void Print(int numero_sequence, bool hors_saison) const;
+    void Print(int numero_sequence, bool hors_saison, bool chiffres_ou_pas) const;
 
     std::wstring Print_Dates_de_visionnage() const;
     long Print_Titre_chiffre(long episode) const;//Cette fonction n'a aucun putain de sens.
@@ -117,6 +120,7 @@ struct SequenceVisionnage
     std::vector<DateRecord> m_DatesVisionnage{};
 
     long m_NumeroEpisode{ -1 };
+    bool m_Chiffres_ou_pas{ true };
     long m_duree{ -1 };
 
 private:
