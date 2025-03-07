@@ -63,13 +63,15 @@ class AffichagePersonnalisation
 {
 public:
     AffichagePersonnalisation() {};
-    AffichagePersonnalisation(std::tuple<std::wstring, std::wstring, std::wstring> espaces, std::pair<std::wstring, std::wstring> labelsHeure, std::pair<std::wstring, std::wstring> labelsMinute) :
+    /*AffichagePersonnalisation(std::tuple<std::wstring, std::wstring, std::wstring> espaces, std::pair<std::wstring, std::wstring> labelsHeure, std::pair<std::wstring, std::wstring> labelsMinute) :
         m_espace1{ std::get<0>(espaces) }, m_espace2{ std::get<1>(espaces) }, m_espace3{ std::get<2>(espaces) }, m_labelsHeure{ labelsHeure }, m_labelsMinute{ labelsMinute } {
-    };
+    };*/
+    AffichagePersonnalisation(std::vector<std::wstring>m_spaces, std::pair<std::wstring, std::wstring> labelsHeure, std::pair<std::wstring, std::wstring> labelsMinute);
     // _ h _ _ min
-    std::wstring m_espace1{ L" " };
+    /*std::wstring m_espace1{L" "};
     std::wstring m_espace2{ L" " };
-    std::wstring m_espace3{ L" " };
+    std::wstring m_espace3{ L" " };*/
+    std::vector<std::wstring>m_spaces{ L" ", L" ", L" " };
     // h
     std::pair<std::wstring, std::wstring> m_labelsHeure{ L"h", L"h" };
     // min

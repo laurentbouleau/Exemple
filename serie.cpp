@@ -222,11 +222,11 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
                 std::wstring message = L"Le fichier " + nomFichier + L" contient un numéro d'épisode différent de celui dans son nom.";
                 OutputDebugStringW(message.c_str());
             }
-            m_Chiffres_ou_pas = true;
+            m_chiffres_ou_pas = true;
         }
         else
         {
-            m_Chiffres_ou_pas = false;
+            m_chiffres_ou_pas = false;
         }
 
         std::wstring titres = titles_match[2];
@@ -283,7 +283,8 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
     std::wstring duree_str;
     if (numero_sequence == 1)
     {
-        duree_str +=  miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[1], m_valuesColor, L" (", L")", m_espace3);
+        //duree_str +=  miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[1], m_valuesColor, L" (", L")", m_espace3);
+        duree_str += miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[1], m_valuesColor, L" (", L")", m_spaces[2]);
     }
     else
     {
@@ -300,9 +301,10 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
 
 void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    m_espace1 = perso.m_espace1;
-    m_espace2 = perso.m_espace2;
-    m_espace3 = perso.m_espace3;
+    //m_espace1 = perso.m_espace1;
+    //m_espace2 = perso.m_espace2;
+    //m_espace3 = perso.m_espace3;
+    m_spaces = perso.m_spaces;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;
@@ -416,6 +418,7 @@ void SequenceVisionnage::Print(int numero_sequence, bool hors_saison, bool chiff
 
     std::wcout << numero_str << titre_str << duree_str << dates_str << resume_str << L"\r\n";
 }
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # std::wstring SequenceVisionnage::Print_Dates_de_visionnage() const                                                                                 #
@@ -538,9 +541,10 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 
 void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    m_espace1 = perso.m_espace1;
-    m_espace2 = perso.m_espace2;
-    m_espace3 = perso.m_espace3;
+    //m_espace1 = perso.m_espace1;
+    //m_espace2 = perso.m_espace2;
+    //m_espace3 = perso.m_espace3;
+    m_spaces = perso.m_spaces;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;
@@ -580,7 +584,7 @@ void Episode::Print(bool hors_saison)
     for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
         //sequence.Print(numero_sequence, hors_saison);
-        sequence.Print(numero_sequence, hors_saison, m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_Chiffres_ou_pas);
+        sequence.Print(numero_sequence, hors_saison, m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_chiffres_ou_pas);
         numero_sequence++;
     }
 }
@@ -924,9 +928,10 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
 
 void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    m_espace1 = perso.m_espace1;
-    m_espace2 = perso.m_espace2;
-    m_espace3 = perso.m_espace3;
+    //m_espace1 = perso.m_espace1;
+    //m_espace2 = perso.m_espace2;
+    //m_espace3 = perso.m_espace3;
+    m_spaces = perso.m_spaces;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;
@@ -1281,7 +1286,8 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion() const
 
 std::wstring Serie::calcul_Duree_affichage() const
 {
-    return miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[0], m_valuesColor, L" (", L")", m_espace3);
+    //return miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[0], m_valuesColor, L" (", L")", m_espace3);
+    return miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[0], m_valuesColor, L" (", L")", m_spaces[2]);
 }
 
 // ######################################################################################################################################################
@@ -1615,9 +1621,10 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier)
 
 void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    m_espace1 = perso.m_espace1;
-    m_espace2 = perso.m_espace2;
-    m_espace3 = perso.m_espace3;
+    //m_espace1 = perso.m_espace1;
+    //m_espace2 = perso.m_espace2;
+    //m_espace3 = perso.m_espace3;
+    m_spaces = perso.m_spaces;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;

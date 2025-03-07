@@ -824,7 +824,8 @@ AffichagePersonnalisation getCurrentAffichagePersonnalisation()
     //AffichagePersonnalisation perso = perso_long_pascalCase;
 
     //perso.m_espace1 = L" ";
-    perso.m_espace2 = L" ";
+//    perso.m_espace2 = L" ";
     //perso.m_espace3 = L" ";
+    perso.m_spaces = { L" ", L" ", L" " };
     return AffichagePersonnalisation(perso);
 }

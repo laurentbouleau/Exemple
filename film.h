@@ -106,11 +106,12 @@ private:
     std::vector<SequenceVisionnage_film>dates{};
     std::filesystem::path racine;
 
-    std::wstring m_espace1;
+    //std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
     std::wstring m_labelHeurePluriel;
-    std::wstring m_espace2;
-    std::wstring m_espace3;
+    //std::wstring m_espace2;
+    //std::wstring m_espace3;
+    std::vector<std::wstring>m_spaces;
     std::wstring m_labelMinuteSingulier;
     std::wstring m_labelMinutePluriel;
     std::vector<std::wstring>m_keyColor;
