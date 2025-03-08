@@ -110,8 +110,6 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     assert(nomFichier.length() > 0 && L"Nom de fichier Épisode vide");
 
     auto stem = m_cheminFichier.stem().wstring();
-    // prefixe ???
-    //assert((stem.length() > (9 + std::to_wstring(prefixe).length() + sep_numero_saison.length())) && L"Nom de fichier Épisode trop court pour avoir au moins une date");
     assert((stem.length() > 9) && L"Nom de fichier Épisode trop court pour avoir au moins une date");
 
     assert(std::isdigit(stem[0]) && L"Nom de fichier Épisode ne commençant pas par un nombre");
@@ -120,11 +118,8 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");// saison == m_NumeroSaison
     //
     assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
-    //assert(((fucking_x >= prefixe)) && L"saison.first != x"); // prefixe ???
-    assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
+//    assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
 
-    //std::vector<DateRecord> dates_de_diffusion;
-    //std::wstring streaming = L"";
 
     std::wsmatch match;
     auto str = stem;
@@ -216,17 +211,22 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
         if (titles_match[1].matched)
         {
-            int numeroDansFichier = std::stoi(titles_match[1]);
+            //int numeroDansFichier = std::stoi(titles_match[1]);
+            long numeroDansFichier = std::stoi(titles_match[1]);
             if (numeroDansFichier != m_NumeroEpisode)
             {
-                std::wstring message = L"Le fichier " + nomFichier + L" contient un numéro d'épisode différent de celui dans son nom.";
-                OutputDebugStringW(message.c_str());
+                //std::wstring message = L"Le fichier " + nomFichier + L" contient un numéro d'épisode différent de celui dans son nom.";
+                //OutputDebugStringW(message.c_str());
+                m_numero = numeroDansFichier;
             }
-            m_chiffres_ou_pas = true;
+            else
+            {
+                m_numero = m_NumeroEpisode;
+            }
         }
         else
         {
-            m_chiffres_ou_pas = false;
+            m_numero = -1;
         }
 
         std::wstring titres = titles_match[2];
@@ -283,8 +283,7 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
     std::wstring duree_str;
     if (numero_sequence == 1)
     {
-        //duree_str +=  miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[1], m_valuesColor, L" (", L")", m_espace3);
-        duree_str += miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[1], m_valuesColor, L" (", L")", m_spaces[2]);
+        duree_str +=  miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[1], m_valuesColor, L" (", L")", m_espace3);
     }
     else
     {
@@ -301,10 +300,9 @@ std::wstring SequenceVisionnage::calcul_Duree_affichage(int numero_sequence) con
 
 void SequenceVisionnage::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    //m_espace1 = perso.m_espace1;
-    //m_espace2 = perso.m_espace2;
-    //m_espace3 = perso.m_espace3;
-    m_spaces = perso.m_spaces;
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;
@@ -368,20 +366,20 @@ void SequenceVisionnage::Print(int numero_sequence, bool hors_saison) const
 
     std::wcout << numero_str << titre_str << duree_str << dates_str << resume_str << L"\r\n";
 }
-void SequenceVisionnage::Print(int numero_sequence, bool hors_saison, bool chiffres_ou_pas) const
+void SequenceVisionnage::Print(int numero_sequence, bool hors_saison, long numero) const
 {
     std::wstring numero_str;
     std::wstring titre_str;
     std::wstring duree_str;
 
-    if (hors_saison /* && chiffres_ou_pas*/)
+    if (hors_saison)
     {
-        if(chiffres_ou_pas)
+        if(numero != -1)
             numero_str = std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
     }
     else
     {
-        if (chiffres_ou_pas)
+        if (numero != -1)
             numero_str = std::to_wstring(m_episode.m_saison.m_numero) + m_keyColor[1] + L'x' + m_valuesColor + ((m_episode.m_numero < 10 && m_episode.m_saison.m_nombre_episodes>10) ? L"0" : L"") + std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
     }
 
@@ -541,10 +539,9 @@ void Episode::ajouter_SequenceVisionnage(const InfosVisionnage& info_vis)
 
 void Episode::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    //m_espace1 = perso.m_espace1;
-    //m_espace2 = perso.m_espace2;
-    //m_espace3 = perso.m_espace3;
-    m_spaces = perso.m_spaces;
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;
@@ -584,7 +581,7 @@ void Episode::Print(bool hors_saison)
     for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
         //sequence.Print(numero_sequence, hors_saison);
-        sequence.Print(numero_sequence, hors_saison, m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_chiffres_ou_pas);
+        sequence.Print(numero_sequence, hors_saison, m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_numero);
         numero_sequence++;
     }
 }
@@ -928,10 +925,9 @@ void Saison::initialiser_Titre(std::filesystem::path const& cheminFichier)
 
 void Saison::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    //m_espace1 = perso.m_espace1;
-    //m_espace2 = perso.m_espace2;
-    //m_espace3 = perso.m_espace3;
-    m_spaces = perso.m_spaces;
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;
@@ -1286,8 +1282,7 @@ std::pair<int, int> Serie::calculer_Annees_Diffusion() const
 
 std::wstring Serie::calcul_Duree_affichage() const
 {
-    //return miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[0], m_valuesColor, L" (", L")", m_espace3);
-    return miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[0], m_valuesColor, L" (", L")", m_spaces[2]);
+    return miseEnFormeDuree(m_duree_en_seconde, m_labelMinuteSingulier, m_labelMinutePluriel, m_keyColor[0], m_valuesColor, L" (", L")", m_espace3);
 }
 
 // ######################################################################################################################################################
@@ -1621,10 +1616,9 @@ void Serie::initialiser_Titre(fs::path const& cheminFichier)
 
 void Serie::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    //m_espace1 = perso.m_espace1;
-    //m_espace2 = perso.m_espace2;
-    //m_espace3 = perso.m_espace3;
-    m_spaces = perso.m_spaces;
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;

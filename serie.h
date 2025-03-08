@@ -59,7 +59,7 @@ struct InfosVisionnage
 
     long m_NumeroSaison{};
     long m_NumeroEpisode{};
-    bool m_chiffres_ou_pas{ true };
+    long m_numero{ -1 };
     //int m_numero{ -1 };
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
@@ -79,8 +79,8 @@ struct SequenceVisionnage
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
         m_DatesVisionnage{ src.m_DatesVisionnage }, /*m_numero{src.m_numero},*/ m_NumeroEpisode{src.m_NumeroEpisode},
         m_keyColor{ src.m_keyColor }, m_valuesColor{ src.m_valuesColor },
-        m_labelMinuteSingulier{ src.m_labelMinuteSingulier }, m_labelMinutePluriel{ src.m_labelMinutePluriel }, /*m_espace3{src.m_espace3}*/m_spaces{ src.m_spaces }
-        , m_chiffres_ou_pas{src.m_chiffres_ou_pas }
+        m_labelMinuteSingulier{ src.m_labelMinuteSingulier }, m_labelMinutePluriel{ src.m_labelMinutePluriel }, m_espace3{ src.m_espace3 }
+        , m_numero{src.m_numero }
     {
     };
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
@@ -89,7 +89,7 @@ struct SequenceVisionnage
         m_DatesVisionnage{ info_vis.m_DatesVisionnage }, /*m_numero{info_vis.m_numero}, */m_NumeroEpisode{info_vis.m_NumeroEpisode},
         m_keyColor{ info_vis.m_keyColor }, m_valuesColor{ info_vis.m_valuesColor }
         //, m_labelMinuteSingulier{ info_vis.m_labelMinuteSingulier }, m_labelMinutePluriel{ info_vis.m_labelMinutePluriel }
-        , m_chiffres_ou_pas{ info_vis.m_chiffres_ou_pas }
+        , m_numero{ info_vis.m_numero }
     {
     };
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
@@ -99,16 +99,15 @@ struct SequenceVisionnage
     void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     void Print(int numero_sequence, bool hors_saison) const;
-    void Print(int numero_sequence, bool hors_saison, bool chiffres_ou_pas) const;
+    void Print(int numero_sequence, bool hors_saison, long numero) const;
 
     std::wstring Print_Dates_de_visionnage() const;
     long Print_Titre_chiffre(long episode) const;//Cette fonction n'a aucun putain de sens.
-    //std::wstring m_espace1;
+    std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
     std::wstring m_labelHeurePluriel;
-    //std::wstring m_espace2;
-    //std::wstring m_espace3;
-    std::vector<std::wstring>m_spaces;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
     std::wstring m_labelMinuteSingulier;
     std::wstring m_labelMinutePluriel;
     std::vector<std::wstring>m_keyColor;
@@ -121,7 +120,7 @@ struct SequenceVisionnage
     std::vector<DateRecord> m_DatesVisionnage{};
 
     long m_NumeroEpisode{ -1 };
-    bool m_chiffres_ou_pas{ true };
+    long m_numero{ -1 };
     long m_duree{ -1 };
 
 private:
@@ -150,12 +149,11 @@ struct Episode
     //void Print();
     void Print(bool hors_saison);
 
-    //std::wstring m_espace1;
+    std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
     std::wstring m_labelHeurePluriel;
-    //std::wstring m_espace2;
-    //std::wstring m_espace3;
-    std::vector<std::wstring>m_spaces;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
     std::wstring m_labelMinuteSingulier;
     std::wstring m_labelMinutePluriel;
     std::vector<std::wstring>m_keyColor;
@@ -229,12 +227,11 @@ public:
     void Print_Note();
 
     std::wstring m_min = L"min";
-    //std::wstring m_espace1;
+    std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
     std::wstring m_labelHeurePluriel;
-    //std::wstring m_espace2;
-    //std::wstring m_espace3;
-    std::vector<std::wstring>m_spaces;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
     std::wstring m_labelMinuteSingulier;
     std::wstring m_labelMinutePluriel;
     std::vector<std::wstring>m_keyColor;
@@ -345,12 +342,11 @@ private:
 
     std::filesystem::path racine;
 
-    //std::wstring m_espace1;
+    std::wstring m_espace1;
     std::wstring m_labelHeureSingulier;
     std::wstring m_labelHeurePluriel;
-    //std::wstring m_espace2;
-    //std::wstring m_espace3;
-    std::vector<std::wstring>m_spaces;
+    std::wstring m_espace2;
+    std::wstring m_espace3;
     std::wstring m_labelMinuteSingulier;
     std::wstring m_labelMinutePluriel;
     std::vector<std::wstring>m_keyColor;

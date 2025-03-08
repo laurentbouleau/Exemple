@@ -346,10 +346,8 @@ std::wstring Film::calcul_Duree_affichage() const
     long heures = m_duree / (60 * 60);
     long minutes = (m_duree % (60 * 60)) / 60;
     long secondes = m_duree % 60;
-    //duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +
-    //    std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
-    duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_spaces[0] + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_spaces[1] +
-        std::to_wstring(minutes) + m_keyColor[0] + m_spaces[2] + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
+    duree_str = L' ' + std::to_wstring(heures) + m_keyColor[0] + m_espace1 + (heures <= 1 ? m_labelHeureSingulier : m_labelHeurePluriel) + m_valuesColor + m_espace2 +
+        std::to_wstring(minutes) + m_keyColor[0] + m_espace3 + (minutes <= 1 ? m_labelMinuteSingulier : m_labelMinutePluriel) + m_valuesColor;
     return duree_str;
 }
 
@@ -801,10 +799,9 @@ void Film::initialiser_Titre(fs::path const& cheminFichier)
 
 void Film::AffichagePersonnaliser(AffichagePersonnalisation perso)
 {
-    //m_espace1 = perso.m_espace1;
-    //m_espace2 = perso.m_espace2;
-    //m_espace3 = perso.m_espace3;
-    m_spaces = perso.m_spaces;
+    m_espace1 = perso.m_espace1;
+    m_espace2 = perso.m_espace2;
+    m_espace3 = perso.m_espace3;
     m_labelHeureSingulier = perso.m_labelsHeure.first;
     m_labelHeurePluriel = perso.m_labelsHeure.second;
     m_labelMinuteSingulier = perso.m_labelsMinute.first;
