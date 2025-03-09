@@ -45,6 +45,12 @@ using DateVisionnage = DateRecord;
 //const std::vector<std::wstring> Sous_Genre;
 //const std::vector<std::wstring> Nationalite;
 
+std::wostream& PrintSerieOnOutstream(/*const*/ Serie& serie, std::wostream& out)
+{
+    serie.Print();
+    return out;
+}
+
 // ######################################################################################################################################################
 // ######################################################################################################################################################
 

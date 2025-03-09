@@ -30,7 +30,7 @@
 
 #include <filesystem> // C++17 standard header file name
 
-//extern std::wostream& Serie::PrintSerieOnOutstream(const Serie& serie, std::wostream& out);
+std::wostream& PrintSerieOnOutstream(/*const*/ Serie& serie, std::wostream& out);
 
 struct DateRecord;
 struct InfosVisionnage;
