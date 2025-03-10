@@ -105,9 +105,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     const int filename_date_month_day_month_index = filename_date_year_month_day_day_index + 1;
     const int filename_date_month_day_day_index = filename_date_month_day_month_index + 1;
     const int filename_date_day_day_index = filename_date_month_day_day_index + 1;
-    //const int filename_fucking_someFlag_index = filename_date_day_day_index + 2;
     const int filename_someFlag_index = filename_date_day_day_index + 2;
-    //const int filename_stream_index = filename_fucking_someFlag_index + 2;
     const int filename_stream_index = filename_someFlag_index + 2;
 
 
@@ -205,7 +203,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
         m_streaming = match[filename_stream_index];
     }
 
-    m_NumeroEpisode = std::stoi(match[filename_numero_episode_index]);
+    m_NumeroEpisodeDansSaison = std::stoi(match[filename_numero_episode_index]);
 
     std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
 
@@ -217,22 +215,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
         if (titles_match[1].matched)
         {
-            //int numeroDansFichier = std::stoi(titles_match[1]);
-            long numeroDansFichier = std::stoi(titles_match[1]);
-            if (numeroDansFichier != m_NumeroEpisode)
-            {
-                //std::wstring message = L"Le fichier " + nomFichier + L" contient un numéro d'épisode différent de celui dans son nom.";
-                //OutputDebugStringW(message.c_str());
-                m_numero = numeroDansFichier;
-            }
-            else
-            {
-                m_numero = m_NumeroEpisode;
-            }
-        }
-        else
-        {
-            m_numero = -1;
+            m_NumeroEpisodeDansSerie = std::stoi(titles_match[1]);
         }
 
         std::wstring titres = titles_match[2];
@@ -372,7 +355,7 @@ void SequenceVisionnage::Print(int numero_sequence, bool hors_saison) const
 
     std::wcout << numero_str << titre_str << duree_str << dates_str << resume_str << L"\r\n";
 }
-void SequenceVisionnage::Print(int numero_sequence, bool hors_saison, long numero) const
+/*void SequenceVisionnage::Print(int numero_sequence, bool hors_saison, long numero) const
 {
     std::wstring numero_str;
     std::wstring titre_str;
@@ -380,7 +363,7 @@ void SequenceVisionnage::Print(int numero_sequence, bool hors_saison, long numer
 
     if (hors_saison)
     {
-        if(numero != -1)
+        if (numero != -1)
             numero_str = std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
     }
     else
@@ -421,7 +404,7 @@ void SequenceVisionnage::Print(int numero_sequence, bool hors_saison, long numer
     }
 
     std::wcout << numero_str << titre_str << duree_str << dates_str << resume_str << L"\r\n";
-}
+}*/
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -516,11 +499,11 @@ long SequenceVisionnage::Print_Titre_chiffre(long episode) const
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_numero{ info_vis.m_NumeroEpisode }                             #
+// # Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_numero{ info_vis.m_NumeroEpisodeDansSaison }                   #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_numero{ info_vis.m_NumeroEpisode }
+Episode::Episode(const InfosVisionnage& info_vis) :m_saison{ info_vis.m_saison }, m_numero{ info_vis.m_NumeroEpisodeDansSaison }
 {
     m_saison.m_numero = info_vis.m_NumeroSaison;
     ajouter_SequenceVisionnage(info_vis);
@@ -586,8 +569,8 @@ void Episode::Print(bool hors_saison)
 
     for (const auto& sequence : m_liste_sequence_visionnages_ordonnee_chronologiquement)
     {
-        //sequence.Print(numero_sequence, hors_saison);
-        sequence.Print(numero_sequence, hors_saison, m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_numero);
+        sequence.Print(numero_sequence, hors_saison);
+        //sequence.Print(numero_sequence, hors_saison, m_liste_sequence_visionnages_ordonnee_chronologiquement[0].m_numero);
         numero_sequence++;
     }
 }
@@ -724,7 +707,7 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
         if (std::regex_match(nomFichier, std::wregex{ L"([[:digit:]]{1,2})x(.)+" }))
         {
             InfosVisionnage info_vis{ *this, cheminFichier };
-            auto it = std::find_if(m_liste_episodes.begin(), m_liste_episodes.end(), [&info_vis](const auto& x) { return x.m_numero == info_vis.m_NumeroEpisode; });
+            auto it = std::find_if(m_liste_episodes.begin(), m_liste_episodes.end(), [&info_vis](const auto& x) { return x.m_numero == info_vis.m_NumeroEpisodeDansSaison; });
             if (it != m_liste_episodes.end())
             {
                 (*it).ajouter_SequenceVisionnage(info_vis);

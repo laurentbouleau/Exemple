@@ -30,8 +30,6 @@
 
 #include <filesystem> // C++17 standard header file name
 
-std::wostream& PrintSerieOnOutstream(/*const*/ Serie& serie, std::wostream& out);
-
 struct DateRecord;
 struct InfosVisionnage;
 struct SequenceVisionnage;
@@ -58,8 +56,10 @@ struct InfosVisionnage
     std::wstring m_valuesColor = L"\x1b[38;2;255;255;255m"; // Blanc
 
     long m_NumeroSaison{};
-    long m_NumeroEpisode{};
-    long m_numero{ -1 };
+    //long m_NumeroEpisode{};
+    long m_NumeroEpisodeDansSaison{};
+    //long m_numero{ -1 };
+    long m_NumeroEpisodeDansSerie{};
     //int m_numero{ -1 };
     std::vector<DateRecord> m_DatesVisionnage{ 0 };
     std::wstring m_streaming{ L"" };
@@ -77,19 +77,19 @@ struct SequenceVisionnage
     SequenceVisionnage(const Episode& episode, const SequenceVisionnage& src) :
         m_episode{ episode }, m_titres{ src.m_titres }, m_streaming{ src.m_streaming },
         m_duree_en_seconde{ src.m_duree_en_seconde }, m_resume{ src.m_resume },
-        m_DatesVisionnage{ src.m_DatesVisionnage }, /*m_numero{src.m_numero},*/ m_NumeroEpisode{src.m_NumeroEpisode},
+        m_DatesVisionnage{ src.m_DatesVisionnage }, /*m_numero{src.m_numero},*/ m_NumeroEpisodeDansSaison{src.m_NumeroEpisodeDansSaison },
         m_keyColor{ src.m_keyColor }, m_valuesColor{ src.m_valuesColor },
         m_labelMinuteSingulier{ src.m_labelMinuteSingulier }, m_labelMinutePluriel{ src.m_labelMinutePluriel }, m_espace3{ src.m_espace3 }
-        , m_numero{src.m_numero }
+        , m_NumeroEpisodeDansSerie{src.m_NumeroEpisodeDansSerie }
     {
     };
     SequenceVisionnage(const Episode& episode, const InfosVisionnage& info_vis) :
         m_episode{ episode }, m_titres{ info_vis.m_titres }, m_streaming{ info_vis.m_streaming },
         m_duree_en_seconde{ info_vis.m_duree_en_seconde }, m_resume{ info_vis.m_resume },
-        m_DatesVisionnage{ info_vis.m_DatesVisionnage }, /*m_numero{info_vis.m_numero}, */m_NumeroEpisode{info_vis.m_NumeroEpisode},
+        m_DatesVisionnage{ info_vis.m_DatesVisionnage }, /*m_numero{info_vis.m_numero}, */m_NumeroEpisodeDansSaison{info_vis.m_NumeroEpisodeDansSaison },
         m_keyColor{ info_vis.m_keyColor }, m_valuesColor{ info_vis.m_valuesColor }
         //, m_labelMinuteSingulier{ info_vis.m_labelMinuteSingulier }, m_labelMinutePluriel{ info_vis.m_labelMinutePluriel }
-        , m_numero{ info_vis.m_numero }
+        , m_NumeroEpisodeDansSerie{ info_vis.m_NumeroEpisodeDansSerie }
     {
     };
     boolean operator==(const SequenceVisionnage& rhs) const { return this == &rhs; };
@@ -99,7 +99,7 @@ struct SequenceVisionnage
     void AffichagePersonnaliser(AffichagePersonnalisation perso);
 
     void Print(int numero_sequence, bool hors_saison) const;
-    void Print(int numero_sequence, bool hors_saison, long numero) const;
+    //void Print(int numero_sequence, bool hors_saison, long numero) const;
 
     std::wstring Print_Dates_de_visionnage() const;
     long Print_Titre_chiffre(long episode) const;//Cette fonction n'a aucun putain de sens.
@@ -119,8 +119,8 @@ struct SequenceVisionnage
     std::vector<std::wstring> m_resume{};
     std::vector<DateRecord> m_DatesVisionnage{};
 
-    long m_NumeroEpisode{ -1 };
-    long m_numero{ -1 };
+    long m_NumeroEpisodeDansSaison{ -1 };
+    long m_NumeroEpisodeDansSerie{ -1 };
     long m_duree{ -1 };
 
 private:
@@ -375,3 +375,8 @@ private:
     long m_duree_en_seconde{ -1 };
     std::vector<std::wstring> m_titres_originaux;
 };
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
+
+std::wostream& PrintSerieOnOutstream(/*const*/ Serie& serie, std::wostream& out);
