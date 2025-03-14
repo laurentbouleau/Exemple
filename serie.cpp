@@ -89,11 +89,9 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     const int dates_date_month_day_month_index = dates_date_year_month_day_day_index + 1;
     const int dates_date_month_day_day_index = dates_date_month_day_month_index + 1;
     const int dates_date_day_day_index = dates_date_month_day_day_index + 1;
-    //const int dates_fucking_someFlag_index = dates_date_day_day_index + 2;
     const int dates_someFlag_index = dates_date_day_day_index + 2;
 
     const std::wregex filename_format_rg{ numero_saison_format + sep_numero_saison + numero_episode_format + sep_episode_saison + L"(" + dates_format + L"+)" + stream_format };
-    //const std::wregex filename_format_rg{ sep_numero_saison + numero_episode_format + sep_episode_saison + L"(" + dates_format + L"+)" + stream_format };
 
     const int filename_full_match_index = 0;
     const int filename_numero_saison_index = filename_full_match_index + 1;
@@ -108,7 +106,6 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     const int filename_someFlag_index = filename_date_day_day_index + 2;
     const int filename_stream_index = filename_someFlag_index + 2;
 
-
     auto nomFichier = m_cheminFichier.filename().wstring();
 
     assert(nomFichier.length() > 0 && L"Nom de fichier Épisode vide");
@@ -117,13 +114,10 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     assert((stem.length() > 9) && L"Nom de fichier Épisode trop court pour avoir au moins une date");
 
     assert(std::isdigit(stem[0]) && L"Nom de fichier Épisode ne commençant pas par un nombre");
-    //m_NumeroSaison = std::stoi(stem);
     
     assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");// saison == m_NumeroSaison
-    //
-    assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
-//    assert(std::regex_match(stem, filename_format_rg) && L"Le nom du fichier n'est pas valide");
 
+    assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
 
     std::wsmatch match;
     auto str = stem;
@@ -209,30 +203,36 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
     if (file_content.size() > 0)
     {
-        const std::wregex numeroPlusTitres_rg{ L"(?:(\\d)+\\.)?(.*)" };
-        std::wsmatch titles_match;
-        std::regex_match(file_content[0], titles_match, numeroPlusTitres_rg);
-
-        if (titles_match[1].matched)
-        {
-            m_NumeroEpisodeDansSerie = std::stoi(titles_match[1]);
-        }
-
-        std::wstring titres = titles_match[2];
-
-        trim(titres);
-
-        m_titres = extraire_Titres_Depuis_UneLigne(titres);
-
-        if (file_content.size() > 1)
-            initialiser_Duree(file_content[1]);
-
-        if (file_content.size() > 2)
-        {
-            file_content.erase(file_content.begin(), file_content.begin() + 2);
-            m_resume = file_content;
-        }
+        InfosVisionnage_file_content(file_content);
     }
+}
+
+void InfosVisionnage::InfosVisionnage_file_content(std::vector<std::wstring>file_content)
+{
+    const std::wregex numeroPlusTitres_rg{ L"(?:(\\d)+\\.)?(.*)" };
+    std::wsmatch titles_match;
+    std::regex_match(file_content[0], titles_match, numeroPlusTitres_rg);
+
+    if (titles_match[1].matched)
+    {
+        m_NumeroEpisodeDansSerie = std::stoi(titles_match[1]);
+    }
+
+    std::wstring titres = titles_match[2];
+
+    trim(titres);
+
+    m_titres = extraire_Titres_Depuis_UneLigne(titres);
+
+    if (file_content.size() > 1)
+        initialiser_Duree(file_content[1]);
+
+    if (file_content.size() > 2)
+    {
+        file_content.erase(file_content.begin(), file_content.begin() + 2);
+        m_resume = file_content;
+    }
+
 }
 
 // ######################################################################################################################################################
@@ -315,6 +315,7 @@ void SequenceVisionnage::Print(int numero_sequence, bool hors_saison) const
 
     if (hors_saison)
     {
+        //numero_str = std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
         numero_str = std::to_wstring(m_episode.m_numero) + m_keyColor[1] + L" : " + m_valuesColor;
     }
     else

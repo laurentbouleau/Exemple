@@ -50,6 +50,8 @@ struct InfosVisionnage
 
     InfosVisionnage(const Saison& saison, std::filesystem::path const& m_cheminFichier);
 
+    void InfosVisionnage_file_content(std::vector<std::wstring>file_content);
+
     std::filesystem::path m_cheminFichier;
 
     std::vector<std::wstring>m_keyColor{ L"\x1b[94;1m", L"\x1b[38;2;0;255;0m" }; // keyColor[0] (bleu) et keyColor[1] (vert)
