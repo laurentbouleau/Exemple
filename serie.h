@@ -49,7 +49,6 @@ struct InfosVisionnage
     const Saison& m_saison;
 
     InfosVisionnage(const Saison& saison, std::filesystem::path const& m_cheminFichier);
-
     void InfosVisionnage_file_content(std::vector<std::wstring>file_content);
 
     std::filesystem::path m_cheminFichier;
