@@ -49,6 +49,8 @@ struct InfosVisionnage
     const Saison& m_saison;
 
     InfosVisionnage(const Saison& saison, std::filesystem::path const& m_cheminFichier);
+    void InfosVisionnage_dates(const std::wregex filename_format_rg, const int filename_numero_saison_index, const int filename_dates_index, 
+        const std::wstring dates_format, const int dates_date_year_month_day_year_index, std::wstring stem);
     void InfosVisionnage_file_content(std::vector<std::wstring>file_content);
 
     std::filesystem::path m_cheminFichier;

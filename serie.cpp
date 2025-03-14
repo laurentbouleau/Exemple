@@ -119,6 +119,93 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
     assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
 
+/*   std::wsmatch match;
+    auto str = stem;
+    //Exemple assez complexe de nom de fichier
+    //str = L"1x01.2024-02-01_2024-02-02_02-03_0405 Netflix";
+    std::regex_match(str, match, filename_format_rg);
+
+    if (match[filename_numero_saison_index].matched)
+        m_NumeroSaison = std::stoi(match[filename_numero_saison_index]);
+
+    std::wsmatch dates_match;
+    auto dates_str = match[filename_dates_index].str();
+    while (std::regex_search(dates_str, dates_match, std::wregex{ dates_format }))
+    {
+        if (dates_match[dates_date_year_month_day_year_index].matched)
+        {
+            auto year = std::stoi(dates_match[dates_date_year_month_day_year_index]);
+            auto month = std::stoi(dates_match[dates_date_year_month_day_month_index]);
+            auto day = std::stoi(dates_match[dates_date_year_month_day_day_index]);
+
+            assert(checkyear(year));
+            assert(checkmonth(month));
+            assert(checkday(month, day, year));
+
+            DateRecord dr{ {0,0,0,day,month - 1,year - 1900} };
+
+            m_DatesVisionnage.emplace_back(dr);
+        }
+        else if (dates_match[dates_date_month_day_month_index].matched)
+        {
+            assert(m_DatesVisionnage.size() > 0 && L"Utilisation d'un format mois-jour sans avoir d'année déduite.");
+
+            auto month = std::stoi(dates_match[dates_date_month_day_month_index]);
+            auto day = std::stoi(dates_match[dates_date_month_day_day_index]);
+
+            auto lastDateRecord = m_DatesVisionnage.back();
+            auto last_year = lastDateRecord.date.tm_year + 1900;
+
+            assert(checkmonth(month));
+            assert(checkday(month, day, last_year));
+
+            DateRecord dr{ {0,0,0,day,month - 1,last_year - 1900} };
+
+            m_DatesVisionnage.emplace_back(dr);
+        }
+        else if (dates_match[dates_date_day_day_index].matched)
+        {
+            assert(m_DatesVisionnage.size() > 0 && L"Utilisation d'un format jour sans avoir de mois et d'années déduits.");
+
+            auto day = std::stoi(dates_match[dates_date_day_day_index]);
+
+            auto lastDateRecord = m_DatesVisionnage.back();
+            auto last_year = lastDateRecord.date.tm_year + 1900;
+            auto last_month = lastDateRecord.date.tm_mon + 1;
+
+            assert(checkday(last_month, day, last_year));
+
+            DateRecord dr{ {0,0,0,day,last_month - 1,last_year - 1900} };
+
+            m_DatesVisionnage.emplace_back(dr);
+        }
+        else
+        {
+            assert(true && L"format de date d'épisode inconnu.");
+        }
+
+        if (dates_match[dates_someFlag_index].matched)
+        {
+            m_DatesVisionnage.back().someFlag = true;
+        }
+
+        dates_str = dates_match.suffix().str();
+    }
+
+    m_NumeroEpisodeDansSaison = std::stoi(match[filename_numero_episode_index]);
+    */
+    InfosVisionnage_dates(filename_format_rg, filename_numero_saison_index, filename_dates_index, dates_format, dates_date_year_month_day_year_index, stem);
+
+    std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
+
+    if (file_content.size() > 0)
+    {
+        InfosVisionnage_file_content(file_content);
+    }
+}
+
+void InfosVisionnage::InfosVisionnage_dates(const std::wregex filename_format_rg, const int filename_numero_saison_index, const int filename_dates_index, const std::wstring dates_format, const int dates_date_year_month_day_year_index, std::wstring stem)
+{
     std::wsmatch match;
     auto str = stem;
     //Exemple assez complexe de nom de fichier
@@ -198,13 +285,6 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     }
 
     m_NumeroEpisodeDansSaison = std::stoi(match[filename_numero_episode_index]);
-
-    std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
-
-    if (file_content.size() > 0)
-    {
-        InfosVisionnage_file_content(file_content);
-    }
 }
 
 void InfosVisionnage::InfosVisionnage_file_content(std::vector<std::wstring>file_content)
