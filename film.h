@@ -135,6 +135,7 @@ private:
     std::wstring m_netflix_sj;
     double m_note = 0.0;
     std::wstring m_sj;
+    std::wstring m_paramount_sj;
     std::vector<std::pair<std::wstring, std::wstring>> m_soundtrack;
     std::wstring m_sous_genre;
     std::wstring m_sur;

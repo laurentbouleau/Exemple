@@ -393,6 +393,8 @@ std::wstring Film::calcul_X_Signaletique_Jeunesse_affichage(std::wstring& sur) c
         x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Disney+" + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj + m_keyColor[0] + L')' + m_valuesColor;
     if (m_netflix_sj != L"" && sur != L"Netflix")
         x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Netflix" + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj + m_keyColor[0] + L')' + m_valuesColor;
+    if (m_paramount_sj != L"" && sur != L"Paramount+")
+        x_signaletique_jeunesse_str += m_keyColor[0] + L" (" + m_valuesColor + L"Paramount+" + m_keyColor[1] + L" : " + m_valuesColor + m_paramount_sj + m_keyColor[0] + L')' + m_valuesColor;
     return x_signaletique_jeunesse_str;
 }
 

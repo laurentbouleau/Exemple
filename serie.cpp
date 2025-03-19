@@ -68,7 +68,7 @@ static bool ends_with(std::wstring_view str, std::wstring_view suffix)
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier) : m_saison{ saison }
+/*InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier) : m_saison{saison}
 { 
     // ([[:digit:]]+)x([[:digit:]]{1,3})\\.(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})))(_?))+)(\\s(.+))?
     const std::wstring numero_saison_format = L"([[:digit:]]{1,2})"; // saison
@@ -119,7 +119,7 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
 
     assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
 
-/*   std::wsmatch match;
+    std::wsmatch match;
     auto str = stem;
     //Exemple assez complexe de nom de fichier
     //str = L"1x01.2024-02-01_2024-02-02_02-03_0405 Netflix";
@@ -193,8 +193,8 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     }
 
     m_NumeroEpisodeDansSaison = std::stoi(match[filename_numero_episode_index]);
-    */
-    InfosVisionnage_dates(filename_format_rg, filename_numero_saison_index, filename_dates_index, dates_format, dates_date_year_month_day_year_index, stem);
+    
+    //InfosVisionnage_dates(filename_format_rg, filename_numero_saison_index, filename_dates_index, dates_format, dates_date_year_month_day_year_index, stem);
 
     std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
 
@@ -202,9 +202,72 @@ InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminF
     {
         InfosVisionnage_file_content(file_content);
     }
+}*/
+
+InfosVisionnage::InfosVisionnage(const Saison& saison, fs::path const& m_cheminFichier) : m_saison{ saison }
+{
+
+
+    auto nomFichier = m_cheminFichier.filename().wstring();
+
+    assert(nomFichier.length() > 0 && L"Nom de fichier Épisode vide");
+
+    auto stem = m_cheminFichier.stem().wstring();
+    assert((stem.length() > 9) && L"Nom de fichier Épisode trop court pour avoir au moins une date");
+
+    assert(std::isdigit(stem[0]) && L"Nom de fichier Épisode ne commençant pas par un nombre");
+
+    assert((m_NumeroSaison <= 1000) && L"x <= 1000 !!!");// saison == m_NumeroSaison
+
+    assert((stem.find(L"x", 0) != std::wstring::npos) && L"Saison::afficher_Episode() :  x !!!");
+
+    AnalyserStem(stem);
+
+    std::vector<std::wstring> file_content = lire_fichierTxt(m_cheminFichier.wstring(), { L"\n" }, false);
+
+    if (file_content.size() > 0)
+    {
+        AnalyserContenu(file_content);
+    }
 }
 
-void InfosVisionnage::InfosVisionnage_dates(const std::wregex filename_format_rg, const int filename_numero_saison_index, const int filename_dates_index, const std::wstring dates_format, const int dates_date_year_month_day_year_index, std::wstring stem)
+// ([[:digit:]]+)x([[:digit:]]{1,3})\\.(((([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})-([[:digit:]]{2})|([[:digit:]]{2})))(_?))+)(\\s(.+))?
+const std::wstring numero_saison_format = L"([[:digit:]]{1,2})"; // saison
+const std::wstring sep_numero_saison = L"x"; // x
+const std::wstring numero_episode_format = L"([[:digit:]]{1,3})"; // episode
+const std::wstring sep_episode_saison = L"\\."; //.
+
+const std::wstring date_year_month_day_format = L"([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})";
+const std::wstring date_month_day_format = L"([[:digit:]]{2})-([[:digit:]]{2})";
+const std::wstring date_day_format = L"([[:digit:]]{2})";
+const std::wstring stream_format = L"(\\s(.+))?";
+const std::wstring dates_format = L"((" + date_year_month_day_format + L"|" + date_month_day_format + L"|" + date_day_format + L")(_?))";
+
+const int dates_full_match_index = 0;
+const int dates_date_year_month_day_year_index = dates_full_match_index + 3;
+const int dates_date_year_month_day_month_index = dates_date_year_month_day_year_index + 1;
+const int dates_date_year_month_day_day_index = dates_date_year_month_day_month_index + 1;
+const int dates_date_month_day_month_index = dates_date_year_month_day_day_index + 1;
+const int dates_date_month_day_day_index = dates_date_month_day_month_index + 1;
+const int dates_date_day_day_index = dates_date_month_day_day_index + 1;
+const int dates_someFlag_index = dates_date_day_day_index + 2;
+
+const std::wregex filename_format_rg{ numero_saison_format + sep_numero_saison + numero_episode_format + sep_episode_saison + L"(" + dates_format + L"+)" + stream_format };
+
+const int filename_full_match_index = 0;
+const int filename_numero_saison_index = filename_full_match_index + 1;
+const int filename_numero_episode_index = filename_numero_saison_index + 1;
+const int filename_dates_index = filename_numero_episode_index + 1;
+const int filename_date_year_month_day_year_index = filename_dates_index + 2;
+const int filename_date_year_month_day_month_index = filename_date_year_month_day_year_index + 1;
+const int filename_date_year_month_day_day_index = filename_date_year_month_day_month_index + 1;
+const int filename_date_month_day_month_index = filename_date_year_month_day_day_index + 1;
+const int filename_date_month_day_day_index = filename_date_month_day_month_index + 1;
+const int filename_date_day_day_index = filename_date_month_day_day_index + 1;
+const int filename_someFlag_index = filename_date_day_day_index + 2;
+const int filename_stream_index = filename_someFlag_index + 2;
+
+void InfosVisionnage::AnalyserStem(std::wstring stem)
 {
     std::wsmatch match;
     auto str = stem;
@@ -287,7 +350,7 @@ void InfosVisionnage::InfosVisionnage_dates(const std::wregex filename_format_rg
     m_NumeroEpisodeDansSaison = std::stoi(match[filename_numero_episode_index]);
 }
 
-void InfosVisionnage::InfosVisionnage_file_content(std::vector<std::wstring>file_content)
+void InfosVisionnage::AnalyserContenu(std::vector<std::wstring>file_content)
 {
     const std::wregex numeroPlusTitres_rg{ L"(?:(\\d)+\\.)?(.*)" };
     std::wsmatch titles_match;
@@ -317,7 +380,7 @@ void InfosVisionnage::InfosVisionnage_file_content(std::vector<std::wstring>file
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
-// # InfosVisionnage::initialiser_Duree(std::wstring& m)                                                                                                #
+// # void InfosVisionnage::initialiser_Duree(std::wstring& m)                                                                                           #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -335,6 +398,39 @@ void InfosVisionnage::initialiser_Duree(std::wstring& m)
     else
     {
         throw std::invalid_argument("'" + std::string{ m.begin(),m.end() } + "' n'est pas un format de durée valide.");
+    }
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # void InfosVisionnage::initialiser_file_content(std::vector<std::wstring>file_content)                                                              #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+// ???
+void InfosVisionnage::InfosVisionnage_file_content(std::vector<std::wstring>file_content)
+{
+    const std::wregex numeroPlusTitres_rg{ L"(?:(\\d)+\\.)?(.*)" };
+    std::wsmatch titles_match;
+    std::regex_match(file_content[0], titles_match, numeroPlusTitres_rg);
+
+    if (titles_match[1].matched)
+    {
+        m_NumeroEpisodeDansSerie = std::stoi(titles_match[1]);
+    }
+
+    std::wstring titres = titles_match[2];
+
+    trim(titres);
+
+    m_titres = extraire_Titres_Depuis_UneLigne(titres);
+
+    if (file_content.size() > 1)
+        initialiser_Duree(file_content[1]);
+
+    if (file_content.size() > 2)
+    {
+        file_content.erase(file_content.begin(), file_content.begin() + 2);
+        m_resume = file_content;
     }
 }
 
@@ -1522,23 +1618,23 @@ std::wstring Serie::format_Annees() const
 
 std::wstring Serie::format_AnneesEtSur(std::wstring& annees_str, std::wstring& sur_str) const
 {
-    //if(!affichage_annees_actif && !affichage_sur_actif)
-    //    return L"";
     const std::wstring crochet_ouvrant_str = m_keyColor[0] + L" [" + m_valuesColor;
     const std::wstring crochet_fermant_str = m_keyColor[0] + L"]" + m_valuesColor;
     const wchar_t espace_str = L' ';
     std::wstring annees_et_sur = crochet_ouvrant_str;
     annees_et_sur += annees_str;
-    if (sur_str == L"Disney+" && m_disney_sj.size() != 0)
+    if (sur_str == L"-" || sur_str == L"")
+        annees_et_sur += L"";
+    else if (sur_str == L"Disney+" && m_disney_sj.size() != 0)
         annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_disney_sj;
     else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
         annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
-    else if (sur_str == L"Netflix" && m_netflix_sj.size() != 0)
-        annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_netflix_sj;
+    else if (sur_str == L"Paramount+" && m_paramount_sj.size() != 0)
+        annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str + m_keyColor[1] + L" : " + m_valuesColor + m_paramount_sj;
     else if (sur_str.size() != 0)
         annees_et_sur += espace_str + m_keyColor[0] + m_valuesColor + m_keyColor[1] + L"sur " + m_valuesColor + sur_str;
     else
-        ;
+        ; // ???
     return annees_et_sur + crochet_fermant_str;
 }
 

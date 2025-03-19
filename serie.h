@@ -49,9 +49,11 @@ struct InfosVisionnage
     const Saison& m_saison;
 
     InfosVisionnage(const Saison& saison, std::filesystem::path const& m_cheminFichier);
-    void InfosVisionnage_dates(const std::wregex filename_format_rg, const int filename_numero_saison_index, const int filename_dates_index, 
-        const std::wstring dates_format, const int dates_date_year_month_day_year_index, std::wstring stem);
-    void InfosVisionnage_file_content(std::vector<std::wstring>file_content);
+    /*void InfosVisionnage_dates(const std::wregex filename_format_rg, const int filename_numero_saison_index, const int filename_dates_index,
+        const std::wstring dates_format, const int dates_date_year_month_day_year_index, std::wstring stem);*/
+
+    void AnalyserContenu(std::vector<std::wstring>file_content);
+    void AnalyserStem(std::wstring stem);
 
     std::filesystem::path m_cheminFichier;
 
@@ -73,6 +75,7 @@ struct InfosVisionnage
 
 private:
     void initialiser_Duree(std::wstring& m);
+    void InfosVisionnage_file_content(std::vector<std::wstring>file_content);
 };
 
 struct SequenceVisionnage
@@ -367,6 +370,7 @@ private:
     std::vector<std::wstring> m_nationalite;
     std::wstring m_netflix_sj;
     double m_note{ 0.0 };
+    std::wstring m_paramount_sj;
     std::wstring m_sj;
     std::wstring m_sous_genre;
     std::wstring m_sur;
