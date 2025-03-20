@@ -579,7 +579,24 @@ std::wstring recuperer_Netflix_SJ(fs::path const& cheminFichier, std::vector<std
     auto stem = cheminFichier.stem().wstring();
     m_catalogue.push_back(stem);
 
-    return filter_values(content, { L"7\\+",L"10\\+",L"13\\+", L"16\\+", L"18\\+", L"Tous publics" });
+    return filter_values(content, { L"7\\+", L"10\\+", L"13\\+", L"16\\+", L"18\\+", L"Tous publics" });
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # std::wstring recuperer_Paramount_SJ(fs::path const& cheminFichier, std::vector<std::wstring>& m_catalogue)                                         #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+std::wstring recuperer_Paramount_SJ(fs::path const& cheminFichier, std::vector<std::wstring>& m_catalogue)
+{ // Paramount+ : 0+ 6+ 12+ 16+ 18+
+    auto nomFichier = cheminFichier.wstring();
+    std::wstring content = lire_fichierTxt(nomFichier);
+
+    auto stem = cheminFichier.stem().wstring();
+    m_catalogue.push_back(stem);
+
+    return filter_values(content, { L"0\\+", L"6\\+", L"12\\+", L"16\\+", L"18\\+"});
 }
 
 // ######################################################################################################################################################
