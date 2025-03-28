@@ -1429,7 +1429,7 @@ void Saison::Print_Note()
     }
 }*/
 
-Serie::Serie(std::filesystem::path racine)
+/*Serie::Serie(std::filesystem::path racine)
 {
     this->racine = racine;
     auto nomDossier = racine.filename().wstring();
@@ -1453,6 +1453,46 @@ Serie::Serie(std::filesystem::path racine)
             {
                 m_f_anneesProduction.first = stoi(annees_str);
                 m_f_anneesProduction.second = stoi(annees_str.substr(5));
+            }
+            else
+            {
+                m_f_anneesProduction.first = stoi(annees_str);
+            }
+        }
+
+        m_sur = (match[3].matched) ? match[3].str() : L"";
+        m_sous_genre = (match[4].matched) ? match[4].str() : L"";
+    }
+    else
+    {
+        assert(false == true && "Le nom du répertoire n'est pas un nom valide.");
+    }
+}*/
+Serie::Serie(std::filesystem::path racine)
+{
+    this->racine = racine;
+    auto nomDossier = racine.filename().wstring();
+    assert(nomDossier.length() > 0 && L"Nom de dossier vide");
+
+    std::wregex filename_pattern{ L"^(.+?)(?:\\.\\[(\\d{4}\\-\\d{4}\\s|\\d{4}\\-\\d{4}|\\d{4}\\-\\s|\\d{4}\\s|\\d{4})([^\\]]*)\\])(?:\\.(.+))?$|^(.+)(?:\\.(.+))$" };
+    std::wsmatch match;
+    if (std::regex_match(nomDossier, match, filename_pattern))
+    {
+        std::wstring titres = match[1];
+        m_titres = extraire_Titres_Depuis_NomDeFichierOuDeRepertoire(titres);
+        if (match[2].matched)
+        {
+            std::wstring annees_str = match[2].str();
+            std::wsmatch dummy;
+            if (std::regex_match(annees_str, dummy, std::wregex(L"\\d{4}\\-\\d{4}\\s?")))
+            {
+                m_f_anneesProduction.first = stoi(annees_str);
+                m_f_anneesProduction.second = stoi(annees_str.substr(5));
+            }
+            else if (std::regex_match(annees_str, dummy, std::wregex(L"\\d{4}\\s?")))
+            {
+                m_f_anneesProduction.first = stoi(annees_str);
+                m_f_anneesProduction.second = stoi(annees_str);
             }
             else
             {
@@ -1652,11 +1692,12 @@ void Serie::corriger_Annee_Fin()
 
 std::wstring Serie::format_Annees() const
 {
-    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
+    if (m_f_anneesProduction.first && m_f_anneesProduction.second && m_f_anneesProduction.first != m_f_anneesProduction.second)
     {
-        return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(m_f_anneesProduction.second.value());
+        std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
+        return std::to_wstring(anneesDiffusion.first) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(anneesDiffusion.second);
     }
-    else if (m_f_anneesProduction.first && !(m_f_anneesProduction.second))
+    else if (m_f_anneesProduction.first && m_f_anneesProduction.second)
     {
         return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value());// +m_keyColor[1] + L'-';
     }
@@ -1664,11 +1705,9 @@ std::wstring Serie::format_Annees() const
     {
         return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-';
     }
-    else
+    /*else
     {
-        std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
-        return std::to_wstring(anneesDiffusion.first) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(anneesDiffusion.second);
-    }
+    }*/
 }
 
 // ######################################################################################################################################################
