@@ -1616,7 +1616,7 @@ std::wstring Serie::format_Annees() const
         return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-';
     }
     /*else if (m_f_anneesProduction.first)
-    {                                                                           // Ok !
+    {
         return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-';
     }*/
     else
@@ -1625,6 +1625,7 @@ std::wstring Serie::format_Annees() const
         return std::to_wstring(anneesDiffusion.first) + m_keyColor[1] + L'-' + m_valuesColor + std::to_wstring(anneesDiffusion.second);
     }
 }
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # std::wstring Serie::format_AnneesEtSur(std::wstring& annees_str, std::wstring& sur_str) const                                                      #
@@ -1824,7 +1825,6 @@ void Serie::PostTraitement()
 {
     //    std::list<Saison> m_hors_saisons;
     //    std::list<Saison> m_non_hors_saisons;
-
     for (auto& saison : saisons)
     {
         if (saison.m_hors_saison)
