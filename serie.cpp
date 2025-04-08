@@ -1600,9 +1600,9 @@ void Serie::corriger_Annee_Fin()
 
 std::wstring Serie::format_Annees() const
 {
-    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
+    if (m_f_anneesProduction.first == m_f_anneesProduction.second)
     {
-        if (m_f_anneesProduction.first == m_f_anneesProduction.second)
+        if (m_f_anneesProduction.first&& m_f_anneesProduction.second)
         {
             return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value());
         }
@@ -1615,10 +1615,6 @@ std::wstring Serie::format_Annees() const
     {
         return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-';
     }
-    /*else if (m_f_anneesProduction.first)
-    {
-        return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value()) + m_keyColor[1] + L'-';
-    }*/
     else
     {
         std::pair<int, int> anneesDiffusion = calculer_Annees_Diffusion();
