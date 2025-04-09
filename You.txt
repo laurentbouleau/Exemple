@@ -1,0 +1,353 @@
+d:
+cd /work/prg/cpp/you/x64/Release
+d:
+cd /work/prg/cpp/You - Copie/x64/Release
+d:
+cd /work/prg/cpp/You - Copie/x64/Debug
+d:
+cd /work/prg/cpp/You - Copie - Copie/x64/Release
+d:
+cd /work/prg/cpp/Console/x64/Release
+Console
+d:
+cd /work/prg/cpp/Exemple/x64/Release
+Exemple
+
+you /t s "e:\Séries.[]\Will Trent.[2023-]"
+rem cd /work/prg/cpp/you/x64/Debug
+you /t s "e:\Séries.[]\Wxcvbn - Cabinet de curiosités de Guillermo del Toro.[2021 Netflix].Manga"
+you /t s "e:\Séries.[]\+++\W\World's Most Wanted.[2020 Netflix].Mini-série"
+you /t s "e:\Séries.[]\Qsdfghjklm - Wxcvbn.[2021 Netflix].Manga"
+you /t s "e:\Séries.[]\Azertyuiop.[2021- Netflix].Manga"
+you /t s "e:\Séries.[]\++++\G\Giri$Haji.[2019].Mini-série"
+you /t s "e:\Séries.[]\++++\L\La casa de papel.[2017- Netflix]"
+you /t s "e:\Séries.[]\Blacklist.[2013-]"
+you /t s "e:\Séries.[]\+++\Q\Qui a tué Sara $.[2021- Netflix]"
+you /t s "e:\Séries.[]\+++\B\B - The Beginning.[2018 Netflix].Manga"
+you /t s "e:\Séries.[]\++++\A\Arcane.[2021- Netflix].Animation"
+you /t s "e:\Séries.[]\+++\M\Maid.[2021 Netflix].Mini-série"
+you /t s "e:\Séries.[]\++++\T\The Spy.[2019 Netflix].Mini-série"
+you /t s "e:\Séries.[]\++++\H\Hellbound.[2021- Netflix]"
+you /t s "e:\Séries.[]\++++\C\Cowboy Bebop.[2021 Netflix]"
+you /t s "e:\Séries.[]\++++\L\La disparition de Maddie McCann.[2019 Netflix].Documentaire"
+you /t s "e:\Séries.[]\+++\P\Perdus dans l'espace.[2018- Netflix]"
+you /t s "e:\Séries.[]\+++\D\Don't F++k With Cats - Un tueur trop viral.[2019 Netflix].Mini-série"
+you /t s "e:\Séries.[]\++++\T\The Silent Sea.[2021 Netflix]"
+you /t s "e:\Séries.[]\++++\A\All of Us Are Dead.[2022- Netflix]"
+you /t s "e:\Séries.[]\+++\L\Le Traqueur de la nuit - Chasse à l'homme en Californie.[2021 Netflix].Documentaire"
+you /t s "e:\Séries.[]\++++\T\The Last Kingdom.[2015- Netflix]"
+you /t s "e:\Séries.[]\+++\L\Le Mobile.[2021 Netflix].Mini-série"
+you /t s "e:\Séries.[]\+++\M\My Hero Academia.[2016- ].Manga"
+you /t s "e:\Séries.[]\+++\L\La Chronique des Bridgerton.[2020- Netflix]"
+you /t s "e:\Séries.[]\++++\T\To the Lake.[2019 Netflix]"
+you /t s "e:\Séries.[]\++++\P\Pacific Rim - The Black.[2021- Netflix].Animation"
+you /t s "e:\Séries.[]\+++\O\Ozark.[2017 Netflix]"
+you /t s "e:\Séries.[]\++++\G\Ghost in the Shell - SAC_2045.[2020 Netflix].Manga"
+you /t s "e:\Séries.[]\+++\#\42 jours d'obscurité.[2022 Netflix]"
+you /t s "e:\Séries.[]\++++\B\Brand New Cherry Flavor.[2021 Netflix]"
+you /t s "e:\Séries.[]\++++\S\Stranger Things.[2016- Netflix]"
+you /t s "e:\Séries.[]\++\S\Super Crooks.[2021 Netflix].Manga"
+you /t s "e:\Séries.[]\+++\U\Une nuit en enfer - La série.[2014-2016]"
+you /t s "e:\Séries.[]\+++\L\La Défense Lincoln.[2022 Netflix]"
+you /t s "e:\Séries.[]\Suits - Avocats sur mesure.[2011-2019]"
+you /t s "e:\Séries.[]\++++\A\À l'ère des leurres - L'Internet du crime.[2022 Netflix].Mini-série"
+you /t s "e:\Séries.[]\+++++\U\Umbrella Academy.[2019- Netflix]"
+you /t s "e:\Séries.[]\+++\G\God's Favorite Idiot.[2022 Netflix]"
+you /t s "e:\Séries.[]\+++\Q\Quel avenir pour….[2022 Netflix].Mini-série"
+you /t s "e:\Séries.[]\+++\N\Navires de Guerre - Dans l'enfer des combats.[2020 Netflix].Mini-série"
+you /t s "e:\Séries.[]\++++\R\Resident Evil - The Series.[2022 Netflix]"
+you /t s "e:\Séries.[]\++++\R\Resident Evil - Infinite Darkness.[2021- Netflix].Animation"
+you /t s "e:\Séries.[]\+++\V\Vinland Saga.[2019-].Manga"
+you /t s "e:\Séries.[]\++++\L\Le Parcours des tyrans.[2021 Netflix].Mini-série"
+you /t s "e:\Séries.[]\+++\R\Respirer.[2022 Netflix].Mini-série"
+you /t s "e:\Séries.[]\++++\T\The Witcher.[2019- Netflix]"
+you /t s "e:\Séries.[]\+++\E\Endless Night.[2022 Netflix]"
+you /t s "e:\Séries.[]\++++\L\Locke & Key.[2020- Netflix]"
+you /t s "e:\Séries.[]\++++\J\J'ai tué mon père.[2022 Netflix].Docu-séries"
+you /t s "e:\Séries.[]\++++\S\Sandman.[2022 Netflix]"
+you /t s "e:\Séries.[]\++++\V\Voyage aux confins de l'esprit.[2022 Netflix].Docu-séries"
+you /t s "e:\Séries.[]\+++\C\Chaos d'anthologie - Woodstock 99.[2022 Netflix].Docu-séries"
+you /t s "e:\Séries.[]\+++\D\Cobra Kai.[2018- Netflix]"
+you /t s "e:\Séries.[]\+++\D\Destin - La saga Winx.[2021 Netflix]"
+you /t s "e:\Séries.[]\++++\D\Dahmer - Monstre - L'histoire de Jeffrey Dahmer.[2022 Netflix]"
+you /t s "e:\Séries.[]\++++\L\Le Sauvetage de l'impossible.[2022 Netflix]"
+you /t s "e:\Séries.[]\+++\L\La Crue.[2022 Netflix]"
+you /t s "e:\Séries.[]\+++\G\Glitch.[2022 Netflix]"
+you /t s "e:\Séries.[]\28 jours de terreur.[2022 Netflix]"
+you /t s "e:\Séries.[]\+++\I\Inside Man.[2022]"
+you /t s "e:\Séries.[]\++++\T\The Crown.[2016- Netflix]"
+you /t s "e:\Séries.[]\+++\W\Warrior Nun.[2020- Netflix]"
+you /t s "e:\Séries.[]\+++\L\Les Héritiers de la terre.[2022 Netflix]"
+you /t s "e:\Séries.[]\+++\M\Mercredi.[2022 Netflix]"
+you /t s "e:\Séries.[]\+++\H\Hot Skull.[2021]"
+you /t s "e:\Séries.[]\+++\G\GameStop - Les geeks défient Wall Street.[2022 Netflix].Mini-série"
+you /t s "e:\Séries.[]\+++\T\Toujours là pour toi.[2021- Netflix]"
+you /t s "e:\Séries.[]\+++\M\Money Heist- Korea.[2022- Netflix]"
+you /t s "e:\Séries.[]\+++\P\Parasite - la maxime.[2014-2015].Manga"
+you /t s "e:\Séries.[]\+++\D\Dragon Age- Absolution.[2022 Netflix].Animation"
+you /t s "e:\Séries.[]\++++\P\Peaky Blinders.[2013-2022]"
+you /t s "e:\Séries.[]\+++\D\Drifting Dragons.[2020 Netflix].Manga"
+you /t s "e:\Séries.[]\+++\H\Half Bad - Mal & Fils.[2022 Netflix]"
+you /t s "e:\Séries.[]\++++\A\Alice in Borderland.[2020- Netflix]"
+you /t s "e:\Séries.[]\+++\I\I am a Killer.[2018- Netflix].Docu-séries"
+you /t s "e:\Séries.[]\+++\L\Lockwood & Co.[2023- Netflix]"
+you /t s "e:\Séries.[]\Fauda.[2015-]"
+you /t s "e:\Séries.[]\++++\M\Make My Day.[2023 Netflix].Manga"
+you /t s "e:\Séries.[]\+++\Y\You.[2018- Netflix]"
+you /t s "e:\Séries.[]\+++\M\Maniac par Junji Ito - Anthologie macabre.[2023 Netflix].Manga"
+you /t s "e:\Séries.[]\+++\R\Red Rose.[2022]"
+you /t s "e:\Séries.[]\+++\B\Braqueurs - La série.[2021 Netflix]"
+you /t s "e:\Séries.[]\++++\T\The Sinner.[2017-]"
+you /t s "e:\Séries.[]\++++\S\Shadow and Bone - La saga Grisha.[2021- Netflix]"
+you /t s "e:\Séries.[]\++++\B\Black Mirror.[2011-2023 Netflix]"
+you /t s "e:\Séries.[]\++++\T\The Witcher.[2019- Netflix]"
+you /t s "e:\Séries.[]\Archer.[2009-2023].Animation"
+You /t s "e:/Séries.[]/++++/T/The Walking Dead.[2010-2022]"
+rem Better Call Saul.[2015-2022] : 1x01.2024-02-01.txt ===> 1. Uno █, 5x07.2024-03-17.txt 7. JMM █
+you /t s "e:\Séries.[]\++++\B/Better Call Saul.[2015-2022]"
+you /t s "e:\Séries.[]\++++\A\Andor.[2022- Disney+]"
+you /t s "e:\Séries.[]\+++\D\Dr. STONE.[2019- Crunchyroll].Manga"
+you /t s "e:\Séries.[]\++++\L\La Créature de Kyongsong.[2023- Netflix]"
+you /t s "e:\Séries.[]\++++\D\Demon Slayer- Kimetsu no Yaiba.[2019- Crunchyroll].Manga"
+you /t s "e:\Séries.[]\++++\L\L'Attaque des Titans.[2013- Crunchyroll].Manga"
+you /t s "e:\Séries.[]\++++\M\My Happy Marriage.[2023-].Manga"
+you /t s "e:\Séries.[]\++++\L\Love, Death + Robots.[2019- Netflix].Animation"
+you /t s "e:\Séries.[]\++++\S\Squid Game.[2021- Netflix].Mini-série"
+you /t s "e:\Séries.[]\Overlord.[2015-].Manga"
+you /t s "e:\Séries.[]\Scream Queens.[2015-2016]"
+you /t s "e:\Séries.[]\Le Guépard.[2025 Netflix].Mini-série"
+you /t s "e:\Séries.[]\++++\#\1883.[2021- Paramount+]"
+you /t s "e:\Séries.[]\Yellowstone.[2018-2024]"
+you /t s "e:\Séries.[]\Will Trent.[2023-]"
+you /t s "e:\Séries.[]\Héros fragile.[2022-].Mini-série"
+you /t s "e:\Séries.[]\Daredevil- Born Again.[2025- Disney+].Mini-série"
+you /t s "e:\Séries.[]\.Mini-série"
+you /t s "e:\Séries.[]\++++\B\Black Mirror.[2011- Netflix]"
+you /t s "d:/work/prg/cpp/Exemple/Azertyuiop - qsdfghjklm.[2021-2023 Netflix].Manga"
+
+rem La Créature de Kyŏngsŏng ???
+you /t s "e:\Séries.[]\++++\L\La Créature de Kyongsong.[2023 Netflix]"
+rem 1x5.2023-11-09.txt ===> 5. yin █!!! et 6. Oni █!!! (marche pas !!!)
+you /t s "e:\Séries.[]\Onimusha.[2023 Netflix].Manga"
+
+rem Titre : A1983 ???
+you /t s "e:\Séries.[]\+++\#\1983.[2018 Netflix].Mini-série"
+
+rem Un œil
+you /t s "e:\Séries.[]\++\U\Un oeil indiscret.[2023 Netflix]"
+
+rem A : B ou A: B ou A/B
+you /t s "e:\Séries.[]\++++\S\Sermons de minuit.[2021 Netflix]"
+
+rem xxx/2x6.2023-01-20.txt erreur !!! (2x6 ---> Târgoviște) ???
+you /t s "e:\Séries.[]\+++\L\L'essor de l'Empire ottoman.[2020- Netflix].Documentaire"
+
+rem {}
+you /t s "e:\Séries.[]\++++\L\Love, Death + Robots.[2019- Netflix].Animation"
+you /t s "e:\Séries.[]\++++\J\Jamais la même Histoire.[2020- Netflix].Docu-séries"
+you /t s "e:\Séries.[]\+++\K\Kaleidoscope.[2023 Netflix]"
+you /t s "e:\Séries.[]\+++\I\I am a Killer.[2018- Netflix].Docu-séries"
+
+you /t s "e:\Séries.[]\+++\E\Élite.[2018- Netflix]"
+
+rem xxxx-xx-xx\Titre
+you /t s "e:\Séries.[]\+++\J\Jojo's Bizarre Adventure.[2012-2019 Netflix].Manga"
+
+rem Avec un seul
+you /t s "e:\Séries.[]\+++\A\À l'aube de notre histoire.[2022 Netflix].Docu-séries"
+rem Avec 2 personnes !!!
+you /t s "e:\Séries.[]\+++\Q\Queenmaker.[2023 Netflix]"
+
+rem crééeS par
+you /t s "e:\Séries.[]\+++\D\Deadwind.[2018- Netflix]"
+rem crééeS par et en_relation_avec
+you /t s "e:\Séries.[]\++\D\DC's Legends of Tomorrow.[2016-]"
+
+rem a1899
+you /t s "e:\Séries.[]\++++\#\1899.[2022 Netflix]"
+
+rem Notes...
+you /t s "e:\Séries.[]\+++\D\Dead to Me.[2019- Netflix]"
+
+rem Avec …
+you /t s "e:\Séries.[]\+++\B\Barbares.[2020-2022 Netflix]"
+
+rem En relation avec et Chaîne
+you /t s "e:\Séries.[]\++\D\DC's Legends of Tomorrow.[2016-]"
+
+rem ???
+you /t s "e:\Séries.[]\+++\B\Bastard__ Heavy Metal, Dark Fantasy.[2022- Netflix].Manga"
+
+you /t s "e:\Séries.[]\++++\T\Tekken- Bloodline.[2022 Netflix].Manga"
+
+rem Avec et xxx/Titre
+you /t s "e:\Séries.[]\+++\D\Dota- Dragon's Blood.[2021 Netflix].Animation"
+
+rem , , , 
+you /t s "e:\Séries.[]\+++\A\A Mode Family.[2022 Netflix]"
+
+rem Docu-séries et [...]
+you /t s "e:\Séries.[]\++++\L\L'Art de l'espionnage.[2021 Netfklix].Docu-séries"
+
+rem Audiodescription
+you /t s "e:\Séries.[]\+++\C\Coyotes.[2021]"
+
+rem Mini-série
+you /t s "e:\Séries.[]\+++\W\World's Most Wanted.[2020 Netflix].Mini-série"
+
+rem En relation avec
+you /t s "e:\Séries.[]\Money Heist- Korea.[2022- Netflix]"
+
+
+you /t s "e:/Séries.[]/+++/T/The ( )/The Heroic Leged of Arslân.[2015].Manga"
+
+
+you /R s "Re"
+you /R s "s"
+
+you /t s "e:\Séries.[]\+++\J\Juvenile Justice.[2022 Netflix]"
+you /t s "e:\Séries.[]\+++\L\Les Monstres de Cracovie.[2022 Netflix]"
+you /t s "e:\Séries.[]\+++\U\Une vérité enfouie - La disparition de Birgit Mieier.[2021 Netflix].Mini-série"
+
+d:
+cd /work/prg/cpp/you_1/x64/Debug
+
+
+you /t s "e:\Séries.[]\+++\D\Demon Slayer - Kimetsu no Yaiba.[2019- ].Manga"
+you /t s "e:\Séries.[]\++++\V\Vikings - Valhalla.[2022- Netflix]"
+you /t s "e:\Séries.[]\++++\V\Vikings.[2013-]"
+
+
+
+
+you /t s "e:\Séries.[]\+++\I\I am a Killer.[2018 Netflix].Documentaire"
+
+you /t s "e:\Séries.[]\+++\L\Les Enquêtes extraordinaires.[2020 Netflix].Docu-séries"
+you /t s "e:\Séries.[]\+++\S\StartUp.[2016-2018]"
+you /t s "e:\Séries.[]\+++\O\Ozark.[2017 Netflix]"
+
+you /t s "e:\Séries.[]\+++\T\The ( )\The Puppet Master - Leçons de manipulation.[2022 Netflix].Docu-série"
+you /t s "e:\Séries.[]\+++\C\Catching Killers.[2021 Netflix].Documentaire"
+you /t s "e:\Séries.[]\Superstore.[2015-2021]"
+
+
+d:
+cd /work/prg/cpp/you/x64/Release
+d:
+cd /work/prg/cpp/you 1/x64/Release
+
+you -t f "e:\Films.()\Qsdfghjklm¬wxcvbn.(2022-05-19 Netflix).Manga"
+you -t f "e:\Films.()\Azertyuiop.(2021-06-02 Netflix).Manga"
+you /t f "e:\Films.()\+++\T\The ()\The Guilty.(2021-10-01 Netflix)"
+YOU /t f "e:/Films.()/+++++/A\Avatar.(2009-12-16)"
+you /t f "e:/Films.()/Space Sweepers.(2021-02-05 Netflix)"
+you /t f "e:\Films.()\Films - DVD.()\++++\R\Resident Evil - Degeneration.(2009-02-04 DVD).Manga"
+you /t f "e:\Films.()\Films - DVD.()\++++\R\Resident Evil - Damnation.(2012-09-24 DVD).Manga"
+you /t f "e:\Films.()\++++\G\Godzilla - La planète des monstres.(2017-11-17 Netflix).Manga"
+you /t f "e:\Films.()\++++\G\Godzilla - La ville à l'aube du combat.(2018 Netflix).Manga"
+you /t f "e:\Films.()\++++\G\Godzilla - Le dévoreur de planètes.(2018 Netflix).Manga"
+you /t f "e:/Films.()/+++/T/Toxique.(2021-10-13 Netflix)"
+you /t f "e:\Films.()\++\N\Night Teeth.(2021-10-20 Netflix)"
+you /t f "e:\Films.()\Berserk - L'Âge d'or - Partie 1 - L'Œuf du roi conquérant.(2012-02-04 DVD).Manga"
+you /t f "e:\Films.()\Berserk - L'Âge d'or - Partie 2 - La bataille pour Doldrey.(2012-06-23 DVD).Manga"
+you /t f "e:\Films.()\Berserk - L'Âge d'or - Partie 3 - L'Avent.(2013-02-01 DVD).Manga"
+you /t f "e:\Films.()\+++++\L\La Stratégie Ender.(2013-11-06)"
+you /t f "e:\Films.()\+++++\W\World War Z.(2013-07-03)"
+you /t f "e:\Films.()\++++\#\1917.(2022-01-15)"
+you /t f "e:\Films.()\++++\T\The Stranger.(2022-10-19 Netflix)"
+you /t f "e:\Films.()\Films - VOD.()\+++\S\Synchronic.(2021-03-03 VOD)"
+you /t f "e:\Films.()\+++\W\We Have a Ghost.(2023-02-24 Netflix)"
+you /t f "e:\Films.()\++++\L\La Planète des Singes - Suprématie.(2017-08-02)"
+you /t f "e:\Films.()\++++\A\Alpha.(2018-08-22)"
+you /t f "e:\Films.()\+++++\A\Avatar 2 - la voie de l'eau.(2022-12-14)"
+you /t f "e:\Films.()\++++\R\Rebel Moon Partie 1 - Enfant du feu.(2023-12-22 Netflix)"
+you /t f "e:\Films.()\++++\R\Rebel Moon- Partie 2 - L'Entailleuse.(2024-04-19 Netflix)"
+you /t f "e:\Films.()\+++++\W\World War Z.(2013-07-03)"
+you /t f "e:\Films.()\+++\T\The ()\The Tomorrow War.(2021-07-02 Amazon Prime Video)"
+you /t f "e:\Films.()\Films - VOD.()\++++\E\El Camino - un film Breaking Bad.(2019-10-11 VOD)"
+you /t f "e:\Films.()\++++\D\Dune.(2021-09-15)"
+you /t f "e:\Films.()\++++\F\Fast & Furious 8.(2017-04-12)"
+you /t f "e:\ (Films.()\+++\P\Prey.(2022-08-05 Disney+)"
+you /t f "e:\Films.()\++++\R\Rebel Moon - Partie 1 - Calice de sang.(2024-08-02 Netflix)"
+you /t f "e:\Films.()\++++\A\Alita - Battle Angel.(2019-02-13)"
+rem Sous la Seine : Making-of.txt
+you /t f "e:\Films.()\+++\S\Sous la Seine.(2024-06-05 Netflix)"
+you /t f "e:\Films.()\\++++\V\Vermines.(2023-12-27)"
+
+rem you - copie : Au cœur de l'océan : Marche pas !!!
+you /t f "e:\Films.()\+++\A\Au cœur de l'océan.(2015-12-09)"
+
+// Amazon Prime Video
+you /t f "e:\Films.()\+++\I\Infinite.(2021-10-03 Amazon Prime Video)"
+// Disney+
+you /t f "e:\Films.()\+++\B\Barbare.(2022-10-26 Disney+)"
+
+// Netflix : Tous publics
+you /t f "e:\Films.()\+++\D\Dans l'inconnu - La machine à remonter le temps.(2023-07-24 Netflix).Documentaire"
+
+
+rem Violet Evergarden - Pour mémoire.(2021 Netflix) ??? et pas 2021-XX-XX ???
+you /t f "e:\Films.()\+++\V\Violet Evergarden - Pour mémoire.(2021 Netflix).Manga"
+
+rem 2017-02-25_26 Netflix.txt
+you /t f "e:\Films.()\++++\F\Final Fantasy VII - Advent Children.(2006-01-27).Manga"
+
+// (1)(2) ===> 2022/11/142022/11/15
+you /t f "e:\Films.()\+++\T\The ()\The Witcher - Le cauchemar du Loup.(2021-08-23 Netflix).Animation"
+
+// Soundtrack
+you /t f "e:\Films.()\++++\O\Once Upon a Time… in Hollywood.(2019-08-14)"
+you /t f "e:\Films.()\++++\B\Blade Runner 2049.(2017-10-04)"
+
+// Avec … et Soundtrack
+you /t f "e:\Films.()\++++\D\Dragon rouge.(2002-10-30 Netflix)"
+you /t f "e:\Films.()\+++\F\Fusion.(2003-04-16)"
+
+you /t f "e:\Films.()\Films - VOD.()\T\Tremors 5- Bloodline.(2016-01-04 VOD)"
+
+you /t f "e:\Films.()\Notre langue aux chats.(2022-08-18 Netflix).Documentaire"
+
+rem Note
+you /t f "e:\Films.()\+++++\C\Carter.(2022-08-05 Netflix)"
+
+
+you /t f ":\Films.()\Films - DVD.()\++++\E\Equilibrium.(2003-05-13 DVD)"
+
+you /t s "e:\Séries.[]\+++\L\L'irréel - Incroyables témoignages.[2018 Netflix].Documentaire
+you /t s "e:\Séries.[]\++++\M\Making a Murderer.[2015 Netflix].Documentaire"
+
+
+
+you /t f "e:\Films.()\Films - DVD\++++\Resident Evil - Damnation.(2012-09-24 DVD).Manga"
+you /t f "e:\Films.()\Films - DVD\++++\Resident Evil - Degeneration.(2009-02-04 DVD).Manga"
+you /t s "e:\Séries.[]\+++\G\Godzilla - L'origine de l'invasion.[2021- Netflix].Manga"
+
+
+d:
+cd /work/prg/cpp/you/x64/Release
+you -t f "e:\Films.()\Azertyuiop.(2021-06-02 VOD).Manga"
+you /t s "e:\Séries.[]\Azertyuiop.[2021- Netflix]"
+you /t c "e:/Films.()/Space Sweepers.(2021-02-05 Netflix)"
+
+
+you
+
+d:
+cd /work/prg/cpp/you/x64/Release
+you -e
+
+
+d:
+cd /work/prg/cpp/you/x64/Release
+you -f
+
+
+you -t s ++ E "Emily In Paris.[2020- Netflix]"
+you /t s +++ S "Snowpiercer.[2020-2021 Netflix]"
+
+you /t f "e:/Films/Ils.FRENCH.DVDRip.XviD-LOST-AceBot"
+
+d:
+cd /work/prg/cpp/template/x64/debug
+template
+
