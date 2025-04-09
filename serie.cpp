@@ -1600,9 +1600,9 @@ void Serie::corriger_Annee_Fin()
 
 std::wstring Serie::format_Annees() const
 {
-    if (m_f_anneesProduction.first == m_f_anneesProduction.second)
+    if (m_f_anneesProduction.first && m_f_anneesProduction.second)
     {
-        if (m_f_anneesProduction.first&& m_f_anneesProduction.second)
+        if (m_f_anneesProduction.first == m_f_anneesProduction.second)
         {
             return m_valuesColor + std::to_wstring(m_f_anneesProduction.first.value());
         }
