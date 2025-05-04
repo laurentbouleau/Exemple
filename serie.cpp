@@ -915,7 +915,7 @@ void Saison::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else
     {
-        std::wcout << L'{' << cheminFichier << L'}' << std::endl;
+        std::wcout << m_keyColor[2] << L'{' << cheminFichier << L'}' << m_valuesColor << std::endl;
     }
 }
 
@@ -1726,7 +1726,7 @@ void Serie::initialiser_Fichier(fs::path const& cheminFichier)
     }
     else
     {
-        std::wcout << L'{' << cheminFichier << L'}' << std::endl;
+        std::wcout << m_keyColor[2] << L'{' << cheminFichier << L'}' << m_valuesColor << std::endl;
     }
 }
 
